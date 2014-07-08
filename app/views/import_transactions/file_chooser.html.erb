@@ -1,0 +1,24 @@
+<h1>Import Transactions</h1>
+
+<%= form_tag("import", multipart: true) do %>
+
+<div class="panel panel-danger">
+
+  <div class="panel-heading">  	
+  	<h4>Choose OFX file... </h4>
+  </div>
+                  
+  <div class="container">     
+    <p><label for="account">Select Account</label> : 
+    <p><%= select_tag(:account, options_from_collection_for_select(@accounts, :id, :name), {:prompt => "Select account..."}) %>                   
+    <p><label for="money_file">Select File</label> : 
+    <p><%= file_field_tag('money_file', size: 30) %></p>
+  </div>
+  
+  <div class="panel-footer">
+  	<button type="submit" class="btn btn-default">Upload</button>
+  	<%= link_to "Cancel", accounts_path, class: "btn btn-default" %>
+  </div>
+
+</div>	
+<% end %>

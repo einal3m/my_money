@@ -1,0 +1,42 @@
+
+<%= form_for(@subcategory) do |f| %>
+  <% if @subcategory.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@subcategory.errors.count, "error") %> prohibited this subcategory from being saved:</h2>
+
+      <ul>
+      <% @subcategory.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="panel panel-success">
+
+  <div class="panel-heading">  	
+  	<h4><%= yield(:title) %>
+  		<% if yield(:title).include?("Edit") %>
+  			<%= link_to 'Delete', @subcategory, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+  		<% end %>
+  	</h4>
+  </div>
+  
+  <div class="container">
+  	<div class="field">
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+  	</div>
+  	<div class="field">
+      <%= f.label :category_id %><br>
+      <%= f.collection_select(:category_id, @categories, :id, :name, {:prompt => true}) %> 
+  	</div>
+  </div><!-- container -->
+  
+  <div class="panel-footer">
+  	<button type="submit" class="btn btn-default">Save</button>
+  	<%= link_to "Cancel", categories_path, class: "btn btn-default" %>
+  </div>
+  
+</div> <!-- panel -->
+<% end %>

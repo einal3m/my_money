@@ -1,0 +1,49 @@
+<div class="jumbotron">
+  <h1>My Money</h1>
+  <p>...<p>
+  <p>The best money app in the world!</p>
+</div>
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h4 class="panel-title">Accounts</h4>
+      </div>
+      <div class="panel-body">
+      	<ul>
+      	  <li>View account information</li>
+      	  <li>Add new accounts</li>
+      	  <li>And lots more...</li>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item"><%= link_to "more...", accounts_path, class: "btn btn-info" %></li>
+      </ul>
+    </div><!-- end panel -->
+  </div> <!-- end col -->
+  
+  <div class="col-md-4">
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <h4 class="panel-title">Transactions</h4>
+      </div>
+      <div class="panel-body">
+        stuff about <%= link_to "transactions", transactions_path %>
+        import transactions from OFX files <%= link_to "here", import_transactions_file_chooser_path %>
+      </div>
+    </div><!-- end panel -->
+  </div> <!-- end col -->
+
+  <div class="col-md-4">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h4 class="panel-title">Categories</h4>
+      </div>
+      <div class="panel-body">
+        stuff about <%= link_to "Categories", categories_path %>
+      </div>
+    </div><!-- end panel -->
+  </div> <!-- end col -->
+
+</div><!-- end row -->
+

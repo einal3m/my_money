@@ -1,0 +1,50 @@
+<h1>Import Transactions</h1>
+
+<%= form_for @account, url: { controller: "transactions", action: "import" }, method: :post do |a|%>
+
+<div class="panel panel-danger">
+
+  <div class="panel-heading">  
+  	<h4> Account: <strong><%= a.collection_select :id, @accounts, :id, :name, {prompt: "Please select"} %>
+  	<%= @account.name + " (" + @account.bank + ")" %> </strong></h4>
+  </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Transaction type</th>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Fitid</th>
+      <th>Memo</th>
+      <th>Category</th>
+      <th>Subcategory</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+      <%= fields_for transaction do |t| %>
+        <td><%= t.check_box :import, name: "import_transactions[][import]" %></td>
+        <td><%= t.text_field :transaction_type, name: "import_transactions[][transaction_type]", size: "10" %></td>
+        <td><%= t.text_field :date, name: "import_transactions[][date]", size: "10" %></td>
+        <td><%= t.text_field :amount, name: "import_transactions[][amount]", size: "10" %></td>
+        <td><%= t.text_field :fitid, name: "import_transactions[][fitid]", size: "10" %></td>
+        <td><%= t.text_field :memo, name: "import_transactions[][memo]" %></td>
+        <td><%= t.collection_select :category_id, @categories, :id, :name, {prompt: "Please select", name: "import_transactions[][category_id]"} %></td>
+        <td><%= t.select :subcategory_id, [], name: "import_transactions[][subcategory_id]" %></td>
+      <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+  <div class="panel-footer">
+  	<button type="submit" class="btn btn-default">Import</button>
+  	<%= link_to "Cancel", accounts_path, class: "btn btn-default" %>
+  </div>
+
+</div>
+<% end %>
+

@@ -1,0 +1,65 @@
+<h1>Categories <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_category_path, class: "btn btn-default" %></h1>
+<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-6">
+  
+<div class="panel panel-success">
+
+  <div class="panel-heading">  	
+  	<h4>Income Categories</h4>
+  </div>
+  
+  <!-- Table -->
+	<table class="table">
+  		<tbody>
+    		<% @income_categories.each do |category| %>
+      		<tr>
+        		<td><strong><%= link_to category.name, edit_category_path(category) %></strong>
+        			<ul>
+        			<% category.subcategories.each do |subcategory| %>
+        				<li><%= link_to subcategory.name, edit_subcategory_path(subcategory) %></li>
+        			<% end %>
+        			<li><%= link_to 'New...', new_subcategory_path %></li>
+        			</ul>
+        		</td>
+      		</tr>
+    		<% end %>
+  		</tbody>
+	</table>
+  </div> <!-- panel -->
+  	
+  </div>
+  <div class="col-md-6">
+<div class="panel panel-success">
+    <div class="panel-heading">
+  	<h4>Expense Categories</h4></div>
+  <!-- Table -->
+	<table class="table">
+  		<tbody>
+    		<% @expense_categories.each do |category| %>
+      		<tr>
+        		<td><strong><%= link_to category.name, edit_category_path(category) %></strong>
+        			<ul>
+        			<% category.subcategories.each do |subcategory| %>
+        				<li><%= link_to subcategory.name, edit_subcategory_path(subcategory) %></li>
+        			<% end %>
+        			<li><%= link_to 'New...', new_subcategory_path %></li>
+        			</ul>
+        		</td>
+<!--        		<td><%= category.category_type %></td>
+        		<td><%= link_to 'Show', category %></td>
+        		<td><%= link_to 'Edit', edit_category_path(category) %></td>
+        		<td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+      		</tr>
+    		<% end %>
+  		</tbody>
+	</table>
+  </div> <!-- panel -->
+  
+  </div>
+</div>
+
+  
+
+
+

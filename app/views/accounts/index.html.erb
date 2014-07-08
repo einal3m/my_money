@@ -1,0 +1,31 @@
+<h1>Accounts <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_account_path, class: "btn btn-default" %></h1>
+
+  <div class="panel panel-info">
+  
+    <div class="panel-heading">
+      <h4 class="panel-title">Account Summary</h4>
+    </div>
+    
+	<table class="table">
+  	  <thead>
+    	<tr>
+          <th>Name</th>
+          <th>Bank</th>
+          <th class="money">Starting balance</th>
+        </tr>
+  	  </thead>
+
+  	  <tbody>
+    	<% @accounts.each do |account| %>
+      	<tr>
+          <td><%= link_to account.name, edit_account_path(account) %></td>
+          <td><%= account.bank %></td>
+          <td class="money"><%= number_to_currency(account.starting_balance) %></td>
+        </tr>
+        <% end %>
+  	  </tbody>
+	</table>
+	
+  </div> <!-- end panel-->
+
+<br>
