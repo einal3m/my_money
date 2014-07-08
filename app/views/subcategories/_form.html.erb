@@ -1,17 +1,3 @@
-
-<%= form_for(@subcategory) do |f| %>
-  <% if @subcategory.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@subcategory.errors.count, "error") %> prohibited this subcategory from being saved:</h2>
-
-      <ul>
-      <% @subcategory.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
 <div class="panel panel-success">
 
   <div class="panel-heading">  	
@@ -22,7 +8,21 @@
   	</h4>
   </div>
   
+<%= form_for(@subcategory) do |f| %>
+
   <div class="container">
+    <% if @subcategory.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@subcategory.errors.count, "error") %> prohibited this subcategory from being saved:</h2>
+
+        <ul>
+          <% @subcategory.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
   	<div class="field">
       <%= f.label :name %><br>
       <%= f.text_field :name %>
@@ -37,6 +37,7 @@
   	<button type="submit" class="btn btn-default">Save</button>
   	<%= link_to "Cancel", categories_path, class: "btn btn-default" %>
   </div>
+
+<% end %>
   
 </div> <!-- panel -->
-<% end %>

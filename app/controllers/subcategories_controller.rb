@@ -15,12 +15,12 @@ class SubcategoriesController < ApplicationController
   # GET /subcategories/new
   def new
     @subcategory = Subcategory.new
-    @categories = Category.all
+    load_form_data
   end
 
   # GET /subcategories/1/edit
   def edit
-    @categories = Category.all
+    load_form_data
   end
 
   # POST /subcategories
@@ -33,6 +33,7 @@ class SubcategoriesController < ApplicationController
         format.html { redirect_to categories_url, notice: "Sub-category \'#{@subcategory.name}\' was successfully created." }
         format.json { render :show, status: :created, location: @subcategory }
       else
+	    load_form_data
         format.html { render :new }
         format.json { render json: @subcategory.errors, status: :unprocessable_entity }
       end
@@ -47,6 +48,7 @@ class SubcategoriesController < ApplicationController
         format.html { redirect_to categories_url, notice: "Sub-category \'#{@subcategory.name}\' was successfully updated." }
         format.json { render :show, status: :ok, location: @subcategory }
       else
+        load_form_data
         format.html { render :edit }
         format.json { render json: @subcategory.errors, status: :unprocessable_entity }
       end
@@ -72,5 +74,9 @@ class SubcategoriesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def subcategory_params
       params.require(:subcategory).permit(:name, :category_id)
+    end
+    
+    def load_form_data
+	    @categories = Category.all
     end
 end

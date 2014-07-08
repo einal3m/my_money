@@ -32,16 +32,15 @@ p params
   def new
     @transaction = Transaction.new
     
-    form_data
-
+    load_form_data
   end
 
   # GET /transactions/1/edit
   def edit
-    form_data
+    load_form_data
   end
   
-  def form_data
+  def load_form_data
   
     # lists for drop-downs
     @accounts = Account.all
@@ -73,6 +72,7 @@ p params
         format.html { redirect_to transactions_url, notice: 'Transaction was successfully created.' }
         format.json { render :show, status: :created, location: @transaction }
       else
+        load_form_data
         format.html { render :new }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
       end
@@ -87,6 +87,7 @@ p params
         format.html { redirect_to transactions_url, notice: 'Transaction was successfully updated.' }
         format.json { render :show, status: :ok, location: @transaction }
       else
+        load_form_data
         format.html { render :edit }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
       end
