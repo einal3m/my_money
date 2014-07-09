@@ -1,0 +1,3 @@
+// returns the subcategory options list, as well as a prompt
+$("#transaction_subcategory_id").html('<option value="">Please select</option>' + "<%= j options_from_collection_for_select(@subcategories, :id, :name) %>");
+
