@@ -8,17 +8,23 @@ p params
     # list of all accounts
     @accounts = Account.all
     
-    # currently selected account
+    # check params for a change in selected account
     @account_id = params[:account_id]
     
-    # if account has not been selected, select first one
+    # if new account has not been selected...
     if @account_id.nil? then
-	  @account = Account.first
-	else
-      @account = Account.find(@account_id)
-    end
+    
+      # ... check the session
+      @account_id = session[:account_id];
+      
+      if @account_id.nil? then
+	      # ... or default to first Account
+		  @account_id = Account.first.account_id
+	  end
+	end
 
-	#@transactions = Transaction.where(account_id: @account.id)
+	session[:account_id] = @account_id
+    @account = Account.find(@account_id)
 	@transactions = @account.transactions
 
   end
@@ -33,6 +39,7 @@ p params
     @transaction = Transaction.new
     
     load_form_data
+    @transaction.account_id = session[:account_id]
   end
 
   # GET /transactions/1/edit
