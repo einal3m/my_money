@@ -12,5 +12,23 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
+//= require jquery.turbolinks
 //= require_tree .
+
+/* check if jQuery is loaded */
+/*if (jQuery) {
+alert('Jquery is loaded')
+} else {
+alert ('Jquery is not loaded')
+}*/
+
+// jQuery event handlers
+$(document).ready(function() {
+
+  // subcategory select needs to be updated when category is changed
+  $("#transaction_category_id").change(function() {
+  	$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
+  });
+  
+});
+

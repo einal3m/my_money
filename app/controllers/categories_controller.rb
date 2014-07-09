@@ -63,6 +63,21 @@ class CategoriesController < ApplicationController
     end
   end
 
+  # called when user changes category on transaction forms
+  def subcategories_by_category
+
+    if params[:category_id].present?
+      @subcategories = Category.find(params[:category_id]).subcategories
+    else
+      @subcategories = []
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category
