@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :patterns
+
   get 'import_transactions/file_chooser'
   post 'import_transactions/import'
 

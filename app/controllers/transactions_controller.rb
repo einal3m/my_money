@@ -4,7 +4,7 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.json
   def index
-p params
+
     # list of all accounts
     @accounts = Account.all
     

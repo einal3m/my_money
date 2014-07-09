@@ -26,7 +26,7 @@ alert ('Jquery is not loaded')
 $(document).ready(function() {
 
   // subcategory select needs to be updated when category is changed
-  $("#transaction_category_id").change(function() {
+  $("#transaction_category_id, #pattern_category_id").change(function() {
   	$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
   });
   

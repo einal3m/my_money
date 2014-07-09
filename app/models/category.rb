@@ -10,6 +10,7 @@ class Category < ActiveRecord::Base
     # model relationships
 	has_many :subcategories
 	has_many :transactions
+	has_many :patterns
 	
 	# validations
 	validates :name, presence: true
