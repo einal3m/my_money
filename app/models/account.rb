@@ -1,5 +1,5 @@
 #
-#  Category
+#  Account
 #  
 #  id: int, primary key
 #  name: string
