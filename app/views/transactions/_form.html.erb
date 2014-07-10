@@ -43,7 +43,7 @@
   </div>
   <div class="field">
     <%= f.label :category_id %><br>
-    <%= f.collection_select(:category_id, @categories, :id, :name, @category_options) %>
+    <%= f.grouped_collection_select(:category_id, CategoryType.all, :categories, :name, :id, :name, @category_options) %>
   </div>
   <div class="field">
     <%= f.label :subcategory_id %><br>

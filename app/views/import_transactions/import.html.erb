@@ -8,15 +8,13 @@
   	<h4> Account: <strong><%= a.collection_select :id, @accounts, :id, :name, {prompt: "Please select"} %>
   	<%= @account.name + " (" + @account.bank + ")" %> </strong></h4>
   </div>
-<table class="table">
+<table class="table table-condensed">
   <thead>
     <tr>
       <th></th>
-      <th>Transaction type</th>
       <th>Date</th>
-      <th>Amount</th>
-      <th>Fitid</th>
       <th>Memo</th>
+      <th>Amount</th>
       <th>Category</th>
       <th>Subcategory</th>
     </tr>
@@ -24,16 +22,22 @@
 
   <tbody>
     <% @transactions.each do |transaction| %>
-      <tr>
+    	<% if transaction.duplicate then %>
+    		<tr class="danger">
+    	<% else %>
+      		<tr>
+      	<% end %>
       <%= fields_for transaction do |t| %>
         <td><%= t.check_box :import, name: "import_transactions[][import]" %></td>
-        <td><%= t.text_field :transaction_type, name: "import_transactions[][transaction_type]", size: "10" %></td>
         <td><%= t.text_field :date, name: "import_transactions[][date]", size: "10" %></td>
+        <td><%= t.text_field :memo, name: "import_transactions[][memo]", size: "50" %></td>
         <td><%= t.text_field :amount, name: "import_transactions[][amount]", size: "10" %></td>
-        <td><%= t.text_field :fitid, name: "import_transactions[][fitid]", size: "10" %></td>
-        <td><%= t.text_field :memo, name: "import_transactions[][memo]" %></td>
-        <td><%= t.collection_select :category_id, @categories, :id, :name, {prompt: "Please select", name: "import_transactions[][category_id]"} %></td>
-        <td><%= t.select :subcategory_id, [], name: "import_transactions[][subcategory_id]" %></td>
+        <td><%= t.collection_select :category_id, @categories, :id, :name, {prompt: "Please select"}, {name: "import_transactions[][category_id]", class: "category_select"} %></td>
+        <% if transaction.category.nil? %>
+          <td><%= t.collection_select :subcategory_id, [], :id, :name, {}, {name: "import_transactions[][subcategory_id]", class: "subcategory_select"} %></td>
+        <% else %>
+          <td><%= t.collection_select :subcategory_id, transaction.category.subcategories, :id, :name, {prompt: "Please select"}, {name: "import_transactions[][subcategory_id]", class: "subcategory_select"} %></td>
+        <% end %>
       <% end %>
       </tr>
     <% end %>

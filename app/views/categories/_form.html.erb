@@ -28,8 +28,8 @@
       <%= f.text_field :name %>
     </div>
     <div class="field">
-      <%= f.label :category_type %><br>
-      <%= select(:category, :category_type, [['Income', 'I'], ['Expense', 'E']]) %> 
+      <%= f.label :category_type_id %><br>
+      <%= f.collection_select(:category_type_id, @category_types, :id, :name) %> 
     </div>
   </div><!-- end container -->
   

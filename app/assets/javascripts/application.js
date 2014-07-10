@@ -30,5 +30,14 @@ $(document).ready(function() {
   	$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
   });
   
+    // subcategory select needs to be updated when category is changed
+  $(".category_select").change(function() {
+  
+    // set the class of the parent row to 'category_change'
+    $(this).closest('tr').toggleClass('category_change');
+alert($(this).closest('tr').attr("class"));
+  	$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
+  });
+  
 });
 

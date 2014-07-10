@@ -4,9 +4,8 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @categories = Category.all
-    @income_categories = Category.where(category_type: "I");
-    @expense_categories = Category.where(category_type: "E");
+    @income_categories = CategoryType.find_by(name: "Income").categories
+    @expense_categories = CategoryType.find_by(name: "Expense").categories
   end
 
   # GET /categories/1
@@ -17,10 +16,12 @@ class CategoriesController < ApplicationController
   # GET /categories/new
   def new
     @category = Category.new
+    load_form_data
   end
 
   # GET /categories/1/edit
   def edit
+    load_form_data
   end
 
   # POST /categories
@@ -79,6 +80,11 @@ class CategoriesController < ApplicationController
   
   
   private
+  
+    def load_form_data
+      @category_types = CategoryType.all
+    end
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
@@ -86,6 +92,6 @@ class CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name, :category_type)
+      params.require(:category).permit(:name, :category_type_id)
     end
 end
