@@ -19,7 +19,7 @@ class TransactionsController < ApplicationController
       
       if @account_id.nil? then
 	      # ... or default to first Account
-		  @account_id = Account.first.account_id
+		  @account_id = Account.first.id
 	  end
 	end
 

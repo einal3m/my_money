@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'report/income_vs_expense'
+
   resources :patterns
 
   get 'import_transactions/file_chooser'
