@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   get 'report/income_vs_expense'
+  get 'report/subcategory'
+  get 'report/category'
+  get 'report/index'
 
   resources :patterns
 

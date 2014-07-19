@@ -3,9 +3,9 @@
 <div class="panel panel-warning">
   <div class="panel-heading">
 	<%= form_tag("/report/income_vs_expense", method: :get) do %>
-      <%= label_tag("from_date") %>
+      <%= label_tag("from_date", "From: ") %>
 	  <%= date_field_tag("from_date", @from_date) %>&nbsp;&nbsp;
-      <%= label_tag("to_date") %>
+      <%= label_tag("to_date", "To: ") %>
 	  <%= date_field_tag("to_date", @to_date) %>
 	
 	  <button type="submit" class="btn btn-default pull-right">Refresh</button>
@@ -28,14 +28,14 @@
   		<tbody>
   		  <% @income_categories.each do |c| %>
   		    <% if @category_totals.has_key?(c.name) %>
-  		      <tr><td colspan='2'><strong><%= c.name %></strong></td></tr>
+  		      <tr><td colspan='2'><strong><%= link_to(c.name, report_category_path(:category_id => c.id)) %></strong></td></tr>
   		      <% @category_totals[c.name].each do |sub_cat, total| %>
-  		      	<tr><td>&nbsp;&nbsp;<%= sub_cat %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<tr><td>&nbsp;&nbsp;<%= link_to(sub_cat, report_subcategory_path( :subcategory_id => Subcategory.find_by(:name => sub_cat).id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
   		      <% end %>
   		    <% end %>
   		  <% end %>
   		  <% if @unassigned_income_amount != 0 %>
-  		  	<tr><td><strong>Un-Assigned</strong></td>
+  		  	<tr><td><strong><%= link_to("Un-Assigned",report_category_path) %> </strong></td>
   		  	<td class="money"><%= number_to_currency(@unassigned_income_amount) %></td></tr>
   		  <% end %>
   		  <tr class="totals"><td><strong>Total</strong></td><td class="money"><%= number_to_currency(@income_total) %></td></tr>
@@ -53,14 +53,14 @@
 		<table class="table">
   		  <% @expense_categories.each do |c| %>
   		    <% if @category_totals.has_key?(c.name) %>
-  		      <tr><td colspan='2'><strong><%= c.name %></strong></td></tr>
+  		      <tr><td colspan='2'><strong><%= link_to(c.name, report_category_path(:category_id => c.id)) %></strong></td></tr>
   		      <% @category_totals[c.name].each do |sub_cat, total| %>
-  		      	<tr><td>&nbsp;&nbsp;<%= sub_cat %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<tr><td>&nbsp;&nbsp;<%= link_to(sub_cat, report_subcategory_path( :subcategory_id => Subcategory.find_by(:name => sub_cat).id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
   		      <% end %>
   		    <% end %>
   		  <% end %>
   		  <% if @unassigned_expense_amount != 0 %>
-  		  	<tr><td><strong>Un-Assigned</strong></td>
+  		  	<tr><td><strong><%= link_to("Un-Assigned", report_category_path) %></strong></td>
   		  	<td class="money"><%= number_to_currency(@unassigned_expense_amount) %></td></tr>
   		  <% end %>
   		  <tr class="totals"><td><strong>Total</strong></td><td class="money"><%= number_to_currency(@expense_total) %></td></tr>

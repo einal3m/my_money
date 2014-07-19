@@ -1,6 +1,9 @@
 
 class ReportController < ApplicationController
 
+  def index
+  end
+
   def income_vs_expense
   	
 	get_date_range
@@ -36,6 +39,49 @@ class ReportController < ApplicationController
 		end
 	end  
 	
+  end
+  
+  def category
+  
+  p params
+  
+  	get_date_range
+  	
+  	@categories = Category.all
+  	
+  	# check for category_id in params... if it's not there show unassigned transactions
+  	@category_id = params[:category_id]
+  	if @category_id.nil? || @category_id.blank? then
+  		@category = nil 
+  		@category_id = nil
+  		p "category_id is nil or blank"
+	else
+  		@category = Category.find(@category_id)
+  	end
+  	
+  	if @category_id.nil? then
+  		@transactions = Transaction.where("category_id is null and date >= ? and date <= ?", @from_date, @to_date)
+  		
+  		@transaction_total = Transaction.where("category_id is null and date >= ? and date <= ?", @from_date, @to_date).sum(:amount)
+  	else
+  		@transactions = Transaction.where("category_id = ? and date >= ? and date <= ?", @category_id, @from_date, @to_date)
+  		@transaction_total = Transaction.where("category_id = ? and date >= ? and date <= ?", @category_id, @from_date, @to_date).sum(:amount)
+  	end
+  	
+  end
+
+  def subcategory
+  
+  	get_date_range
+  	
+  	@subcategories = Subcategory.all
+  	@subcategory = params.has_key?(:subcategory_id) ? Subcategory.find(params[:subcategory_id]) : Subcategory.first
+  	
+  	p @subcategory
+  	
+  	@transactions = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date)
+  	@transaction_total = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date).sum(:amount)
+  
   end
   
   def get_date_range
