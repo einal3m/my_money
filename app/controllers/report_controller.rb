@@ -10,9 +10,9 @@ class ReportController < ApplicationController
 	  	
   	@category_types = CategoryType.all 
   	
-  	@transfer_category = CategoryType.find_by(name: "Transfer")
-  	@income_categories = CategoryType.find_by(name: "Income").categories.order(:name)
-  	@expense_categories = CategoryType.find_by(name: "Expense").categories.order(:name)
+  	@transfer_category = CategoryType.transfer
+  	@income_categories = CategoryType.income.categories.order(:name)
+  	@expense_categories = CategoryType.expense.categories.order(:name)
   	
   	# sum all transactions by category + subcategory
   	@report_data =  Transaction.where("date >= ? and date <= ?", @from_date, @to_date).group([:category_id, :subcategory_id]).sum(:amount)
@@ -39,6 +39,10 @@ class ReportController < ApplicationController
 		end
 	end  
 	
+
+  	make_pie_chart("Expense", -@unassigned_expense_amount, @from_date, @to_date)
+  	make_pie_chart("Income", @unassigned_income_amount, @from_date, @to_date)
+  	
   end
   
   def category
@@ -81,6 +85,40 @@ class ReportController < ApplicationController
   	
   	@transactions = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date)
   	@transaction_total = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date).sum(:amount)
+  
+  end
+  
+  
+# makes a pie chart for a given category type and date range
+
+  def make_pie_chart(category_type, unassigned_total, from_date, to_date)
+  
+	# get the category type id
+	category_type_id = CategoryType.find_by(name: category_type).id
+	
+	# generate sql for data
+	my_sql = "select categories.name, abs(sum(transactions.amount)) FROM transactions, categories WHERE transactions.category_id = categories.id AND transactions.category_id IN (SELECT id FROM categories WHERE category_type_id = #{category_type_id}) AND (date >= '#{from_date}' and date <= '#{to_date}') GROUP BY transactions.category_id"
+	
+	pie_data = Transaction.connection.select_all(my_sql).rows
+	
+	# add un-assigned data to chart
+	pie_data.push(["Un-assigned", unassigned_total])
+
+	# create pie chart  
+  	g = Gruff::Pie.new("500x350")
+	
+	# add data to pie chart
+	pie_data.each do |row|
+		g.data(row[0], row[1])
+	end
+	
+	# set some chart formatting
+	g.hide_title = true
+	g.theme_pastel
+	g.legend_at_bottom = true
+	
+	# write chart to image file
+	g.write("app/assets/images/graphs/pie_#{category_type}.png")
   
   end
   
