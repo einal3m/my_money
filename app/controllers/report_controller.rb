@@ -26,11 +26,11 @@ class ReportController < ApplicationController
 	@report_data.each do |key, total|
 		if !key[0].nil? then
 			category = Category.find(key[0])
-			subcategory_name = key[1] == nil ? nil : Subcategory.find(key[1]).name
+			subcategory = key[1] == nil ? nil : Subcategory.find(key[1])
 			if @category_totals.has_key?(category.name) then
-				@category_totals[category.name][subcategory_name] = total
+				@category_totals[category.name][subcategory] = total
 			else
-				@category_totals[category.name] = {subcategory_name => total}
+				@category_totals[category.name] = {subcategory => total}
 			end
 			
 			if category.category_type.name == "Income" then @income_total += total
@@ -74,17 +74,53 @@ class ReportController < ApplicationController
   	
   end
 
+# report for transactions with a specific subcategory
+
   def subcategory
   
+    # get date range from either session or params
   	get_date_range
   	
-  	@subcategories = Subcategory.all
-  	@subcategory = params.has_key?(:subcategory_id) ? Subcategory.find(params[:subcategory_id]) : Subcategory.first
+  	# report data
+  	@subcategories = []
+  	@categories = Category.all
   	
-  	p @subcategory
+  	# get subcategory_id from params
+  	@category = nil
+  	@category_id = nil
+  	@subcategory = nil
+  	@subcategory_id = nil
+  	if params.has_key?(:subcategory_id) && !params[:subcategory_id].blank? then
+  		@subcategory_id = params[:subcategory_id]
+  		@subcategory =  Subcategory.find(@subcategory_id)
+  		@category = @subcategory.category
+	end
+	  	
+  	# if subcategory wasn't in params, check for category_id
+  	if @subcategory.nil? && params.has_key?(:category_id) then
+  		@category = Category.find(params[:category_id])
+  	end
   	
-  	@transactions = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date)
-  	@transaction_total = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date).sum(:amount)
+  	if !@category.nil? then 
+  		@category_id = @category.id 
+  		@subcategories = @category.subcategories
+  	end
+
+	# collect data  	
+  	@transactions = []
+  	@transaction_total = 0
+  	
+  	# if subcategory was defined, search for it
+  	if !@subcategory.nil? then
+	  	@transactions = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date)
+  		@transaction_total = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @from_date, @to_date).sum(:amount)
+
+  	# if only category defined, search for category with nil subcategory
+  	elsif !@category.nil? then
+  		@transactions = Transaction.where("category_id = ? and subcategory_id is null and date >= ? and date <= ?", @category.id, @from_date, @to_date)
+  		@transaction_total = Transaction.where("category_id = ? and subcategory_id is null and date >= ? and date <= ?", @category.id, @from_date, @to_date).sum(:amount)
+  	
+  	end
   
   end
   

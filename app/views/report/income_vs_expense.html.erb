@@ -30,11 +30,16 @@
   		  <% @income_categories.each do |c| %>
   		    <% if @category_totals.has_key?(c.name) %>
   		      <tr><td colspan='2'><strong><%= link_to(c.name, report_category_path(:category_id => c.id)) %></strong></td></tr>
+  		      
   		      <% @category_totals[c.name].each do |sub_cat, total| %>
-  		      	<tr><td>&nbsp;&nbsp;<%= link_to(sub_cat, report_subcategory_path( :subcategory_id => Subcategory.find_by(:name => sub_cat).id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
-  		      <% end %>
-  		    <% end %>
-  		  <% end %>
+  		      	<% if sub_cat.nil? %>
+  		      		<tr><td>&nbsp;&nbsp;<%= link_to("Un-assigned", report_subcategory_path(:category_id => c.id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<% else %>
+  		      		<tr><td>&nbsp;&nbsp;<%= link_to(sub_cat.name, report_subcategory_path(:subcategory_id => sub_cat.id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<% end %> <!-- if -->
+  		      <% end %> <!-- each -->
+  		    <% end %> <!-- if -->
+  		  <% end %> <!-- each -->
   		  <% if @unassigned_income_amount != 0 %>
   		  	<tr><td><strong><%= link_to("Un-Assigned",report_category_path) %> </strong></td>
   		  	<td class="money"><%= number_to_currency(@unassigned_income_amount) %></td></tr>
@@ -57,7 +62,11 @@
   		    <% if @category_totals.has_key?(c.name) %>
   		      <tr><td colspan='2'><strong><%= link_to(c.name, report_category_path(:category_id => c.id)) %></strong></td></tr>
   		      <% @category_totals[c.name].each do |sub_cat, total| %>
-  		      	<tr><td>&nbsp;&nbsp;<%= link_to(sub_cat, report_subcategory_path( :subcategory_id => Subcategory.find_by(:name => sub_cat).id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<% if sub_cat.nil? %>
+  		      		<tr><td>&nbsp;&nbsp;<%= link_to("Un-assigned", report_subcategory_path(:category_id => c.id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<% else %>
+  		      		<tr><td>&nbsp;&nbsp;<%= link_to(sub_cat.name, report_subcategory_path(:subcategory_id => sub_cat.id)) %></td><td class="money"><%= number_to_currency(total) %></td></tr>
+  		      	<% end %>
   		      <% end %>
   		    <% end %>
   		  <% end %>

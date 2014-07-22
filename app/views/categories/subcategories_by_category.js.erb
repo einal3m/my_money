@@ -6,6 +6,9 @@ $("#transaction_subcategory_id").html('<option value="">Please select</option>' 
 // this works for the pattern page
 $("#pattern_subcategory_id").html('<option value="">Please select</option>' + "<%= j options_from_collection_for_select(@subcategories, :id, :name) %>");
 
+// this works for the subcategory report page
+$("#report_subcategory_id").html('<option value="">Un-Assigned</option>' + "<%= j options_from_collection_for_select(@subcategories, :id, :name) %>");
+
 // this works for the import transaction page
 $(".category_change .subcategory_select").html('<option value="">Please select</option>' + "<%= j options_from_collection_for_select(@subcategories, :id, :name) %>");
 

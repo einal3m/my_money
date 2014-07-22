@@ -3,8 +3,13 @@
 <div class="panel panel-warning">
   <div class="panel-heading">
 	<%= form_tag("/report/subcategory", method: :get) do %>
+
+	  <%= label_tag("category_id", "Category: ") %>
+	  <%= grouped_collection_select(@category, @category_id, CategoryType.all, :categories, :name, :id, :name, {prompt: true, selected: @category_id}, {:id => "report_category_id", :name => "category_id"}) %>
+	  &nbsp;&nbsp;
+
 	  <%= label_tag("subcategory_id", "Sub-catgegory: ") %>
-	  <%= grouped_collection_select(@subcategory, :id, Category.all.order(:name), :subcategories, :name, :id, :name, {:prompt => true, :selected => @subcategory.id.to_i}, {:id => "subcategory_id", :name => "subcategory_id"}) %>
+	  <%= collection_select(@subcategory, @subcategory_id, @subcategories, :id, :name, {:selected => @subcategory_id, :include_blank => "Un-assigned"}, {:id => "report_subcategory_id", :name => "subcategory_id"}) %>
 	  &nbsp;&nbsp;
       <%= label_tag("from_date", "From: ") %>
 	  <%= date_field_tag("from_date", @from_date) %>&nbsp;&nbsp;
