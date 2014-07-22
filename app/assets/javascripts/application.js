@@ -35,7 +35,6 @@ $(document).ready(function() {
   
     // set the class of the parent row to 'category_change'
     $(this).closest('tr').toggleClass('category_change');
-alert($(this).closest('tr').attr("class"));
   	$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
   });
   
