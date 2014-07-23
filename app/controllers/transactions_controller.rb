@@ -47,6 +47,9 @@ class TransactionsController < ApplicationController
   # GET /transactions/1/edit
   def edit
     load_form_data
+    
+    # remember where we came from
+    session[:last_transaction_page] = request.env['HTTP_REFERER'] || transactions_url
   end
   
   def load_form_data
@@ -93,7 +96,7 @@ class TransactionsController < ApplicationController
   def update
     respond_to do |format|
       if @transaction.update(transaction_params)
-        format.html { redirect_to transactions_url, notice: 'Transaction was successfully updated.' }
+        format.html { redirect_to session[:last_transaction_page], notice: 'Transaction was successfully updated.' }
         format.json { render :show, status: :ok, location: @transaction }
       else
         load_form_data
