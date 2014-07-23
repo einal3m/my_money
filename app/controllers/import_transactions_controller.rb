@@ -32,7 +32,7 @@ class ImportTransactionsController < ApplicationController
       	 # ... check if they match any pattern
       	 @patterns = Pattern.where(account_id: @account.id);
       	 @patterns.each do |p|
-      	 	if t.memo.include? p.match_text then
+      	 	if t.memo.downcase.include? p.match_text.downcase then
       	 	  t.category_id = p.category_id
       	 	  t.subcategory_id = p.subcategory_id
       	 	  break
