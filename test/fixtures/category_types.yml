@@ -1,7 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+transfer:
+    id: 1
+  name: "Transfer"
 
-two:
-  name: MyString
+income:
+    id: 2
+  name: "Income"
+
+expense:
+    id: 3
+  name: "Expense"

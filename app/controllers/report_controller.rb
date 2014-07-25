@@ -6,42 +6,43 @@ class ReportController < ApplicationController
 
   def income_vs_expense
   	
+  	# get date range from parameters or session
 	get_date_range
 	  	
-  	@category_types = CategoryType.all 
-  	
-  	@transfer_category = CategoryType.transfer
-  	@income_categories = CategoryType.income.categories.order(:name)
-  	@expense_categories = CategoryType.expense.categories.order(:name)
-  	
-  	# sum all transactions by category + subcategory
-  	@report_data =  Transaction.where("date >= ? and date <= ?", @from_date, @to_date).group([:category_id, :subcategory_id]).sum(:amount)
-  	@unassigned_income_amount = Transaction.where("category_id is null and amount >=0 and date >= ? and date <= ?", @from_date, @to_date).sum(:amount)
-  	@unassigned_expense_amount = Transaction.where("category_id is null and amount <0 and date >= ? and date <= ?", @from_date, @to_date).sum(:amount)
-  	
-	@category_totals = {}
-	@income_total = @unassigned_income_amount
-	@expense_total = @unassigned_expense_amount
+	# only interested in income and expense categories
+	income_type = CategoryType.income
+	expense_type = CategoryType.expense
 	
-	@report_data.each do |key, total|
-		if !key[0].nil? then
-			category = Category.find(key[0])
-			subcategory = key[1] == nil ? nil : Subcategory.find(key[1])
-			if @category_totals.has_key?(category.name) then
-				@category_totals[category.name][subcategory] = total
-			else
-				@category_totals[category.name] = {subcategory => total}
-			end
-			
-			if category.category_type.name == "Income" then @income_total += total
-			elsif category.category_type.name == "Expense" then @expense_total += total
-			end
-		end
-	end  
+	# get data for each category type
+	@report_data = {}
+	@unassigned_data = {}
+	@report_data["Income"] = get_category_type_data(income_type)
+	@report_data["Expense"] = get_category_type_data(expense_type)
 	
 
-  	make_pie_chart("Expense", -@unassigned_expense_amount, @from_date, @to_date)
-  	make_pie_chart("Income", @unassigned_income_amount, @from_date, @to_date)
+p @unassigned_data
+  	
+  end
+  
+  def get_category_type_data(category_type)
+
+	# for expenses, reverse the sign
+  	factor = 1
+  	if (category_type.name == "Expense") then factor = -1 end
+  
+	# create report data class
+  	report_data = ReportData.new(:category_type_name => category_type.name)
+  	
+  	# find any unassigned transactions
+	report_data.unassigned_total = factor * Transaction.where("category_id is null and ?*amount >=0 and date >= ? and date <= ?", factor, @from_date, @to_date).sum(:amount).to_f
+
+  
+	# generate sql for category data
+	my_sql = "select categories.id, subcategory_id, (#{factor}*sum(transactions.amount)) FROM transactions, categories WHERE transactions.category_id = categories.id AND (date >= '#{@from_date}' and date <= '#{@to_date}') AND transactions.category_id IN (SELECT id FROM categories WHERE category_type_id = #{category_type.id}) GROUP BY transactions.category_id, transactions.subcategory_id ORDER BY categories.name"
+	
+  	report_data.parse(Transaction.connection.select_all(my_sql).rows)
+
+	return report_data
   	
   end
   

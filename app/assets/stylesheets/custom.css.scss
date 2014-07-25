@@ -5,16 +5,48 @@ body {
 	padding-top: 60px;
 }
 
-td.money, th.money {
-	text-align: right;
-}
-
 .container {
 	padding-top: 10px;
+}
+
+/* report styles */
+
+td.money, th.money {
+	text-align: right;
 }
 
 tr.totals {
 	border-top: 2px solid black; 
 	border-bottom: 5px double black
+}
+
+
+/* pie chart styles */
+text.pie-chart-total-amount{
+  font-size: 14px;
+  font-weight: bold;
+}
+
+text.pie-chart-total-label{
+  fill: #BBB;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+text.pie-chart-data-amount {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+text.pie-chart-data-label {
+  font-size: 12px;
+  font-weight: bold;
+  fill: #999;
+}
+
+svg {
+  background-color: #ffffff;
+  font: 10px sans-serif;
+  text-shadow: none;
 }
 

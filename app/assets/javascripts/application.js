@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.turbolinks
+//= require d3
 //= require_tree .
 
 /* check if jQuery is loaded */
