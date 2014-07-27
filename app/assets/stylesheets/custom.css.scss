@@ -26,6 +26,19 @@ body {
 
 /* report styles */
 
+td.links {
+	text-align: right;
+}
+td {
+	a:visited, a:link {
+		color: black;
+	}
+	
+	a:hover {
+		color: white;
+	}
+}
+
 
 td.money, th.money {
 	text-align: right;

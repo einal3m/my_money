@@ -33,8 +33,7 @@
         <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
         <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
         <td class="money"><%= number_to_currency(transaction.amount) %></td>
-        <td><%= link_to 'Edit', edit_transaction_path(transaction) %> 
-        <%= link_to 'Destroy', transaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_transaction_path(transaction) %></td>
       </tr>
     <% end %>
   </tbody>

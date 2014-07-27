@@ -30,8 +30,7 @@
         <td><%= pattern.match_text %></td>
         <td><%= pattern.category.name %></td>
         <td><%= pattern.subcategory.nil? ? "" : pattern.subcategory.name %></td>
-        <td><%= link_to 'Edit', edit_pattern_path(pattern) %>
-            <%= link_to 'Destroy', pattern, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_pattern_path(pattern) %></td>
       </tr>
     <% end %>
   </tbody>
