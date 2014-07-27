@@ -1,15 +1,15 @@
 <h1>Income vs Expenses</h1>
 
-<div class="panel panel-warning">
-  <div class="panel-heading">
+<div class="panel panel-default panel-form">
+  <div class="container">
 	<%= form_tag("/report/income_vs_expense", method: :get) do %>
       <%= label_tag("from_date", "From: ") %>
 	  <%= date_field_tag("from_date", @from_date) %>&nbsp;&nbsp;
       <%= label_tag("to_date", "To: ") %>
 	  <%= date_field_tag("to_date", @to_date) %>
-	
-	  <button type="submit" class="btn btn-default pull-right">Refresh</button>
-
+	&nbsp;&nbsp;
+	  <button type="submit" class="btn btn-default">Refresh</button>
+	<p>
     <% end %>
   </div>
 </div>
@@ -19,7 +19,7 @@
   <% @report_data.each do |category_type, report_data| %>
   <div class="col-md-6">
 
-    <div class="panel panel-success">
+    <div class="panel panel-default">
 
       <div class="panel-heading">  	
   	    <h4><%= report_data.category_type_name %></h4>

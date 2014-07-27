@@ -1,15 +1,31 @@
+$panel-border-radius: 0;
+$panel-default-heading-bg: #5254a3;
+$panel-default-text: white;
+$navbar-inverse-link-color: #ddd;
+$navbar-inverse-bg: #212243;
 
 @import "bootstrap";
 
 body {
 	padding-top: 60px;
 }
-
 .container {
 	padding-top: 10px;
 }
 
+.jumbotron {
+	background-color: #DCDDED;
+}
+.panel-form {
+	background-color: #DCDDED;
+}
+
+.navbar-brand {
+	font-size:32px;
+}
+
 /* report styles */
+
 
 td.money, th.money {
 	text-align: right;

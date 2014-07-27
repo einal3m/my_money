@@ -1,5 +1,5 @@
 <h1>Patterns <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_pattern_path, class: "btn btn-default" %></h1>
-  <div class="panel panel-info">
+  <div class="panel panel-default">
   
     <div class="panel-heading">
 	  <%= form_tag('/patterns', method: :get) do %>
@@ -19,20 +19,19 @@
       <th>Match Text</th>
       <th>Category</th>
       <th>Sub-category</th>
-      <th colspan="3"></th>
+      <th> </th>
     </tr>
   </thead>
 
   <tbody>
     <% @patterns.each do |pattern| %>
       <tr>
-        <td><%= pattern.account_id %></td>
+        <td><%= pattern.account.name %></td>
         <td><%= pattern.match_text %></td>
         <td><%= pattern.category.name %></td>
         <td><%= pattern.subcategory.nil? ? "" : pattern.subcategory.name %></td>
-        <td><%= link_to 'Show', pattern %></td>
-        <td><%= link_to 'Edit', edit_pattern_path(pattern) %></td>
-        <td><%= link_to 'Destroy', pattern, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_pattern_path(pattern) %>
+            <%= link_to 'Destroy', pattern, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

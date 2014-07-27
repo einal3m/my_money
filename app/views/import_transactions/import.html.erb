@@ -2,7 +2,7 @@
 
 <%= form_for @account, url: { controller: "transactions", action: "import" }, method: :post do |a|%>
 
-<div class="panel panel-danger">
+<div class="panel panel-default">
 
   <div class="panel-heading">  
   	<h4> Account: <strong><%= a.collection_select :id, @accounts, :id, :name, {prompt: "Please select"} %>
