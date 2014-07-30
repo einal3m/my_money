@@ -19,9 +19,43 @@ class ReportController < ApplicationController
 	@report_data["Income"] = get_category_type_data(income_type)
 	@report_data["Expense"] = get_category_type_data(expense_type)
 	
+  end
+  
+  def income_expense_bar
+  
+    # date range is previous 12 months
+    @to_date = Date.new(Date.today.year, Date.today.month, -1)
+    @from_date = (@to_date << 12) + 1
 
-p @unassigned_data
+	# only interested in income and expense categories
+	income_type = CategoryType.income
+	expense_type = CategoryType.expense
+
+	# get data for each category type
+	month_totals = {}
+	month_totals["Income"] = Hash[get_category_type_month_totals(income_type)]
+	month_totals["Expense"] = Hash[get_category_type_month_totals(expense_type)]
+
+    @report_data = []
+    months = []
+    starting_date = Date.today >> 1
+    
+    # generate list of months to report on
+    12.times do |month|
+    	months[month] = starting_date << (month+1)
+    end
+  
+  	# fill report_data array
+  	months.each do |month_date|
+  		month_text = month_date.strftime('%m-%Y')
+  		@report_data.unshift([month_date.strftime('%b-%y'), 
+  			month_totals["Income"].has_key?(month_text) ? month_totals["Income"][month_text] : 0,
+  			month_totals["Expense"].has_key?(month_text) ? month_totals["Expense"][month_text] : 0])
   	
+  	end
+p month_totals
+p @report_data
+  
   end
   
   def get_category_type_data(category_type)
@@ -44,6 +78,18 @@ p @unassigned_data
 
 	return report_data
   	
+  end
+
+  def get_category_type_month_totals(category_type)
+
+	# for expenses, reverse the sign
+  	factor = 1
+  	if (category_type.name == "Expense") then factor = -1 end
+
+	# generate sql for category type data
+	my_sql = "select strftime('%m-%Y', t.date), (#{factor}*sum(t.amount)) FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE (t.date >= '#{@from_date}' and t.date <= '#{@to_date}') AND (t.category_id IN (SELECT id FROM categories WHERE category_type_id = #{category_type.id}) OR (t.category_id is null and #{factor}*amount>=0)) GROUP BY strftime('%m-%Y', t.date)"
+		
+	return Transaction.connection.select_all(my_sql).rows
   end
   
   def category

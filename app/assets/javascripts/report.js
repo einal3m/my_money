@@ -118,3 +118,110 @@ arcs.append("path")
   	  .attr("display", function(d) { return d.value > 1 ? null : "none"; })
   	  .text(function(d, i) { return labels[i]; });
 }
+
+function bar_chart(data, class_name) {
+
+// bar chart dimensions
+  var width = 1000,
+  	  height = 500,
+  	  max_bar_height = 400,
+  	  bar_width = 35,
+  	  bar_gap = 5;
+  	  bar_offset = 35;
+  	  bar_x_margin = 50;
+  	  bar_y_margin = 50;
+  	  
+// create scale for y 
+  var y_scale = d3.scale.linear()
+    .domain([0, d3.max(data, function(d) {return Math.max(d[1], d[2]) })])
+    .range([max_bar_height, 0]);
+
+// create y axis
+  var y_axis = d3.svg.axis()
+  	.scale(y_scale)
+  	.orient("left")
+  	.ticks(5);
+
+// main svg container
+  var vis = d3.select(class_name).append("svg")
+  	.attr("width", width)
+  	.attr("height", height);
+  	
+// container for right bars
+  var right_group = vis.append("g")
+  	.attr("class", "right")
+   	.attr("transform", "translate(" + (bar_x_margin + bar_offset) + ", " + bar_y_margin + ")");
+
+// groups for right bars with their text
+  var right_bars = right_group.selectAll("g")
+   	.data(data)
+   	.enter().append("g")
+   	  .attr("transform", function (d,i) { return "translate(" + i*(bar_width + bar_offset + bar_gap) + ", 0)"; });
+
+// group for left bars
+  var left_group = vis.append("g")
+  	.attr("class", "left")
+  	.attr("transform", "translate(" + bar_x_margin + ", " + bar_y_margin + ")");
+
+// groups for left bars with their text
+  var left_bars = left_group.selectAll("g")
+    .data(data)
+    .enter().append("g")
+   	  .attr("transform", function (d,i) { return "translate(" + i*(bar_width + bar_offset + bar_gap) + ", 0)"; });
+  	
+
+// Create left bars
+left_bars.append("rect")
+  .attr("width", bar_width)
+  .attr("height", 0)
+  .attr("y", max_bar_height)
+  .transition().delay(function (d,i){ return 0;})
+  .duration(300)
+  .attr("height", function(d) {return max_bar_height-y_scale(d[1])})
+  .attr("y", function(d) { return y_scale(d[1]) } );
+
+// Create right bars
+right_bars.append("rect")
+  .attr("width", bar_width)
+  .attr("height", 0)
+  .attr("y", max_bar_height)
+  .transition().delay(function (d,i){ return 0;})
+  .duration(300)
+  .attr("height", function(d) {return max_bar_height-y_scale(d[2])})
+  .attr("y", function(d) { return y_scale(d[2]) } );
+ 
+// add text to left bars
+left_bars.append("text")
+  .attr("x", bar_width - 2)
+  .attr("y", function(d) { return y_scale(d[1]) + 10 })
+  .attr("text-anchor", "end")
+  .attr("fill", "white")
+  .text(function(d) { if (d[1] > 0) return "$" + d[1].toFixed(0); });
+
+
+// add text to right bars
+right_bars.append("text")
+  .attr("x", bar_width - 2)
+  .attr("y", function(d) { return y_scale(d[2]) + 10 })
+  .attr("text-anchor", "end")
+  .attr("fill", "white")
+  .text(function(d) { if (d[2] > 0) return "$" + d[2].toFixed(0) });
+
+// add labels to x axis
+right_bars.append("text")
+  .attr("class", "bar-chart-x-label")
+  .attr("text-anchor", "middle") 
+  .attr("y", max_bar_height+15)
+  .text(function(d) {return d[0]; });
+  
+// add y axis
+vis.append("g")
+  .call(y_axis)
+  .attr("transform", "translate(" + bar_x_margin + ", " + bar_y_margin + ")")
+  .attr("class", "axis");
+
+// add line for x axis
+vis.append("path")
+  .attr("class", "axis")
+  .attr("d", "M " + bar_x_margin + " " + (bar_y_margin + max_bar_height) + " H " + (bar_x_margin + 12*(bar_width + bar_offset) + 11*bar_gap));  
+}

@@ -22,4 +22,10 @@ class Transaction < ActiveRecord::Base
 	validates :date, presence: true
 	validates :account_id, presence: true
 	validates :amount, presence: true, numericality: true
+	
+	# common transaction queries
+	scope :date_between, ->(from_date, to_date) { where(date: from_date..to_date) }
+	scope :category_type, ->(category_type) { where(category_id: category_type.categories) }
+	scope :no_category, -> { where(category_id: nil) }
+
 end

@@ -77,5 +77,34 @@ svg {
   background-color: #ffffff;
   font: 10px sans-serif;
   text-shadow: none;
+  border: none;
 }
 
+/* bar chart styles */
+
+.left rect {
+	fill: #2ca02c;
+	stroke: white;
+	stroke-width: 1;
+}
+
+.right rect {
+	fill: #d62728;
+	stroke: white;
+	stroke-width: 1;
+}
+
+text.bar-chart-x-label{
+	font-size: 12px;
+}
+path.axis,
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+.axis text {
+	font-size: 11px;
+}
