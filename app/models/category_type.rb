@@ -1,4 +1,13 @@
+#
+#  CategoryType
+#  
+#  id: int, primary key
+#  name: string
+#
+  
 class CategoryType < ActiveRecord::Base
+
+	validates :name, presence: true
 	has_many :categories
 	
 	scope :income, -> { find_by(name: "Income") }
