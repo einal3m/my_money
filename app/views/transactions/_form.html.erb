@@ -38,6 +38,10 @@
     <%= f.text_field :memo, size: "50" %>
   </div>
   <div class="field">
+    <%= f.label :notes %><br>
+    <%= f.text_field :notes, size: "50" %>
+  </div>
+  <div class="field">
     <%= f.label :account_id %><br>
     <%= f.collection_select(:account_id, @accounts, :id, :name, {:prompt => true, :selected => @transaction.account_id.to_i}) %>
   </div>
