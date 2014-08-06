@@ -11,26 +11,30 @@ require 'rails_helper'
 #  
 RSpec.describe Pattern, :type => :model do
 
+# test data
+  before(:all) do
+    @a = Account.create(name: "Test Account", starting_balance: 0)
+  	@ct = CategoryType.create(name: "Test")
+  	@c = Category.create(name: "Test Category", category_type: @ct)
+  	@s = Subcategory.create(name: "Test Subcategory", category: @c)
+  end
+
 # test validations
 
   it "validates account present" do
-    s = Subcategory.first
-  	p = Pattern.create(match_text: "Test Text", category: s.category, subcategory: s)
+  	p = Pattern.create(match_text: "Test Text", category: @c, subcategory: @s)
   	
   	expect(p).not_to be_valid
   end
   
   it "validates category present" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-  	p = Pattern.create(account: a, match_text: "Test Text")
+  	p = Pattern.create(account: @a, match_text: "Test Text")
   	
   	expect(p).not_to be_valid
   end
     
   it "validates match_text present" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-    s = Subcategory.first
-	p = Pattern.create(account: a, category: s.category)
+	p = Pattern.create(account: @a, category: @c)
 	
 	expect(p).not_to be_valid  
   end
@@ -38,26 +42,20 @@ RSpec.describe Pattern, :type => :model do
 # test relationships
 
   it "belongs to account" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-    s = Subcategory.first
-	p = Pattern.create(account_id: a.id, category: s.category)
+	p = Pattern.create(account_id: @a.id, category: @c)
 	
-	expect(p.account).to eq(a)  
+	expect(p.account).to eq(@a)  
   end
   
   it "belongs to category" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-    s = Subcategory.first
-	p = Pattern.create(account: a, category_id: s.category.id)
+	p = Pattern.create(account: @a, category_id: @c.id)
 	
-	expect(p.category).to eq(s.category)  
+	expect(p.category).to eq(@c)  
   end
   
   it "belongs to subcategory" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-    s = Subcategory.first
-	p = Pattern.create(account: a, category: s.category, subcategory_id: s.id)
+	p = Pattern.create(account: @a, category: @c, subcategory_id: @s.id)
 	
-	expect(p.subcategory).to eq(s)
+	expect(p.subcategory).to eq(@s)
   end
 end

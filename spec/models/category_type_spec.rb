@@ -27,14 +27,17 @@ RSpec.describe CategoryType, :type => :model do
 # test scopes
 
   it "finds income category type" do
+  	CategoryType.create(name: "Income")
   	expect(CategoryType.income.name).to eq("Income")
   end
   
   it "finds expense category type" do
+  	CategoryType.create(name: "Expense")
   	expect(CategoryType.expense.name).to eq("Expense")
   end
   
   it "finds transfer category type" do
+    CategoryType.create(name: "Transfer")
   	expect(CategoryType.transfer.name).to eq("Transfer")
   end
   

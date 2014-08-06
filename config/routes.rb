@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :reconciliations
+
   get 'report/income_vs_expense'
   get 'report/income_expense_bar'
   get 'report/subcategory'
@@ -24,6 +26,8 @@ Rails.application.routes.draw do
 
   resources :categories
   post 'categories/subcategories_by_category'
+  get 'reconciliations/:id/transactions' => 'reconciliations#transactions', as: :reconciliations_transactions
+  get 'reconciliations/:id/reconcile' => 'reconciliations#reconcile', as: :reconciliations_reconcile
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

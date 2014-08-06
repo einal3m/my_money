@@ -1,0 +1,33 @@
+<%= form_for(@reconciliation) do |f| %>
+  <% if @reconciliation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@reconciliation.errors.count, "error") %> prohibited this reconciliation from being saved:</h2>
+
+      <ul>
+      <% @reconciliation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :account_id %><br>
+    <%= f.number_field :account_id %>
+  </div>
+  <div class="field">
+    <%= f.label :statement_date %><br>
+    <%= f.date_select :statement_date %>
+  </div>
+  <div class="field">
+    <%= f.label :statement_balance %><br>
+    <%= f.text_field :statement_balance %>
+  </div>
+  <div class="field">
+    <%= f.label :reconciled %><br>
+    <%= f.check_box :reconciled %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

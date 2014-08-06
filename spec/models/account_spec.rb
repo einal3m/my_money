@@ -44,8 +44,9 @@ RSpec.describe Account, :type => :model do
   end
   
   it "has many patterns" do
+  	  ct = CategoryType.create(name: "Test category type")
+  	  c = Category.create(name: "Test Category", category_type: ct)
       a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-      c = Category.first
 	  Pattern.create(account: a, category: c, match_text: "Test Text1")
 	  Pattern.create(account: a, category: c, match_text: "Test Text2")
 	  

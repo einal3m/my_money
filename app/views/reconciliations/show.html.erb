@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Account:</strong>
+  <%= @reconciliation.account_id %>
+</p>
+
+<p>
+  <strong>Statement date:</strong>
+  <%= @reconciliation.statement_date %>
+</p>
+
+<p>
+  <strong>Statement balance:</strong>
+  <%= @reconciliation.statement_balance %>
+</p>
+
+<p>
+  <strong>Reconciled:</strong>
+  <%= @reconciliation.reconciled %>
+</p>
+
+<%= link_to 'Edit', edit_reconciliation_path(@reconciliation) %> |
+<%= link_to 'Back', reconciliations_path %>
