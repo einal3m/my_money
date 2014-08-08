@@ -1,49 +1,51 @@
-<div class="jumbotron">
-  <h1>My Money</h1>
-  <p>...<p>
-  <p>The best money app in the world!</p>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="box fill_darker"><h1>my money</h1>The best money app in the world</div>
+  </div>
+  <div class="col-md-3"><%= link_to raw("<div class='box fill_lighter'>
+    <h4>Accounts</h4>
+    <ul>
+      <li>View account summaries</li>
+      <li>Add new accounts</li>
+    </ul>
+   </div>"), accounts_path %></div>
+  <div class="col-md-3"><%= link_to raw("
+    <div class='box fill_normal'>
+    
+    <h4>Very</h4>
+    <h4>&nbsp;&nbsp;&nbsp;&nbsp;Cool</h4>
+    <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pattern</h4>
+    <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Matcher</h4>
+  </div>"), patterns_path %></div>
 </div>
 <div class="row">
+  <div class="col-md-4"><%= link_to raw("<div class='box fill_lighter'>
+    <h4>Transaction History</h4>
+    <ul>
+      <li>View transactions for each account</li>
+      <li>Add and edit transactions</li>
+      <li>And lots more... </li>
+    </ul>
+ </div>"), transactions_path %></div>
 
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Accounts</h4>
-      </div>
-      <div class="panel-body">
-      	<ul>
-      	  <li>View account information</li>
-      	  <li>Add new accounts</li>
-      	  <li>And lots more...</li>
-      </div>
-      <ul class="list-group">
-        <li class="list-group-item"><%= link_to "more...", accounts_path, class: "btn btn-default" %></li>
-      </ul>
-    </div><!-- end panel -->
-  </div> <!-- end col -->
-  
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Transactions</h4>
-      </div>
-      <div class="panel-body">
-        stuff about <%= link_to "transactions", transactions_path %>
-        import transactions from OFX files <%= link_to "here", import_transactions_file_chooser_path %>
-      </div>
-    </div><!-- end panel -->
-  </div> <!-- end col -->
+  <div class="col-md-4"><%= link_to raw("<div class='box fill_normal'>
+    Do some stuff with <h2>Categories</h2>
+  </div>"), categories_path %></div>
 
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Categories</h4>
-      </div>
-      <div class="panel-body">
-        stuff about <%= link_to "Categories", categories_path %>
-      </div>
-    </div><!-- end panel -->
-  </div> <!-- end col -->
+  <div class="col-md-4"><%= link_to raw("<div class='box fill_darker'>
+    Reports, reports and more <h2>...Reports!</h2>
+  </div>"), report_index_path %></div>
 
-</div><!-- end row -->
+</div>
 
+
+<div class="row">
+  <div class="col-md-5"><%= link_to raw("<div class='box fill_normal'>
+      import transactions from <h2>OFX</h2> files
+ </div>"), import_transactions_file_chooser_path %></div>
+  <div class="col-md-4"><div class="box fill_darker">
+  </div></div>
+  <div class="col-md-3"><div class="box fill_lighter">
+  </div></div>
+</div>
