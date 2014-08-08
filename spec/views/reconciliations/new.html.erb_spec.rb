@@ -8,6 +8,7 @@ RSpec.describe "reconciliations/new", :type => :view do
       :statement_balance => "9.99",
       :reconciled => false
     ))
+    @accounts = Account.all
   end
 
   it "renders new reconciliation form" do
@@ -15,11 +16,12 @@ RSpec.describe "reconciliations/new", :type => :view do
 
     assert_select "form[action=?][method=?]", reconciliations_path, "post" do
 
-      assert_select "input#reconciliation_account_id[name=?]", "reconciliation[account_id]"
+      assert_select "select#reconciliation_account_id[name=?]", "reconciliation[account_id]"
 
       assert_select "input#reconciliation_statement_balance[name=?]", "reconciliation[statement_balance]"
 
-      assert_select "input#reconciliation_reconciled[name=?]", "reconciliation[reconciled]"
+      assert_select "input#reconciliation_reconciled", false
+
     end
   end
 end

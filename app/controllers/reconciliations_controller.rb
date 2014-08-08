@@ -15,10 +15,12 @@ class ReconciliationsController < ApplicationController
   # GET /reconciliations/new
   def new
     @reconciliation = Reconciliation.new
+    @accounts = Account.all
   end
 
   # GET /reconciliations/1/edit
   def edit
+    @accounts = Account.all
   end
 
   # POST /reconciliations
