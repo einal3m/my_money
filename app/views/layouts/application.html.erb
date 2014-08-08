@@ -9,25 +9,24 @@
 <body>
 
 	<header>
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		  <div class="container">
 		   	<div class="navbar-header">
-		   		<%= link_to "my money", root_path, {class: "navbar-brand"} %>
+		   		<%= link_to raw("<strong>my</strong> money"), root_path, {class: "navbar-brand"} %>
    			</div>
-   			<div class="container">
 				<ul class="nav navbar-nav  pull-right">
-						<li><%= link_to "home", root_path %></li>
 						<li><%= link_to "accounts", accounts_path %></li>
 						<li><%= link_to "transactions", transactions_path %></li>
 						<li><%= link_to "categories", categories_path %></li>
 						<li><%= link_to "patterns", patterns_path %></li>
 						<li><%= link_to "reports", report_index_path %></li>
 				</ul>
-			<div>
+		  </div>
 		</nav>
 	</header>
 	<div class="container">
 		<%= yield %>
-		<%= render 'layouts/footer' %>
 	</div>
+	<%= render 'layouts/footer' %>
 </body>
 </html>

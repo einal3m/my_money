@@ -1,11 +1,25 @@
 <footer class="footer">
-  <small>
-    This is the footer
-  </small>
-  <nav>
-    <ul>
-      <li><%= link_to "About",   '#' %></li>
-      <li><%= link_to "Contact", '#' %></li>
-    </ul>
-  </nav>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h3>quick links</h3>
+      <%= link_to "home", root_path %><br>
+      <%= link_to "accounts", accounts_path %><br>
+      <%= link_to "categories", categories_path %><br>
+      <%= link_to "patterns", patterns_path %><br>
+    </div>
+
+    <div class="col-md-4">
+      <h3>cool stuff</h3>
+      <%= link_to "import OFX file", import_transactions_file_chooser_path %><br>
+      <%= link_to "bank reconciliation", '#' %><br>
+      <%= link_to "reports", report_index_path %><br>
+    </div>
+    <div class="col-md-4">
+      <h3>find me</h3>
+      <a href="http://www.github.com/melm73" target="_blank">melm73 @ GitHub </a><br>
+    </div>
+
+  </div>    
+
 </footer>

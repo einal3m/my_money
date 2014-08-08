@@ -1,28 +1,58 @@
 $panel-border-radius: 0;
-$panel-default-heading-bg: #5254a3;
+$panel-default-heading-bg: #8dbf41;
 $panel-default-text: white;
-$navbar-inverse-link-color: #ddd;
-$navbar-inverse-bg: #212243;
 
 @import "bootstrap";
 
 body {
-	padding-top: 60px;
+	padding-top: 90px;
 }
+
 .container {
 	padding-top: 10px;
 }
 
-.jumbotron {
-	background-color: #DCDDED;
-}
 .panel-form {
 	background-color: #DCDDED;
 }
 
-.navbar-brand {
-	font-size:32px;
+div.panel-heading {
+	height: 63px;
 }
+
+/* navbar properties */
+
+.navbar {
+	border-top: solid 12px #8dbf41;
+	border-bottom: solid 3px #8dbf41;
+	background-color: white;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+	padding-bottom: 15px;
+
+ 	.navbar-brand {
+		font-size:32px;
+
+		strong {
+			color: #8dbf41;
+		}
+	}
+
+	.nav li {
+		font-size: 16px;
+		padding-top: 2px;
+	}
+}
+
+/* footer properties */
+.footer {
+	background-color: #f1f1f1;
+	padding: 20px;
+	padding-left: 50px;
+
+	.strong { color: #8dbf41 }
+
+}
+
 
 /* report styles */
 
@@ -39,6 +69,37 @@ td {
 	}
 }
 
+/* front page */
+div.box{
+	color: white;
+	height: 150px;
+	border: none;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	padding: 11px;
+
+	&.fill_darker { 
+		background: #719934 url(image_path("fill_darker_bg.png"));
+		border: 4px solid #719934;
+	}
+	&.fill_lighter { 
+		background: #AFD27A;
+		border: 4px solid #AFD27A;
+	}
+	&.fill_normal { 
+		background-color: #8dbf41;
+		border: 4px solid #8dbf41;
+	}
+
+	&:hover {
+/*		border: 4px solid #668A2F;*/
+		opacity: 0.8;
+	}
+
+}
+
+
+a:link, a:visited, a:hover, a:active { text-decoration: none; }
 
 td.money, th.money {
 	text-align: right;
