@@ -45,7 +45,7 @@ class ReconciliationsController < ApplicationController
   def update
     respond_to do |format|
       if @reconciliation.update(reconciliation_params)
-        format.html { redirect_to @reconciliation, notice: 'Reconciliation was successfully updated.' }
+        format.html { redirect_to reconciliations_transactions_path(@reconciliation), notice: 'Reconciliation was successfully updated.' }
         format.json { render :show, status: :ok, location: @reconciliation }
       else
         set_form_data

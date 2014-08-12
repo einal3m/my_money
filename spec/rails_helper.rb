@@ -5,6 +5,7 @@ SimpleCov.start 'rails'
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
+require 'factory_girl_helper'
 require 'yaml'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
