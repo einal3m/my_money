@@ -7,6 +7,8 @@
     <strong>Statement Date: </strong><%= @reconciliation.statement_date %><br>
     <strong>Statement Balance: </strong><%= number_to_currency(@reconciliation.statement_balance) %>
     <%= r.hidden_field :id %>
+    <div id='balance'>$0.00</div>
+
   </div>
 
   <div class="panel panel-default">
@@ -38,7 +40,7 @@
               <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
               <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
               <td class="money"><%= number_to_currency(transaction.amount) %></td>
-              <td><%= t.check_box :reconciled, name: "transactions[][reconciled]" %></td>
+              <td><%= t.check_box :add_to_reconciliation, name: "transactions[][add_to_reconciliation]", class: 'reconcile' %></td>
             <% end %>
           </tr>
         <% end %>

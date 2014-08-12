@@ -12,42 +12,48 @@ require 'rails_helper'
 
 RSpec.describe Reconciliation, :type => :model do
 
-# test data
-  before(:all) do
-    @a = Account.create(name: "Test Account", starting_balance: 0)
+  it "has a valid factory" do
+    r = FactoryGirl.create(:reconciliation)
+
+    expect(r).to be_valid
+    expect(r).to be_a(Reconciliation)
   end
 
-# test validation
-  it "validates account present" do
-  	r = Reconciliation.create(statement_date: "2014-07-01", statement_balance: 0)
-  	
-  	expect(r).not_to be_valid  
-  end
-  
-  it "validates date present" do
-  	r = Reconciliation.create(account: @a, statement_balance: 0)
-  	
-  	expect(r).not_to be_valid
-  end
-  
-  it "validates balance present" do
-  	r = Reconciliation.create(account: @a, statement_date: "2014-07-01")
+  describe "validations" do
 
-	  expect(r).not_to be_valid
-  end
+    it "is invalid without an account" do
+    	expect(FactoryGirl.build(:reconciliation, account: nil)).not_to be_valid  
+    end
     
-# test relationships
-  it "belongs to account" do
-  	r = Reconciliation.create(account_id: @a.id, statement_date: "2014-07-01", statement_balance: 0)
-  	
-  	expect(r.account).to eq(@a)
-  end
-  
-# test initialise
-  it "sets reconciled to false by default" do
-  	r = Reconciliation.create(account: @a, statement_date: "2014-07-01", statement_balance: 0)
-
-	  expect(r.reconciled).to eq(false)
-  end
+    it "is invalid without a statement date" do
+    	expect(FactoryGirl.build(:reconciliation, statement_date: nil)).not_to be_valid
+    end
     
+    it "is invalid without a statement balance" do
+  	  expect(FactoryGirl.build(:reconciliation, statement_balance: nil)).not_to be_valid
+    end
+  end
+
+  describe "relationships" do
+
+    it "belongs to account" do
+      a = FactoryGirl.create(:account)
+    	expect(FactoryGirl.create(:reconciliation, account: a).account).to eq(a)
+    end
+
+    it "has many transactions" do
+      r = FactoryGirl.create(:reconciliation)
+      FactoryGirl.create(:transaction, reconciliation: r)
+      FactoryGirl.create(:transaction, reconciliation: r)
+
+      expect(r.transactions.length).to eq(2)
+    end
+
+  end  
+  
+  describe "initialize" do
+    it "sets reconciled to false by default" do
+  	  expect(FactoryGirl.create(:reconciliation).reconciled).to eq(false)
+    end
+  end
 end

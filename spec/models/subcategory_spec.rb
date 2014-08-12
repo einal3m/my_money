@@ -9,46 +9,46 @@ require 'rails_helper'
 
 RSpec.describe Subcategory, :type => :model do
 
-# test validations
-  it "validates name is present" do
-    c = Category.first
-  	s = Subcategory.create(category_id: c.id)
-  	
-  	expect(s).not_to be_valid
-  end
-  
-  it "validates category is present" do
-  	s = Subcategory.create(name: "Test Subcategory")
-  
-	expect(s).not_to be_valid
+  it "has a valid factory" do
+    s = FactoryGirl.create(:subcategory)
+
+    expect(s).to be_valid
+    expect(s).to be_a(Subcategory)
   end
 
-# test relationships
-  it "belongs to category" do
-    c = Category.first
-  	s = Subcategory.create(name: "Test Subcategory", category_id: c.id)
-  	
-  	expect(s.category).to eq(c)
-  end
-  
-  it "has many transactions" do
-    c = Category.first
-  	s = Subcategory.create(name: "Test Subcategory", category: c)
-    a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-	Transaction.create(account: a, date: "2014-05-01", amount: 200, category: c, subcategory_id: s.id)
-	Transaction.create(account: a, date: "2014-05-02", amount: 100, category: c, subcategory_id: s.id)
-  
-  	expect(s.transactions.length).to eq(2)
-  end
-  
-  it "has many patterns" do
-      a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-      c = Category.first
-      s = Subcategory.create(name: "Test Subcategory", category: c)
+  describe "validations" do
 
-	  Pattern.create(account: a, category: c, subcategory_id: s.id, match_text: "Test Text1")
-	  Pattern.create(account: a, category: c, subcategory_id: s.id, match_text: "Test Text2")
-  
-  	expect(s.patterns.length).to eq(2)
+    it "is invalid without a name" do
+    	expect(FactoryGirl.build(:subcategory, name: nil)).not_to be_valid
+    end
+    
+    it "it is invalid without a category" do
+  	  expect(FactoryGirl.build(:subcategory, category: nil)).not_to be_valid
+    end
+
+  end
+
+  describe "relationships" do
+
+    it "belongs to category" do
+      c = FactoryGirl.create(:category)
+    	expect(FactoryGirl.create(:subcategory, category: c).category).to eq(c)
+    end
+    
+    it "has many transactions" do
+    	s = FactoryGirl.create(:subcategory)
+      FactoryGirl.create(:transaction, subcategory: s)
+      FactoryGirl.create(:transaction, subcategory: s)
+
+    	expect(s.transactions.length).to eq(2)
+    end
+    
+    it "has many patterns" do
+      s = FactoryGirl.create(:subcategory)
+      FactoryGirl.create(:pattern, subcategory: s)
+      FactoryGirl.create(:pattern, subcategory: s)
+
+    	expect(s.patterns.length).to eq(2)
+    end
   end
 end

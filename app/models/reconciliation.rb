@@ -17,6 +17,7 @@ class Reconciliation < ActiveRecord::Base
 	
   # relationships
 	belongs_to :account
+	has_many :transactions
 	
 	
   # set reconciled to false by default when created

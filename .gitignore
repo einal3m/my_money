@@ -18,3 +18,5 @@
 # Ignore other unneeded files
 .DS_Store
 
+# Ignore code coverage fils
+coverage

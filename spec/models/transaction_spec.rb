@@ -13,58 +13,75 @@ require 'rails_helper'
 #  
 RSpec.describe Transaction, :type => :model do
 
-# test validations
+  it "has a valid factory" do
+    t = FactoryGirl.create(:transaction)
 
-  it "validates date presence" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-  	t = Transaction.create(account: a, amount: 10)
-  	
-  	expect(t).not_to be_valid
+    expect(t).to be_valid
+    expect(t).to be_a(Transaction)
   end
-  
-  it "validates account presence" do
-  	t = Transaction.create(date: "2014-07-30", amount: 10)
-  
-  	expect(t).not_to be_valid
-  end
-  
-  it "validates amount presence" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-  	t = Transaction.create(date: "2014-07-30", account: a)
-  	
-  	expect(t).not_to be_valid
-  end
-  
-  it "validates amount is a number" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-  	t = Transaction.create(date: "2014-07-30", account: a, amount: "Amount")
-  	
-  	expect(t).not_to be_valid
-  end
-  
-# test relationships
 
-  it "belongs to account" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-  	t = Transaction.create(account_id: a.id, amount: 10)
-  
-    expect(t.account).to eq(a)
-  end
-  
-  it "belongs to category" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-    c = Category.first
-  	t = Transaction.create(account_id: a.id, amount: 10, category_id: c.id)
+  describe "validations" do
 
-	expect(t.category).to eq(c)
-  end
+    it "is invalid without a date" do
+    	expect(FactoryGirl.build(:transaction, date: nil)).not_to be_valid
+    end
     
-  it "belongs to subcategory" do
-    a = Account.create(name: "Test Account", starting_balance: 0)
-    s = Subcategory.first
-  	t = Transaction.create(account_id: a.id, amount: 10, category: s.category, subcategory_id: s.id)
-  	
-  	expect(t.subcategory).to eq(s)
+    it "is invalid without an account" do
+    	expect(FactoryGirl.build(:transaction, account: nil)).not_to be_valid
+    end
+    
+    it "is invalid without an amount" do
+    	expect(FactoryGirl.build(:transaction, amount: nil)).not_to be_valid
+    end
+    
+    it "is invalid when amount is not a number" do
+    	expect(FactoryGirl.build(:transaction, amount: "Amount")).not_to be_valid
+    end
   end
-  
+
+  describe "relationships" do
+
+    it "belongs to account" do
+      a = FactoryGirl.create(:account)
+      expect(FactoryGirl.create(:transaction, account: a).account).to eq(a)
+    end
+    
+    it "belongs to category" do
+      c = FactoryGirl.create(:category)
+  	  expect(FactoryGirl.create(:transaction, category: c).category).to eq(c)
+    end
+      
+    it "belongs to subcategory" do
+      s = FactoryGirl.create(:subcategory)
+    	expect(FactoryGirl.create(:transaction, subcategory: s).subcategory).to eq(s)
+    end
+    
+    it "belongs to reconciliation" do
+      r = FactoryGirl.create(:reconciliation)
+      expect(FactoryGirl.create(:transaction, reconciliation: r).reconciliation).to eq(r)
+    end
+
+  end
+
+  describe "scopes" do
+
+    it "finds unreconciled transactions" do
+      r = FactoryGirl.create(:reconciliation)
+      FactoryGirl.create(:transaction)
+      FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
+      FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
+
+      expect(Transaction.unreconciled(r).length).to eq(2)
+
+    end
+  end
+
+  describe "initialize" do
+
+    it "sets add to reconciliation to false" do
+      expect(FactoryGirl.create(:transaction).add_to_reconciliation).to eq(false)
+    end
+    
+  end
+
 end

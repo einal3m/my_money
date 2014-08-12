@@ -13,49 +13,53 @@ RSpec.describe Pattern, :type => :model do
 
 # test data
   before(:all) do
-    @a = Account.create(name: "Test Account", starting_balance: 0)
+    @a = FactoryGirl.create(:account)
   	@ct = CategoryType.create(name: "Test")
   	@c = Category.create(name: "Test Category", category_type: @ct)
   	@s = Subcategory.create(name: "Test Subcategory", category: @c)
   end
 
-# test validations
 
-  it "validates account present" do
-  	p = Pattern.create(match_text: "Test Text", category: @c, subcategory: @s)
-  	
-  	expect(p).not_to be_valid
+  it "has a valid factory" do
+    p = FactoryGirl.create(:pattern)
+
+    expect(p).to be_valid
+    expect(p).to be_a(Pattern)
   end
   
-  it "validates category present" do
-  	p = Pattern.create(account: @a, match_text: "Test Text")
-  	
-  	expect(p).not_to be_valid
-  end
+
+  describe "validations" do
+
+    it "is invalid without an account" do
+    	expect(FactoryGirl.build(:pattern, account: nil)).not_to be_valid
+    end
     
-  it "validates match_text present" do
-	p = Pattern.create(account: @a, category: @c)
-	
-	expect(p).not_to be_valid  
-  end
-  
-# test relationships
+    it "is invalid without a category" do
+    	expect(FactoryGirl.build(:pattern, category: nil)).not_to be_valid
+    end
+      
+    it "is invalid without match text" do
+  	  expect(FactoryGirl.build(:pattern, match_text: nil)).not_to be_valid  
+    end
 
-  it "belongs to account" do
-	p = Pattern.create(account_id: @a.id, category: @c)
-	
-	expect(p.account).to eq(@a)  
-  end
-  
-  it "belongs to category" do
-	p = Pattern.create(account: @a, category_id: @c.id)
-	
-	expect(p.category).to eq(@c)  
-  end
-  
-  it "belongs to subcategory" do
-	p = Pattern.create(account: @a, category: @c, subcategory_id: @s.id)
-	
-	expect(p.subcategory).to eq(@s)
+  end  
+
+  describe "relationships" do
+
+    it "belongs to account" do
+      a = FactoryGirl.create(:account)
+    	expect(FactoryGirl.create(:pattern, account: a).account).to eq(a)  
+    end
+    
+    it "belongs to category" do
+      c = FactoryGirl.create(:category)
+    	expect(FactoryGirl.create(:pattern, category: c).category).to eq(c)  
+    end
+    
+    it "belongs to subcategory" do
+      s = FactoryGirl.create(:subcategory)
+    	expect(FactoryGirl.create(:pattern, subcategory: s).subcategory).to eq(s)
+    end
+
   end
 end

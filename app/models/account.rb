@@ -5,6 +5,7 @@
 #  name: string
 #  bank: string
 #  starting_balance: decimal
+#  starting_date: date
 #  
 
 class Account < ActiveRecord::Base
@@ -16,5 +17,6 @@ class Account < ActiveRecord::Base
 	# validations
 	validates :name, presence: true
 	validates :starting_balance, presence: true, numericality: true
+	validates :starting_date, presence: true
 	
 end

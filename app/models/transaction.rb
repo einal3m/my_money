@@ -17,10 +17,24 @@ class Transaction < ActiveRecord::Base
 	belongs_to :account
 	belongs_to :category
 	belongs_to :subcategory
+	belongs_to :reconciliation
 	
 	# validations
 	validates :date, presence: true
 	validates :account_id, presence: true
 	validates :amount, presence: true, numericality: true
 	
+	# common lookups
+	scope :unreconciled, ->(reconciliation) { where(account: reconciliation.account, reconciliation: nil) }
+
+	# non-persistant attributes
+	attr_accessor :add_to_reconciliation
+
+   # set defaults for extra attributes
+    after_initialize :defaults
+
+    def defaults
+  	  self.add_to_reconciliation = false
+    end
+
 end

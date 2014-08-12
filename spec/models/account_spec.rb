@@ -12,62 +12,78 @@ require 'rails_helper'
 
 RSpec.describe Account, :type => :model do
 
-# test validations
 
-  it "validates account name exists" do
-    a = Account.create(bank: "Test Bank", starting_balance: 50)
-	expect(a).not_to be_valid
+  it "has a valid factory" do
+    a = FactoryGirl.create(:account)
+
+    expect(a).to be_valid
+    expect(a).to be_a(Account)
   end
-  
-  it "validates starting balance exists" do
-    a = Account.create(name: "Test Name", bank: "Test Bank")
-	expect(a).not_to be_valid
-  end
-  
-  it "validates starting balance is a number" do
-    a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: "blah")
-	expect(a).not_to be_valid
-  end
-  
-  it "validates bank is optional" do
-    a = Account.create(name: "Test Name", starting_balance: 50)
-	expect(a).to be_valid
-  end
+
+  describe "validations" do
+
+    it "is invalid without a name" do
+  	  expect(FactoryGirl.build(:account, name: nil)).not_to be_valid
+    end
     
-# test relationships
-  it "has many transactions" do
-      a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-	  Transaction.create(account: a, date: "2014-05-01", amount: 200)
-	  Transaction.create(account: a, date: "2014-05-02", amount: 100)
-	  
-	  expect(a.transactions.length).to eq(2)
+    it "is invalid without a starting balance" do
+  	  expect(FactoryGirl.build(:account, starting_balance: nil)).not_to be_valid
+    end
+    
+    it "is invalid without a starting date" do
+      expect(FactoryGirl.build(:account, starting_date: nil)).not_to be_valid
+    end
+    
+    it "is invalid if starting balance is not a number" do
+  	  expect(FactoryGirl.build(:account, starting_balance: "a")).not_to be_valid
+    end
+    
+    it "is valid without a bank" do
+  	  expect(FactoryGirl.build(:account, bank: nil)).to be_valid
+    end
   end
-  
-  it "has many patterns" do
-  	  ct = CategoryType.create(name: "Test category type")
-  	  c = Category.create(name: "Test Category", category_type: ct)
-      a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-	  Pattern.create(account: a, category: c, match_text: "Test Text1")
-	  Pattern.create(account: a, category: c, match_text: "Test Text2")
-	  
-	  expect(a.patterns.length).to eq(2)
-  end
-  
-# test properties
 
-  it "has a name" do
-      a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-      expect(a.name).to eq("Test Name")
+  describe "relationships" do
+    it "has many transactions" do
+      a = FactoryGirl.create(:account)
+  	  Transaction.create(account: a, date: "2014-05-01", amount: 200)
+  	  Transaction.create(account: a, date: "2014-05-02", amount: 100)
+  	  
+  	  expect(a.transactions.length).to eq(2)
+    end
+  
+    it "has many patterns" do
+    	  ct = CategoryType.create(name: "Test category type")
+    	  c = Category.create(name: "Test Category", category_type: ct)
+      a = FactoryGirl.create(:account)
+  	  Pattern.create(account: a, category: c, match_text: "Test Text1")
+  	  Pattern.create(account: a, category: c, match_text: "Test Text2")
+  	  
+  	  expect(a.patterns.length).to eq(2)
+    end
   end
   
-  it "has a bank" do
-      a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-	  expect(a.bank).to eq("Test Bank")
-  end
-  
-  it "has a starting balance" do
-      a = Account.create(name: "Test Name", bank: "Test Bank", starting_balance: 50)
-	  expect(a.starting_balance).to eq(50)
-  end
-  
+  describe "properties" do
+
+    it "sets a name" do
+      a = FactoryGirl.create(:account, name: "Test Name1")
+      expect(a.name).to eq("Test Name1")
+    end
+    
+    it "sets a bank" do
+      a = FactoryGirl.create(:account, bank: "Test Bank1")
+  	  expect(a.bank).to eq("Test Bank1")
+    end
+    
+    it "sets a starting balance" do
+      a = FactoryGirl.create(:account, starting_balance: 50.01)
+  	  expect(a.starting_balance).to eq(50.01)
+    end
+
+    it "sets a starting balance" do
+      a = FactoryGirl.create(:account, starting_date: "2014-02-02")
+      expect(a.starting_date).to eq(Date.parse("2014-02-02"))
+    end
+
+  end  
 end

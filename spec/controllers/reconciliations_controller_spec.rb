@@ -165,9 +165,19 @@ RSpec.describe ReconciliationsController, :type => :controller do
       reconciliation = Reconciliation.create! valid_attributes
       get :transactions, {:id => reconciliation.to_param}, valid_session
       expect(assigns(:reconciliation)).to eq(reconciliation)
-      expect(assigns(:transactions)).to be_a(Array)
+      #expect(assigns(:transactions)).to be_a([])
+      expect(response).to render_template("transactions")
     end
 
   end
 
+  describe "reconcile" do
+
+    it "updates reconciliation on transactions" do
+      reconciliation = Reconciliation.create! valid_attributes
+      get :reconcile, {:id => reconciliation.to_param}, {"transactions"=>[{"id"=>"36", "add_to_reconciliation"=>"0"}, {"id"=>"40", "add_to_reconciliation"=>"0"}]}
+
+      expect(response).to redirect_to(transactions_url)
+    end
+  end
 end

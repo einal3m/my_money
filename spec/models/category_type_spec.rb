@@ -9,38 +9,47 @@ require 'rails_helper'
 
 RSpec.describe CategoryType, :type => :model do
   
-# test validations
-  it "validates name" do
-  	ct = CategoryType.create()
-  	expect(ct).not_to be_valid
-  end
-  
-# test relationships
-  it "has many categories" do
-  	ct = CategoryType.create(name: "Test Category Type")
-  	Category.create(category_type: ct, name: "Test Category 1")
-  	Category.create(category_type: ct, name: "Test Category 2")
-  	
-  	expect(ct.categories.length).to eq(2)
-  end
-  
-# test scopes
+  it "has a valid factory" do
+    ct = FactoryGirl.create(:category_type)
 
-  it "finds income category type" do
-  	CategoryType.create(name: "Income")
-  	expect(CategoryType.income.name).to eq("Income")
+    expect(ct).to be_valid
+    expect(ct).to be_a(CategoryType)
+  end
+
+  describe "validations" do
+
+    it "is invalid without a name" do
+    	expect(FactoryGirl.build(:category_type, name: nil)).not_to be_valid
+    end
+
   end
   
-  it "finds expense category type" do
-  	CategoryType.create(name: "Expense")
-  	expect(CategoryType.expense.name).to eq("Expense")
+  describe "relationships" do
+
+    it "has many categories" do
+      expect(FactoryGirl.create(:category_type_with_categories, category_count: 2).categories.length).to eq(2)
+    end
+
   end
   
-  it "finds transfer category type" do
-    CategoryType.create(name: "Transfer")
-  	expect(CategoryType.transfer.name).to eq("Transfer")
-  end
-  
+  describe "scopes" do
+
+    it "finds income category type" do
+      FactoryGirl.create(:category_type, name: "Income")
+    	expect(CategoryType.income.name).to eq("Income")
+    end
+    
+    it "finds expense category type" do
+      FactoryGirl.create(:category_type, name: "Expense")
+    	expect(CategoryType.expense.name).to eq("Expense")
+    end
+    
+    it "finds transfer category type" do
+      FactoryGirl.create(:category_type, name: "Transfer")
+    	expect(CategoryType.transfer.name).to eq("Transfer")
+    end
+
+  end  
   
 end
 

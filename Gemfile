@@ -47,5 +47,8 @@ gem 'd3-rails'
 # testing
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'factory_girl_rails'
 end
+
+gem 'simplecov', '~> 0.9.0', :require => false, :group => :test
 

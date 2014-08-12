@@ -23,6 +23,7 @@
           <td><%= account.name %></td>
           <td><%= account.bank %></td>
           <td class="money"><%= number_to_currency(account.starting_balance) %></td>
+          <td><%= account.starting_date %></td>
           <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_account_path(account) %></td>
         </tr>
         <% end %>
