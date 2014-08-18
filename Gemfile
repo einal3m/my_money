@@ -35,9 +35,11 @@ gem 'd3-rails'
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
   gem 'factory_girl_rails'
-  gem 'cucumber-rails'
   gem 'database_cleaner'
 end
 
-gem 'simplecov', '~> 0.9.0', :require => false, :group => :test
+group :test do
+	gem 'cucumber-rails', :require => false
+	gem 'simplecov', '~> 0.9.0', :require => false
+end
 
