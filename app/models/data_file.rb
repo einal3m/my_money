@@ -10,7 +10,6 @@ class DataFile
 
   # function to upload file, parse it and return a hash with contents
   def self.parseOFX(uploadedFile)
-  p "I am here parseOFX"
   
   ofxArray = uploadedFile.read.split(/\r\n/)
   
@@ -30,7 +29,7 @@ class DataFile
   			elsif (ofxArray[txn_i][0..9] == DTPOSTED) then
   				txnDate = Date.iso8601(ofxArray[txn_i].reverse[0..-11].reverse)
   			elsif (ofxArray[txn_i][0..7] == TRNAMT) then
-  				txnAmount = ofxArray[txn_i].reverse[0..-9].reverse.to_f
+  				txnAmount = ofxArray[txn_i].gsub(/\s+/, "").reverse[0..-9].reverse.to_f
   			elsif (ofxArray[txn_i][0..6] == FITID) then
   				txnId = ofxArray[txn_i].reverse[0..-8].reverse
   			elsif (ofxArray[txn_i][0..5] == MEMO) then
