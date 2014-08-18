@@ -4,8 +4,8 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @income_categories = CategoryType.find_by(name: "Income").categories
-    @expense_categories = CategoryType.find_by(name: "Expense").categories
+    @income_categories = CategoryType.income.categories
+    @expense_categories = CategoryType.expense.categories
   end
 
   # GET /categories/1
