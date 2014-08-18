@@ -4,7 +4,7 @@ class ReconciliationsController < ApplicationController
   # GET /reconciliations
   # GET /reconciliations.json
   def index
-    @reconciliations = Reconciliation.all
+    @reconciliations = Reconciliation.all.order(reconciled: :asc, statement_date: :desc)
   end
 
   # GET /reconciliations/1
@@ -103,6 +103,6 @@ class ReconciliationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reconciliation_params
-      params.require(:reconciliation).permit(:account_id, :statement_date, :statement_balance, :reconciled)
+      params.require(:reconciliation).permit(:account_id, :statement_date, :statement_balance, :last_reconciled_date, :last_reconciled_balance, :reconciled)
     end
 end

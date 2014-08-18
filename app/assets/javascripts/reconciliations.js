@@ -22,10 +22,9 @@ $(document).ready(function() {
   });
 
   // when user selects an account, update previous reconciliation details
-  	$(".account_select").change(function() {
-  		alert('I have changed');
+  	$("#reconciliation_account_id").change(function() {
 
-  		$.post('/account/last_reconciliation', {account_id: $(this).val()}, null, "script");
+  		$.post('/accounts/' + $(this).val() + '/last_reconciliation', null, "script");
 
   	});
   

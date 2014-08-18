@@ -46,21 +46,28 @@ RSpec.describe Account, :type => :model do
   describe "relationships" do
     it "has many transactions" do
       a = FactoryGirl.create(:account)
-  	  Transaction.create(account: a, date: "2014-05-01", amount: 200)
-  	  Transaction.create(account: a, date: "2014-05-02", amount: 100)
-  	  
+      FactoryGirl.create(:transaction, account: a)
+      FactoryGirl.create(:transaction, account: a)
+
   	  expect(a.transactions.length).to eq(2)
     end
   
     it "has many patterns" do
-    	  ct = CategoryType.create(name: "Test category type")
-    	  c = Category.create(name: "Test Category", category_type: ct)
       a = FactoryGirl.create(:account)
-  	  Pattern.create(account: a, category: c, match_text: "Test Text1")
-  	  Pattern.create(account: a, category: c, match_text: "Test Text2")
-  	  
+      FactoryGirl.create(:pattern, account: a)
+      FactoryGirl.create(:pattern, account: a)
+
   	  expect(a.patterns.length).to eq(2)
     end
+
+    it "has many reconciliations" do
+      a = FactoryGirl.create(:account)
+      FactoryGirl.create(:reconciliation, account: a)
+      FactoryGirl.create(:reconciliation, account: a)
+
+      expect(a.reconciliations.length).to eq(2)
+    end
+
   end
   
   describe "properties" do

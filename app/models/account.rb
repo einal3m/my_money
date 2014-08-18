@@ -13,6 +13,7 @@ class Account < ActiveRecord::Base
     # model relationships
 	has_many :transactions
 	has_many :patterns
+	has_many :reconciliations
 	
 	# validations
 	validates :name, presence: true

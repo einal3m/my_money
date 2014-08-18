@@ -11,10 +11,13 @@ Features
 * Multiple bank accounts
 * Categories/Subcategories for each transaction
 * Import transactions from OFX files
+* Automatically sets category and subcategory for transactions which match saved patterns
+* Bank Reconciliation
+* Income vs Expense reports
 
 To Do
 -----
-* form validations
-* recognizing duplicate transactions on import
-* automatically setting categories by matching patterns in memo field
+* More reports
+* Better account summaries
+* Running totals when viewing transactions
 * lots of other bugs, that I'm sure I'll find!

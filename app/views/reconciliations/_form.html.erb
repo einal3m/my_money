@@ -26,7 +26,7 @@
 
   <div class="field">
     <%= f.label :account_id %><br>
-    <%= f.collection_select(:account_id, @accounts, :id, :name, {:prompt => true, :selected => ( @reconciliation.account.nil? ? "" : @reconciliation.account_id.to_i ), class: 'account_select'}) %>
+    <%= f.collection_select(:account_id, @accounts, :id, :name, {:prompt => true, :selected => ( @reconciliation.account.nil? ? "" : @reconciliation.account_id.to_i ), :class => 'account_select'}) %>
   </div>
   <div class="field">
     <%= f.label :statement_date %><br>
@@ -36,8 +36,13 @@
     <%= f.label :statement_balance %><br>
     <%= f.text_field :statement_balance %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="field">
+    <%= f.label :last_reconciled_date %><br>
+    <%= f.text_field :last_reconciled_date %>
+  </div>
+  <div class="field">
+    <%= f.label :last_reconciled_balance %><br>
+    <%= f.text_field :last_reconciled_balance %>
   </div>
 
 

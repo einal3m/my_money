@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get 'reconciliations/:id/transactions' => 'reconciliations#transactions', as: :reconciliations_transactions
   post 'reconciliations/:id/reconcile' => 'reconciliations#reconcile', as: :reconciliations_reconcile
 
+  post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

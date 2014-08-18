@@ -25,7 +25,7 @@ class Transaction < ActiveRecord::Base
 	validates :amount, presence: true, numericality: true
 	
 	# common lookups
-	scope :unreconciled, ->(reconciliation) { where(account: reconciliation.account, reconciliation: nil) }
+	scope :unreconciled, ->(reconciliation) { where(account: reconciliation.account, reconciliation: nil).order(date: :asc) }
 
 	# non-persistant attributes
 	attr_accessor :add_to_reconciliation

@@ -187,4 +187,48 @@ RSpec.describe AccountsController, :type => :controller do
     end
   end
 
+  describe "last_reconciliation" do
+
+    context "never been reconciled" do
+      before :each do
+        @account = FactoryGirl.create(:account)
+      end
+
+      it "sets @last_date with last reconciled date" do
+        xhr :post, :last_reconciliation, {:id => @account.to_param, :format => "js"}
+        expect(assigns(:last_date)).to eq(@account.starting_date)
+      end
+
+      it "sets @last_balance with last reconciled balance" do
+        xhr :post, :last_reconciliation, {:id => @account.to_param, :format => "js"}
+        expect(assigns(:last_balance)).to eq(@account.starting_balance)
+      end
+    end
+
+    context "has been reconciled" do
+      before :each do
+        @account = FactoryGirl.create(:account)
+        @reconciliation = FactoryGirl.create(:reconciliation, account: @account)
+      end
+
+      it "sets @last_date with account starting date" do
+        xhr :post, :last_reconciliation, {:id => @account.to_param, :format => "js"}
+        expect(assigns(:last_date)).to eq(@reconciliation.statement_date)
+      end
+
+      it "sets @last_balance with account starting balance" do
+        xhr :post, :last_reconciliation, {:id => @account.to_param, :format => "js"}
+        expect(assigns(:last_balance)).to eq(@reconciliation.statement_balance)
+      end
+    end
+
+    it "renders the last_reconciliation view" do
+      account = FactoryGirl.create(:account)
+      xhr :post, :last_reconciliation, {:id => account.to_param, :format => "js"}
+
+      expect(response).to render_template("last_reconciliation")
+    end
+
+  end
+
 end

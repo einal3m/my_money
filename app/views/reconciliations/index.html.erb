@@ -1,31 +1,44 @@
-<h1>Listing reconciliations</h1>
+<h1>bank reconciliations <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_reconciliation_path, class: "btn btn-default" %></h1>
+<p id="notice"><%= notice %></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Account</th>
-      <th>Statement date</th>
-      <th>Statement balance</th>
-      <th>Reconciled</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      
+      <div class="panel-heading">
+        <h4>reconciliation history</h4>
+      </div>    
 
-  <tbody>
-    <% @reconciliations.each do |reconciliation| %>
-      <tr>
-        <td><%= reconciliation.account_id %></td>
-        <td><%= reconciliation.statement_date %></td>
-        <td><%= reconciliation.statement_balance %></td>
-        <td><%= reconciliation.reconciled %></td>
-        <td><%= link_to 'Show', reconciliation %></td>
-        <td><%= link_to 'Edit', edit_reconciliation_path(reconciliation) %></td>
-        <td><%= link_to 'Destroy', reconciliation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th class="centred">Statement Date</th>
+            <th class="money">Statement Balance</th>
+            <th class="centred">Finished</th>
+            <th></th>
+          </tr>
+        </thead>
 
-<br>
+        <tbody>
+          <% @reconciliations.each do |reconciliation| %>
+            <tr>
+              <td><%= reconciliation.account.name %></td>
+              <td class="centred"><%= reconciliation.statement_date %></td>
+              <td class="money"><%= number_to_currency(reconciliation.statement_balance) %></td>
+              <td class="centred"><%= content_tag(:span, "", class: "glyphicon glyphicon-ok") if reconciliation.reconciled %></td>
+              <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), reconciliation %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div> <!-- panel -->
+  </div> <!-- col -->
 
-<%= link_to 'New Reconciliation', new_reconciliation_path %>
+  <div class="col-md-4">
+    <div class="box fill_normal">
+        <h4>reconciliation history</h4>
+    </div> <!-- panel -->
+  </div> <!-- col -->
+
+</div> <!-- row -->

@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :set_account, only: [:show, :edit, :update, :destroy]
+  before_action :set_account, only: [:show, :edit, :update, :destroy, :last_reconciliation]
 
   # GET /accounts
   # GET /accounts.json
@@ -59,6 +59,22 @@ class AccountsController < ApplicationController
       format.html { redirect_to accounts_url, notice: 'Account was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def last_reconciliation
+
+    if @account.reconciliations.length == 0
+      @last_date = @account.starting_date
+      @last_balance = @account.starting_balance
+    else
+      @last_date = @account.reconciliations.last.statement_date
+      @last_balance = @account.reconciliations.last.statement_balance
+    end
+
+    respond_to do |format|
+      format.js
+    end
+
   end
 
   private

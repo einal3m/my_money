@@ -7,7 +7,7 @@
     <strong>Statement Date: </strong><%= @reconciliation.statement_date %><br>
     <strong>Statement Balance: </strong><%= number_to_currency(@reconciliation.statement_balance) %>
     <%= r.hidden_field :id %>
-    <div id='balance'>$0.00</div>
+    <div id='balance'><%= number_to_currency(@reconciliation.last_reconciled_balance) %></div>
 
   </div>
 

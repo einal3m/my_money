@@ -3,6 +3,8 @@ $panel-default-heading-bg: #8dbf41;
 $panel-default-text: white;
 $icon-font-path: 'bootstrap/';
 
+$main_color: #8dbf41;
+
 @import "bootstrap";
 
 body {
@@ -21,11 +23,15 @@ div.panel-heading {
 	height: 63px;
 }
 
+div.panel {
+	border: solid 1px $main_color;
+}
+
 /* navbar properties */
 
 .navbar {
-	border-top: solid 12px #8dbf41;
-	border-bottom: solid 3px #8dbf41;
+	border-top: solid 12px $main_color;
+	border-bottom: solid 3px $main_color;
 	background-color: white;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 	padding-bottom: 15px;
@@ -34,7 +40,7 @@ div.panel-heading {
 		font-size:32px;
 
 		strong {
-			color: #8dbf41;
+			color: $main_color;
 		}
 	}
 
@@ -73,11 +79,14 @@ td {
 /* front page */
 div.box{
 	color: white;
-	height: 150px;
 	border: none;
-	margin-bottom: 15px;
-	margin-top: 15px;
-	padding: 11px;
+
+	&.spaced {
+		height: 150px;
+		margin-bottom: 15px;
+		margin-top: 15px;
+		padding: 11px;
+	}
 
 	&.fill_darker { 
 		background: #719934 url(image_path("fill_darker_bg.png"));
@@ -93,7 +102,6 @@ div.box{
 	}
 
 	&:hover {
-/*		border: 4px solid #668A2F;*/
 		opacity: 0.8;
 	}
 
@@ -104,6 +112,10 @@ a:link, a:visited, a:hover, a:active { text-decoration: none; }
 
 td.money, th.money {
 	text-align: right;
+}
+
+td.centred, th.centred {
+	text-align: center;
 }
 
 tr.totals {
