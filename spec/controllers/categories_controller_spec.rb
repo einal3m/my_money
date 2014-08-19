@@ -56,18 +56,11 @@ RSpec.describe CategoriesController, :type => :controller do
   end
 
   describe "GET show" do
-    it "assigns the requested category as @category" do
+    it "redirects to the index page" do
       category = FactoryGirl.create(:category)
       get :show, {:id => category.to_param}, valid_session
-      expect(assigns(:category)).to eq(category)
+      expect(response).to redirect_to(categories_url)
     end
-
-    it "renders the :show view" do
-      category = FactoryGirl.create(:category)
-      get :show, {:id => category.to_param}, valid_session
-      expect(response).to render_template("show")
-    end
-
   end
 
   describe "GET new" do
@@ -199,6 +192,11 @@ RSpec.describe CategoriesController, :type => :controller do
       category2 = FactoryGirl.create(:category)
       xhr :post, :subcategories_by_category, {:category_id => category1.to_param, :format => "js"}
       expect(assigns(:subcategories)).to eq(category1.subcategories)
+    end
+
+    it "assigns an empty @subcategories array if no category is specified" do
+      xhr :post, :subcategories_by_category, {:format => "js"}
+      expect(assigns(:subcategories)).to eq([])
     end
   end
 

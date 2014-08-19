@@ -1,26 +1,32 @@
 class SubcategoriesController < ApplicationController
-  before_action :set_subcategory, only: [:show, :edit, :update, :destroy]
+  before_action :set_subcategory, only: [:edit, :update, :destroy]
 
   # GET /subcategories
   # GET /subcategories.json
   def index
-    @subcategories = Subcategory.all
+    redirect_to categories_url
   end
 
   # GET /subcategories/1
   # GET /subcategories/1.json
   def show
+    redirect_to categories_url
   end
 
   # GET /subcategories/new
   def new
     @subcategory = Subcategory.new
-    load_form_data
+
+    # get category id from parameters, if it doesn't exist, return to category index
+    if params.has_key?(:category_id) then
+      @subcategory.category = Category.find(params[:category_id])
+    else
+      redirect_to categories_url, notice: "No category specified"
+    end
   end
 
   # GET /subcategories/1/edit
   def edit
-    load_form_data
   end
 
   # POST /subcategories
@@ -33,7 +39,6 @@ class SubcategoriesController < ApplicationController
         format.html { redirect_to categories_url, notice: "Sub-category \'#{@subcategory.name}\' was successfully created." }
         format.json { render :show, status: :created, location: @subcategory }
       else
-	    load_form_data
         format.html { render :new }
         format.json { render json: @subcategory.errors, status: :unprocessable_entity }
       end
@@ -48,7 +53,6 @@ class SubcategoriesController < ApplicationController
         format.html { redirect_to categories_url, notice: "Sub-category \'#{@subcategory.name}\' was successfully updated." }
         format.json { render :show, status: :ok, location: @subcategory }
       else
-        load_form_data
         format.html { render :edit }
         format.json { render json: @subcategory.errors, status: :unprocessable_entity }
       end
@@ -76,7 +80,4 @@ class SubcategoriesController < ApplicationController
       params.require(:subcategory).permit(:name, :category_id)
     end
     
-    def load_form_data
-	    @categories = Category.all
-    end
 end

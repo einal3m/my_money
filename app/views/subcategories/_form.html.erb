@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 
   <div class="panel-heading">  	
-  	<h4><%= yield(:title) %>
+  	<h4><%= yield(:title) %> for Category: <%= @subcategory.category.name %>
   		<% if yield(:title).include?("Edit") %>
   			<%= link_to 'Delete', @subcategory, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
   		<% end %>
@@ -26,11 +26,9 @@
   	<div class="field">
       <%= f.label :name %><br>
       <%= f.text_field :name %>
+      <%= f.hidden_field :category_id %>
   	</div>
-  	<div class="field">
-      <%= f.label :category_id %><br>
-      <%= f.collection_select(:category_id, @categories, :id, :name, {:prompt => true}) %> 
-  	</div>
+
   </div><!-- container -->
   
   <div class="panel-footer">

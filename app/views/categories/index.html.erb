@@ -19,7 +19,7 @@
         			<% category.subcategories.each do |subcategory| %>
         				<li><%= link_to subcategory.name, edit_subcategory_path(subcategory) %></li>
         			<% end %>
-        			<li><%= link_to 'New...', new_subcategory_path %></li>
+        			<li><%= link_to 'New...', new_subcategory_path(category_id: category.id) %></li>
         			</ul>
         		</td>
       		</tr>
@@ -43,13 +43,9 @@
         			<% category.subcategories.each do |subcategory| %>
         				<li><%= link_to subcategory.name, edit_subcategory_path(subcategory) %></li>
         			<% end %>
-        			<li><%= link_to 'New...', new_subcategory_path %></li>
+        			<li><%= link_to 'New...', new_subcategory_path(category_id: category.id)  %></li>
         			</ul>
         		</td>
-<!--        		<td><%= category.category_type %></td>
-        		<td><%= link_to 'Show', category %></td>
-        		<td><%= link_to 'Edit', edit_category_path(category) %></td>
-        		<td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
       		</tr>
     		<% end %>
   		</tbody>
