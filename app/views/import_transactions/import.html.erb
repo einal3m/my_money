@@ -5,7 +5,7 @@
 <div class="panel panel-default">
 
   <div class="panel-heading">  
-  	<h4> Account: <strong><%= a.collection_select :id, @accounts, :id, :name, {prompt: "Please select"} %>
+  	<h4> Account: <strong><%= a.hidden_field(:id) %>
   	<%= @account.name + " (" + @account.bank + ")" %> </strong></h4>
   </div>
 <table class="table table-condensed">

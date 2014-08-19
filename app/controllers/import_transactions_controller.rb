@@ -15,10 +15,12 @@ class ImportTransactionsController < ApplicationController
   # read the transaction information from the file and display
   def import
   	  @account = Account.find(params[:account])
-  	  @accounts = Account.all
       @transactions = parseOFX(params[:money_file])
       @categories = Category.all
       @subcategories = [];
+
+      #add the account id to the session
+      session[:account_id] = @account.id
       
       #loop through transactions... 
       @transactions.each do |t|

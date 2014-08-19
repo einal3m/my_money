@@ -117,29 +117,22 @@ class TransactionsController < ApplicationController
   end
 
   def import
-   p "transactions_controller.import"
  
- 	account = params["account"]["id"].to_i
+ 	  account = params["account"]["id"].to_i
  	
-  	   params[:import_transactions].each do |transaction|
-  	     p transaction
-  	     if transaction[:import] == "1" then
-  	        transaction.delete("import")
-  	        transaction["date"] = transaction["date"].to_date
-  	        transaction["amount"] = transaction["amount"].to_f
-  	        transaction["account_id"] = account
-  	        
-  	  
-  	        @transaction = transaction
-  	     p "saving transaction"
-  	     p transaction
-  	        Transaction.create(transaction.permit(:transaction_type, :date, :amount, :fitid, :memo, :account_id, :category_id, :subcategory_id))
+  	params[:import_transactions].each do |transaction|
 
-  	     
-  	     end
-  	   end
+      if transaction[:import] == "1" then
+        transaction.delete("import")
+        transaction["date"] = transaction["date"].to_date
+        transaction["amount"] = transaction["amount"].to_f
+        transaction["account_id"] = account
+  
+        Transaction.create(transaction.permit(:transaction_type, :date, :amount, :fitid, :memo, :account_id, :category_id, :subcategory_id))
+      end
+  	end
    
-   redirect_to transactions_url, notice: 'Transactions imported'
+    redirect_to transactions_url, notice: 'Transactions imported'
   end
   
   

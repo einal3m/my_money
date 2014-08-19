@@ -31,9 +31,10 @@ RSpec.describe ImportTransactionsController, :type => :controller do
   	  @file = fixture_file_upload('test.ofx')
   	end
 
-  	it "assigns the current account to @account" do
+  	it "assigns the current account to @account and to session" do
   		post :import, {:account => @account.to_param, :money_file => @file}
   		expect(assigns(:account)).to eq(@account)
+      expect(session[:account_id]).to eq(@account.id)
   	end
 
   	it "assigns the transactions in the OFX file to @transactions" do
@@ -80,6 +81,12 @@ RSpec.describe ImportTransactionsController, :type => :controller do
   		expect(assigns(:transactions)[2].category).to eq(category)
   		expect(assigns(:transactions)[2].subcategory).to eq(subcategory)
   	end
+
+    it "renders the :import view" do
+      category = FactoryGirl.create(:category)
+      post :import, {:account => @account.to_param, :money_file => @file}
+      expect(response).to render_template(:import)
+    end
   end
 
 end
