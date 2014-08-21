@@ -1,5 +1,5 @@
 class PatternsController < ApplicationController
-  before_action :set_pattern, only: [:show, :edit, :update, :destroy]
+  before_action :set_pattern, only: [:edit, :update, :destroy]
 
   # GET /patterns
   # GET /patterns.json
@@ -8,34 +8,36 @@ class PatternsController < ApplicationController
     @accounts = Account.all
     
     # check params for a change in selected account
-    @account_id = params[:account_id]
+    account_id = params[:account_id]
     
     # if new account has not been selected...
-    if @account_id.nil? then
+    if account_id.nil? then
     
       # ... check the session
-      @account_id = session[:account_id];
-      
-      if @account_id.nil? then
-	      # ... or default to first Account
-		  @account_id = Account.first.account_id
-	  end
-	end
+      account_id = session[:account_id];
+  	end
 
-	session[:account_id] = @account_id
-    @account = Account.find(@account_id)
-    @patterns = @account.patterns
+    # find patterns for account if it is not nil
+    if account_id.nil? then 
+      @account = nil
+      @patterns = []
+    else
+    	session[:account_id] = account_id
+      @account = Account.find(account_id)
+      @patterns = @account.patterns
+    end
   end
 
   # GET /patterns/1
   # GET /patterns/1.json
   def show
+    redirect_to patterns_url
   end
 
   # GET /patterns/new
   def new
     @pattern = Pattern.new
-    @pattern.account_id = session[:account_id]
+    @pattern.account = Account.find(params[:account_id])
     load_form_data
   end
 
@@ -89,22 +91,21 @@ class PatternsController < ApplicationController
   def load_form_data
   
     # lists for drop-downs
-    @accounts = Account.all
-	@subcategories = {}
-	@categories = Category.all
+  	@subcategories = []
+	  @categories = Category.all
 	
-	# hash for category drop down
-	@category_options = {prompt: true}
-	if !@pattern.category.nil? then
-		@category_options[:selected] = @pattern.category_id.to_i
-		@subcategories = @pattern.category.subcategories
-	end
+  	# hash for category drop down
+  	@category_options = {prompt: true}
+  	if !@pattern.category.nil? then
+  		@category_options[:selected] = @pattern.category_id.to_i
+  		@subcategories = @pattern.category.subcategories
+  	end
 
-	# hash for sub-category drop down
-	@subcategory_options = {prompt: true}
-	if !@pattern.subcategory.nil? then
-		@subcategory_options[:selected] = @pattern.subcategory_id.to_i
-	end
+  	# hash for sub-category drop down
+  	@subcategory_options = {prompt: true}
+  	if !@pattern.subcategory.nil? then
+  		@subcategory_options[:selected] = @pattern.subcategory_id.to_i
+  	end
 
   end
 

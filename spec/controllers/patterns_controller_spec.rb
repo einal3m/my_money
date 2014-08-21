@@ -20,122 +20,171 @@ require 'rails_helper'
 
 RSpec.describe PatternsController, :type => :controller do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Pattern. As you add validations to Pattern, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
-
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PatternsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all patterns as @patterns" do
-      pattern = Pattern.create! valid_attributes
-      get :index, {}, valid_session
+    it "assigns all patterns for specified account as @patterns" do
+      pattern = FactoryGirl.create(:pattern)
+      get :index, {account_id: pattern.account.id}, valid_session
       expect(assigns(:patterns)).to eq([pattern])
     end
+
+    it "assigns current account to @account" do
+      pattern = FactoryGirl.create(:pattern)
+      get :index, {account_id: pattern.account.id}, valid_session
+      expect(assigns(:account)).to eq(pattern.account)
+    end
+
+    it "displays no patterns if account not selected and not in session" do
+      pattern = FactoryGirl.create(:pattern)
+      session.delete(:account_id)
+      get :index, {}, valid_session
+      expect(assigns(:patterns)).to eq([])
+    end
+
+    it "displays patterns of account in session by default" do
+      pattern = FactoryGirl.create(:pattern)
+      session[:account_id] = pattern.account.id
+      get :index, {}, valid_session
+      expect(assigns(:patterns)).to eq([pattern])  
+    end
+
+    it "renders the :index view" do
+      get :index, {}, valid_session
+      expect(response).to render_template(:index)
+    end
+
   end
 
   describe "GET show" do
-    it "assigns the requested pattern as @pattern" do
-      pattern = Pattern.create! valid_attributes
-      get :show, {:id => pattern.to_param}, valid_session
-      expect(assigns(:pattern)).to eq(pattern)
+    it "redirects to the patterns index page" do
+      pattern = FactoryGirl.create(:pattern)
+      get :show, {id: pattern.id}, valid_session
+      expect(response).to redirect_to(patterns_url)
     end
   end
 
   describe "GET new" do
     it "assigns a new pattern as @pattern" do
-      get :new, {}, valid_session
+      account = FactoryGirl.create(:account)
+      get :new, {account_id: account.id}, valid_session
       expect(assigns(:pattern)).to be_a_new(Pattern)
+    end
+
+    it "assigns the current account to the pattern" do
+      account = FactoryGirl.create(:account)
+      get :new, {account_id: account.id}, valid_session
+      expect(assigns(:pattern).account).to eq(account)
+    end
+
+    it "assigns lists for categories and subcategories" do
+      account = FactoryGirl.create(:account)
+      category = FactoryGirl.create(:category)
+      get :new, {account_id: account.id}, valid_session
+      expect(assigns(:categories)).to eq([category])
+      expect(assigns(:subcategories)).to eq([])
+    end
+
+    it "renders the :new view" do
+      account = FactoryGirl.create(:account)
+      get :new, {account_id: account.id}, valid_session
+      expect(response).to render_template(:new)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested pattern as @pattern" do
-      pattern = Pattern.create! valid_attributes
+      pattern = FactoryGirl.create(:pattern)
       get :edit, {:id => pattern.to_param}, valid_session
       expect(assigns(:pattern)).to eq(pattern)
     end
+
+    it "assigns lists for categories and subcategories" do
+      subcategory = FactoryGirl.create(:subcategory)
+      pattern = FactoryGirl.create(:pattern, category: subcategory.category, subcategory: subcategory)
+      get :edit, {:id => pattern.to_param}, valid_session
+      expect(assigns(:categories)).to eq([subcategory.category])
+      expect(assigns(:subcategories)).to eq([subcategory])
+    end
+
+    it "renders the :edit view" do
+      pattern = FactoryGirl.create(:pattern)
+      get :edit, {:id => pattern.to_param}, valid_session
+      expect(response).to render_template(:edit)
+    end
+
   end
 
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Pattern" do
         expect {
-          post :create, {:pattern => valid_attributes}, valid_session
+          post :create, {:pattern => build_attributes(:pattern)}, valid_session
         }.to change(Pattern, :count).by(1)
       end
 
       it "assigns a newly created pattern as @pattern" do
-        post :create, {:pattern => valid_attributes}, valid_session
+        post :create, {:pattern => build_attributes(:pattern)}, valid_session
         expect(assigns(:pattern)).to be_a(Pattern)
         expect(assigns(:pattern)).to be_persisted
       end
 
-      it "redirects to the created pattern" do
-        post :create, {:pattern => valid_attributes}, valid_session
-        expect(response).to redirect_to(Pattern.last)
+      it "redirects to the pattern index page" do
+        post :create, {:pattern => build_attributes(:pattern)}, valid_session
+        expect(response).to redirect_to(patterns_url)
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved pattern as @pattern" do
-        post :create, {:pattern => invalid_attributes}, valid_session
+        post :create, {:pattern => build_attributes(:pattern_invalid)}, valid_session
         expect(assigns(:pattern)).to be_a_new(Pattern)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:pattern => invalid_attributes}, valid_session
+        post :create, {:pattern => build_attributes(:pattern_invalid)}, valid_session
         expect(response).to render_template("new")
       end
     end
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+    context "with valid params" do
 
       it "updates the requested pattern" do
-        pattern = Pattern.create! valid_attributes
-        put :update, {:id => pattern.to_param, :pattern => new_attributes}, valid_session
+        pattern = FactoryGirl.create(:pattern)
+        new_subcategory = FactoryGirl.create(:subcategory)
+        new_category = new_subcategory.category
+        put :update, {:id => pattern.to_param, :pattern => {
+                  match_text: "New Text",
+                  category_id: new_category.id,
+                  subcategory_id: new_subcategory.id }}, valid_session
         pattern.reload
-        skip("Add assertions for updated state")
+        expect(pattern.match_text).to eq("New Text")
+        expect(pattern.category).to eq(new_category)
+        expect(pattern.subcategory).to eq(new_subcategory)
       end
 
-      it "assigns the requested pattern as @pattern" do
-        pattern = Pattern.create! valid_attributes
-        put :update, {:id => pattern.to_param, :pattern => valid_attributes}, valid_session
-        expect(assigns(:pattern)).to eq(pattern)
-      end
-
-      it "redirects to the pattern" do
-        pattern = Pattern.create! valid_attributes
-        put :update, {:id => pattern.to_param, :pattern => valid_attributes}, valid_session
-        expect(response).to redirect_to(pattern)
+      it "redirects to the patterns index page" do
+        pattern = FactoryGirl.create(:pattern)
+        put :update, {:id => pattern.to_param, :pattern => build_attributes(:pattern)}, valid_session
+        expect(response).to redirect_to(patterns_url)
       end
     end
 
-    describe "with invalid params" do
+    context "with invalid params" do
       it "assigns the pattern as @pattern" do
-        pattern = Pattern.create! valid_attributes
-        put :update, {:id => pattern.to_param, :pattern => invalid_attributes}, valid_session
+        pattern = FactoryGirl.create(:pattern)
+        put :update, {:id => pattern.to_param, :pattern => build_attributes(:pattern_invalid)}, valid_session
         expect(assigns(:pattern)).to eq(pattern)
       end
 
       it "re-renders the 'edit' template" do
-        pattern = Pattern.create! valid_attributes
-        put :update, {:id => pattern.to_param, :pattern => invalid_attributes}, valid_session
+        pattern = FactoryGirl.create(:pattern)
+        put :update, {:id => pattern.to_param, :pattern => build_attributes(:pattern_invalid)}, valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -143,14 +192,14 @@ RSpec.describe PatternsController, :type => :controller do
 
   describe "DELETE destroy" do
     it "destroys the requested pattern" do
-      pattern = Pattern.create! valid_attributes
+      pattern = FactoryGirl.create(:pattern)
       expect {
         delete :destroy, {:id => pattern.to_param}, valid_session
       }.to change(Pattern, :count).by(-1)
     end
 
     it "redirects to the patterns list" do
-      pattern = Pattern.create! valid_attributes
+      pattern = FactoryGirl.create(:pattern)
       delete :destroy, {:id => pattern.to_param}, valid_session
       expect(response).to redirect_to(patterns_url)
     end
