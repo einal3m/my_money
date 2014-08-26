@@ -25,8 +25,9 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :account_id %><br>
-    <%= f.collection_select(:account_id, @accounts, :id, :name, {:prompt => true, :selected => @pattern.account_id.to_i}) %>
+    <%= f.label :account_id %>
+    <%= f.hidden_field :account_id %>
+    <br><%= @pattern.account.name %> <%= (" (" + @pattern.account.bank + ")") if !@pattern.account.bank.blank? %>
   </div>
   <div class="field">
     <%= f.label :match_text %><br>
