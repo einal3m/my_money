@@ -1,13 +1,32 @@
 
-Given(/^I am on the home page$/) do
-  visit root_path
+
+# steps for visiting pages
+Given(/^I am on the (.+) page$/) do |page_name|
+  if (page_name == "home") then visit(root_path)
+  else visit(page_name) end
 end
 
-Then(/^I should see a "(.*?)"$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+When(/^I go to the (.+) page$/) do |page_name|
+  if (page_name == "home") then visit(root_path)
+  else visit(page_name) end
 end
 
-Then(/^I should see a link called "(.*?)"$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+# steps for following links
+When(/^I click the "([^\"]*)" button$/) do |button|
+  click_button(button)
 end
 
+# steps for entering data into fields
+When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
+  fill_in(field, :with => value) 
+end
+
+# steps for seeing specific text
+
+Then /^I should see "([^\"]*)"$/ do |text|
+  expect(page).to have_content(text)
+end
+
+Then /^I should not see "([^\"]*)"$/ do |text|
+  expect(page).not_to have_content(text)
+end

@@ -5,6 +5,11 @@ class AccountsController < ApplicationController
   # GET /accounts.json
   def index
     @accounts = Account.all
+    @net_worth = 0.00
+    @accounts.each do |account|
+p "account " + account.name + " balance: " + account.current_balance.to_s
+      @net_worth = @net_worth + account.current_balance
+    end
   end
 
   # GET /accounts/1

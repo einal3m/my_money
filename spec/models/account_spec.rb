@@ -87,10 +87,26 @@ RSpec.describe Account, :type => :model do
   	  expect(a.starting_balance).to eq(50.01)
     end
 
-    it "sets a starting balance" do
+    it "sets a starting date" do
       a = FactoryGirl.create(:account, starting_date: "2014-02-02")
       expect(a.starting_date).to eq(Date.parse("2014-02-02"))
     end
+  end
 
+  describe "methods" do
+    before :each do
+      @a = FactoryGirl.create(:account, starting_balance: 10.00, starting_date: "2014-08-01")
+    end
+
+    it "calculates current balance when there are no transactions" do
+      expect(@a.current_balance).to eq(10.00)
+    end
+
+    it "calculates current balance when there are transactions" do
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-4", amount: 20.00)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 30.00)
+
+      expect(@a.current_balance).to eq(60.00)
+    end
   end  
 end

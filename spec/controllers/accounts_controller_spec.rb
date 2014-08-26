@@ -38,9 +38,10 @@ RSpec.describe AccountsController, :type => :controller do
 
   describe "GET index" do
     it "assigns all accounts as @accounts" do
-      account = FactoryGirl.create(:account)
+      account = FactoryGirl.create(:account, starting_balance: 10.00)
       get :index, {}, valid_session
       expect(assigns(:accounts)).to eq([account])
+      expect(assigns(:net_worth)).to eq(10.00)
     end
 
     it "renders the :index view" do

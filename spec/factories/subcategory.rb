@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :subcategory do |f|
-    f.name "New Subategory" 
+    f.name "New Subcategory" 
     category
   end
 
