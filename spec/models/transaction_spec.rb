@@ -84,4 +84,113 @@ RSpec.describe Transaction, :type => :model do
     
   end
 
+  describe "callbacks" do
+    before :each do
+          account = FactoryGirl.create(:account, starting_balance: 110.10, starting_date: "2014-08-19")
+          @transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 55.20)
+          @transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-08-21", amount: 22.25)
+          @transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-08-24", amount: 33.33)
+          @transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 44.44)
+          @transaction5 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 10.00)
+    end
+
+    describe "before create" do
+      it "sets the balance of the new transaction and updates later ones" do
+          @transaction1.reload
+          @transaction2.reload
+          @transaction3.reload
+          @transaction4.reload
+          @transaction5.reload
+
+          expect(@transaction2.balance).to eq(132.35)
+          expect(@transaction1.balance).to eq(187.55)
+          expect(@transaction4.balance).to eq(231.99)
+          expect(@transaction5.balance).to eq(241.99)
+          expect(@transaction3.balance).to eq(275.32)
+      end
+    end
+
+    describe "before update" do
+      it "updates the balances when amount is changed" do
+          @transaction4.update(amount: 34.44)
+
+          @transaction1.reload
+          @transaction2.reload
+          @transaction3.reload
+          @transaction4.reload
+          @transaction5.reload
+
+          expect(@transaction2.balance).to eq(132.35)
+          expect(@transaction1.balance).to eq(187.55)
+          expect(@transaction4.balance).to eq(221.99)
+          expect(@transaction5.balance).to eq(231.99)
+          expect(@transaction3.balance).to eq(265.32)
+      end
+
+      it "updates the balances when date is changed to an earlier date" do
+          @transaction4.update(date: "2014-08-19")
+
+          @transaction1.reload
+          @transaction2.reload
+          @transaction3.reload
+          @transaction4.reload
+          @transaction5.reload
+
+          expect(@transaction4.balance).to eq(154.54)
+          expect(@transaction2.balance).to eq(176.79)
+          expect(@transaction1.balance).to eq(231.99)
+          expect(@transaction5.balance).to eq(241.99)
+          expect(@transaction3.balance).to eq(275.32)
+      end
+      it "updates the balances when date is changed to a later date" do
+          @transaction1.update(date: "2014-08-25")
+
+          @transaction1.reload
+          @transaction2.reload
+          @transaction3.reload
+          @transaction4.reload
+          @transaction5.reload
+
+          expect(@transaction2.balance).to eq(132.35)
+          expect(@transaction4.balance).to eq(176.79)
+          expect(@transaction5.balance).to eq(186.79)
+          expect(@transaction3.balance).to eq(220.12)
+          expect(@transaction1.balance).to eq(275.32)
+      end
+
+      it "doesnt change the balances when attribute other than date or amount is changed" do
+          @transaction4.update(memo: "New Memo")
+          @transaction1.reload
+          @transaction2.reload
+          @transaction3.reload
+          @transaction4.reload
+          @transaction5.reload
+
+          expect(@transaction2.balance).to eq(132.35)
+          expect(@transaction1.balance).to eq(187.55)
+          expect(@transaction4.balance).to eq(231.99)
+          expect(@transaction5.balance).to eq(241.99)
+          expect(@transaction3.balance).to eq(275.32)
+          expect(@transaction4.memo).to eq("New Memo")
+      end
+
+    end
+
+    describe "after destroy" do
+      it "updates balances when transaction is deleted" do
+
+          @transaction4.destroy
+          @transaction1.reload
+          @transaction2.reload
+          @transaction3.reload
+          @transaction5.reload
+
+          expect(@transaction2.balance).to eq(132.35)
+          expect(@transaction1.balance).to eq(187.55)
+          expect(@transaction5.balance).to eq(197.55)
+          expect(@transaction3.balance).to eq(230.88)
+      end
+    end
+  end
+
 end

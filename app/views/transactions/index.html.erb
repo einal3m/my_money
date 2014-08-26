@@ -22,6 +22,7 @@
       <th>Category</th>
       <th>Subcategory</th>
       <th class="money">Amount</th>
+      <th class="money">Balance</th>
       <th></th>
     </tr>
   </thead>
@@ -35,6 +36,7 @@
         <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
         <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
         <td class="money"><%= number_to_currency(transaction.amount) %></td>
+        <td class="money"><%= number_to_currency(transaction.balance) %></td>
         <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_transaction_path(transaction) %></td>
       </tr>
     <% end %>

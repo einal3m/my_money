@@ -20,35 +20,52 @@ require 'rails_helper'
 
 RSpec.describe TransactionsController, :type => :controller do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Transaction. As you add validations to Transaction, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
-
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # TransactionsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all transactions as @transactions" do
-      transaction = Transaction.create! valid_attributes
-      get :index, {}, valid_session
+
+    it "assigns all transactions for specified account as @transactions" do
+      transaction = FactoryGirl.create(:transaction)
+      get :index, {:account_id => transaction.account.id}, valid_session
       expect(assigns(:transactions)).to eq([transaction])
     end
+
+    it "returns no transactions if no account is specified or in the session" do
+      session.delete(:account_id)
+      FactoryGirl.create(:transaction)
+      get :index, {}, valid_session
+      expect(assigns(:transactions)).to eq([])
+    end
+
+    it "saves the current account into the session and @account" do
+      transaction = FactoryGirl.create(:transaction)
+      get :index, {:account_id => transaction.account.id}, valid_session
+      expect(session[:account_id]).to eq(transaction.account.id.to_s)
+      expect(assigns(:account)).to eq(transaction.account)
+    end
+
+    it "calculates the current balance" do
+      transaction = FactoryGirl.create(:transaction)
+      get :index, {:account_id => transaction.account.id}, valid_session
+      expect(assigns(:current_balance)).to eq(transaction.amount + transaction.account.starting_balance)
+    end
+
+    it "renders the :index view" do
+      transaction = FactoryGirl.create(:transaction)
+      get :index, {:account_id => transaction.account.id}, valid_session
+      expect(response).to render_template("index")
+    end
+
   end
 
   describe "GET show" do
-    it "assigns the requested transaction as @transaction" do
-      transaction = Transaction.create! valid_attributes
+    it "redirects the the index page" do
+      transaction = FactoryGirl.create(:transaction)
       get :show, {:id => transaction.to_param}, valid_session
-      expect(assigns(:transaction)).to eq(transaction)
+      expect(response).to redirect_to(transactions_url)
     end
   end
 
@@ -57,85 +74,126 @@ RSpec.describe TransactionsController, :type => :controller do
       get :new, {}, valid_session
       expect(assigns(:transaction)).to be_a_new(Transaction)
     end
+
+    it "sets the account the account in the session" do
+      account = FactoryGirl.create(:account)
+      session[:account_id] = account.id
+      get :new, {}, valid_session
+      expect(assigns(:transaction).account).to eq(account)
+    end
+
+    it "renders the :new view" do
+      get :new, {}, valid_session
+      expect(response).to render_template(:new)
+    end
   end
 
   describe "GET edit" do
     it "assigns the requested transaction as @transaction" do
-      transaction = Transaction.create! valid_attributes
+      transaction = FactoryGirl.create(:transaction)
       get :edit, {:id => transaction.to_param}, valid_session
       expect(assigns(:transaction)).to eq(transaction)
+    end
+
+    it "assigns lists for categories and subcategories" do
+      subcategory = FactoryGirl.create(:subcategory)
+      transaction = FactoryGirl.create(:transaction, category: subcategory.category, subcategory: subcategory)
+      get :edit, {:id => transaction.to_param}, valid_session
+      expect(assigns(:categories)).to eq([subcategory.category])
+      expect(assigns(:subcategories)).to eq([subcategory])
+    end
+
+    it "renders the :edit view" do
+      transaction = FactoryGirl.create(:transaction)
+      get :edit, {:id => transaction.to_param}, valid_session
+      expect(response).to render_template(:edit)
     end
   end
 
   describe "POST create" do
-    describe "with valid params" do
+    context "with valid params" do
       it "creates a new Transaction" do
         expect {
-          post :create, {:transaction => valid_attributes}, valid_session
+          post :create, {:transaction => build_attributes(:transaction)}, valid_session
         }.to change(Transaction, :count).by(1)
       end
 
       it "assigns a newly created transaction as @transaction" do
-        post :create, {:transaction => valid_attributes}, valid_session
+        post :create, {:transaction => build_attributes(:transaction)}, valid_session
         expect(assigns(:transaction)).to be_a(Transaction)
         expect(assigns(:transaction)).to be_persisted
       end
 
-      it "redirects to the created transaction" do
-        post :create, {:transaction => valid_attributes}, valid_session
-        expect(response).to redirect_to(Transaction.last)
+      it "redirects to the transactions index" do
+        post :create, {:transaction => build_attributes(:transaction)}, valid_session
+        expect(response).to redirect_to(transactions_url)
       end
     end
 
-    describe "with invalid params" do
+    context "with invalid params" do
       it "assigns a newly created but unsaved transaction as @transaction" do
-        post :create, {:transaction => invalid_attributes}, valid_session
+        post :create, {:transaction => build_attributes(:transaction_invalid)}, valid_session
         expect(assigns(:transaction)).to be_a_new(Transaction)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:transaction => invalid_attributes}, valid_session
+        post :create, {:transaction => build_attributes(:transaction_invalid)}, valid_session
         expect(response).to render_template("new")
       end
     end
   end
 
   describe "PUT update" do
-    describe "with valid params" do
+    context "with valid params" do
       let(:new_attributes) {
         skip("Add a hash of attributes valid for your model")
       }
 
       it "updates the requested transaction" do
-        transaction = Transaction.create! valid_attributes
-        put :update, {:id => transaction.to_param, :transaction => new_attributes}, valid_session
+        new_subcategory = FactoryGirl.create(:subcategory)
+        transaction = FactoryGirl.create(:transaction)
+        session[:last_transaction_page] = transactions_url
+        put :update, {:id => transaction.to_param, :transaction => {
+              date: "2014-08-19",
+              amount: 10.11,
+              memo: "New memo",
+              notes: "New note",
+              subcategory_id: new_subcategory.id,
+              category_id: new_subcategory.category.id}}, valid_session
         transaction.reload
-        skip("Add assertions for updated state")
+        expect(assigns(:transaction).date).to eq(Date.parse("2014-08-19"))
+        expect(assigns(:transaction).amount).to eq(10.11)
+        expect(assigns(:transaction).memo).to eq("New memo")
+        expect(assigns(:transaction).notes).to eq("New note")
+        expect(assigns(:transaction).subcategory).to eq(new_subcategory)
+        expect(assigns(:transaction).category).to eq(new_subcategory.category)
       end
 
       it "assigns the requested transaction as @transaction" do
-        transaction = Transaction.create! valid_attributes
-        put :update, {:id => transaction.to_param, :transaction => valid_attributes}, valid_session
+        session[:last_transaction_page] = transactions_url
+        transaction = FactoryGirl.create(:transaction)
+        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction)}, valid_session
         expect(assigns(:transaction)).to eq(transaction)
       end
 
-      it "redirects to the transaction" do
-        transaction = Transaction.create! valid_attributes
-        put :update, {:id => transaction.to_param, :transaction => valid_attributes}, valid_session
-        expect(response).to redirect_to(transaction)
+      it "redirects to the transactions index" do
+        session[:last_transaction_page] = transactions_url
+        transaction = FactoryGirl.create(:transaction)
+        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction)}, valid_session
+        expect(response).to redirect_to(transactions_url)
       end
     end
 
-    describe "with invalid params" do
+    context "with invalid params" do
       it "assigns the transaction as @transaction" do
-        transaction = Transaction.create! valid_attributes
-        put :update, {:id => transaction.to_param, :transaction => invalid_attributes}, valid_session
+        transaction = FactoryGirl.create(:transaction)
+        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction_invalid)}, valid_session
         expect(assigns(:transaction)).to eq(transaction)
       end
 
       it "re-renders the 'edit' template" do
-        transaction = Transaction.create! valid_attributes
-        put :update, {:id => transaction.to_param, :transaction => invalid_attributes}, valid_session
+        transaction = FactoryGirl.create(:transaction)
+        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction_invalid)}, valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -143,17 +201,30 @@ RSpec.describe TransactionsController, :type => :controller do
 
   describe "DELETE destroy" do
     it "destroys the requested transaction" do
-      transaction = Transaction.create! valid_attributes
+      transaction = FactoryGirl.create(:transaction)
       expect {
         delete :destroy, {:id => transaction.to_param}, valid_session
       }.to change(Transaction, :count).by(-1)
     end
 
     it "redirects to the transactions list" do
-      transaction = Transaction.create! valid_attributes
+      transaction = FactoryGirl.create(:transaction)
       delete :destroy, {:id => transaction.to_param}, valid_session
       expect(response).to redirect_to(transactions_url)
     end
+  end
+
+  describe "import" do
+
+    it "saves the transactions with import set to true" do
+      account = FactoryGirl.create(:account)
+      expect { post :import, {:account => {:id => account.id}, :import_transactions => [
+        {:import => "1", :date => "2014-08-19", :amount => 8.15},
+        {:import => "0", :date => "2014-08-20", :amount => 7.05}]}, valid_session
+      }.to change(Transaction, :count).by(1)
+      expect(response).to redirect_to(transactions_url)
+    end
+
   end
 
 end
