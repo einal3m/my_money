@@ -82,13 +82,15 @@ class ReconciliationsController < ApplicationController
 
     # update database
     ActiveRecord::Base.transaction do
-      transactions.each { |t| t.update(reconciliation: @reconciliation)}
+      transactions.each { |t| t.update(reconciliation: @reconciliation) }
 
       # set reconciliation finished
       @reconciliation.update(reconciled: true)
     end
 
-    redirect_to @reconciliation
+    # set current account to session, so that we see the transactions for that account
+    session[:account_id] = @reconciliation.account.id
+    redirect_to transactions_url
   end
 
   private

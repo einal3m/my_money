@@ -20,6 +20,15 @@ body {
 
 div.panel-heading {
 	height: 63px;
+
+	&.large {
+	  height: 100px
+	}
+
+	&.fill_lighter { 
+		background: #AFD27A;
+	}
+
 }
 
 div.panel {

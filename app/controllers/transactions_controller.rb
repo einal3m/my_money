@@ -9,22 +9,22 @@ class TransactionsController < ApplicationController
     @accounts = Account.all
     
     # check params for a change in selected account
-    account_id = params[:account_id]
+    @account_id = params[:account_id]
     
     # if new account has not been selected...
-    if account_id.nil? then
+    if @account_id.nil? then
     
       # ... check the session
-      account_id = session[:account_id];
+      @account_id = session[:account_id];
 	  end
 
-    if account_id.nil? then
+    if @account_id.nil? then
       @account = nil
       @transactions = []
       @current_balance = nil
     else
-    	session[:account_id] = account_id
-      @account = Account.find(account_id)
+    	session[:account_id] = @account_id
+      @account = Account.find(@account_id)
     	@transactions = @account.transactions.order(date: :desc, id: :desc)
     	@current_balance = @account.starting_balance + @account.transactions.sum(:amount)
     end

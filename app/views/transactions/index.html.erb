@@ -1,4 +1,4 @@
-<h1>Transactions <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_transaction_path, class: "btn btn-default" %></h1>
+<h1>transactions <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_transaction_path, class: "btn btn-default" %>&nbsp;<%= link_to "Reconcile", new_reconciliation_path, class: "btn btn-default" %> </h1>
 <p id="notice"><%= notice %></p>
 
   <div class="panel panel-default">
@@ -7,7 +7,7 @@
 	  <%= form_tag('/transactions', method: :get) do %>
 
         <h4 class="panel-title"><label for="account">Account: </label>
-        <%= collection_select(@account, :id, @accounts, :id, :name, {:prompt => true, :selected => @account.id.to_i}, {:name => "account_id"}) %>
+        <%= collection_select(@account, :id, @accounts, :id, :name, {:prompt => true, :selected => @account_id.to_i}, {:name => "account_id"}) %>
 
         <button type="submit" class="btn btn-default">Refresh</button></h4>
         
@@ -21,6 +21,7 @@
       <th>Memo/Notes</th>
       <th>Category</th>
       <th>Subcategory</th>
+      <th></th>
       <th class="money">Amount</th>
       <th class="money">Balance</th>
       <th></th>
@@ -35,6 +36,7 @@
         <td><%= transaction.memo %><%= ' / ' if (!transaction.memo.nil? && !transaction.notes.nil?) %><%= transaction.notes %></td>
         <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
         <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
+        <td class="flags"><%= "R" if !transaction.reconciliation.nil? %></td>
         <td class="money"><%= number_to_currency(transaction.amount) %></td>
         <td class="money"><%= number_to_currency(transaction.balance) %></td>
         <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_transaction_path(transaction) %></td>

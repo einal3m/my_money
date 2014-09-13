@@ -15,10 +15,16 @@ $(document).ready(function() {
 	    amount = amount.replace('$', '').replace(',', '');
 
 	    // find current balance calculate new amount
-	    var balance = $( "#balance" ).text().replace('$', '').replace(',', '');
+	    var balance = $( "#reconciled_balance" ).text().replace('$', '').replace(',', '');
 	    balance = parseFloat(balance) + factor * parseFloat(amount)
 	    balance = '$' + balance.toFixed(2)
-	    $('#balance').text(balance.replace('$-', '-$'));
+	    $('#reconciled_balance').text(balance.replace('$-', '-$'));
+
+	    if ($("#reconciled_balance").text() == $("#statement_balance").text()) {
+	    	$("#button_done").removeAttr('disabled');
+	    } else {
+	    	$("#button_done").attr("disabled", true)
+	    }
   });
 
   // when user selects an account, update previous reconciliation details

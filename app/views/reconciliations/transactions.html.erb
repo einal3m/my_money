@@ -2,19 +2,24 @@
 
 <%= form_for @reconciliation, url: { controller: "reconciliations", action: "reconcile" }, method: :post do |r|%>
 
-  <div class="container">
-    <strong>Account Name: </strong><%= @reconciliation.account.name %><br>
-    <strong>Statement Date: </strong><%= @reconciliation.statement_date %><br>
-    <strong>Statement Balance: </strong><%= number_to_currency(@reconciliation.statement_balance) %>
-    <%= r.hidden_field :id %>
-    <div id='balance'><%= number_to_currency(@reconciliation.last_reconciled_balance) %></div>
-
-  </div>
 
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4>Transactions
-      <button type="submit" class="btn btn-default">Done</button></h4>
+    <div class="panel-heading fill_lighter">
+      <div class="row">
+        <div class="col-md-5">
+          <strong>Account Name: </strong><%= @reconciliation.account.name %><br>
+          <strong>Statement Date: </strong><%= @reconciliation.statement_date %><br>
+        </div>
+        <div class="col-md-5">
+
+        <strong>Statement Balance: </strong><div id='statement_balance'><%= number_to_currency(@reconciliation.statement_balance) %></div>
+        <%= r.hidden_field :id %><br>
+        <strong>Reconciled Balance: </strong><div id='reconciled_balance'><%= number_to_currency(@reconciliation.last_reconciled_balance) %></div>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" id="button_done" class="btn btn-default" disabled>Done</button>
+        </div>
+      </div>
     </div>
     
 	  <table class="table table-condensed">
@@ -34,13 +39,13 @@
           <tr>
             <%= fields_for transaction do |t| %>
 
-              <%= t.hidden_field :id, name: "transactions[][id]" %>
               <td><%= transaction.date %></td>
               <td><%= transaction.memo %></td>
               <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
               <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
               <td class="money"><%= number_to_currency(transaction.amount) %></td>
-              <td><%= t.check_box :add_to_reconciliation, name: "transactions[][add_to_reconciliation]", class: 'reconcile' %></td>
+              <td>
+              <%= t.check_box :add_to_reconciliation, name: "transactions[][add_to_reconciliation]", class: 'reconcile' %><%= t.hidden_field :id, name: "transactions[][id]" %></td>
             <% end %>
           </tr>
         <% end %>
