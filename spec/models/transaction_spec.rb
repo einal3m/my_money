@@ -74,6 +74,26 @@ RSpec.describe Transaction, :type => :model do
       expect(Transaction.unreconciled(r).length).to eq(2)
 
     end
+
+    it "orders transactions by date, then id" do
+      t1 = FactoryGirl.create(:transaction, date: "2014-01-01")
+      t2 = FactoryGirl.create(:transaction, date: "2014-01-02")
+      t3 = FactoryGirl.create(:transaction, date: "2014-01-03")
+      t4 = FactoryGirl.create(:transaction, date: "2014-01-01")
+      t5 = FactoryGirl.create(:transaction, date: "2014-01-02")
+
+      expect(Transaction.date_order).to eq([t1, t4, t2, t5, t3])
+    end
+
+    it "orders transactions in reverse" do
+      t1 = FactoryGirl.create(:transaction, date: "2014-01-01")
+      t2 = FactoryGirl.create(:transaction, date: "2014-01-02")
+      t3 = FactoryGirl.create(:transaction, date: "2014-01-03")
+      t4 = FactoryGirl.create(:transaction, date: "2014-01-01")
+      t5 = FactoryGirl.create(:transaction, date: "2014-01-02")
+
+      expect(Transaction.reverse_date_order).to eq([t3, t5, t2, t4, t1])
+    end
   end
 
   describe "initialize" do

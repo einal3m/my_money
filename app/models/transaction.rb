@@ -25,7 +25,9 @@ class Transaction < ActiveRecord::Base
 	validates :amount, presence: true, numericality: true
 	
 	# common lookups
-	scope :unreconciled, ->(reconciliation) { where(account: reconciliation.account, reconciliation: nil).order(date: :asc) }
+	scope :unreconciled, ->(reconciliation) { where(account: reconciliation.account, reconciliation: nil) }
+  scope :date_order, -> { order(date: :asc, id: :asc) }
+  scope :reverse_date_order, -> { order(date: :desc, id: :desc) }
 
 	# non-persistant attributes
 	attr_accessor :add_to_reconciliation
@@ -48,7 +50,7 @@ protected
 
     	# find the last transaction before this one
     	# if none exist, use the account starting balance
-    	prev_transaction = Transaction.where(account: self.account).where("date <= ?", self.date).order(date: :asc, id: :asc).last
+    	prev_transaction = Transaction.where(account: self.account).where("date <= ?", self.date).date_order.last
     	balance = prev_transaction.nil? ? self.account.starting_balance : prev_transaction.balance
 
     	# set the balance of the new transaction
@@ -56,7 +58,7 @@ protected
    		self.balance = balance
 
    		# find the transactions following and update their balances
-   		Transaction.where(account: self.account).where("date > ?", self.date).order(date: :asc).each do |t|
+   		Transaction.where(account: self.account).where("date > ?", self.date).date_order.each do |t|
    		  balance = balance + t.amount
    		  t.update_column(:balance,  balance)
    		end
@@ -67,11 +69,11 @@ protected
     def calculate_balance_on_destroy
     	# find the last transaction before this one
     	# if none exist, use the account starting balance
-    	prev_transaction = Transaction.where(account: self.account).where("date < ?", self.date).order(date: :asc, id: :asc).last
+    	prev_transaction = Transaction.where(account: self.account).where("date < ?", self.date).date_order.last
     	balance = prev_transaction.nil? ? self.account.starting_balance : prev_transaction.balance
 
    		# find the transactions following and update their balances
-   		Transaction.where(account: self.account).where("date >= ?", self.date).order(date: :asc, id: :asc).each do |t|
+   		Transaction.where(account: self.account).where("date >= ?", self.date).date_order.each do |t|
    		  balance = balance + t.amount
    		  t.update_column(:balance,  balance)
    		end
@@ -93,11 +95,11 @@ protected
 
     	# find the last transaction before the changes
     	# if none exist, use the account starting balance
-    	prev_transaction = Transaction.where(account: self.account).where("date < ?", from_date).order(date: :asc, id: :asc).last
+    	prev_transaction = Transaction.where(account: self.account).where("date < ?", from_date).date_order.last
     	balance = prev_transaction.nil? ? self.account.starting_balance : prev_transaction.balance
 
    		# find the transactions following and update their balances
-   		Transaction.where(account: self.account).where("date >= ?", from_date).order(date: :asc, id: :asc).each do |t|
+   		Transaction.where(account: self.account).where("date >= ?", from_date).date_order.each do |t|
    		  balance = balance + t.amount
    		  t.update_column(:balance,  balance)
    		end

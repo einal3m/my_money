@@ -25,7 +25,7 @@ class TransactionsController < ApplicationController
     else
     	session[:account_id] = @account_id
       @account = Account.find(@account_id)
-    	@transactions = @account.transactions.order(date: :desc, id: :desc)
+    	@transactions = @account.transactions.reverse_date_order
     	@current_balance = @account.starting_balance + @account.transactions.sum(:amount)
     end
   end

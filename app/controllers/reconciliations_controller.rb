@@ -66,7 +66,7 @@ class ReconciliationsController < ApplicationController
   end
 
   def transactions
-    @transactions =  Transaction.unreconciled(@reconciliation)
+    @transactions =  Transaction.unreconciled(@reconciliation).date_order
   end
 
   def reconcile

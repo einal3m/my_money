@@ -262,7 +262,7 @@ RSpec.describe ReconciliationsController, :type => :controller do
       get :reconcile, {:id => @reconciliation.to_param,
             :transactions => [{"id"=>@transaction1.id, "add_to_reconciliation"=>"1"},
                             {"id"=>@transaction2.id, "add_to_reconciliation"=>"0"}]}
-      expect(response).to redirect_to(@reconciliation)
+      expect(response).to redirect_to(transactions_url)
     end
 
   end
