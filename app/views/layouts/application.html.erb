@@ -1,29 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MyMoney</title>
+  <title>my money</title>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-	<header>
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		  <div class="container">
-		   	<div class="navbar-header">
-		   		<%= link_to raw("<strong>my</strong> money"), root_path, {class: "navbar-brand"} %>
-   			</div>
-				<ul class="nav navbar-nav  pull-right">
-						<li><%= link_to "accounts", accounts_path %></li>
-						<li><%= link_to "transactions", transactions_path %></li>
-						<li><%= link_to "categories", categories_path %></li>
-						<li><%= link_to "patterns", patterns_path %></li>
-						<li><%= link_to "reports", report_index_path %></li>
-				</ul>
-		  </div>
-		</nav>
-	</header>
+	<%= render 'layouts/header' %>
 	<div class="container">
 		<%= yield %>
 	</div>
