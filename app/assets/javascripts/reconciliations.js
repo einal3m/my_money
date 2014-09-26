@@ -17,7 +17,8 @@ $(document).ready(function() {
 	    // find current balance calculate new amount
 	    var balance = $( "#reconciled_balance" ).text().replace('$', '').replace(',', '');
 	    balance = parseFloat(balance) + factor * parseFloat(amount)
-	    balance = '$' + balance.toFixed(2)
+		
+	    balance = '$' + balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 	    $('#reconciled_balance').text(balance.replace('$-', '-$'));
 
 	    if ($("#reconciled_balance").text() == $("#statement_balance").text()) {
