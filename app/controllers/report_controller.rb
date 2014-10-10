@@ -53,8 +53,6 @@ class ReportController < ApplicationController
   			month_totals["Expense"].has_key?(month_text) ? month_totals["Expense"][month_text] : 0])
   	
   	end
-p month_totals
-p @report_data
   
   end
   
@@ -95,9 +93,8 @@ p @report_data
   def category
   
   	get_date_range
-  	
   	@categories = Category.all
-  	
+
   	# check for category_id in params... if it's not there show unassigned transactions
   	@category_id = params[:category_id]
   	if @category_id.nil? || @category_id.blank? then
@@ -112,11 +109,38 @@ p @report_data
   		@transactions = Transaction.where("category_id is null and date >= ? and date <= ?", @from_date, @to_date).reverse_date_order
   		
   		@transaction_total = Transaction.where("category_id is null and date >= ? and date <= ?", @from_date, @to_date).sum(:amount)
+       
+      # generate sql for category type data
+      my_sql = "select strftime('%m-%Y', t.date), sum(t.amount) FROM transactions t WHERE (t.date >= '#{@from_date}' and t.date <= '#{@to_date}') AND (t.category_id IS NULL) GROUP BY strftime('%m-%Y', t.date)"    
+      sql_data = Hash[Transaction.connection.select_all(my_sql).rows]
   	else
+
+      # for expenses, reverse the sign
+      factor = 1
+      if (@category.category_type.name == "Expense") then factor = -1 end
+
   		@transactions = Transaction.where("category_id = ? and date >= ? and date <= ?", @category_id, @from_date, @to_date).reverse_date_order
   		@transaction_total = Transaction.where("category_id = ? and date >= ? and date <= ?", @category_id, @from_date, @to_date).sum(:amount)
+       
+      # generate sql for category type data
+      my_sql = "select strftime('%m-%Y', t.date), (#{factor}*sum(t.amount)) FROM transactions t WHERE (t.date >= '#{@from_date}' and t.date <= '#{@to_date}') AND (t.category_id == #{@category_id}) GROUP BY strftime('%m-%Y', t.date)"    
+      sql_data = Hash[Transaction.connection.select_all(my_sql).rows]
   	end
-  	
+
+    # generate list of months to report on
+    months = []
+    number_of_months = (@to_date.to_date.year*12+@to_date.to_date.month)-(@from_date.to_date.year*12+@from_date.to_date.month) + 1
+    number_of_months.times do |month|
+      months[month] = @from_date.to_date >> (month)
+    end
+  
+    # fill report_data array
+    @report_data = []
+    months.each do |month_date|
+      month_text = month_date.strftime('%m-%Y')
+      @report_data << [month_date.strftime('%b-%y'), sql_data[month_date.strftime('%m-%Y')] || 0.00]    
+    end
+
   end
 
 # report for transactions with a specific subcategory

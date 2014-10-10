@@ -119,109 +119,114 @@ arcs.append("path")
   	  .text(function(d, i) { return labels[i]; });
 }
 
+//
+// bar_chart
+//
+// creates a bar chart from the data array and places the chart in the container with
+// the specified class name
+//
+// data is of the format:
+//
+// [[x, y1, y2...], [x, y1, y2...] ...]
+//
 function bar_chart(data, class_name) {
 
-// bar chart dimensions
+  // calculate how many data series, and how many bars for each series
+  var bar_count = data.length;
+  var data_count = data[0].length - 1;
+
+  // then work out bar chart dimensions
   var width = 1000,
-  	  height = 500,
-  	  max_bar_height = 400,
-  	  bar_width = 35,
-  	  bar_gap = 5;
-  	  bar_offset = 35;
-  	  bar_x_margin = 50;
-  	  bar_y_margin = 50;
-  	  
-// create scale for y 
+      height = 500,
+      max_bar_height = 400,
+      bar_gap = 5,
+      bar_offset = 35,
+      bar_x_margin = 50,
+      bar_y_margin = 50;
+  var bar_width = (75.0 - (data_count-1)*bar_gap)/data_count 
+      
+  // create scale for y 
   var y_scale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) {return Math.max(d[1], d[2]) })])
+    .domain([
+
+          d3.min(data, function(d) {
+            var min = 0; 
+            for (var i = 1; i < d.length; i++) if (d[i] < min) min = d[i]; 
+            return min; }),
+
+          d3.max(data, function(d) {
+            var max = d[1]; 
+            for (var i = 2; i < d.length; i++) if (d[i] > max) max = d[i]; 
+            return max; })])
     .range([max_bar_height, 0]);
 
-// create y axis
+  // create scale for x labels
+  var x_labels = []; 
+  for (var i = 0; i< data.length; i++) x_labels.push(data[i][0]); 
+
+  var x_scale = d3.scale.ordinal()
+    .domain(x_labels)
+    .rangeRoundBands([0, 75*bar_count + bar_gap*(bar_count)]);
+
+  // create y axis
   var y_axis = d3.svg.axis()
-  	.scale(y_scale)
-  	.orient("left")
-  	.ticks(5);
+    .scale(y_scale)
+    .orient("left")
+    .ticks(5);
 
-// main svg container
+  // create x axis
+  var xAxis = d3.svg.axis()
+    .scale(x_scale)
+    .orient("bottom");
+
+  // main svg container
   var vis = d3.select(class_name).append("svg")
-  	.attr("width", width)
-  	.attr("height", height);
-  	
-// container for right bars
-  var right_group = vis.append("g")
-  	.attr("class", "right")
-   	.attr("transform", "translate(" + (bar_x_margin + bar_offset) + ", " + bar_y_margin + ")");
+    .attr("width", width)
+    .attr("height", height);
+    
+  // for each set of x data, create bars
+  for (var x=1; x<=data_count; x++){
 
-// groups for right bars with their text
-  var right_bars = right_group.selectAll("g")
-   	.data(data)
-   	.enter().append("g")
-   	  .attr("transform", function (d,i) { return "translate(" + i*(bar_width + bar_offset + bar_gap) + ", 0)"; });
+    // container for bars
+    var bar_group = vis.append("g")
+      .attr("class", "x" + x)
+      .attr("transform", "translate(" + (bar_x_margin + (x-1)*bar_width + bar_gap) + ", " + bar_y_margin + ")");
 
-// group for left bars
-  var left_group = vis.append("g")
-  	.attr("class", "left")
-  	.attr("transform", "translate(" + bar_x_margin + ", " + bar_y_margin + ")");
+    // groups for bars with their text
+    var bars = bar_group.selectAll("g")
+      .data(data)
+      .enter().append("g")
+        .attr("transform", function (d,i) { return "translate(" + i*(75  + bar_gap) + ", 0)"; });
 
-// groups for left bars with their text
-  var left_bars = left_group.selectAll("g")
-    .data(data)
-    .enter().append("g")
-   	  .attr("transform", function (d,i) { return "translate(" + i*(bar_width + bar_offset + bar_gap) + ", 0)"; });
-  	
+    // Create bars
+    bars.append("rect")
+      .attr("width", bar_width)
+      .attr("height", function(d) {return max_bar_height-y_scale(d[x])})
+      .attr("y", function(d) { return y_scale(d[x]) } );
 
-// Create left bars
-left_bars.append("rect")
-  .attr("width", bar_width)
-  .attr("height", 0)
-  .attr("y", max_bar_height)
-  .transition().delay(function (d,i){ return 0;})
-  .duration(300)
-  .attr("height", function(d) {return max_bar_height-y_scale(d[1])})
-  .attr("y", function(d) { return y_scale(d[1]) } );
+     
+    // add text to bars
+    bars.append("text")
+      .attr("x", bar_width - 2)
+      .attr("y", function(d) { return y_scale(d[x]) + 10 })
+      .attr("text-anchor", "end")
+      .attr("fill", "white")
+      .text(function(d) { if (d[x] > 0) return "$" + d[x].toFixed(0); });
 
-// Create right bars
-right_bars.append("rect")
-  .attr("width", bar_width)
-  .attr("height", 0)
-  .attr("y", max_bar_height)
-  .transition().delay(function (d,i){ return 0;})
-  .duration(300)
-  .attr("height", function(d) {return max_bar_height-y_scale(d[2])})
-  .attr("y", function(d) { return y_scale(d[2]) } );
- 
-// add text to left bars
-left_bars.append("text")
-  .attr("x", bar_width - 2)
-  .attr("y", function(d) { return y_scale(d[1]) + 10 })
-  .attr("text-anchor", "end")
-  .attr("fill", "white")
-  .text(function(d) { if (d[1] > 0) return "$" + d[1].toFixed(0); });
+  }
 
+  // add y axis
+  vis.append("g")
+    .call(y_axis)
+    .attr("transform", "translate(" + bar_x_margin + ", " + bar_y_margin + ")")
+    .attr("class", "y axis");
 
-// add text to right bars
-right_bars.append("text")
-  .attr("x", bar_width - 2)
-  .attr("y", function(d) { return y_scale(d[2]) + 10 })
-  .attr("text-anchor", "end")
-  .attr("fill", "white")
-  .text(function(d) { if (d[2] > 0) return "$" + d[2].toFixed(0) });
+  // add x axis
+  vis.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(" + bar_x_margin + "," + (max_bar_height + bar_y_margin) + ")")
+      .call(xAxis);
 
-// add labels to x axis
-right_bars.append("text")
-  .attr("class", "bar-chart-x-label")
-  .attr("text-anchor", "middle") 
-  .attr("y", max_bar_height+15)
-  .text(function(d) {return d[0]; });
-  
-// add y axis
-vis.append("g")
-  .call(y_axis)
-  .attr("transform", "translate(" + bar_x_margin + ", " + bar_y_margin + ")")
-  .attr("class", "axis");
-
-// add line for x axis
-vis.append("path")
-  .attr("class", "axis")
-  .attr("d", "M " + bar_x_margin + " " + (bar_y_margin + max_bar_height) + " H " + (bar_x_margin + 12*(bar_width + bar_offset) + 11*bar_gap));  
 }
+
+    
