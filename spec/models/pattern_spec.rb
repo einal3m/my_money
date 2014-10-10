@@ -42,6 +42,9 @@ RSpec.describe Pattern, :type => :model do
   	  expect(FactoryGirl.build(:pattern, match_text: nil)).not_to be_valid  
     end
 
+    it "is valid without notes" do
+      expect(FactoryGirl.build(:pattern, notes: nil)).to be_valid  
+    end
   end  
 
   describe "relationships" do

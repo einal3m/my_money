@@ -41,6 +41,7 @@ feature "Patterns", :type => :feature do
 
     # enter data into the form
     fill_in 'Match text', :with => 'My Match Text'
+    fill_in 'Notes', :with => "New Note"
 	  select(subcategory.category.name, :from => 'pattern_category_id')
 
 	  # selecting category, should make the subcategory name appear in the 
@@ -53,6 +54,7 @@ feature "Patterns", :type => :feature do
 		# should see our new pattern on the index page
     expect(page).to have_text("Pattern was successfully created.")
     expect(page).to have_text("My Match Text")
+    expect(page).to have_text("New Note")
   end
 
   scenario "User edits a pattern" do

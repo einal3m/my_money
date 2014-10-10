@@ -3,6 +3,7 @@ FactoryGirl.define do
   factory :pattern do |f|
   	account
   	f.match_text "New Pattern"
+  	f.notes "Pattern Note"
   	category
   	subcategory
   end

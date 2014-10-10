@@ -41,6 +41,7 @@ class ImportTransactionsController < ApplicationController
       	 	if t.memo.downcase.include? p.match_text.downcase then
       	 	  t.category_id = p.category_id
       	 	  t.subcategory_id = p.subcategory_id
+            t.notes = p.notes
       	 	  break
       	 	end
       	 end  

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140822002359) do
+ActiveRecord::Schema.define(version: 20141010111315) do
 
   create_table "accounts", force: true do |t|
     t.string   "name"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20140822002359) do
     t.datetime "updated_at"
     t.integer  "category_id"
     t.integer  "subcategory_id"
+    t.string   "notes"
   end
 
   create_table "reconciliations", force: true do |t|

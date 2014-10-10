@@ -34,6 +34,10 @@
     <%= f.text_field :match_text %>
   </div>
   <div class="field">
+    <%= f.label :notes %><br>
+    <%= f.text_field :notes %>
+  </div>
+  <div class="field">
     <%= f.label :category_id %><br>
     <%= f.collection_select(:category_id, @categories, :id, :name, @category_options) %>
   </div>

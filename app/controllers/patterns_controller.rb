@@ -117,6 +117,6 @@ class PatternsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pattern_params
-      params.require(:pattern).permit(:account_id, :match_text, :category_id, :subcategory_id)
+      params.require(:pattern).permit(:account_id, :match_text, :notes, :category_id, :subcategory_id)
     end
 end

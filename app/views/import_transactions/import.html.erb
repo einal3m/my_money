@@ -14,6 +14,7 @@
       <th></th>
       <th>Date</th>
       <th>Memo</th>
+      <th>Notes</th>
       <th>Amount</th>
       <th>Category</th>
       <th>Subcategory</th>
@@ -31,6 +32,7 @@
         <td><%= t.check_box :import, name: "import_transactions[][import]" %></td>
         <td><%= t.text_field :date, name: "import_transactions[][date]", size: "10" %></td>
         <td><%= t.text_field :memo, name: "import_transactions[][memo]", size: "50" %></td>
+        <td><%= t.text_field :notes, name: "import_transactions[][notes]", size: "30" %></td>
         <td><%= t.text_field :amount, name: "import_transactions[][amount]", size: "10" %></td>
         <td><%= t.collection_select :category_id, @categories, :id, :name, {prompt: "Please select"}, {name: "import_transactions[][category_id]", class: "category_select"} %></td>
         <% if transaction.category.nil? %>

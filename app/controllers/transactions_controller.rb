@@ -128,7 +128,7 @@ class TransactionsController < ApplicationController
         transaction["amount"] = transaction["amount"].to_f
         transaction["account_id"] = account
   
-        Transaction.create(transaction.permit(:transaction_type, :date, :amount, :fitid, :memo, :account_id, :category_id, :subcategory_id))
+        Transaction.create(transaction.permit(:transaction_type, :date, :amount, :fitid, :memo, :notes, :account_id, :category_id, :subcategory_id))
       end
   	end
    

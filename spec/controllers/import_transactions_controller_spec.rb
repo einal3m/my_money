@@ -75,11 +75,12 @@ RSpec.describe ImportTransactionsController, :type => :controller do
   	it "sets category and subcategory for transactions which match a pattern" do
   		category = FactoryGirl.create(:category)
   		subcategory = FactoryGirl.create(:subcategory, category: category)
-  		FactoryGirl.create(:pattern, account: @account, match_text: "MCDONALDS", category: category, subcategory: subcategory)
+  		FactoryGirl.create(:pattern, account: @account, match_text: "MCDONALDS", notes: "New Note", category: category, subcategory: subcategory)
 
   		post :import, {:account => @account.to_param, :money_file => @file}
   		expect(assigns(:transactions)[2].category).to eq(category)
   		expect(assigns(:transactions)[2].subcategory).to eq(subcategory)
+      expect(assigns(:transactions)[2].notes).to eq("New Note")
   	end
 
     it "renders the :import view" do

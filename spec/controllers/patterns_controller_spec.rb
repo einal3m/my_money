@@ -160,10 +160,12 @@ RSpec.describe PatternsController, :type => :controller do
         new_category = new_subcategory.category
         put :update, {:id => pattern.to_param, :pattern => {
                   match_text: "New Text",
+                  notes: "New Note",
                   category_id: new_category.id,
                   subcategory_id: new_subcategory.id }}, valid_session
         pattern.reload
         expect(pattern.match_text).to eq("New Text")
+        expect(pattern.notes).to eq("New Note")
         expect(pattern.category).to eq(new_category)
         expect(pattern.subcategory).to eq(new_subcategory)
       end
