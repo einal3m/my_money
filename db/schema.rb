@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141010111315) do
+ActiveRecord::Schema.define(version: 20141012051612) do
 
   create_table "accounts", force: true do |t|
     t.string   "name"
@@ -41,6 +41,20 @@ ActiveRecord::Schema.define(version: 20141010111315) do
     t.datetime "updated_at"
   end
 
+  create_table "date_range_options", force: true do |t|
+    t.string   "description"
+    t.string   "klass"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "date_ranges", force: true do |t|
+    t.string   "description"
+    t.string   "klass"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "patterns", force: true do |t|
     t.integer  "account_id"
     t.string   "match_text"
@@ -60,6 +74,13 @@ ActiveRecord::Schema.define(version: 20141010111315) do
     t.datetime "updated_at"
     t.date     "last_reconciled_date"
     t.decimal  "last_reconciled_balance"
+  end
+
+  create_table "searches", force: true do |t|
+    t.string   "description"
+    t.string   "klass"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "subcategories", force: true do |t|

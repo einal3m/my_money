@@ -1,26 +1,18 @@
 <h1>Sub-category Report</h1>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-	<%= form_tag("/report/subcategory", method: :get) do %>
+<%= form_tag("/report/subcategory", method: :get) do %>
 
+  <div class="box search fill_normal">
 	  <%= label_tag("category_id", "Category: ") %>
 	  <%= grouped_collection_select(@category, @category_id, CategoryType.all, :categories, :name, :id, :name, {prompt: true, selected: @category_id}, {:id => "report_category_id", :name => "category_id"}) %>
-	  &nbsp;&nbsp;
 
 	  <%= label_tag("subcategory_id", "Sub-catgegory: ") %>
 	  <%= collection_select(@subcategory, @subcategory_id, @subcategories, :id, :name, {:selected => @subcategory_id, :include_blank => "Un-assigned"}, {:id => "report_subcategory_id", :name => "subcategory_id"}) %>
-	  &nbsp;&nbsp;
-      <%= label_tag("from_date", "From: ") %>
-	  <%= date_field_tag("from_date", @from_date) %>&nbsp;&nbsp;
-      <%= label_tag("to_date", "To: ") %>
-	  <%= date_field_tag("to_date", @to_date) %>
-	
-	  <button type="submit" class="btn btn-default pull-right">Refresh</button>
-
-    <% end %>
   </div>
+  <%= render 'layouts/date_select' %>
+<% end %>
 
+<div class="panel panel-default">
 	<table class="table table-condensed">
   <thead>
     <tr>

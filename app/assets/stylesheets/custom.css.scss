@@ -113,6 +113,21 @@ div.box{
 		opacity: 0.8;
 	}
 
+	&.search {
+		color: black;
+		height: 58px;
+
+		&:hover {
+			opacity: 1;
+		}
+		line-height: 50px;
+
+		select, input {
+			margin-right: 25px;
+		}
+
+	}
+
 }
 
 

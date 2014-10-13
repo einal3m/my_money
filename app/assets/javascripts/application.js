@@ -40,5 +40,14 @@ $(document).ready(function() {
   	$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
   });
   
+  // date range selection
+  // when custom dates is selected, from and to date fields should be visible
+  $("#date_range_option_id").change(function() {
+    if ($("#date_range_option_id option:selected").text()=="Custom Dates")
+      $("#custom_dates").show();
+    else
+      $("#custom_dates").hide();
+  });
+
 });
 

@@ -1,22 +1,14 @@
 <h1>Category Report</h1>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-	<%= form_tag("/report/category", method: :get) do %>
-	  <%= label_tag("category_id", "Category: ") %>
-
-	  <%= grouped_collection_select(@category, @category_id, CategoryType.all, :categories, :name, :id, :name, {:prompt => true, :selected => @category_id.to_i, :include_blank => "Un-assigned"}, {:id => "category_id", :name => "category_id"}) %>
-	  &nbsp;&nbsp;
-      <%= label_tag("from_date", "From: ") %>
-	  <%= date_field_tag("from_date", @from_date) %>&nbsp;&nbsp;
-      <%= label_tag("to_date", "To: ") %>
-	  <%= date_field_tag("to_date", @to_date) %>
-	
-	  <button type="submit" class="btn btn-default pull-right">Refresh</button>
-
-    <% end %>
+<%= form_tag("/report/category", method: :get) do %>
+  <div class="search box fill_normal">
+    <%= label_tag("category_id", "Category: ") %>
+    <%= grouped_collection_select(@category, @category_id, CategoryType.all, :categories, :name, :id, :name, {:prompt => true, :selected => @category_id.to_i, :include_blank => "Un-assigned"}, {:id => "category_id", :name => "category_id"}) %>
   </div>
+  <%= render 'layouts/date_select' %>
+<% end %>
 
+<div class="panel panel-default">
   <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#graph" role="tab" data-toggle="tab">Graph</a></li>

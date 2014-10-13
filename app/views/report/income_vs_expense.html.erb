@@ -1,19 +1,9 @@
 <h1>Income vs Expenses</h1>
 
-<div class="panel panel-default panel-form">
-  <div class="container">
-	<%= form_tag("/report/income_vs_expense", method: :get) do %>
-      <%= label_tag("from_date", "From: ") %>
-	  <%= date_field_tag("from_date", @from_date) %>&nbsp;&nbsp;
-      <%= label_tag("to_date", "To: ") %>
-	  <%= date_field_tag("to_date", @to_date) %>
-	&nbsp;&nbsp;
-	  <button type="submit" class="btn btn-default">Refresh</button>
-	<p>
-    <% end %>
-  </div>
-</div>
-
+<%= form_tag("/report/income_vs_expense", method: :get) do %>
+  <%= render 'layouts/date_select' %>
+<% end %>
+<br>
 <div class="row">
 
   <% @report_data.each do |category_type, report_data| %>

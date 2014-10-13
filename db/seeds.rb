@@ -14,6 +14,16 @@ CategoryType.create!([
 ])
 
 
+DateRangeOption.delete_all
+
+DateRangeOption.create!([
+  {id: 1, description: "Current Month", klass: "CurrentMonthDateRange"},
+  {id: 2, description: "Last 90 Days", klass: "Last90DaysDateRange"},
+  {id: 3, description: "Current Financial Year", klass: "CurrentFinancialYearDateRange"},
+  {id: 4, description: "Previous Financial Year", klass: "PreviousFinancialYearDateRange"},
+  {id: 5, description: "Custom Dates", klass: "CustomDateRange"}
+])
+
 Category.delete_all
 
 Category.create!([
