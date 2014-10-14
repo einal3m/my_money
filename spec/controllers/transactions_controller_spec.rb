@@ -26,7 +26,7 @@ RSpec.describe TransactionsController, :type => :controller do
   let(:valid_session) { {} }
 
   before :all do
-    @dr_option = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange")
+    @dr_option = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
   end
 
   describe "GET index" do

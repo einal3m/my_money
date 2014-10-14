@@ -2,6 +2,13 @@ require 'rails_helper'
 
 feature "Transactions", :type => :feature do
 
+  before(:all) {
+    # create a few date ranges
+    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
+    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
+    FactoryGirl.create(:date_range_option, description: "Last 90 Days", klass: "Last90DaysDateRange")
+  }
+
   scenario "User views the transaction list for an account" do
 
     # given I have an account with some transactions
@@ -11,10 +18,6 @@ feature "Transactions", :type => :feature do
     FactoryGirl.create(:transaction, account: a, date: Date.today, notes: "three")
     FactoryGirl.create(:transaction, account: a, date: Date.today << 1, notes: "four")
     FactoryGirl.create(:transaction, account: a, date: Date.today << 2, notes: "five")
-
-    # and I have set up date ranges
-    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange")
-    FactoryGirl.create(:date_range_option, description: "Last 90 Days", klass: "Last90DaysDateRange")
 
   	# when I go to the accounts index page
     visit "/transactions"

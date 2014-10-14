@@ -2,6 +2,12 @@ require 'rails_helper'
 
 feature "Reconciliations", :type => :feature do
 
+  before(:all) {
+    # create a few date ranges
+    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
+    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
+  }
+
 	after(:all) {
     DatabaseCleaner.clean
 	}
@@ -9,17 +15,17 @@ feature "Reconciliations", :type => :feature do
   scenario "User performs bank reconciliation", :js => true do
   	# Given we have an account with some transactions
   	account = FactoryGirl.create(:account, name: "My Account", starting_balance: 10.00, starting_date: "2014-07-01")
-  	transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-07-02", amount: 25.00, reconciliation: nil)
-  	transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-07-03", amount: 15.00, reconciliation: nil)
-  	transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-07-04", amount: 2.00, reconciliation: nil)
-  	transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-07-05", amount: 100.00, reconciliation: nil)
+  	transaction1 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 25.00, reconciliation: nil)
+  	transaction2 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 15.00, reconciliation: nil)
+  	transaction3 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 2.00, reconciliation: nil)
+  	transaction4 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 100.00, reconciliation: nil)
   	
   	# and we are on the transactions list page
   	visit('/transactions')
 
     # select the account and click refresh
     select('My Account', from: 'account_id')
-    click_on('Refresh')
+    click_on('Search')
 
   	# Click on the Reconcile button
   	click_on('Reconcile')
@@ -69,7 +75,7 @@ feature "Reconciliations", :type => :feature do
     # go to the reconciliation index page
     visit('/reconciliations')
 
-  	# expect the reconciliation to be completedt
+  	# expect the reconciliation to be completed
     expect(find("tr", text:"My Account")).to have_css("span")
  
   end

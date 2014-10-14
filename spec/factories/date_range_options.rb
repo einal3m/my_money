@@ -4,5 +4,7 @@ FactoryGirl.define do
   factory :date_range_option do
     description "MyString"
     klass "MyString"
+    sequence(:order) { |n| n }
+    default false
   end
 end

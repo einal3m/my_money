@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   def get_date_range
   
     # check params first, then session
-    @date_range_option = DateRangeOption.find(params.fetch(:date_range_option_id, session[:date_range_option_id]) || DateRangeOption.first.id)
+    @date_range_option = DateRangeOption.find(params.fetch(:date_range_option_id, session[:date_range_option_id]) || DateRangeOption.default)
     from_date = params.fetch(:from_date, session[:from_date])
     to_date = params.fetch(:to_date, session[:to_date])
 
@@ -23,7 +23,6 @@ class ApplicationController < ActionController::Base
   	session[:from_date] = @date_range.from_date.to_s
   	session[:to_date] = @date_range.to_date.to_s
     session[:date_range_option_id] = @date_range_option.id
-
 
   end
 end

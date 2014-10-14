@@ -24,7 +24,7 @@ RSpec.describe ReportController, :type => :controller do
 			@t6 = FactoryGirl.create(:transaction, date: "2014-03-02", category: @t1.category, subcategory: nil)
 			@t7 = FactoryGirl.create(:transaction, date: "2014-03-03", category: nil, subcategory: nil)
 
-			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange")
+			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
 			@dr2 = FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
 
 		end
@@ -96,7 +96,7 @@ RSpec.describe ReportController, :type => :controller do
 			@t3 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: nil)
 			@t4 = FactoryGirl.create(:transaction, date: "2014-02-02", category: @c, subcategory: @sc)
 			@t5 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: nil)
-			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange")
+			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
 			@dr2 = FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
 		end
 

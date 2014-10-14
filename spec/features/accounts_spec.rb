@@ -2,6 +2,12 @@ require 'rails_helper'
 
 feature "Accounts", :type => :feature do
 
+  before(:all) {
+    # create a few date ranges
+    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
+    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
+  }
+
   scenario "User views the accounts list for an account" do
 
     # given I have an account
@@ -81,8 +87,8 @@ feature "Accounts", :type => :feature do
 
     # given I have an account with 2 transactions
     account = FactoryGirl.create(:account, name: 'Test Account')
-    FactoryGirl.create(:transaction, account: account, notes: "txn1")
-    FactoryGirl.create(:transaction, account: account, notes: "txn2")
+    FactoryGirl.create(:transaction, account: account, notes: "txn1", date: Date.today)
+    FactoryGirl.create(:transaction, account: account, notes: "txn2", date: Date.today)
 
     # and I go to the accounts index page
     visit "/accounts"
