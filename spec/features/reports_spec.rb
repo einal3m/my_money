@@ -29,8 +29,8 @@ feature "Reports", :type => :feature do
     expect(page).not_to have_field('from_date')
     expect(page).not_to have_field('to_date')
 
-  	# When I click Refresh
-    click_on('Refresh')
+  	# When I click Search
+    click_on('Search')
 
   	# Then I see a graph
   	expect(page).to have_content('Graph')
@@ -59,8 +59,8 @@ feature "Reports", :type => :feature do
   	fill_in('from_date', with: Date.today << 1)
   	fill_in('to_date', with: Date.today >> 1)
 
-  	# And I click Refresh
-  	click_on('Refresh')
+  	# And I click Search
+  	click_on('Search')
 
   	# Then I see a new graph
   	expect(page).to have_content('Graph')
@@ -102,8 +102,8 @@ feature "Reports", :type => :feature do
     expect(page).not_to have_field('from_date')
     expect(page).not_to have_field('to_date')
 
-  	# When I click Refresh
-    click_on('Refresh')
+  	# When I click Search
+    click_on('Search')
 
   	# Then I should see data
   	expect(page.all('tbody tr').count).to eq(3)
@@ -120,8 +120,8 @@ feature "Reports", :type => :feature do
   	fill_in('from_date', with: Date.today << 1)
   	fill_in('to_date', with: Date.today >> 1)
 
-  	# And I click Refresh
-  	click_on('Refresh')
+  	# And I click Search
+  	click_on('Search')
 
   	# Then the date info should be visible
   	expect(find_field('from_date').value).to eq((Date.today << 1).to_s)

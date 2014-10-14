@@ -1,19 +1,17 @@
 <h1>transactions <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_transaction_path, class: "btn btn-default" %>&nbsp;<%= link_to "Reconcile", new_reconciliation_path, class: "btn btn-default" %> </h1>
 <p id="notice"><%= notice %></p>
 
-  <div class="panel panel-default">
-  
-    <div class="panel-heading">
-	  <%= form_tag('/transactions', method: :get) do %>
 
-        <h4 class="panel-title"><label for="account">Account: </label>
-        <%= collection_select(@account, :id, @accounts, :id, :name, {:prompt => true, :selected => @account_id.to_i}, {:name => "account_id"}) %>
+<%= form_tag('/transactions', method: :get) do %>
+  <div class="search box fill_normal">
+    <%= label_tag("account", "account: ") %>
+    <%= collection_select(@account, :id, @accounts, :id, :name, {:prompt => true, :selected => @account_id.to_i}, {:name => "account_id"}) %>
+  </div>
 
-        <button type="submit" class="btn btn-default">Refresh</button></h4>
-        
-      <% end %>
-    </div>
+  <%= render 'layouts/date_select' %>    
+<% end %>
     
+<div class="panel panel-default">
 	<table class="table table-condensed">
   <thead>
     <tr>
@@ -42,7 +40,7 @@
         <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_transaction_path(transaction) %></td>
       </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
 
 </div> <!-- end panel-->

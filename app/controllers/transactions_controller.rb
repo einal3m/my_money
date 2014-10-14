@@ -5,6 +5,9 @@ class TransactionsController < ApplicationController
   # GET /transactions.json
   def index
 
+    # get date range information from parameters, session or default
+    get_date_range
+
     # list of all accounts
     @accounts = Account.all
     
@@ -25,7 +28,7 @@ class TransactionsController < ApplicationController
     else
     	session[:account_id] = @account_id
       @account = Account.find(@account_id)
-    	@transactions = @account.transactions.reverse_date_order
+    	@transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
     	@current_balance = @account.starting_balance + @account.transactions.sum(:amount)
     end
   end

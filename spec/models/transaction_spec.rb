@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'date_range'
 #
 #  Transaction
 #  
@@ -94,6 +95,18 @@ RSpec.describe Transaction, :type => :model do
 
       expect(Transaction.reverse_date_order).to eq([t3, t5, t2, t4, t1])
     end
+
+    it "finds transactions given a date range object" do
+      t1 = FactoryGirl.create(:transaction, date: "2014-01-01")
+      t2 = FactoryGirl.create(:transaction, date: "2014-01-03")
+      t3 = FactoryGirl.create(:transaction, date: "2014-01-05")
+      t4 = FactoryGirl.create(:transaction, date: "2014-01-02")
+      t5 = FactoryGirl.create(:transaction, date: "2014-01-04")
+      dr = CustomDateRange.new({from_date: "2014-01-02", to_date: "2014-01-04"})
+
+      expect(Transaction.find_by_date(dr)).to eq([t2, t4, t5])
+    end
+
   end
 
   describe "initialize" do

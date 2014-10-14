@@ -25,36 +25,43 @@ RSpec.describe TransactionsController, :type => :controller do
   # TransactionsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  before :all do
+    @dr_option = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange")
+  end
+
   describe "GET index" do
 
-    it "assigns all transactions for specified account as @transactions" do
-      transaction = FactoryGirl.create(:transaction)
-      get :index, {:account_id => transaction.account.id}, valid_session
-      expect(assigns(:transactions)).to eq([transaction])
+    it "assigns all transactions for specified account for specified date range as @transactions" do
+      t1 = FactoryGirl.create(:transaction, date: Date.today)
+      t2 = FactoryGirl.create(:transaction, account: t1.account, date: Date.today >> 2)
+      t3 = FactoryGirl.create(:transaction, account: t1.account, date: Date.today << 2)
+      get :index, {:account_id => t1.account.id}, valid_session
+
+      expect(assigns(:transactions)).to eq([t1])
     end
 
     it "returns no transactions if no account is specified or in the session" do
       session.delete(:account_id)
-      FactoryGirl.create(:transaction)
+      FactoryGirl.create(:transaction, date: Date.today)
       get :index, {}, valid_session
       expect(assigns(:transactions)).to eq([])
     end
 
     it "saves the current account into the session and @account" do
-      transaction = FactoryGirl.create(:transaction)
+      transaction = FactoryGirl.create(:transaction, date: Date.today)
       get :index, {:account_id => transaction.account.id}, valid_session
       expect(session[:account_id]).to eq(transaction.account.id.to_s)
       expect(assigns(:account)).to eq(transaction.account)
     end
 
     it "calculates the current balance" do
-      transaction = FactoryGirl.create(:transaction)
+      transaction = FactoryGirl.create(:transaction, date: Date.today)
       get :index, {:account_id => transaction.account.id}, valid_session
       expect(assigns(:current_balance)).to eq(transaction.amount + transaction.account.starting_balance)
     end
 
     it "renders the :index view" do
-      transaction = FactoryGirl.create(:transaction)
+      transaction = FactoryGirl.create(:transaction, date: Date.today)
       get :index, {:account_id => transaction.account.id}, valid_session
       expect(response).to render_template("index")
     end
@@ -63,7 +70,7 @@ RSpec.describe TransactionsController, :type => :controller do
 
   describe "GET show" do
     it "redirects the the index page" do
-      transaction = FactoryGirl.create(:transaction)
+      transaction = FactoryGirl.create(:transaction, date: Date.today)
       get :show, {:id => transaction.to_param}, valid_session
       expect(response).to redirect_to(transactions_url)
     end
