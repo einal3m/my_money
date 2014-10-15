@@ -88,7 +88,7 @@ RSpec.describe DateRangeOptionsController, :type => :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        FactoryGirl.attributes_for(:date_range_option, description: "Update Desc", klass: "UpdateKlass", default: true)
+        FactoryGirl.attributes_for(:date_range_option, description: "Update Desc", klass: "CustomDateRange", default: true)
       }
 
       it "updates the requested date_range_option" do
@@ -99,7 +99,7 @@ RSpec.describe DateRangeOptionsController, :type => :controller do
         date_range_option.reload
 
         expect(date_range_option.description).to eq("Update Desc")
-        expect(date_range_option.klass).to eq("UpdateKlass")
+        expect(date_range_option.klass).to eq("CustomDateRange")
         expect(date_range_option.default).to be_truthy
         expect(dro1.default).to be_falsey
       end

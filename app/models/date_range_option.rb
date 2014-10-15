@@ -3,6 +3,13 @@ class DateRangeOption < ActiveRecord::Base
 	# validations
 	validates :description, presence: true
 	validates :klass, presence: true
+  validate :klass_must_be_a_valid_class
+ 
+  def klass_must_be_a_valid_class
+    if self.klass.nil? || !DateRange.valid?(self.klass)
+      errors.add(self.klass, "not a valid class")
+    end
+  end
 
 	# scopes
   scope :default, -> { find_by(default: true) }

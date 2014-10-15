@@ -28,14 +28,14 @@ feature "DateRangeOptions", :type => :feature do
 
 		# and I enter some text
 		fill_in('date_range_option_description', with: "New Date Range")
-		fill_in('date_range_option_klass', with: "NewDateRange")
+		fill_in('date_range_option_klass', with: "CurrentMonthDateRange")
 
 		# And click Save
 		click_on('Save')
 
 		# Then a new date range is created
 		expect(page).to have_text("New Date Range")
-		expect(page).to have_text("NewDateRange")
+		expect(page).to have_text("CurrentMonthDateRange")
 
 		# And it should have an order of 1 and default to true
 		expect(page).to have_text("1")
@@ -48,14 +48,14 @@ feature "DateRangeOptions", :type => :feature do
 
 		# When I add another date range
 		fill_in('date_range_option_description', with: "Another Date Range")
-		fill_in('date_range_option_klass', with: "AnotherDateRange")
+		fill_in('date_range_option_klass', with: "Last90DaysDateRange")
 
 		# And click Save
 		click_on('Save')
 
 		# Then I see the new date range information
 		expect(page).to have_text("Another Date Range")
-		expect(page).to have_text("AnotherDateRange")
+		expect(page).to have_text("Last90DaysDateRange")
 		expect(page).to have_text("2")
 		within('tr', text: "Another Date Range") do
 			expect(page).to have_text("false")
@@ -67,8 +67,8 @@ feature "DateRangeOptions", :type => :feature do
 
 	scenario "user updates a date range option" do
 		# Given that I have a date range
-		FactoryGirl.create(:date_range_option, description: "First Date Range", klass: "FirstDateRange")
-		FactoryGirl.create(:date_range_option, description: "My Date Range", klass: "MyDateRange")
+		FactoryGirl.create(:date_range_option, description: "First Date Range", klass: "CurrentMonthDateRange")
+		FactoryGirl.create(:date_range_option, description: "My Date Range", klass: "Last90DaysDateRange")
 
 		# And I am on the date range index page
 		visit('/date_range_options')
@@ -83,11 +83,11 @@ feature "DateRangeOptions", :type => :feature do
 
 		# And my date range object details
 		expect(find_field('date_range_option_description').value).to eq("My Date Range")
-		expect(find_field('date_range_option_klass').value).to eq("MyDateRange")
+		expect(find_field('date_range_option_klass').value).to eq("Last90DaysDateRange")
 
 		# When I fill in new values
 		fill_in('date_range_option_description', with: "New Date Range")
-		fill_in('date_range_option_klass', with: "NewDateRange")
+		fill_in('date_range_option_klass', with: "CustomDateRange")
 		check('date_range_option_default')
 
 		# And click the save button
@@ -98,7 +98,7 @@ feature "DateRangeOptions", :type => :feature do
 
 		# And see the new values
 		expect(page).to have_text("New Date Range")
-		expect(page).to have_text("NewDateRange")
+		expect(page).to have_text("CustomDateRange")
 
 		# And updated record should have default set
 		within('tr', text: "New Date Range") do
@@ -116,8 +116,8 @@ feature "DateRangeOptions", :type => :feature do
 
 	scenario "User deletes a date range option", js: true do
 		# Given I have a date range option
-		FactoryGirl.create(:date_range_option, description: "First Date Range", klass: "FirstDateRange")
-		FactoryGirl.create(:date_range_option, description: "Second Date Range", klass: "SecondDateRange")
+		FactoryGirl.create(:date_range_option, description: "First Date Range", klass: "CurrentMonthDateRange")
+		FactoryGirl.create(:date_range_option, description: "Second Date Range", klass: "Last90DaysDateRange")
 
 		# And I am on the index page
 		visit('/date_range_options')

@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :date_range_option do
     description "MyString"
-    klass "MyString"
+    klass "CurrentMonthDateRange"
   end
 end

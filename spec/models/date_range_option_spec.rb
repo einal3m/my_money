@@ -11,12 +11,16 @@ RSpec.describe DateRangeOption, :type => :model do
   
   describe "validations" do
 
-    it "it is invalid without a description" do
+    it "is invalid without a description" do
     	expect(FactoryGirl.build(:date_range_option, description: nil)).not_to be_valid
     end
     
-    it "it is invalid without a klass" do
+    it "is invalid without a klass" do
     	expect(FactoryGirl.build(:date_range_option, klass: nil)).not_to be_valid
+    end
+
+    it "is invalid if klass does not exist, or is not of type DateRange" do
+      expect(FactoryGirl.build(:date_range_option, klass: "Object")).not_to be_valid
     end
 
   end
