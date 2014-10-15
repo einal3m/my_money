@@ -1,0 +1,34 @@
+<% provide(:title, 'index') %>
+<p id="notice"><%= notice %></p>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4>date range options</h4>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Description</th>
+        <th>Class</th>
+        <th>Default</th>
+        <th> </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @date_range_options.each do |date_range_option| %>
+        <tr>
+          <td><%= date_range_option.order %></td>
+          <td><%= date_range_option.description %></td>
+          <td><%= date_range_option.klass %></td>
+          <td><%= date_range_option.default %></td>
+          <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_date_range_option_path(date_range_option) %></td>
+        </tr>
+      <% end %>
+      <tr id="new_row"><td colspan=5><a data-toggle="collapse" data-parent="#new_row" href="#new_option"> + New</a></td></tr>
+      <%= render 'form' %>
+    </tbody>
+  </table>
+</div>

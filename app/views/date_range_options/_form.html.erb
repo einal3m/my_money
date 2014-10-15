@@ -1,0 +1,17 @@
+<%= form_for(@date_range_option) do |f| %>
+  <tr id='new_option' class='panel-collapse collapse out'>
+    <td>
+    </td>
+    <td class="field">
+      <%= f.text_field :description %>
+    </td>
+    <td class="field">
+      <%= f.text_field :klass %>
+    </td>
+    <td>
+      <button type="submit" class="btn btn-default">Save</button>
+    </td>
+    <td>
+    </td>
+  </tr>
+<% end %>

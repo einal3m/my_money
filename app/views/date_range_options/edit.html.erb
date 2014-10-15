@@ -1,0 +1,51 @@
+<% if @date_range_option.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@date_range_option.errors.count, "error") %> prohibited this date range option from being saved:</h2>
+
+    <ul>
+    <% @date_range_option.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4>edit date range option</h4>
+  </div>
+
+	<%= form_for(@date_range_option) do |f| %>
+
+    <div class="container">
+
+		  <div class="field">
+		    <%= f.label :order %><br>
+		    <%= f.text_field :order %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :description %><br>
+		    <%= f.text_field :description %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :klass, "Class" %><br>
+		    <%= f.text_field :klass %>
+		  </div>
+		  <div class="field">
+		    <br><%= f.check_box :default %>
+		    <%= f.label :default, "Set as Default" %>
+		  </div>
+
+    </div> <!-- end container -->
+
+    <div class="panel-footer">
+  	  <button type="submit" class="btn btn-default">Save</button>
+  	  <%= link_to "Cancel", date_range_options_path, class: "btn btn-default" %>
+		  <% if !@date_range_option.default %>
+				<%= link_to 'Delete', @date_range_option, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+			<% end %>
+    </div>
+
+  <% end %> <!-- end form -->
+
+</div> <!-- end panel -->

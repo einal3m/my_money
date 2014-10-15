@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'report/index'
 
   resources :patterns
+  resources :date_range_options
 
   get 'import_transactions/file_chooser'
   post 'import_transactions/import'
