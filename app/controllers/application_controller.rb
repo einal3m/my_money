@@ -9,9 +9,6 @@ class ApplicationController < ActionController::Base
   # get the date range from params, if it does not exist check the session
   # defaults to current month
   def get_date_range
-  p "session: #{session[:date_range_option_id]}"
-  p "params: #{params[:date_range_option_id]}"
-  p DateRangeOption.default
     # check params first, then session
     @date_range_option = DateRangeOption.find(params.fetch(:date_range_option_id, session[:date_range_option_id]) || DateRangeOption.default.id)
     from_date = params.fetch(:from_date, session[:from_date])
