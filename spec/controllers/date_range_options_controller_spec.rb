@@ -28,7 +28,7 @@ RSpec.describe DateRangeOptionsController, :type => :controller do
   }
 
   let(:invalid_attributes) {
-    FactoryGirl.attributes_for(:date_range_option, description: nil)
+    FactoryGirl.attributes_for(:date_range_option, klass: nil)
   }
 
   # This should return the minimal set of values that should be in the session
@@ -138,6 +138,23 @@ RSpec.describe DateRangeOptionsController, :type => :controller do
       date_range_option = DateRangeOption.create! valid_attributes
       delete :destroy, {:id => date_range_option.to_param}, valid_session
       expect(response).to redirect_to(date_range_options_url)
+    end
+
+    it "removes date range option from session if deleted" do
+      date_range_option = DateRangeOption.create! valid_attributes
+      session[:date_range_option_id] = date_range_option.id
+      delete :destroy, {:id => date_range_option.to_param}, valid_session
+
+      expect(session[:date_range_option_id]).to be_nil
+    end
+
+    it "leaves session unchanged if different date range option deleted" do
+      date_range_option1 = DateRangeOption.create! valid_attributes
+      date_range_option2 = DateRangeOption.create! valid_attributes
+      session[:date_range_option_id] = date_range_option1.id
+      delete :destroy, {:id => date_range_option2.to_param}
+
+      expect(session[:date_range_option_id]).to eq(date_range_option1.id)
     end
   end
 

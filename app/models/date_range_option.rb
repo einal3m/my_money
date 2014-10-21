@@ -6,7 +6,8 @@ class DateRangeOption < ActiveRecord::Base
   validate :klass_must_be_a_valid_class
  
   def klass_must_be_a_valid_class
-    if self.klass.nil? || !DateRange.valid?(self.klass)
+    return if self.klass.blank?
+    if !DateRange.valid?(self.klass)
       errors.add(self.klass, "not a valid class")
     end
   end

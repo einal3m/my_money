@@ -22,6 +22,7 @@ class DateRangeOptionsController < ApplicationController
         format.html { redirect_to date_range_options_path, notice: 'Date range option was successfully created.' }
         format.json { render :show, status: :created, location: @date_range_option }
       else
+p @date_range_option.errors
         format.html { redirect_to date_range_options_path, notice: 'Unable to create date range object: ' + @date_range_option.errors.full_messages.first }
         format.json { render json: @date_range_option.errors, status: :unprocessable_entity }
       end
@@ -45,7 +46,9 @@ class DateRangeOptionsController < ApplicationController
   # DELETE /date_range_options/1
   # DELETE /date_range_options/1.json
   def destroy
+    session.delete(:date_range_option_id) if session[:date_range_option_id] == @date_range_option.id
     @date_range_option.destroy
+
     respond_to do |format|
       format.html { redirect_to date_range_options_url, notice: 'Date range option was successfully deleted.' }
       format.json { head :no_content }

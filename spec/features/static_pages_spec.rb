@@ -20,7 +20,7 @@ feature "Static Pages", :type => :feature do
   		within '.dropdown' do
   			expect(page).to have_link("category")
   			expect(page).to have_link("sub-category")
-  			expect(page).to have_link("income/expense")
+  			expect(page).to have_link("income vs expenses")
   			expect(page).to have_link("bar chart")
   		end
     end
