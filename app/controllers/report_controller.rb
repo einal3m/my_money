@@ -91,6 +91,7 @@ class ReportController < ApplicationController
   
   def category
 
+    # for from select boxes
   	@categories = Category.all
 
   	# check for category_id in params... if it's not there show unassigned transactions
@@ -102,10 +103,11 @@ class ReportController < ApplicationController
   		@category = Category.find(@category_id)
   	end
   	
+    search = CategorySearch.new({category: @category, date_range: @date_range})
+    @transactions = search.transactions
+    @transaction_total = search.sum
+
   	if @category_id.nil? then
-  		@transactions = Transaction.where("category_id is null and date >= ? and date <= ?", @date_range.from_date, @date_range.to_date).reverse_date_order
-  		
-  		@transaction_total = Transaction.where("category_id is null and date >= ? and date <= ?", @date_range.from_date, @date_range.to_date).sum(:amount)
        
       # generate sql for category type data
       my_sql = "select strftime('%m-%Y', t.date), sum(t.amount) FROM transactions t WHERE (t.date >= '#{@date_range.from_date}' and t.date <= '#{@date_range.to_date}') AND (t.category_id IS NULL) GROUP BY strftime('%m-%Y', t.date)"    
@@ -115,9 +117,6 @@ class ReportController < ApplicationController
       # for expenses, reverse the sign
       factor = 1
       if (@category.category_type.name == "Expense") then factor = -1 end
-
-  		@transactions = Transaction.where("category_id = ? and date >= ? and date <= ?", @category_id, @date_range.from_date, @date_range.to_date).reverse_date_order
-  		@transaction_total = Transaction.where("category_id = ? and date >= ? and date <= ?", @category_id, @date_range.from_date, @date_range.to_date).sum(:amount)
        
       # generate sql for category type data
       my_sql = "select strftime('%m-%Y', t.date), (#{factor}*sum(t.amount)) FROM transactions t WHERE (t.date >= '#{@date_range.from_date}' and t.date <= '#{@date_range.to_date}') AND (t.category_id == #{@category_id}) GROUP BY strftime('%m-%Y', t.date)"    
