@@ -116,11 +116,7 @@ class ReportController < ApplicationController
 # report for transactions with a specific subcategory
 
   def subcategory
-  	
-  	# data for select boxes
-  	@subcategories = []
-  	@categories = Category.all
-  	
+  	  	
   	# get subcategory_id from params
   	@category = nil
   	@category_id = nil
@@ -130,13 +126,16 @@ class ReportController < ApplicationController
   		@subcategory_id = params[:subcategory_id]
   		@subcategory =  Subcategory.find(@subcategory_id)
   		@category = @subcategory.category
-	end
+    end
 	  	
   	# if subcategory wasn't in params, check for category_id
   	if @subcategory.nil? && params.has_key?(:category_id) then
   		@category = Category.find(params[:category_id])
   	end
   	
+    # data for select boxes
+    @subcategories = []
+    @categories = Category.all
   	if !@category.nil? then 
   		@category_id = @category.id 
   		@subcategories = @category.subcategories
@@ -147,22 +146,6 @@ class ReportController < ApplicationController
     @transactions = search.transactions
     @transaction_total = search.sum
     @monthly_totals = search.month_totals
-
-	# collect data  	
-  	@transactions = []
-  	@transaction_total = 0
-  	
-  	# if subcategory was defined, search for it
-  	if !@subcategory.nil? then
-	  	@transactions = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @date_range.from_date, @date_range.to_date).reverse_date_order
-  		@transaction_total = Transaction.where("subcategory_id = ? and date >= ? and date <= ?", @subcategory.id, @date_range.from_date, @date_range.to_date).sum(:amount)
-
-  	# if only category defined, search for category with nil subcategory
-  	elsif !@category.nil? then
-  		@transactions = Transaction.where("category_id = ? and subcategory_id is null and date >= ? and date <= ?", @category.id, @date_range.from_date, @date_range.to_date).reverse_date_order
-  		@transaction_total = Transaction.where("category_id = ? and subcategory_id is null and date >= ? and date <= ?", @category.id, @date_range.from_date, @date_range.to_date).sum(:amount)
-  	
-  	end
   
   end
   
