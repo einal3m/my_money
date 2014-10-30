@@ -33,14 +33,14 @@ RSpec.describe ReportController, :type => :controller do
       get :category, {:category_id => @t1.category.id, date_range_option_id: @dr2.id, from_date: "2014-01-01", to_date: "2014-02-28"}
 
       expect(assigns(:transactions)).to eq([@t4, @t2, @t1])
-      expect(assigns(:report_data)).to eq([['Jan-14', 14.0], ['Feb-14', 15.0]])
+      expect(assigns(:monthly_totals)).to eq([['Jan-14', 14.0], ['Feb-14', 15.0]])
 		end
 
 		it "returns all transactions without categories when none is supplied" do
 
       get :category, {date_range_option_id: @dr2.id, from_date: "2014-01-01", to_date: "2014-02-28"}
       expect(assigns(:transactions)).to eq([@t5, @t3])
-      expect(assigns(:report_data)).to eq([['Jan-14', 17.00], ['Feb-14', 0.00]])
+      expect(assigns(:monthly_totals)).to eq([['Jan-14', 17.00], ['Feb-14', 0.00]])
 		end
 
 		it "returns no transactions when no category is selected" do

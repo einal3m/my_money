@@ -89,10 +89,9 @@ class ReportController < ApplicationController
 	return Transaction.connection.select_all(my_sql).rows
   end
   
+  # category
+  # Retrieves transactions and monthly summary for specific category and date range
   def category
-
-    # for from select boxes
-  	@categories = Category.all
 
   	# check for category_id in params... if it's not there show unassigned transactions
   	@category_id = params[:category_id]
@@ -103,39 +102,14 @@ class ReportController < ApplicationController
   		@category = Category.find(@category_id)
   	end
   	
+    # data for select box
+    @categories = Category.all
+
+    # create search and run it
     search = CategorySearch.new({category: @category, date_range: @date_range})
     @transactions = search.transactions
     @transaction_total = search.sum
-
-  	if @category_id.nil? then
-       
-      # generate sql for category type data
-      my_sql = "select strftime('%m-%Y', t.date), sum(t.amount) FROM transactions t WHERE (t.date >= '#{@date_range.from_date}' and t.date <= '#{@date_range.to_date}') AND (t.category_id IS NULL) GROUP BY strftime('%m-%Y', t.date)"    
-      sql_data = Hash[Transaction.connection.select_all(my_sql).rows]
-  	else
-
-      # for expenses, reverse the sign
-      factor = 1
-      if (@category.category_type.name == "Expense") then factor = -1 end
-       
-      # generate sql for category type data
-      my_sql = "select strftime('%m-%Y', t.date), (#{factor}*sum(t.amount)) FROM transactions t WHERE (t.date >= '#{@date_range.from_date}' and t.date <= '#{@date_range.to_date}') AND (t.category_id == #{@category_id}) GROUP BY strftime('%m-%Y', t.date)"    
-      sql_data = Hash[Transaction.connection.select_all(my_sql).rows]
-  	end
-
-    # generate list of months to report on
-    months = []
-    number_of_months = (@date_range.to_date.year*12+@date_range.to_date.month)-(@date_range.from_date.year*12+@date_range.from_date.month) + 1
-    number_of_months.times do |month|
-      months[month] = @date_range.from_date >> (month)
-    end
-  
-    # fill report_data array
-    @report_data = []
-    months.each do |month_date|
-      month_text = month_date.strftime('%m-%Y')
-      @report_data << [month_date.strftime('%b-%y'), sql_data[month_date.strftime('%m-%Y')] || 0.00]    
-    end
+    @monthly_totals = search.month_totals
 
   end
 
