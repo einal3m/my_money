@@ -117,7 +117,7 @@ class ReportController < ApplicationController
 
   def subcategory
   	
-  	# report data
+  	# data for select boxes
   	@subcategories = []
   	@categories = Category.all
   	
@@ -141,6 +141,12 @@ class ReportController < ApplicationController
   		@category_id = @category.id 
   		@subcategories = @category.subcategories
   	end
+
+    # create search and run it
+    search = SubcategorySearch.new({category: @category, subcategory: @subcategory, date_range: @date_range})
+    @transactions = search.transactions
+    @transaction_total = search.sum
+    @monthly_totals = search.month_totals
 
 	# collect data  	
   	@transactions = []

@@ -71,7 +71,6 @@ RSpec.describe ReportController, :type => :controller do
 	      get :category, {:category_id => @t1.category.id, date_range_option_id: @dr1.id}
 
 	      expect(assigns(:transactions)).to eq([t9])
-#      expect(assigns(:report_data)).to eq([['Jan-14', 14.0], ['Feb-14', 15.0]])
 			end
 
 	  	it "returns all transactions for no category for the current month" do
@@ -81,7 +80,6 @@ RSpec.describe ReportController, :type => :controller do
 	      get :category, {date_range_option_id: @dr1.id}
 
 	      expect(assigns(:transactions)).to eq([t8])
-#      expect(assigns(:report_data)).to eq([['Jan-14', 14.0], ['Feb-14', 15.0]])
 			end
 	  end
 	end
@@ -91,11 +89,11 @@ RSpec.describe ReportController, :type => :controller do
 		before :each do
 			@sc = FactoryGirl.create(:subcategory)
 			@c = @sc.category
-			@t1 = FactoryGirl.create(:transaction, date: "2014-01-01", category: @c, subcategory: @sc)
-			@t2 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: @sc)
-			@t3 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: nil)
-			@t4 = FactoryGirl.create(:transaction, date: "2014-02-02", category: @c, subcategory: @sc)
-			@t5 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: nil)
+			@t1 = FactoryGirl.create(:transaction, date: "2014-01-01", category: @c, subcategory: @sc, amount: 1)
+			@t2 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: @sc, amount: 2)
+			@t3 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: nil, amount: 3)
+			@t4 = FactoryGirl.create(:transaction, date: "2014-02-02", category: @c, subcategory: @sc, amount: 4)
+			@t5 = FactoryGirl.create(:transaction, date: "2014-01-02", category: @c, subcategory: nil, amount: 5)
 			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
 			@dr2 = FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
 		end
@@ -104,11 +102,13 @@ RSpec.describe ReportController, :type => :controller do
 		it "returns all transactions for the specfied subcategory" do
 			get :subcategory, {:category_id => @c, :subcategory_id => @sc, date_range_option_id: @dr2.id, from_date: "2014-01-01", to_date: "2014-01-31" }
       expect(assigns(:transactions)).to eq([@t2, @t1])
+      expect(assigns(:monthly_totals)).to eq([['Jan-14', 3.0]])
 		end
 
 		it "returns all transactions for category and no subcategory" do
 			get :subcategory, {:category_id => @c, date_range_option_id: @dr2.id, from_date: "2014-01-01", to_date: "2014-01-31" }
       expect(assigns(:transactions)).to eq([@t5, @t3])
+      expect(assigns(:monthly_totals)).to eq([['Jan-14', 8.0]])
 		end
 
 		it "returns no transactions when no category or subcategory is selected" do

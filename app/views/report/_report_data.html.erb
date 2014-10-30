@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+  <!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#graph" role="tab" data-toggle="tab">Graph</a></li>
+  <li><a href="#data" role="tab" data-toggle="tab">Data</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+
+  <div class="tab-pane active" id="graph">
+    <div id="bar_chart" class="text-center"></div>
+    <script>
+
+      var data = <%= raw @monthly_totals %>;
+      bar_chart(data, "#bar_chart");
+
+    </script>  
+
+    </div>
+
+    <div class="tab-pane" id="data">
+
+      <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Memo</th>
+          <th>Category</th>
+          <th>Subcategory</th>
+          <th class="money">Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td><%= transaction.date %></td>
+            <td><%= transaction.memo %></td>
+            <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
+            <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
+            <td class="money"><%= number_to_currency(transaction.amount) %></td>
+            <td class="links"><%= link_to content_tag(:span, "", class: "glyphicon glyphicon-edit"), edit_transaction_path(transaction) %></td>
+          </tr>
+        <% end %>
+        <tr class="totals"><td colspan='4'><strong>Total</strong></td><td class="money"><%= number_to_currency(@transaction_total) %></td></tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

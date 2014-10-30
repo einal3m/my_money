@@ -105,6 +105,12 @@ feature "Reports", :type => :feature do
   	# When I click Search
     click_on('Search')
 
+    # Then I see a new graph
+    expect(page).to have_content('Graph')
+
+    # When I click on Data
+    click_on('Data')
+
   	# Then I should see data
   	expect(page.all('tbody tr').count).to eq(3)
   	expect(page).to have_content('Total')
@@ -127,7 +133,10 @@ feature "Reports", :type => :feature do
   	expect(find_field('from_date').value).to eq((Date.today << 1).to_s)
   	expect(find_field('to_date').value).to eq((Date.today >> 1).to_s)
 
-  	# And I should see data
+    # When I click on Data
+    click_on('Data')
+
+  	# Then I should see data
   	expect(page.all('tbody tr').count).to eq(3)
   	expect(page).to have_content('Total')
 

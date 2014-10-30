@@ -12,35 +12,4 @@
   <%= render 'layouts/date_select' %>
 <% end %>
 
-<div class="panel panel-default">
-	<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Memo</th>
-      <th>Category</th>
-      <th>Subcategory</th>
-      <th class="money">Amount</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @transactions.each do |transaction| %>
-      <tr>
-        <td><%= transaction.date %></td>
-        <td><%= transaction.memo %></td>
-        <td><%= transaction.category.nil? ? "" : transaction.category.name %></td>
-        <td><%= transaction.subcategory.nil? ? "": transaction.subcategory.name %></td>
-        <td class="money"><%= number_to_currency(transaction.amount) %></td>
-        <td><%= link_to 'Edit', edit_transaction_path(transaction) %> 
-        <%= link_to 'Destroy', transaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-      <tr class="totals"><td colspan='4'><strong>Total</strong></td><td class="money"><%= number_to_currency(@transaction_total) %></td></tr>
-
-  </tbody>
-</table>
-
-</div>
-
+<%= render 'report_data' %>
