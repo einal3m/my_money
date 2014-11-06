@@ -109,7 +109,7 @@ class ReportController < ApplicationController
     search = CategorySearch.new({category: @category, date_range: @date_range})
     @transactions = search.transactions
     @transaction_total = search.sum
-    @monthly_totals = search.month_totals
+    @monthly_totals = search.bar_chart
 
   end
 
@@ -145,7 +145,7 @@ class ReportController < ApplicationController
     search = SubcategorySearch.new({category: @category, subcategory: @subcategory, date_range: @date_range})
     @transactions = search.transactions
     @transaction_total = search.sum
-    @monthly_totals = search.month_totals
+    @monthly_totals = search.bar_chart
   
   end
   

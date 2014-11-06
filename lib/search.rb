@@ -8,7 +8,8 @@ class Search
 	end
 
 	# transactions - queries the transaction model for all transactions with the given
-	# category and date range. When this method is first called, it runs the query and
+	# query.  transaction_query must be defined by the subclass. 
+	# When this method is first called, it runs the query and
 	# saves the result to an instance variable. Subsequent calls just returns this result
 	def transactions
 		if @transaction_result.nil? then
@@ -28,6 +29,7 @@ class Search
 	# generate_summary(sql_data) - takes the results of an activemodel query and converts it 
 	# into an array with formatted month-year and sum amount. It also ensures that every month
 	# in the date range is included, even if no data exists. The sum is set to zero in this case.
+	# sql_data is the result of a sum query, grouped only by date.
 	def generate_summary(sql_data)
 
     # generate list of months to report on
@@ -48,9 +50,9 @@ class Search
 	end
 
 
-	# month_totals - takes the result of the transaction search and groups the results
+	# bar_chart - takes the result of the transaction search and groups the results
 	# by month and sums the amounts
-	def month_totals
+	def bar_chart
 
 		# if the category is an expense, we need to reverse the sign
   	factor = 1

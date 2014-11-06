@@ -41,7 +41,7 @@ RSpec.describe "Search", :type => :class do
 
 		it "returns a summary of all transactions by month" do
 			search = CategorySearch.new({date_range: @dr, category: @t1.category})
-			expect(search.month_totals).to eq([["Jan-14", 14],["Feb-14", 15]])
+			expect(search.bar_chart).to eq([["Jan-14", 14],["Feb-14", 15]])
 		end
 	end
 end
