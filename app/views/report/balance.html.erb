@@ -1,0 +1,28 @@
+<h1>EOD Balance Report</h1>
+
+<%= form_tag("/report/balance", method: :get) do %>
+  <div class="search box fill_normal">
+    <%= label_tag("account_id", "Account: ") %>
+	  <%= collection_select(:account, :id, @accounts, :id, :name, {:selected => @account.id, :include_blank => "Un-assigned"}, {:name => "account_id"}) %>
+  </div>
+  <%= render 'layouts/date_select' %>
+<% end %>
+<div class="panel panel-default">
+
+  <% if @line_chart_data.empty? then %>
+  <p>
+  <p>
+  No Data for this account and date range
+  <p>
+
+  <% else %>
+	  <!-- Line Chart -->
+	  <div id="line_chart" class="text-center"></div>
+	  <script>
+
+			var data = <%= raw @line_chart_data %>;
+			line_chart(data, "#line_chart", true);
+
+	  </script>  
+  <% end %>
+</div>

@@ -229,4 +229,92 @@ function bar_chart(data, class_name) {
 
 }
 
+//
+// line_chart
+//
+// creates a line chart from the data array and places the chart in the container with
+// the specified class_name
+//
+// data is of the format:
+//
+// [[x1, y1], [x1, y1] ...]
+//
+// if 'block' is set to true, then the chart will create a 'blocky' line chart, whereby
+// each point is connected by a horizontal line to the next x value. Use this for data
+// which does not gradually increase over the x range, rather it jumps up/down at each
+// x value.
+//
+function line_chart(data, class_name, block) {
+
+  // then work out bar chart dimensions
+  var chart_width = 1000,
+      chart_height = 500;
+
+
+  // Set the dimensions of the canvas / graph
+  var margin = {top: 30, right: 20, bottom: 30, left: 50},
+      width = chart_width - margin.left - margin.right,
+      height = chart_height - margin.top - margin.bottom;
+
+  // if 'block' is set to true, add data points so that lines are horizontal/vertical.
+  if (block) {
+    new_data = [data[0]];
+    for (i=1; i<data.length; i++){
+      new_data.push([data[i][0], data[i-1][1]])
+      new_data.push(data[i]);
+    }
+    data = new_data;
+  }
+
+  // Set the ranges
+  var x_scale = d3.time.scale()
+    .range([0, width])
+    .domain(d3.extent(data, function(d) { return new Date(d[0]); }));
+
+  var y_scale = d3.scale.linear()
+    .range([height, 0])
+    .domain(d3.extent(data, function(d) { return d[1]; })); 
+
+  // Define the axes
+  var xAxis = d3.svg.axis().scale(x_scale)
+      .orient("bottom").ticks(5);
+
+  var yAxis = d3.svg.axis().scale(y_scale)
+      .orient("left").ticks(5);
+
+  // Define the line
+  var line = d3.svg.line()
+      .x(function(d) { return x_scale(new Date(d[0])); })
+      .y(function(d) { return y_scale(d[1]); })
+      .interpolate('linear');
+
+  // Adds the svg canvas
+  var svg = d3.select(class_name)
+      .append("svg")
+          .attr("width", chart_width)
+          .attr("height", chart_height)
+      .append("g")
+          .attr("transform", 
+                "translate(" + margin.left + "," + margin.top + ")");
+
+  // add the lines
+  var lines = svg.append("g")
+  lines.append('path')
+    .attr('d', line(data))
+    .attr('stroke', 'blue')
+    .attr('stroke-width', 2)
+    .attr('fill', 'none');
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  // Add the Y Axis
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+}
     

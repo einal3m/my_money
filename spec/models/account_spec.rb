@@ -108,5 +108,18 @@ RSpec.describe Account, :type => :model do
 
       expect(@a.current_balance).to eq(60.00)
     end
+
+    it "calculates eod balance for a given date" do
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 20.00)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 30.00)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-5", amount: 30.00)
+
+      expect(@a.eod_balance("2014-08-01")).to eq(10.00)
+      expect(@a.eod_balance("2014-08-02")).to eq(60.00)
+      expect(@a.eod_balance("2014-08-03")).to eq(60.00)
+      expect(@a.eod_balance("2014-08-04")).to eq(60.00)
+      expect(@a.eod_balance("2014-08-05")).to eq(90.00)
+      expect(@a.eod_balance("2014-08-06")).to eq(90.00)
+    end
   end  
 end

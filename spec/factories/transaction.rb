@@ -9,7 +9,7 @@ FactoryGirl.define do
     account
     category
     subcategory
-    reconciliation
+    #reconciliation
   end
 
   factory :transaction_invalid, parent: :transaction do |f|

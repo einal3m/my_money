@@ -13,6 +13,40 @@ RSpec.describe ReportController, :type => :controller do
 
 	end
 
+	describe "Balance Report" do
+		before :each do
+			@a = FactoryGirl.create(:account, starting_balance: 0)
+			@t1 = FactoryGirl.create(:transaction, account: @a, date: "2014-01-01", amount: 4.0) # 4
+			@t2 = FactoryGirl.create(:transaction, account: @a, date: "2014-01-02", amount: 10.0) # 14
+
+			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
+			@dr2 = FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
+		end
+
+		it "returns the eod balance for each date in the date range" do
+			get :balance, {account_id: @a.id, date_range_option_id: @dr2.id, from_date: "2014-01-01", to_date: "2014-01-2"}
+			expect(assigns(:line_chart_data)).to eq([["01-Jan-14", 4.0], ["02-Jan-14", 14.0]])
+		end
+
+		it "returns no data when account not specified" do
+			get :balance
+			expect(assigns(:line_chart_data)).to eq([])
+		end
+
+		it "provides a list of accounts" do
+			get :balance
+
+			expect(assigns(:accounts)).to eq([@a])
+		end
+
+		it "provides a list of date range options and a default selected date range" do
+      get :balance
+
+      expect(assigns(:date_range_options)).to eq([@dr1,@dr2])
+      expect(assigns(:date_range_option)).to eq(@dr1)
+		end
+	end
+
 	describe "category report" do
 
 		before :each do

@@ -1,7 +1,7 @@
 require 'date_range'
 
 class ReportController < ApplicationController
-  before_action :get_date_range, only: [:income_vs_expense, :category, :subcategory]
+  before_action :get_date_range, only: [:income_vs_expense, :category, :subcategory, :balance]
 
   def index
   end
@@ -87,6 +87,24 @@ class ReportController < ApplicationController
 	my_sql = "select strftime('%m-%Y', t.date), (#{factor}*sum(t.amount)) FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE (t.date >= '#{@from_date}' and t.date <= '#{@to_date}') AND (t.category_id IN (SELECT id FROM categories WHERE category_type_id = #{category_type.id}) OR (t.category_id is null and #{factor}*amount>=0)) GROUP BY strftime('%m-%Y', t.date)"
 		
 	return Transaction.connection.select_all(my_sql).rows
+  end
+
+  # balance
+  # retrieves the end of day balance for the specified account for the date range
+  def balance
+
+    # get selected account information
+    get_account
+
+    # if account has been selected, run search
+    if @account.nil? then
+      @line_chart_data = []
+    else
+      search = BalanceSearch.new({account: @account, date_range: @date_range})    
+      @line_chart_data = search.line_data
+    end
+
+
   end
   
   # category

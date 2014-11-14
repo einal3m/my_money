@@ -24,4 +24,26 @@ class ApplicationController < ActionController::Base
     session[:date_range_option_id] = @date_range_option.id
 
   end
+
+  # get_account
+  #
+  # sets @accounts for select boxes
+  # sets @account for currently selected account (nil if none yet selected)
+  # sets :account_id in the session as a default for future searches
+  def get_account
+    
+    # list of all accounts for select boxes
+    @accounts = Account.all
+    
+    # get account id from either the parameters or the session
+    account_id = params.fetch(:account_id, session[:account_id])
+
+    if account_id.nil? then
+      @account = nil
+    else
+      session[:account_id] = account_id
+      @account = Account.find(account_id.to_i)
+    end
+  end
+
 end

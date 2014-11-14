@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'report/income_expense_bar'
   get 'report/subcategory'
   get 'report/category'
+  get 'report/balance'
   get 'report/index'
 
   resources :patterns

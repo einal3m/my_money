@@ -31,4 +31,11 @@ class Account < ActiveRecord::Base
 	  # otherwise return balance of last transaction
 	  return self.transactions.order(date: :asc, id: :asc).last.balance
 	end
+
+	# eod_balance gets the end of day balance for this account for the given date
+	def eod_balance(date)
+		last_transaction = self.transactions.where("date <= ?", date).date_order.last
+
+		return last_transaction.nil? ? self.starting_balance : last_transaction.balance
+	end
 end
