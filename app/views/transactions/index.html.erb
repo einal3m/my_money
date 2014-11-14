@@ -4,8 +4,7 @@
 
 <%= form_tag('/transactions', method: :get) do %>
   <div class="search box fill_normal">
-    <%= label_tag("account", "account: ") %>
-    <%= collection_select(@account, :id, @accounts, :id, :name, {:prompt => true, :selected => @account_id.to_i}, {:name => "account_id"}) %>
+    <%= render 'layouts/account_select' %>
   </div>
 
   <%= render 'layouts/date_select' %>    

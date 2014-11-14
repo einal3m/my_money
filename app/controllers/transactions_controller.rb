@@ -8,26 +8,15 @@ class TransactionsController < ApplicationController
     # get date range information from parameters, session or default
     get_date_range
 
-    # list of all accounts
-    @accounts = Account.all
-    
-    # check params for a change in selected account
-    @account_id = params[:account_id]
-    
-    # if new account has not been selected...
-    if @account_id.nil? then
-    
-      # ... check the session
-      @account_id = session[:account_id];
-	  end
+    # get selected account information
+    get_account
 
-    if @account_id.nil? then
-      @account = nil
+    # if no account has been selected, return empty variables...
+    if @account.nil? then
       @transactions = []
       @current_balance = nil
     else
-    	session[:account_id] = @account_id
-      @account = Account.find(@account_id)
+      #... otherwise, find transactions and current balance for selected account
     	@transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
     	@current_balance = @account.starting_balance + @account.transactions.sum(:amount)
     end

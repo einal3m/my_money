@@ -2,8 +2,7 @@
 
 <%= form_tag("/report/balance", method: :get) do %>
   <div class="search box fill_normal">
-    <%= label_tag("account_id", "Account: ") %>
-	  <%= collection_select(:account, :id, @accounts, :id, :name, {:prompt => true}, {:name => "account_id"}) %>
+  	<%= render 'layouts/account_select' %>
   </div>
   <%= render 'layouts/date_select' %>
 <% end %>
