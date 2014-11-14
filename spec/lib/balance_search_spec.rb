@@ -17,8 +17,8 @@ RSpec.describe BalanceSearch, :type => :class do
 
 	it "retrieves the end of day balances for date range" do
 		search = BalanceSearch.new({account: @a, date_range: @dr})
-		expect(search.line_data).to eq([["01-Jan-14", 4.0], ["02-Jan-14", 2.0], ["02-Feb-14", 22.0], 
-										["02-Mar-14", 16.0], ["31-Mar-14", 23.0]])
+		expect(search.line_data).to eq([["01 Jan, 2014", 4.0], ["02 Jan, 2014", 2.0], ["02 Feb, 2014", 22.0], 
+										["02 Mar, 2014", 16.0], ["31 Mar, 2014", 23.0]])
 	end
 
 	it "provides first and last date of date range if no transactions on those days" do
@@ -26,8 +26,8 @@ RSpec.describe BalanceSearch, :type => :class do
 		@t7.update(date: "2014-03-02")
 
 		search = BalanceSearch.new({account: @a, date_range: @dr})
-		expect(search.line_data).to eq([["01-Jan-14", 0.0], ["02-Jan-14", 2.0], ["02-Feb-14", 22.0], 
-										["02-Mar-14", 23.0], ["31-Mar-14", 23.0]])
+		expect(search.line_data).to eq([["01 Jan, 2014", 0.0], ["02 Jan, 2014", 2.0], ["02 Feb, 2014", 22.0], 
+										["02 Mar, 2014", 23.0], ["31 Mar, 2014", 23.0]])
 	end
 
 	it "returns an empty array, if no data is found" do

@@ -25,7 +25,7 @@ RSpec.describe ReportController, :type => :controller do
 
 		it "returns the eod balance for each date in the date range" do
 			get :balance, {account_id: @a.id, date_range_option_id: @dr2.id, from_date: "2014-01-01", to_date: "2014-01-2"}
-			expect(assigns(:line_chart_data)).to eq([["01-Jan-14", 4.0], ["02-Jan-14", 14.0]])
+			expect(assigns(:line_chart_data)).to eq([["01 Jan, 2014", 4.0], ["02 Jan, 2014", 14.0]])
 		end
 
 		it "returns no data when account not specified" do

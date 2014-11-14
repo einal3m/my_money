@@ -6,6 +6,7 @@
 class BalanceSearch < Search
 
 	attr_reader :account, :date_range
+	LINE_CHART_DF = '%d %b, %Y'
 
 	def initialize(attrs)
 		@account = attrs.fetch(:account, nil)
@@ -33,17 +34,17 @@ class BalanceSearch < Search
 		# Only date and balance data is used in the line chart
 		data = []
 		sql_data.each do |transaction|
-			data << [transaction.date.strftime('%d-%b-%y'), transaction.balance.to_f]
+			data << [transaction.date.strftime(LINE_CHART_DF), transaction.balance.to_f]
 		end
 
 		# if first day of date range not in data, then add it
 		if (sql_data.first.date != @date_range.from_date) then 
 			eod_balance = @account.eod_balance(@date_range.from_date - 1)
-			data.unshift([@date_range.from_date.strftime('%d-%b-%y'), eod_balance.to_f]) 
+			data.unshift([@date_range.from_date.strftime(LINE_CHART_DF), eod_balance.to_f]) 
 		end
 
 		# if last day of date range not in data, then add it
-		if (sql_data.last.date != @date_range.to_date) then data << [@date_range.to_date.strftime('%d-%b-%y'), data.last[1]] end
+		if (sql_data.last.date != @date_range.to_date) then data << [@date_range.to_date.strftime(LINE_CHART_DF), data.last[1]] end
 
 		return data
 	end

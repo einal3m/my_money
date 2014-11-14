@@ -239,12 +239,7 @@ function bar_chart(data, class_name) {
 //
 // [[x1, y1], [x1, y1] ...]
 //
-// if 'block' is set to true, then the chart will create a 'blocky' line chart, whereby
-// each point is connected by a horizontal line to the next x value. Use this for data
-// which does not gradually increase over the x range, rather it jumps up/down at each
-// x value.
-//
-function line_chart(data, class_name, block) {
+function line_chart(data, class_name) {
 
   // then work out bar chart dimensions
   var chart_width = 1000,
@@ -255,16 +250,6 @@ function line_chart(data, class_name, block) {
   var margin = {top: 30, right: 20, bottom: 30, left: 50},
       width = chart_width - margin.left - margin.right,
       height = chart_height - margin.top - margin.bottom;
-
-  // if 'block' is set to true, add data points so that lines are horizontal/vertical.
-  if (block) {
-    new_data = [data[0]];
-    for (i=1; i<data.length; i++){
-      new_data.push([data[i][0], data[i-1][1]])
-      new_data.push(data[i]);
-    }
-    data = new_data;
-  }
 
   // Set the ranges
   var x_scale = d3.time.scale()
@@ -286,7 +271,7 @@ function line_chart(data, class_name, block) {
   var line = d3.svg.line()
       .x(function(d) { return x_scale(new Date(d[0])); })
       .y(function(d) { return y_scale(d[1]); })
-      .interpolate('linear');
+      .interpolate('step-after');
 
   // Adds the svg canvas
   var svg = d3.select(class_name)
