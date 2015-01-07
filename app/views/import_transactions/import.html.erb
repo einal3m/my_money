@@ -34,7 +34,7 @@
         <td><%= t.text_field :memo, name: "import_transactions[][memo]", size: "50" %></td>
         <td><%= t.text_field :notes, name: "import_transactions[][notes]", size: "30" %></td>
         <td><%= t.text_field :amount, name: "import_transactions[][amount]", size: "10" %></td>
-        <td><%= t.collection_select :category_id, @categories, :id, :name, {prompt: "Please select"}, {name: "import_transactions[][category_id]", class: "category_select"} %></td>
+        <td><%= t.grouped_collection_select :category_id, CategoryType.all, :categories, :name, :id, :name, {prompt: "Please select"}, {name: "import_transactions[][category_id]", class: "category_select"} %></td>
         <% if transaction.category.nil? %>
           <td><%= t.collection_select :subcategory_id, [], :id, :name, {}, {name: "import_transactions[][subcategory_id]", class: "subcategory_select"} %></td>
         <% else %>
