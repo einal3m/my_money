@@ -1,3 +1,13 @@
+<div id="accounts"></div>
+
+<script type="text/javascript">
+  $(function() {
+  //window.router = new MyMoney.Routers.AccountsRouter({accounts: <%= @accounts.to_json.html_safe -%>});
+  //Backbone.history.start();
+  });
+</script>
+
+
 <h1>Accounts <%= link_to content_tag(:span, "New", class: "glyphicon glyphicon-plus"), new_account_path, class: "btn btn-default" %></h1>
 <p id="notice"><%= notice %></p>
 

@@ -3,13 +3,17 @@ class AccountsController < ApplicationController
 
   # GET /accounts
   # GET /accounts.json
+  respond_to :html, :json
+
   def index
     @accounts = Account.all
+    
     @net_worth = 0.00
     @accounts.each do |account|
-p "account " + account.name + " balance: " + account.current_balance.to_s
       @net_worth = @net_worth + account.current_balance
     end
+
+    respond_with(@accounts, @net_worth)
   end
 
   # GET /accounts/1
