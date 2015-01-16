@@ -1,13 +1,14 @@
 <h1>Import Transactions</h1>
-
 <%= form_for @account, url: { controller: "transactions", action: "import" }, method: :post do |a|%>
 
-<div class="panel panel-default">
+  <div class="heading box fill_normal">
+    <h4> Account: <strong><%= a.hidden_field(:id) %>
+    <%= @account.name + " (" + @account.bank + ")" %> </strong></h4>
 
-  <div class="panel-heading">  
-  	<h4> Account: <strong><%= a.hidden_field(:id) %>
-  	<%= @account.name + " (" + @account.bank + ")" %> </strong></h4>
+    <label><input type="checkbox" onClick="toggle(this)" /> Select All </label>
   </div>
+
+<div class="panel panel-default">
 <table class="table table-condensed">
   <thead>
     <tr>

@@ -29,6 +29,14 @@ alert('Jquery is loaded')
 alert ('Jquery is not loaded')
 }*/
 
+function toggle(source) {
+  checkboxes = document.getElementsByName("import_transactions[][import]");
+
+  for (var i = 0; i < checkboxes.length; ++i) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+
 // jQuery event handlers
 $(document).ready(function() {
 

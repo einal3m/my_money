@@ -128,6 +128,13 @@ div.box{
 
 	}
 
+	&.heading {
+		color: black;
+		&:hover {
+			opacity: 1;
+		}
+	}
+
 }
 
 

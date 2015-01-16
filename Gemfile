@@ -31,6 +31,7 @@ gem 'spring',        group: :development
 
 gem 'd3-rails'
 gem 'rails-backbone'
+gem 'therubyracer', platforms: :ruby
 
 # testing
 group :development, :test do
