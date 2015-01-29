@@ -37,56 +37,15 @@ RSpec.describe AccountsController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all accounts as @accounts" do
+    it "sends a list of all accounts" do
       account = FactoryGirl.create(:account, starting_balance: 10.00)
       get :index, {}, valid_session
-      expect(assigns(:accounts)).to eq([account])
-      expect(assigns(:net_worth)).to eq(10.00)
-    end
 
-    it "renders the :index view" do
-      get :index, {}, valid_session
-      expect(response).to render_template("index")
-    end
-  end
+      expect(response).to be_success
 
-  describe "GET show" do
-    it "assigns the requested account as @account" do
-      account = FactoryGirl.create(:account)
-      get :show, {:id => account.to_param}, valid_session
-      expect(assigns(:account)).to eq(account)
-    end
-
-    it "renders the :show view" do
-      account = FactoryGirl.create(:account)
-      get :show, {:id => account.to_param}, valid_session
-      expect(response).to render_template("show")
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new account as @account" do
-      get :new, {}, valid_session
-      expect(assigns(:account)).to be_a_new(Account)
-    end
-
-    it "renders the :new view" do
-      get :new, {}, valid_session
-      expect(response).to render_template("new")
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested account as @account" do
-      account = FactoryGirl.create(:account)
-      get :edit, {:id => account.to_param}, valid_session
-      expect(assigns(:account)).to eq(account)
-    end
-
-    it "renders the :edit view" do
-      account = FactoryGirl.create(:account)
-      get :edit, {:id => account.to_param}, valid_session
-      expect(response).to render_template("edit")
+      json = JSON.parse(response.body)
+      expect(json['accounts'].length).to eq(1)
+      expect(json['accounts'][0]).to eq(serialize_account(account)) 
     end
   end
 
@@ -98,27 +57,23 @@ RSpec.describe AccountsController, :type => :controller do
         }.to change(Account, :count).by(1)
       end
 
-      it "assigns a newly created account as @account" do
+      it "sends the account" do
         post :create, {:account => FactoryGirl.attributes_for(:account)}, valid_session
-        expect(assigns(:account)).to be_a(Account)
-        expect(assigns(:account)).to be_persisted
-      end
+        expect(response).to be_success
 
-      it "redirects to the account index" do
-        post :create, {:account => FactoryGirl.attributes_for(:account)}, valid_session
-        expect(response).to redirect_to(accounts_url)
+        account = Account.first
+
+        json = JSON.parse(response.body)
+        expect(json['account']).to eq(serialize_account(account)) 
       end
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved account as @account" do
-        post :create, {:account => FactoryGirl.attributes_for(:account_invalid)}, valid_session
-        expect(assigns(:account)).to be_a_new(Account)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:account => FactoryGirl.attributes_for(:account_invalid)}, valid_session
-        expect(response).to render_template("new")
+      it "does not save a new Account" do
+        expect {
+          post :create, {:account => FactoryGirl.attributes_for(:account_invalid)}, valid_session
+        }.not_to change(Account, :count)
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -136,36 +91,27 @@ RSpec.describe AccountsController, :type => :controller do
           :account => FactoryGirl.attributes_for(:account,
             name: "New Account2",
             bank: "New Bank2",
-            starting_balance: 8.88,
+            starting_balance: 8.00,
             starting_date: "2014-02-02")}, valid_session
 
+        expect(response).to be_success
+
+        json = JSON.parse(response.body)
         @account.reload
+        expect(json['account']).to eq(serialize_account(@account)) 
         expect(@account.name).to eq("New Account2")
         expect(@account.bank).to eq("New Bank2")
-        expect(@account.starting_balance).to eq(8.88)
+        expect(@account.starting_balance).to eq(8.00)
         expect(@account.starting_date).to eq(Date.parse("2014-02-02"))
-      end
-
-      it "assigns the requested account as @account" do
-        put :update, {:id => @account.to_param, :account => FactoryGirl.attributes_for(:account)}, valid_session
-        expect(assigns(:account)).to eq(@account)
-      end
-
-      it "redirects to the account" do
-        put :update, {:id => @account.to_param, :account =>  FactoryGirl.attributes_for(:account)}, valid_session
-        expect(response).to redirect_to(accounts_url)
       end
     end
 
     context "with invalid params" do
       it "assigns the account as @account" do
-        put :update, {:id => @account.to_param, :account => FactoryGirl.attributes_for(:account_invalid)}, valid_session
-        expect(assigns(:account)).to eq(@account)
-      end
-
-      it "re-renders the 'edit' template" do
-        put :update, {:id => @account.to_param, :account => FactoryGirl.attributes_for(:account_invalid)}, valid_session
-        expect(response).to render_template("edit")
+        expect {
+          put :update, {:id => @account.to_param, :account => FactoryGirl.attributes_for(:account_invalid)}, valid_session
+        }.not_to change{ @account.updated_at }
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -180,11 +126,7 @@ RSpec.describe AccountsController, :type => :controller do
       expect {
         delete :destroy, {:id => @account.to_param}, valid_session
       }.to change(Account, :count).by(-1)
-    end
-
-    it "redirects to the accounts list" do
-      delete :destroy, {:id => @account.to_param}, valid_session
-      expect(response).to redirect_to(accounts_url)
+      expect(response).to be_success
     end
   end
 

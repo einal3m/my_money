@@ -8,13 +8,13 @@ feature "Accounts", :type => :feature do
     FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
   }
 
-  scenario "User views the accounts list for an account" do
+  scenario "User views the accounts list for an account", :js => true do
 
     # given I have an account
   	account = FactoryGirl.create(:account, name: 'My New Account')
 
   	# when I go to the accounts index page
-    visit "/accounts"
+    visit "/start_backbone"
 
     # then I should see a list of accounts
     expect(page).to have_text("Account Summary")
@@ -24,10 +24,10 @@ feature "Accounts", :type => :feature do
 
   end
 
-  scenario "User creates a new Account" do
+  scenario "User creates a new Account", :js => true do
 
   	# when I go to the accounts index page
-    visit "/accounts"
+    visit "/start_backbone"
 
     # and click on the new button
     within("h1") do
@@ -36,30 +36,29 @@ feature "Accounts", :type => :feature do
 
     # then I expect to see a new form
     expect(page).to have_content("New Account")
-    expect(page).to have_selector('form')
 
     # when I enter data into the form
     fill_in 'Name', with: 'New Account Name'
     fill_in 'Bank', with: 'New Account Bank'
-    fill_in 'Starting balance', with: '10.00'
+    fill_in 'starting_balance', with: '10.00'
+    fill_in 'starting_date', with: '2000-09-09'
 
     # and I click 'save'
 		click_on('Save')
 
 		# then I should see our new pattern on the index page
-    expect(page).to have_text("Account was successfully created.")
     expect(page).to have_text("New Account Name")
     expect(page).to have_text("New Account Bank")
 
   end
 
-  scenario "User edits an account" do
+  scenario "User edits an account", :js => true do
 
     # given I have an account
   	account = FactoryGirl.create(:account, name: 'My Edit Account')
 
   	# when I go to the accounts index page
-    visit "/accounts"
+    visit "/start_backbone"
 
     # and I click on the edit button for the account
     click_link('edit')
@@ -69,7 +68,6 @@ feature "Accounts", :type => :feature do
 
     # then I should see the edit form for this page
     expect(page).to have_text("Edit Account")
-    expect(page).to have_selector('form')
 
     # when I edit the pattern
     fill_in('Name', with: "New Account Name")
@@ -83,7 +81,7 @@ feature "Accounts", :type => :feature do
 
   end
 
-  scenario "User views transactions for an account" do
+  scenario "User views transactions for an account", :js => true do
 
     # given I have an account with 2 transactions
     account = FactoryGirl.create(:account, name: 'Test Account')
@@ -91,7 +89,7 @@ feature "Accounts", :type => :feature do
     FactoryGirl.create(:transaction, account: account, notes: "txn2", date: Date.today)
 
     # and I go to the accounts index page
-    visit "/accounts"
+    visit "/start_backbone"
 
     # when I click on the account name
     click_link("Test Account")
