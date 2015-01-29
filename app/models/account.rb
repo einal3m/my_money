@@ -38,4 +38,5 @@ class Account < ActiveRecord::Base
 
 		return last_transaction.nil? ? self.starting_balance : last_transaction.balance
 	end
+
 end

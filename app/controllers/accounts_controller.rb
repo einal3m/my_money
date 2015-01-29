@@ -1,62 +1,36 @@
 class AccountsController < ApplicationController
-  before_action :set_account, only: [:show, :edit, :update, :destroy, :last_reconciliation]
+  before_action :set_account, only: [:edit, :update, :destroy, :last_reconciliation]
 
   # GET /accounts
   # GET /accounts.json
-  respond_to :html, :json
+  respond_to :json
 
+  def start_backbone
+  end
+  
   def index
-    @accounts = Account.all
-    
-    @net_worth = 0.00
-    @accounts.each do |account|
-      @net_worth = @net_worth + account.current_balance
-    end
-
-    respond_with(@accounts, @net_worth)
-  end
-
-  # GET /accounts/1
-  # GET /accounts/1.json
-  def show
-  end
-
-  # GET /accounts/new
-  def new
-    @account = Account.new
-  end
-
-  # GET /accounts/1/edit
-  def edit
+    accounts = Account.all
+    render json: accounts
   end
 
   # POST /accounts
   # POST /accounts.json
   def create
-    @account = Account.new(account_params)
-
-    respond_to do |format|
-      if @account.save
-        format.html { redirect_to accounts_url, notice: 'Account was successfully created.' }
-        format.json { render :show, status: :created, location: @account }
-      else
-        format.html { render :new }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
-      end
+    account = Account.new(account_params)
+    if account.save
+      render json: account, status: :created
+    else
+      render json: account.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
   def update
-    respond_to do |format|
-      if @account.update(account_params)
-        format.html { redirect_to accounts_url, notice: 'Account was successfully updated.' }
-        format.json { render :show, status: :ok, location: @account }
-      else
-        format.html { render :edit }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
-      end
+    if @account.update(account_params)
+      render json: @account, status: :ok
+    else
+      render json: @account.errors, status: :unprocessable_entity
     end
   end
 
@@ -64,10 +38,7 @@ class AccountsController < ApplicationController
   # DELETE /accounts/1.json
   def destroy
     @account.destroy
-    respond_to do |format|
-      format.html { redirect_to accounts_url, notice: 'Account was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    head :no_content
   end
 
   def last_reconciliation

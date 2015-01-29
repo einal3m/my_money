@@ -18,13 +18,14 @@ Rails.application.routes.draw do
   post 'transactions/import'
   post 'transactions/index'
 
-  resources :accounts
-
+  get 'start_backbone' => 'accounts#start_backbone'
   get 'static_pages/home'
   get 'upload/file_chooser'
   post 'upload/upload_file'
 
   resources :subcategories
+  resources :accounts, only: [:create, :index, :destroy, :update]
+
 
   resources :categories
   post 'categories/subcategories_by_category'
