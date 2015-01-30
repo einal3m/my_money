@@ -3,7 +3,7 @@ MyMoney.Views.AccountsNetWorthView = Backbone.View.extend({
 
   tagName: "tr", 
   className: "totals",
-	template: JST["backbone/templates/accounts/accounts_net_worth"],
+	template: JST["templates/accounts/accounts_net_worth"],
 
 	netWorth: parseFloat("0.00"),
 

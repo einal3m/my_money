@@ -3,7 +3,7 @@ MyMoney.Views.AccountNewView = Backbone.View.extend({
   tagName: "div", 
   className: "accounts",
 
-  template: JST["backbone/templates/accounts/account_new"],
+  template: JST["templates/accounts/account_new"],
 
   events: {
    "click #save": "saveAccount"

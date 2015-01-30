@@ -12,8 +12,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'active_model_serializers'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
-# Use twitter bootstrap
-gem 'bootstrap-sass', '~> 3.2.0.0'
+
 gem 'autoprefixer-rails'
 
 gem 'webrick', '1.3.1'
@@ -31,7 +30,12 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 gem 'd3-rails'
+
+# frontend
 gem 'rails-backbone'
+gem 'bootstrap-sass', '~> 3.2.0.0'
+gem "handlebars_assets", "~> 0.6.2"
+
 gem 'therubyracer', platforms: :ruby
 
 # testing

@@ -1,7 +1,7 @@
 
 MyMoney.Views.AccountView = Backbone.View.extend({
 
-  template: JST["backbone/templates/accounts/account"],
+  template: JST["templates/accounts/account"],
 
   tagName: "tr",
 

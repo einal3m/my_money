@@ -4,7 +4,7 @@ MyMoney.Views.AccountsIndexView = Backbone.View.extend({
   tagName: "div", 
   className: "accounts",
 
-	template: JST["backbone/templates/accounts/accounts"],
+	template: JST["templates/accounts/accounts"],
 
 	addAll: function(){
 	    for (i = 0; i < this.collection.length; i++) { 

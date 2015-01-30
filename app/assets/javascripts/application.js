@@ -19,7 +19,9 @@
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
-//= require backbone/my_money
+//= require my_money
+//= require handlebars.runtime
+//= require_tree ./templates
 //= require_tree .
 
 /* check if jQuery is loaded */
