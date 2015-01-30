@@ -16,11 +16,11 @@
 //= require bootstrap
 //= require d3
 //= require underscore
+//= require handlebars.runtime
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
 //= require my_money
-//= require handlebars.runtime
 //= require_tree ./templates
 //= require_tree .
 

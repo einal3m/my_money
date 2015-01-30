@@ -4,7 +4,7 @@ MyMoney.Views.AccountsIndexView = Backbone.View.extend({
   tagName: "div", 
   className: "accounts",
 
-	template: JST["templates/accounts/accounts"],
+	template: "accounts/account_index",
 
 	addAll: function(){
 	    for (i = 0; i < this.collection.length; i++) { 
@@ -22,11 +22,11 @@ MyMoney.Views.AccountsIndexView = Backbone.View.extend({
 		this.$el.find('tbody').append(netWorthView.render().el);
 	},
 
-	render: function(){
-	    this.$el.html(this.template);
-	    this.addAll();
-	    this.addNetWorth();
-	    return this;
-	}
+  render: function () {
+    this.$el.html(HandlebarsTemplates[this.template]());
+    this.addAll();
+    this.addNetWorth();
+    return this;
+  }
 
 });

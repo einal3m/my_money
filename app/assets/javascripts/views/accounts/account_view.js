@@ -1,12 +1,12 @@
 
 MyMoney.Views.AccountView = Backbone.View.extend({
 
-  template: JST["templates/accounts/account"],
+  template: "accounts/account_row",
 
   tagName: "tr",
 
   render: function(){
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
     return this;
   }
 });

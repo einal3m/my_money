@@ -3,7 +3,7 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
 
   tagName: "div", 
   className: "accounts",
-  template: JST["templates/accounts/account_edit"],
+  template: "accounts/account_edit",
 
   events: {
     "click #save" : "updateAccount",
@@ -11,7 +11,7 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
     return this;
   },
 
