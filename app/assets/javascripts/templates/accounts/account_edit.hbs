@@ -3,7 +3,7 @@
 <div class="panel panel-default">
 
   <div class="panel-heading">   
-    <h4>Edit Account <button id="delete" class="btn btn-sm btn-danger">Delete</button></h4>
+    <h4>Edit Account {{deleteButton}}</h4>
   </div>
 
   <div class="container">
@@ -29,8 +29,8 @@
   </div>
 
   <div class="actions panel-footer">
-    <button id="save" class="btn btn-default">Save</button>
-    <a href="#/index" id="cancel" class="btn btn-default">Cancel</a>
+    {{saveButton}}
+    {{cancelButton}}
   </div>
 
 </div>

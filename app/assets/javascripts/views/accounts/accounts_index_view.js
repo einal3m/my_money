@@ -6,6 +6,10 @@ MyMoney.Views.AccountsIndexView = Backbone.View.extend({
 
 	template: "accounts/account_index",
 
+  events: {
+    "click #new": "newAccount"
+  },
+
 	addAll: function(){
 	    for (i = 0; i < this.collection.length; i++) { 
 	    	this.addOne(this.collection.models[i]);
@@ -27,6 +31,12 @@ MyMoney.Views.AccountsIndexView = Backbone.View.extend({
     this.addAll();
     this.addNetWorth();
     return this;
+  },
+
+  newAccount: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.router.navigate('new', {trigger: true});
   }
 
 });

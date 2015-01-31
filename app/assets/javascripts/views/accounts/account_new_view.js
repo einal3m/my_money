@@ -6,7 +6,8 @@ MyMoney.Views.AccountNewView = Backbone.View.extend({
   template: "accounts/account_new",
 
   events: {
-   "click #save": "saveAccount"
+    "click #save": "saveAccount",
+    "click #cancel" : "cancelNew"   
   },
 
   render: function(){
@@ -26,4 +27,9 @@ MyMoney.Views.AccountNewView = Backbone.View.extend({
     window.router.navigate('index', {trigger: true});    
   },
 
+  cancelNew: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.router.navigate('index', {trigger: true});
+  }
 });

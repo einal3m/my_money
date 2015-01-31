@@ -7,7 +7,8 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
 
   events: {
     "click #save" : "updateAccount",
-    "click #delete" : "deleteAccount"
+    "click #delete" : "deleteAccount",
+    "click #cancel" : "cancelEdit"
   },
 
   render: function() {
@@ -36,5 +37,9 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
     this.model.save({ }, { wait: true });
     window.router.navigate('index', {trigger: true});    
   },
+
+  cancelEdit: function(e) {
+    window.router.navigate('index', {trigger: true});
+  }
 
 });
