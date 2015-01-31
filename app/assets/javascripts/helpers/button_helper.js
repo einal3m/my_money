@@ -12,6 +12,7 @@ Handlebars.registerHelper('deleteButton', function(options) {
 
 Handlebars.registerHelper('saveButton', function(options) {
 	buttonText = options.hash['text'] || 'Save';
+	buttonText = '<i class="fa fa-floppy-o"></i> ' + buttonText; 
 	return buttonHTML(buttonText, "save", "btn-primary");
 });
 
@@ -22,5 +23,6 @@ Handlebars.registerHelper('cancelButton', function(options) {
 
 Handlebars.registerHelper('newButton', function(options) {
 	buttonText = options.hash['text'] || 'New';
+	buttonText = '<i class="fa fa-plus"></i> ' + buttonText;
 	return buttonHTML(buttonText, "new", "btn-default");
 });
