@@ -18,18 +18,22 @@ MyMoney.Views.AccountNewView = Backbone.View.extend({
   saveAccount: function(e){
     e.preventDefault();
     e.stopPropagation();
-    var model = new MyMoney.Models.Account({});
-    model.set({name: this.$('#name').val()});
-    model.set({bank: this.$('#bank').val()});
-    model.set({starting_balance: this.$('#starting_balance').val()});
-    model.set({starting_date: this.$('#starting_date').val()});
-    this.collection.create(model, { wait: true });
-    window.router.navigate('index', {trigger: true});    
+
+    this.model = new MyMoney.Models.Account({});
+    this.model.set({name: this.$('#name').val()});
+    this.model.set({bank: this.$('#bank').val()});
+    this.model.set({starting_balance: this.$('#starting_balance').val()});
+    this.model.set({starting_date: this.$('#starting_date').val()});
+    this.collection.create(this.model, { wait: true, success: this.goToShow });
   },
 
   cancelNew: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    window.router.navigate('index', {trigger: true});
+    window.router.navigate('index', {trigger: true});    
+  },
+
+  goToShow: function(model, response, options) {
+    window.router.navigate('accounts/' + model.id + '/show', {trigger: true});
   }
 });
