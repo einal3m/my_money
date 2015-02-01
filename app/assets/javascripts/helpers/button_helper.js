@@ -26,3 +26,7 @@ Handlebars.registerHelper('newButton', function(options) {
 	buttonText = '<i class="fa fa-plus"></i> ' + buttonText;
 	return buttonHTML(buttonText, "new", "btn-default");
 });
+
+Handlebars.registerHelper('showButton', function(options) {
+	return buttonHTML('...', "show", "btn-xs btn-default");
+});
