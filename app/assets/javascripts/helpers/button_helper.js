@@ -16,6 +16,12 @@ Handlebars.registerHelper('saveButton', function(options) {
 	return buttonHTML(buttonText, "save", "btn-primary");
 });
 
+Handlebars.registerHelper('editButton', function(options) {
+	buttonText = options.hash['text'] || 'Edit';
+	buttonText = '<i class="fa fa-edit"></i> ' + buttonText; 
+	return buttonHTML(buttonText, "edit", "btn-default");
+});
+
 Handlebars.registerHelper('cancelButton', function(options) {
 	buttonText = options.hash['text'] || 'Cancel';
 	return buttonHTML(buttonText, "cancel", "btn-default");
@@ -30,3 +36,10 @@ Handlebars.registerHelper('newButton', function(options) {
 Handlebars.registerHelper('showButton', function(options) {
 	return buttonHTML('...', "show", "btn-xs btn-default");
 });
+
+Handlebars.registerHelper('goBackButton', function(options) {
+	buttonText = options.hash['text'] || 'Go Back';
+	buttonText = '<i class="fa fa-angle-double-left fa-lg"></i> ' + buttonText; 
+	return buttonHTML(buttonText, "go_back", "btn-default");
+});
+

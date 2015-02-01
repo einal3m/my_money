@@ -17,11 +17,12 @@ body {
 }
 
 .panel-form {
-	background-color: #DCDDED;
+	background: #DCDDED;
 }
 
 div.panel-heading {
 	height: 63px;
+	background-color: $panel-default-heading-bg;
 
 	&.large {
 	  height: 100px

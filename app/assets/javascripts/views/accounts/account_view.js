@@ -16,7 +16,6 @@ MyMoney.Views.AccountView = Backbone.View.extend({
   showAccount: function(e){
     e.preventDefault();
     e.stopPropagation();
-    window.router.navigate(this.model.id + '/edit', {trigger: true});
+    window.router.navigate('accounts/' + this.model.id + '/show', {trigger: true});
   }
-//  <a href="#/{{id}}/edit" id="edit">...</a>
 });

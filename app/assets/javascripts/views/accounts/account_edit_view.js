@@ -35,11 +35,13 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
     this.model.set({starting_balance: this.$('#starting_balance').val()});
     this.model.set({starting_date: this.$('#starting_date').val()});
     this.model.save({ }, { wait: true });
-    window.router.navigate('index', {trigger: true});    
+    this.trigger("doneEditing");
   },
 
   cancelEdit: function(e) {
-    window.router.navigate('index', {trigger: true});
+    e.preventDefault();
+    e.stopPropagation();
+    this.trigger("doneEditing");
   }
 
 });

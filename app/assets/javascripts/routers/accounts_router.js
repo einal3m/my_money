@@ -8,6 +8,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "index"       : "Accountindex",
     "new"         : "newAccount",
     ":id/edit"    : "edit",
+    "accounts/:id/show"    : "showAccount",
     ".*"          : "Accountindex",
   },
 
@@ -26,6 +27,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   edit: function(id) {
     account = this.accounts.get(id)
     this.showView(new MyMoney.Views.AccountEditView({model: account, collection: this.accounts}));
+  },
+
+  showAccount: function(id) {
+    account = this.accounts.get(id)
+    this.showView(new MyMoney.Views.AccountSummaryView({model: account, collection: this.accounts}));
   },
 
   showView: function(newView) {
