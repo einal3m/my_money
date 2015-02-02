@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require d3
 //= require underscore
+//= require bootstrap-datepicker
 //= require handlebars.runtime
 //= require backbone
 //= require backbone_rails_sync

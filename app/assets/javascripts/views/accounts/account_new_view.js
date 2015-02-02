@@ -30,7 +30,7 @@ MyMoney.Views.AccountNewView = Backbone.View.extend({
   cancelNew: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    window.router.navigate('index', {trigger: true});    
+    window.router.navigate('accounts/index', {trigger: true});    
   },
 
   goToShow: function(model, response, options) {

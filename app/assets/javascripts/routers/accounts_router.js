@@ -2,17 +2,22 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   initialize: function(options) {
     this.accounts = new MyMoney.Collections.AccountsCollection();
+    this.accountIndex();
   },
 
   routes: {
-    "index"       : "Accountindex",
-    "new"         : "newAccount",
-    ":id/edit"    : "edit",
+    "accounts/index"       : "accountIndex",
+    "accounts/new"         : "newAccount",
+    "accounts/:id/edit"    : "editAccount",
     "accounts/:id/show"    : "showAccount",
-    ".*"          : "Accountindex",
+
+    "reconciliations/new/account:id" : "newReconciliation",
+    ".*"                   : "accountIndex",
   },
 
-  Accountindex: function() {
+// account routes
+  accountIndex: function() {
+console.log("accountindex")
     var router = this;
 
     $.when(router.accounts.fetch()).done(function () {
@@ -24,16 +29,30 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     this.showView(new MyMoney.Views.AccountNewView({collection: this.accounts}));
   },
 
-  edit: function(id) {
-    account = this.accounts.get(id)
+  editAccount: function(id) {
+    account = this.accounts.get(id);
     this.showView(new MyMoney.Views.AccountEditView({model: account, collection: this.accounts}));
   },
 
   showAccount: function(id) {
-    account = this.accounts.get(id)
+    account = this.accounts.get(id);
     this.showView(new MyMoney.Views.AccountSummaryView({model: account, collection: this.accounts}));
   },
 
+// reconciliation routes
+  newReconciliation: function(account_id) {
+    account = this.accounts.get(account_id);
+    console.log("router");
+
+    console.log("account_id");
+    console.log(account_id);
+    console.log("account");
+    console.log(account);
+    this.showView(new MyMoney.Views.ReconciliationNewView({account: account, accounts: this.accounts}))
+  },
+
+
+// utilities
   showView: function(newView) {
     this.removeCurrentView;
     this.currentView = newView;

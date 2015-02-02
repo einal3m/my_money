@@ -36,7 +36,7 @@ MyMoney.Views.AccountsIndexView = Backbone.View.extend({
   newAccount: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    window.router.navigate('new', {trigger: true});
+    window.router.navigate('accounts/new', {trigger: true});
   }
 
 });

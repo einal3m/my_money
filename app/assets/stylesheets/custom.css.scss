@@ -20,12 +20,17 @@ body {
 	background: #DCDDED;
 }
 
+select {
+	height: 24px;
+	font-size: 16px;
+}
+
 div.panel-heading {
 	height: 63px;
 	background-color: $panel-default-heading-bg;
 
 	&.large {
-	  height: 100px
+	  height: 100px;
 	}
 
 	&.fill_lighter { 

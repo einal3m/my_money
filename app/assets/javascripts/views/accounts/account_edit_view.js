@@ -23,7 +23,7 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
     var r = confirm("Are you sure you want to delete this account?");
     if (r == true) {
       this.model.destroy({ wait: true });
-      window.router.navigate('index', {trigger: true});    
+      window.router.navigate('accounts/index', {trigger: true});    
     }
   },
 

@@ -43,3 +43,12 @@ Handlebars.registerHelper('goBackButton', function(options) {
 	return buttonHTML(buttonText, "go_back", "btn-default");
 });
 
+Handlebars.registerHelper('actionButton', function(options) {
+	buttonText = options.hash['text'] || 'Action';
+	buttonId = options.hash['id'] || 'action'
+	if (options.hash['icon']) {
+		buttonText = '<i class="fa ' + options.hash['icon'] + '"></i> ' + buttonText; 
+	}
+	return buttonHTML(buttonText, buttonId, "btn-default");
+});
+
