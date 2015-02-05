@@ -14,12 +14,12 @@
 
     <div class="field">
       <label for="statement_date"> Statement Date:</label>
-      <input type="text" name="statement_date" id="statement_date" data-provide='datepicker' >
+      {{datePickerInput "" "statement_date"}}
     </div>
 
     <div class="field">
       <label for="statement_balance"> Statement Balance:</label>
-      <input type="text" name="statement_balance" id="statement_balance">
+      {{moneyInput "0" "statement_balance"}}
     </div>
 
   </div>

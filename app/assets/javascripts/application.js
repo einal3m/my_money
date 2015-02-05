@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require d3
 //= require underscore
+//= require accountingjs
 //= require bootstrap-datepicker
 //= require handlebars.runtime
 //= require backbone

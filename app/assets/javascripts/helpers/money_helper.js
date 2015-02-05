@@ -1,16 +1,27 @@
+accounting.settings.currency.format = {
+	pos : "%s%v",   // for positive values, eg. "$ 1.00" (required)
+	neg : "(%s%v)", // for negative values, eg. "$ (1.00)" [optional]
+	zero: "%s -- "  // for zero values, eg. "$  --" [optional]
+};
+
 
 var accountingFormat = function(value) {
-	var amount = parseFloat(value);
-	var negative = (amount < 0);
-	amount = Math.abs(amount);
+	return accounting.formatMoney(value);
+}
 
-	var moneyString = '$' + amount.toFixed(2);
-	if (negative) { 
-		moneyString = "(" + moneyString + ")";
-	}
-
-	return moneyString
+var moneyNumberFormat = function(value) {
+	return accounting.formatNumber(value, 2, ',');
 }
 
 Handlebars.registerHelper('accountingFormat', accountingFormat);
 
+Handlebars.registerHelper('moneyInput', function(amount, id) {
+	value = moneyNumberFormat(amount);
+
+	html = '$<input type="text" name="' + id +
+				 '" id="' + id +
+				 '" value="' + value +
+				 '">';
+
+	return new Handlebars.SafeString(html);
+});

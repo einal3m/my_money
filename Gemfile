@@ -34,9 +34,10 @@ gem 'd3-rails'
 # frontend
 gem 'rails-backbone'
 gem 'bootstrap-sass', '~> 3.2.0.0'
-gem "handlebars_assets", "~> 0.6.2"
+gem 'handlebars_assets', '~> 0.6.2'
 gem 'font-awesome-rails', '~> 4.0.3.1'
 gem 'bootstrap-datepicker-rails'
+gem 'accountingjs-rails'
 
 gem 'therubyracer', platforms: :ruby
 

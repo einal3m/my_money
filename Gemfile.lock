@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    accountingjs-rails (0.0.4)
     actionmailer (4.1.2)
       actionpack (= 4.1.2)
       actionview (= 4.1.2)
@@ -210,6 +211,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  accountingjs-rails
   active_model_serializers
   autoprefixer-rails
   bootstrap-datepicker-rails
