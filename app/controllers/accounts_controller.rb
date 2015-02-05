@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
   # GET /accounts.json
   respond_to :json
 
-  def start_backbone
+  def my_money
   end
   
   def index

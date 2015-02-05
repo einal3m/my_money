@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post 'transactions/import'
   post 'transactions/index'
 
-  get 'start_backbone' => 'accounts#start_backbone'
+  get 'my_money' => 'accounts#my_money'
   get 'static_pages/home'
   get 'upload/file_chooser'
   post 'upload/upload_file'

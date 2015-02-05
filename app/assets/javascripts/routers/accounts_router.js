@@ -6,12 +6,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   },
 
   routes: {
-    "accounts/index"       : "accountIndex",
+    "accounts"             : "accountIndex",
     "accounts/new"         : "newAccount",
     "accounts/:id/edit"    : "editAccount",
     "accounts/:id/show"    : "showAccount",
-
-    "reconciliations/new/account:id" : "newReconciliation",
+    "accounts/:id/reconciliation" : "newReconciliation",
     ".*"                   : "accountIndex",
   },
 

@@ -33,7 +33,7 @@ MyMoney.Views.AccountSummaryView = Backbone.View.extend({
   goBack: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    window.router.navigate('accounts/index', {trigger: true});
+    window.router.navigate('accounts', {trigger: true});
   },
 
   editAccount: function() {

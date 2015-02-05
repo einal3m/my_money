@@ -14,7 +14,7 @@ MyMoney.Views.AccountStatsView = Backbone.View.extend({
   reconcileAccount: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    window.router.navigate('reconciliations/new/account' + this.model.id, {trigger: true});    
+    window.router.navigate('accounts/' + this.model.id + '/reconciliation', {trigger: true});    
   }
 
 });
