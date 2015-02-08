@@ -39,8 +39,14 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
 // reconciliation routes
   newReconciliation: function(account_id) {
+    var router = this;
     account = this.accounts.get(account_id);
-    this.showView(new MyMoney.Views.ReconciliationNewView({account: account, accounts: this.accounts}))
+    reconciliations = new MyMoney.Collections.ReconciliationsCollection([], {account_id: account.id})
+    
+    $.when(reconciliations.fetch()).done(function () {
+      router.showView(new MyMoney.Views.ReconciliationView({account: account, 
+            collection: reconciliations, accounts: router.accounts}));
+    });  
   },
 
 

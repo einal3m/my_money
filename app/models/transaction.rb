@@ -25,7 +25,7 @@ class Transaction < ActiveRecord::Base
 	validates :amount, presence: true, numericality: true
 	
 	# common lookups
-	scope :unreconciled, ->(reconciliation) { where(account: reconciliation.account, reconciliation: nil) }
+	scope :unreconciled, ->(account) { where(account: account, reconciliation: nil) }
   scope :date_order, -> { order(date: :asc, id: :asc) }
   scope :reverse_date_order, -> { order(date: :desc, id: :desc) }
   scope :find_by_date, ->(date_range) { where("date >= ? and date <= ?", date_range.from_date, date_range.to_date) }

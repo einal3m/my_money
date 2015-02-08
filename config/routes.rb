@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :reconciliations
 
   get 'report/income_vs_expense'
   get 'report/income_expense_bar'
@@ -24,15 +23,19 @@ Rails.application.routes.draw do
   post 'upload/upload_file'
 
   resources :subcategories
-  resources :accounts, only: [:create, :index, :destroy, :update]
-
-
   resources :categories
   post 'categories/subcategories_by_category'
-  get 'reconciliations/:id/transactions' => 'reconciliations#transactions', as: :reconciliations_transactions
   post 'reconciliations/:id/reconcile' => 'reconciliations#reconcile', as: :reconciliations_reconcile
 
-  post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
+
+  # backbones routes
+  resources :accounts, only: [:create, :index, :destroy, :update] do
+    resources :reconciliations
+  end
+
+  get 'transactions/unreconciled' => 'transactions#unreconciled'
+
+  #post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

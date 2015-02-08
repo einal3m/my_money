@@ -41,22 +41,6 @@ class AccountsController < ApplicationController
     head :no_content
   end
 
-  def last_reconciliation
-
-    if @account.reconciliations.length == 0
-      @last_date = @account.starting_date
-      @last_balance = @account.starting_balance
-    else
-      @last_date = @account.reconciliations.last.statement_date
-      @last_balance = @account.reconciliations.last.statement_balance
-    end
-
-    respond_to do |format|
-      format.js
-    end
-
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_account

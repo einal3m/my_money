@@ -1,5 +1,3 @@
-<h1>new reconciliation</h1>
-
 <div class="panel panel-default">
   <div class="panel-heading">   
     <h4>Reconciliation Details</h4>
@@ -9,20 +7,18 @@
 
     <div class="field">
       <label for="account_id"> Account:</label>
-      {{selectInput accounts account}}
+      {{account.name}}
     </div>
 
     <div class="field">
       <label for="statement_date"> Statement Date:</label>
-      {{datePickerInput "" "statement_date"}}
+      {{datePickerInput reconciliation.statement_date "statement_date"}}
     </div>
 
     <div class="field">
       <label for="statement_balance"> Statement Balance:</label>
-      {{moneyInput "0" "statement_balance"}}
+      {{moneyInput reconciliation.statement_balance "statement_balance"}}
     </div>
-
-  </div>
 
   <div class="actions panel-footer">
     {{actionButton text="Start" id="reconcile"}}

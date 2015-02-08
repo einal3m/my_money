@@ -37,198 +37,103 @@ RSpec.describe ReconciliationsController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all reconciliations as @reconciliations" do
+    it "returns all reconciliations for the account" do
       reconciliation = FactoryGirl.create(:reconciliation)
-      get :index, {}, valid_session
-      expect(assigns(:reconciliations)).to eq([reconciliation])
-    end
+      get :index, {account_id: reconciliation.account_id}, valid_session
 
-    it "renders the :index view" do
-      get :index, {}, valid_session
-      expect(response).to render_template("index")
-    end
+      expect(response).to be_success
 
+      json = JSON.parse(response.body)
+      expect(json['reconciliations'].length).to eq(1)
+      expect(json['reconciliations'][0]).to eq(serialize_reconciliation(reconciliation)) 
+    end
   end
 
   describe "GET show" do
-    it "assigns the requested reconciliation as @reconciliation" do
+    it "returns the specified reconciliation" do
       reconciliation = FactoryGirl.create(:reconciliation)
-      get :show, {:id => reconciliation.to_param}, valid_session
-      expect(assigns(:reconciliation)).to eq(reconciliation)
+      get :show, {account_id: reconciliation.account_id, id: reconciliation.id}, valid_session
+      json = JSON.parse(response.body)
+      expect(response).to be_success
+      expect(json['reconciliation']).to eq(serialize_reconciliation(reconciliation))
     end
-
-    it "renders the :show view" do
-      reconciliation = FactoryGirl.create(:reconciliation)
-      get :show, {:id => reconciliation.to_param}, valid_session
-      expect(response).to render_template("show")
-    end
-
-  end
-
-  describe "GET new" do
-    it "assigns a new reconciliation as @reconciliation" do
-      account = FactoryGirl.create(:account)
-      get :new, {}, valid_session
-      expect(assigns(:reconciliation)).to be_a_new(Reconciliation)
-      expect(assigns(:accounts)).to eq([account])
-    end
-
-    it "assigns a list of accounts as @accounts" do
-      account1 = FactoryGirl.create(:account)
-      account2 = FactoryGirl.create(:account)
-      get :new, {}, valid_session
-      expect(assigns(:accounts)).to eq([account1, account2])
-    end
-
-    it "renders the :new view" do
-      get :new, {}, valid_session
-      expect(response).to render_template("new")
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested reconciliation as @reconciliation" do
-      reconciliation = FactoryGirl.create(:reconciliation)
-      get :edit, {:id => reconciliation.to_param}, valid_session
-      expect(assigns(:reconciliation)).to eq(reconciliation)
-    end
-
-    it "assigns a list of accounts as @accounts" do
-      reconciliation = FactoryGirl.create(:reconciliation)
-      account1 = FactoryGirl.create(:account)
-      account2 = FactoryGirl.create(:account)
-      get :edit, {:id => reconciliation.to_param}, valid_session
-      expect(assigns(:accounts)).to eq([reconciliation.account, account1, account2])
-    end
-
-    it "renders the :edit view" do
-      reconciliation = FactoryGirl.create(:reconciliation)
-      get :edit, {:id => reconciliation.to_param}, valid_session
-      expect(response).to render_template("edit")
-    end
-
   end
 
   describe "POST create" do
+    let(:account) { FactoryGirl.create(:account) }
+
     context "with valid params" do
       it "creates a new Reconciliation" do
         expect {
-          post :create, {:reconciliation => build_attributes(:reconciliation)}, valid_session
+          post :create, {account_id: account, reconciliation: build_attributes(:reconciliation)}, valid_session
         }.to change(Reconciliation, :count).by(1)
       end
 
-      it "assigns a newly created reconciliation as @reconciliation" do
-        post :create, {:reconciliation => build_attributes(:reconciliation)}, valid_session
-        expect(assigns(:reconciliation)).to be_a(Reconciliation)
-        expect(assigns(:reconciliation)).to be_persisted
-      end
+      it "returns the reconciliation" do
+        post :create, {account_id: account, reconciliation: build_attributes(:reconciliation)}, valid_session
+        expect(response).to be_success
 
-      it "redirects to the transaction reconciliation list" do
-        post :create, {:reconciliation => build_attributes(:reconciliation)}, valid_session
-        expect(response).to redirect_to(reconciliations_transactions_path(assigns(:reconciliation)))
+        reconciliation = Reconciliation.first
+        json = JSON.parse(response.body)
+        expect(json['reconciliation']).to eq(serialize_reconciliation(reconciliation))
       end
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved reconciliation as @reconciliation" do
-        post :create, {:reconciliation => build_attributes(:reconciliation_invalid)}, valid_session
-        expect(assigns(:reconciliation)).to be_a_new(Reconciliation)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:reconciliation => build_attributes(:reconciliation_invalid)}, valid_session
-        expect(response).to render_template("new")
+      it "does not create a new reconciliation" do
+        expect {
+          post :create, {account_id: account, reconciliation: build_attributes(:reconciliation_invalid)}, valid_session
+        }.not_to change(Reconciliation, :count)
+        expect(response.status).to be(422)
       end
     end
   end
 
   describe "PUT update" do
-
-    before :each do
-      @reconciliation = FactoryGirl.create(:reconciliation)
-    end
+    let(:reconciliation) { FactoryGirl.create(:reconciliation) }
 
     context "with valid params" do
 
-      it "updates the requested reconciliation" do
-        account = FactoryGirl.create(:account)
-        put :update, {:id => @reconciliation.to_param, 
+      it "updates and returns the requested reconciliation" do
+        put :update, {:account_id => reconciliation.account_id, :id => reconciliation.id, 
           :reconciliation => build_attributes(:reconciliation,
               statement_balance: "9.77",
-              statement_date: "2014-07-02",
-              account: account)}, valid_session
-        @reconciliation.reload
-        expect(@reconciliation.account_id).to eq(account.id)
-        expect(@reconciliation.statement_date).to eq(Date.parse("2014-07-02"))
-        expect(@reconciliation.statement_balance).to eq(9.77)
-      end
+              statement_date: "2014-07-02")}, valid_session
+        reconciliation.reload
+        expect(reconciliation.statement_date).to eq(Date.parse("2014-07-02"))
+        expect(reconciliation.statement_balance).to eq(9.77)
 
-      it "assigns the requested reconciliation as @reconciliation" do
-        put :update, {:id => @reconciliation.to_param, :reconciliation => build_attributes(:reconciliation)}, valid_session
-        expect(assigns(:reconciliation)).to eq(@reconciliation)
-      end
-
-      it "redirects to the reconciliation" do
-        put :update, {:id => @reconciliation.to_param, :reconciliation => build_attributes(:reconciliation)}, valid_session
-        expect(response).to redirect_to(reconciliations_transactions_path(assigns(:reconciliation)))
+        expect(response).to be_success
+        json = JSON.parse(response.body)
+        expect(json['reconciliation']).to eq(serialize_reconciliation(reconciliation))
       end
     end
 
     context "with invalid params" do
       it "assigns the reconciliation as @reconciliation" do
-        put :update, {:id => @reconciliation.to_param, :reconciliation => build_attributes(:reconciliation_invalid)}, valid_session
-        expect(assigns(:reconciliation)).to eq(@reconciliation)
-      end
-
-      it "re-renders the 'edit' template" do
-        put :update, {:id => @reconciliation.to_param, :reconciliation => build_attributes(:reconciliation_invalid)}, valid_session
-        expect(response).to render_template("edit")
+        put :update, {:account_id => reconciliation.account_id, :id => reconciliation.id, 
+          :reconciliation => build_attributes(:reconciliation_invalid)}, valid_session
+        expect(response.status).to be(422)
       end
     end
   end
 
-  describe "DELETE destroy" do
-    before :each do
-      @reconciliation = FactoryGirl.create(:reconciliation)
-    end
+  # describe "DELETE destroy" do
+  #   before :each do
+  #     @reconciliation = FactoryGirl.create(:reconciliation)
+  #   end
 
-    it "destroys the requested reconciliation" do
-      expect {
-        delete :destroy, {:id => @reconciliation.to_param}, valid_session
-      }.to change(Reconciliation, :count).by(-1)
-    end
+  #   it "destroys the requested reconciliation" do
+  #     expect {
+  #       delete :destroy, {:id => @reconciliation.to_param}, valid_session
+  #     }.to change(Reconciliation, :count).by(-1)
+  #   end
 
-    it "redirects to the reconciliations list" do
-      delete :destroy, {:id => @reconciliation.to_param}, valid_session
-      expect(response).to redirect_to(reconciliations_url)
-    end
-  end
-
-  describe "transactions" do
-    before :each do
-      @reconciliation = FactoryGirl.create(:reconciliation)
-    end
-
-    it "assigns the reconciliation as @reconciliation" do
-      get :transactions, {:id => @reconciliation.to_param}, valid_session
-      expect(assigns(:reconciliation)).to eq(@reconciliation)
-    end
-
-    it "assigns a list of transactions as @transactions" do
-
-      transaction1 = FactoryGirl.create(:transaction, account: @reconciliation.account, reconciliation: nil)
-      transaction2 = FactoryGirl.create(:transaction, account: @reconciliation.account, reconciliation: nil)
-      
-      get :transactions, {:id => @reconciliation.to_param}, valid_session
-      expect(assigns(:transactions)).to eq([transaction1, transaction2])
-    end
-
-    it "renders the :transactions view" do
-      get :transactions, {:id => @reconciliation.to_param}, valid_session
-      expect(response).to render_template("transactions")
-    end
-
-  end
+  #   it "redirects to the reconciliations list" do
+  #     delete :destroy, {:id => @reconciliation.to_param}, valid_session
+  #     expect(response).to redirect_to(reconciliations_url)
+  #   end
+  # end
 
   describe "reconcile" do
     before :each do

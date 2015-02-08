@@ -234,4 +234,19 @@ RSpec.describe TransactionsController, :type => :controller do
 
   end
 
+  describe "unreconciled" do
+    let(:reconciliation) { FactoryGirl.create(:reconciliation) }
+
+    it "returns all unreconciled transactions" do
+
+      transaction1 = FactoryGirl.create(:transaction, account: reconciliation.account, reconciliation: nil)
+      transaction2 = FactoryGirl.create(:transaction, account: reconciliation.account, reconciliation: nil)
+      transaction3 = FactoryGirl.create(:transaction, account: reconciliation.account)
+    
+      get :unreconciled, {account_id: reconciliation.account_id}, valid_session
+      expect(response).to be_success
+      json = JSON.parse(response.body)
+      expect(json['transactions'].length).to eq(2)
+    end
+  end
 end

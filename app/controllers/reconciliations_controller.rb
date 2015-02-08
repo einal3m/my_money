@@ -1,73 +1,40 @@
 class ReconciliationsController < ApplicationController
-  before_action :set_reconciliation, only: [:show, :edit, :update, :destroy, :transactions, :reconcile]
+  before_action :set_reconciliation, only: [:show, :update, :transactions, :reconcile]
+  before_action :set_account, only: [:index]
 
-  # GET /reconciliations
-  # GET /reconciliations.json
+  # GET account/:account_id/reconciliations
   def index
-    @reconciliations = Reconciliation.all.order(reconciled: :asc, statement_date: :desc)
+    render json: @account.reconciliations.order(statement_date: :desc)
   end
 
-  # GET /reconciliations/1
-  # GET /reconciliations/1.json
+  # GET account/:account_id/reconciliations/1
   def show
+    render json: @reconciliation
   end
 
-  # GET /reconciliations/new
-  def new
-    @reconciliation = Reconciliation.new
-    set_form_data
-  end
-
-  # GET /reconciliations/1/edit
-  def edit
-    set_form_data
-  end
-
-  # POST /reconciliations
-  # POST /reconciliations.json
+  # POST account/:account_id/reconciliations
   def create
     @reconciliation = Reconciliation.new(reconciliation_params)
 
-    respond_to do |format|
-      if @reconciliation.save
-        format.html { redirect_to reconciliations_transactions_path(@reconciliation) }
-        format.json { render :show, status: :created, location: @reconciliation }
-      else
-        set_form_data
-        format.html { render :new }
-        format.json { render json: @reconciliation.errors, status: :unprocessable_entity }
-      end
+    if @reconciliation.save
+      render json: @reconciliation, status: :created
+    else
+      render json: @reconciliation.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /reconciliations/1
-  # PATCH/PUT /reconciliations/1.json
+  # PATCH/PUT account/:account_id/reconciliations/1
   def update
-    respond_to do |format|
-      if @reconciliation.update(reconciliation_params)
-        format.html { redirect_to reconciliations_transactions_path(@reconciliation), notice: 'Reconciliation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @reconciliation }
-      else
-        set_form_data
-        format.html { render :edit }
-        format.json { render json: @reconciliation.errors, status: :unprocessable_entity }
-      end
+    if @reconciliation.update(reconciliation_params)
+      render json: @reconciliation, status: :created
+    else
+      render json: @reconciliation.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /reconciliations/1
-  # DELETE /reconciliations/1.json
-  def destroy
-    @reconciliation.destroy
-    respond_to do |format|
-      format.html { redirect_to reconciliations_url, notice: 'Reconciliation was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  def transactions
-    @transactions =  Transaction.unreconciled(@reconciliation).date_order
-  end
+  # def transactions
+  #   @transactions =  Transaction.unreconciled(@reconciliation).date_order
+  # end
 
   def reconcile
 
@@ -99,8 +66,8 @@ class ReconciliationsController < ApplicationController
       @reconciliation = Reconciliation.find(params[:id])
     end
 
-    def set_form_data
-      @accounts = Account.all
+    def set_account
+      @account = Account.find(params[:account_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

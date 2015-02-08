@@ -127,6 +127,12 @@ class TransactionsController < ApplicationController
     redirect_to transactions_url, notice: 'Transactions imported'
   end
   
+  # GET transactions/unreconciled?account_id=?
+  def unreconciled
+    account = Account.find(params[:account_id])
+    render json: Transaction.unreconciled(account).date_order
+  end
+
   
   private
     # Use callbacks to share common setup or constraints between actions.

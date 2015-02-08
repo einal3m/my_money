@@ -72,7 +72,7 @@ RSpec.describe Transaction, :type => :model do
       FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
       FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
 
-      expect(Transaction.unreconciled(r).length).to eq(2)
+      expect(Transaction.unreconciled(r.account).length).to eq(2)
 
     end
 
