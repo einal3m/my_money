@@ -130,7 +130,7 @@ class TransactionsController < ApplicationController
   # GET transactions/unreconciled?account_id=?
   def unreconciled
     account = Account.find(params[:account_id])
-    render json: Transaction.unreconciled(account).date_order
+    render json: Transaction.unreconciled(account).reverse_date_order
   end
 
   

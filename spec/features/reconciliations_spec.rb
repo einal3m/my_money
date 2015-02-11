@@ -24,15 +24,11 @@ feature "Reconciliations", :type => :feature do
   	visit('/my_money')
     click_on('show')
 
-    # select the account and click refresh
-    # select('My Account', from: 'account_id')
-    # click_on('Search')
-
   	# Click on the Reconcile button
     click_on('reconcile')
 
   	# expect to see the new form with previous reconciliation details
-  	expect(page).to have_text('new reconciliation')
+  	expect(page).to have_text('account reconciliation')
     expect(page).to have_text('01-Jul-2014')
     expect(page).to have_text('$10.00')
 
@@ -46,14 +42,14 @@ feature "Reconciliations", :type => :feature do
   	# expect(find('#reconciliation_last_reconciled_balance').value.to_f).to eq(10.00)
 
   	# # click on the Start button
-  	# click_on('Start')
+  	click_on('Start')
 
-  	# # expect to see a list of transactions, and the Done button to be disabled
-   #  expect(page.all('tbody tr').count).to eq(4)
-   #  expect(page).to have_button('Done', disabled: true)
+  	# expect to see a list of transactions, and the Done button to be disabled
+    expect(page.all('tbody tr').count).to eq(4)
+    expect(page).to have_button('reconcile', disabled: true)
 
-   #  # expect to see the reconciled balance equal to the last statement balance
-   #  expect(find('#reconciled_balance').text).to eq("$10.00")
+    # expect to see the reconciled balance equal to the last statement balance
+    expect(find('#reconciled_balance').text).to eq("$10.00")
 
    #  # select the transactions to be reconciled
    #  within(find("tr", text:"$25.00")){ check("transaction_add_to_reconciliation") }

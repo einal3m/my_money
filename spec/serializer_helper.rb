@@ -6,5 +6,5 @@ end
 
 def serialize_reconciliation(reconciliation)
   attrs = JSON.parse(reconciliation.to_json)
-  attrs.extract!("id", "statement_date", "statement_balance", "reconciled")
+  attrs.extract!("id", "account_id", "statement_date", "statement_balance", "reconciled")
 end

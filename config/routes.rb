@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   get 'import_transactions/file_chooser'
   post 'import_transactions/import'
 
-  resources :transactions
+  resources :transactions do
+    get 'unreconciled', on: :collection
+  end
+  
   post 'transactions/import'
   post 'transactions/index'
 
@@ -32,8 +35,6 @@ Rails.application.routes.draw do
   resources :accounts, only: [:create, :index, :destroy, :update] do
     resources :reconciliations
   end
-
-  get 'transactions/unreconciled' => 'transactions#unreconciled'
 
   #post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
   # The priority is based upon order of creation: first created -> highest priority.

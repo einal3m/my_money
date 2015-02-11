@@ -4,7 +4,6 @@
   </div>
 
   <div class="container">
-
     <div class="field">
       <label for="account_id"> Account:</label>
       {{account.name}}
@@ -19,10 +18,10 @@
       <label for="statement_balance"> Statement Balance:</label>
       {{moneyInput reconciliation.statement_balance "statement_balance"}}
     </div>
-
+  </div>
+  
   <div class="actions panel-footer">
     {{actionButton text="Start" id="reconcile"}}
     {{cancelButton}}
   </div>
-
 </div> <!-- panel -->

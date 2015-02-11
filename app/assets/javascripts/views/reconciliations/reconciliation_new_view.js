@@ -24,7 +24,7 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
 
     this.model.set({statement_date: this.$('#statement_date').val()});
     this.model.set({statement_balance: this.$('#statement_balance').val()});
-    this.model.save({}, { wait: true, success: this.trigger('startReconcile') });
+    this.model.save({}, { wait: true, done: this.trigger('startReconcile') });
   },
 
   goBack: function(e) {

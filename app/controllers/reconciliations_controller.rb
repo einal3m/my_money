@@ -26,7 +26,7 @@ class ReconciliationsController < ApplicationController
   # PATCH/PUT account/:account_id/reconciliations/1
   def update
     if @reconciliation.update(reconciliation_params)
-      render json: @reconciliation, status: :created
+      render json: @reconciliation, status: :ok
     else
       render json: @reconciliation.errors, status: :unprocessable_entity
     end
