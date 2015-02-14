@@ -49,6 +49,7 @@ Handlebars.registerHelper('actionButton', function(options) {
 	if (options.hash['icon']) {
 		buttonText = '<i class="fa ' + options.hash['icon'] + '"></i> ' + buttonText; 
 	}
+	console.log(buttonHTML(buttonText, buttonId, "btn-default"));
 	return buttonHTML(buttonText, buttonId, "btn-default");
 });
 

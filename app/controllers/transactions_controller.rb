@@ -132,7 +132,6 @@ class TransactionsController < ApplicationController
     account = Account.find(params[:account_id])
     render json: Transaction.unreconciled(account).reverse_date_order
   end
-
   
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+  <div class="panel-heading">   
+    <h4>Reconciliation Details</h4>
+  </div>
+
+  <div class="container">
+		<div class="row">
+		  <div class="col-md-6">
+		    <div class="field">
+		      <label for="account_id"> Account:</label>
+		      {{account.name}}
+		    </div>
+		    <div class="field">
+		      <label for="statement_balance"> Statement Balance:</label>
+		      {{accountingFormat reconciliation.statement_balance}}
+		    </div>
+		    <div class="field">
+		      <label for="statement_date"> Statement Date:</label>
+		      {{dateFormatter reconciliation.statement_date}}
+		    </div>
+		  </div>
+		  <div class="col-md-6">
+		    <div class="field">
+		      <label for="account_id">&nbsp;</label>
+		    </div>
+		    <div class="field">
+		      <label for="reconciliation_balance"> Reconciliation Balance:</label>
+		      <span id="reconciliation_balance">{{accountingFormat reconciliation_balance}}</span>
+		    </div>
+		    <div class="field">
+		      <label for="balance_difference"> Difference:</label>
+		      <span id="balance_difference">{{accountingFormat balance_difference}}</span>
+		    </div>
+		  </div>
+		 </div>
+  </div>
+  
+  <div class="actions panel-footer">
+    {{actionButton text="Done" id="done"}}
+    {{cancelButton}}
+  </div>
+</div> <!-- panel -->

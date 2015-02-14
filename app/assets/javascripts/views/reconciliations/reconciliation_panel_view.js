@@ -1,6 +1,6 @@
-MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
+MyMoney.Views.ReconciliationPanelView = Backbone.View.extend({
 
-  template: "reconciliations/reconciliation_new",
+  template: "reconciliations/reconciliation_panel",
 
   events: {
     "click #reconcile": "reconcileAccount",
@@ -9,23 +9,23 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
 
   initialize: function(options){
     this.account = this.options['account'];
+    this.reconciliation_balance = this.options['reconciliation_balance'];
+    this.balance_difference = this.options['balance_difference'];
   },
 
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]({
           account: this.account.toJSON(), 
-          reconciliation: this.model.toJSON()}));
+          reconciliation: this.model.toJSON(),
+          reconciliation_balance: this.reconciliation_balance,
+          balance_difference: this.balance_difference}));
     return this;
   },
 
   reconcileAccount: function(e){
     e.preventDefault();
     e.stopPropagation();
-
-    var new_statement_balance = dollarsToCents(this.$('#statement_balance').val());
-    this.model.set({statement_date: this.$('#statement_date').val()});
-    this.model.set({statement_balance: new_statement_balance});
-    this.model.save({}, { wait: true, done: this.trigger('startReconcile') });
+    this.trigger('finishReconcile');
   },
 
   goBack: function(e) {

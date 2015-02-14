@@ -73,11 +73,11 @@ RSpec.describe ReconciliationsController, :type => :controller do
       it "updates and returns the requested reconciliation" do
         put :update, {:account_id => reconciliation.account_id, :id => reconciliation.id, 
           :reconciliation => build_attributes(:reconciliation,
-              statement_balance: "9.77",
+              statement_balance: "977",
               statement_date: "2014-07-02")}, valid_session
         reconciliation.reload
         expect(reconciliation.statement_date).to eq(Date.parse("2014-07-02"))
-        expect(reconciliation.statement_balance).to eq(9.77)
+        expect(reconciliation.statement_balance).to eq(977)
 
         expect(response).to be_success
         json = JSON.parse(response.body)

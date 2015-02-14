@@ -17,10 +17,16 @@ var centsToDollars = function(value) {
 	return value/100.00;
 };
 
-Handlebars.registerHelper('accountingFormat', accountingFormat);
+var dollarsToCents = function(value) {
+	return accounting.unformat(value)*100;
+};
+
+Handlebars.registerHelper('accountingFormat', function(amount) {
+	return accountingFormat(centsToDollars(amount))
+});
 
 Handlebars.registerHelper('moneyInput', function(amount, id) {
-	value = moneyNumberFormat(amount);
+	value = moneyNumberFormat(centsToDollars(amount));
 
 	html = '$<input type="text" name="' + id +
 				 '" id="' + id +

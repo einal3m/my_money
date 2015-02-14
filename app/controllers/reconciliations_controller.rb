@@ -25,39 +25,33 @@ class ReconciliationsController < ApplicationController
 
   # PATCH/PUT account/:account_id/reconciliations/1
   def update
-    if @reconciliation.update(reconciliation_params)
+    # finished reconciliation?
+    if (params[:reconciled] && params.has_key?(:transactions))
+      # get transaction data from params
+      transaction_array = params[:transactions]
+
+      # extract ids from array which have been selected
+      ids = transaction_array.map {|t| t[:id]}
+
+      # get transactions from database
+      transactions = Transaction.find(ids)
+
+      # update database
+      ActiveRecord::Base.transaction do
+        transactions.each { |t| t.update(reconciliation: @reconciliation) }
+
+        # set reconciliation finished
+        @reconciliation.update(reconciled: true)
+      end
       render json: @reconciliation, status: :ok
     else
-      render json: @reconciliation.errors, status: :unprocessable_entity
-    end
-  end
-
-  # def transactions
-  #   @transactions =  Transaction.unreconciled(@reconciliation).date_order
-  # end
-
-  def reconcile
-
-    # get transaction data from params
-    transaction_array = params[:transactions]
-
-    # extract ids from array which have been selected
-    ids = transaction_array.map { |x| x[:id] if x[:add_to_reconciliation] == "1" }.compact!
-
-    # get transactions from database
-    transactions = Transaction.find(ids)
-
-    # update database
-    ActiveRecord::Base.transaction do
-      transactions.each { |t| t.update(reconciliation: @reconciliation) }
-
-      # set reconciliation finished
-      @reconciliation.update(reconciled: true)
+      if @reconciliation.update(params[:reconciliation])
+        render json: @reconciliation, status: :ok
+      else
+        render json: @reconciliation.errors, status: :unprocessable_entity
+      end
     end
 
-    # set current account to session, so that we see the transactions for that account
-    session[:account_id] = @reconciliation.account.id
-    redirect_to transactions_url
   end
 
   private
@@ -72,6 +66,6 @@ class ReconciliationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reconciliation_params
-      params.require(:reconciliation).permit(:account_id, :statement_date, :statement_balance, :last_reconciled_date, :last_reconciled_balance, :reconciled)
+      params.require(:reconciliation).permit(:account_id, :statement_date, :statement_balance, :last_reconciled_date, :last_reconciled_balance, :reconciled, :transactions)
     end
 end

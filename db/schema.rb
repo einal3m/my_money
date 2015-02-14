@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014004156) do
+ActiveRecord::Schema.define(version: 20150211035619) do
 
   create_table "accounts", force: true do |t|
     t.string   "name"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 20141014004156) do
     t.datetime "updated_at"
     t.date     "starting_date"
     t.integer  "reconciliation_id"
+  end
+
+  create_table "allocations", force: true do |t|
+    t.integer  "transaction_id"
+    t.integer  "category_id"
+    t.integer  "subcategory_id"
+    t.string   "note"
+    t.integer  "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "categories", force: true do |t|
@@ -70,7 +80,7 @@ ActiveRecord::Schema.define(version: 20141014004156) do
   create_table "reconciliations", force: true do |t|
     t.integer  "account_id"
     t.date     "statement_date"
-    t.decimal  "statement_balance"
+    t.integer  "statement_balance"
     t.boolean  "reconciled"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -95,17 +105,17 @@ ActiveRecord::Schema.define(version: 20141014004156) do
   create_table "transactions", force: true do |t|
     t.string   "transaction_type"
     t.date     "date"
-    t.decimal  "amount"
     t.string   "fitid"
     t.string   "memo"
     t.integer  "account_id"
-    t.integer  "category_id"
-    t.integer  "subcategory_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "notes"
     t.integer  "reconciliation_id"
     t.decimal  "balance"
+    t.decimal  "amount"
+    t.integer  "category_id"
+    t.integer  "subcategory_id"
   end
 
 end

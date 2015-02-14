@@ -7,5 +7,4 @@ MyMoney.Views.ReconciliationRowView = Backbone.View.extend({
     this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
     return this;
   }
-
 });
