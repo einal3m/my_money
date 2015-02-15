@@ -1,4 +1,4 @@
-MyMoney.Views.ReconciliationView = Backbone.View.extend({
+MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 
   className: "accounts",
@@ -12,14 +12,14 @@ MyMoney.Views.ReconciliationView = Backbone.View.extend({
   initialize: function(options){
     this.account = this.options['account'];
     this.accounts = this.options['accounts'];
-    this.get_last_reconciliation();
-    this.panel1SubView = new MyMoney.Views.ReconciliationNewView({model: this.model, 
-                                                               account: this.account});
-    this.panel2SubView = new MyMoney.Views.ReconciliationHistoryView({collection: this.collection});
-    this.listenTo(this.panel1SubView, "startReconcile", this.startReconcile);
+    this.get_this_reconciliation();
+    this.addSubView('panel1', new MyMoney.Views.ReconciliationNewView({model: this.model, 
+                                                               account: this.account}));
+    this.addSubView('panel2', new MyMoney.Views.ReconciliationHistoryView({collection: this.collection}));
+    this.listenTo(this.subViews['panel1'], "startReconcile", this.startReconcile);
   },
 
-  get_last_reconciliation: function() {
+  get_this_reconciliation: function() {
 
     var last_reconciliation = null;
 
@@ -29,37 +29,31 @@ MyMoney.Views.ReconciliationView = Backbone.View.extend({
         last_reconciliation = this.collection.models[1];
       } else {
         last_reconciliation = this.collection.models[0];
-        this.model = new MyMoney.Models.Reconciliation;
-        this.model.set({account_id: this.account.id});
+        this.get_new_reconciliation();
       }
     } else {
-      this.model = new MyMoney.Models.Reconciliation;
-      this.model.set({account_id: this.account.id});
+      this.get_new_reconciliation();
     }
 
+    this.get_reconciliation_balance(last_reconciliation);
+  },
+
+  get_new_reconciliation: function() {
+    this.model = new MyMoney.Models.Reconciliation;
+    this.model.set({account_id: this.account.id});
+  },
+
+  get_reconciliation_balance: function(last_reconciliation) {
     if (last_reconciliation) {
       this.reconciliation_balance = last_reconciliation.get('statement_balance');
     } else {
       this.reconciliation_balance = this.account.get('starting_balance');
     }
-    console.log('get_last_rec');
-    console.log(this.model);
-    console.log(last_reconciliation);
-    console.log(this.reconciliation_balance);
-  },
-
-  addPanel1SubView: function() {
-    this.$el.find('#panel1').html(this.panel1SubView.render().el);
-  },
-
-  addPanel2SubView: function() {
-    this.$el.find('#panel2').html(this.panel2SubView.render().el);
   },
 
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]());
-    this.addPanel1SubView();
-    this.addPanel2SubView();
+    this.renderSubViews();
     return this;
   },
 
@@ -102,18 +96,15 @@ MyMoney.Views.ReconciliationView = Backbone.View.extend({
 
   startReconcile: function() {
     var that = this;
-    this.panel1SubView.remove();
-    this.panel2SubView.remove();
     this.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: account.id});
     $.when(this.transactions.fetch()).done(function () {
       that.set_reconciled_state();
-      that.panel2SubView = new MyMoney.Views.ReconciliationTransactionsView({model: that.model, collection: that.transactions});
-      that.addPanel2SubView();
-      that.panel1SubView = new MyMoney.Views.ReconciliationPanelView({model: that.model, 
+      that.addSubView('panel2', new MyMoney.Views.ReconciliationTransactionsView({model: that.model, collection: that.transactions}));
+      that.addSubView('panel1', new MyMoney.Views.ReconciliationPanelView({model: that.model, 
                                 account: that.account, 
                                 reconciliation_balance: that.reconciliation_balance,
-                                balance_difference: that.balance_difference});
-      that.addPanel1SubView();
+                                balance_difference: that.balance_difference}));
+      that.renderSubViews();
     });  
   },
 
@@ -133,8 +124,7 @@ MyMoney.Views.ReconciliationView = Backbone.View.extend({
       window.router.navigate('accounts/' + this.model.get('account_id') + '/show', {trigger: true})
   },
 
-  finishReconcile: function() {
-console.log("finish reconcile");
+  finishReconcile: function() {;
     this.model.set('reconciled', true);
     this.model.set('transactions', this.reconciled_transactions());
     this.model.save({}, { wait: true, done: this.goToAccount() });
