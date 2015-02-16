@@ -6,5 +6,15 @@ MyMoney.Models.Reconciliation = Backbone.Model.extend({
 
   parse : function(resp, xhr) {
 		return resp["reconciliation"] || resp;
+  },
+
+  validation: {
+    statement_date: {
+      required: true
+    },
+    statement_balance: {
+      required: true
+    }
   }
+
 });

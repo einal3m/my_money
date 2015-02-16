@@ -4,7 +4,7 @@ $panel-border-radius: 0;
 $panel-default-heading-bg: #8dbf41;
 $icon-font-path: 'bootstrap/';
 
-$main_color: #8dbf41;
+$main-color: #8dbf41;
 
 @import "bootstrap";
 
@@ -12,13 +12,31 @@ body {
 	padding-top: 90px;
 }
 
+//h4 {
+//	padding-top: 15px;
+//}
+
 .container {
 	padding-top: 10px;
+
+	.form-horizontal {
+		margin-top: 25px;
+		padding-top: 15px;
+		border-top: solid 1px $main-color;
+	}
+
+	.form-footer {
+		margin-top: 25px;
+		padding-top: 15px;
+		margin-bottom: 25px;
+		border-top: solid 1px $main-color;
+	}
 }
 
 .panel-form {
 	background: #DCDDED;
 }
+
 
 select {
 	height: 24px;
@@ -40,15 +58,15 @@ div.panel-heading {
 }
 
 div.panel {
-	border: solid 1px $main_color;
+	border: solid 1px $main-color;
 }
 
 /* navbar properties */
 ul.nav li.dropdown:hover ul.dropdown-menu{ display: block; }
 
 .navbar {
-	border-top: solid 12px $main_color;
-	border-bottom: solid 3px $main_color;
+	border-top: solid 12px $main-color;
+	border-bottom: solid 3px $main-color;
 	background-color: white;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 	padding-bottom: 15px;
@@ -57,7 +75,7 @@ ul.nav li.dropdown:hover ul.dropdown-menu{ display: block; }
 		font-size:32px;
 
 		strong {
-			color: $main_color;
+			color: $main-color;
 		}
 	}
 

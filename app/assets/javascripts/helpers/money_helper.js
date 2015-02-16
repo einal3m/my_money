@@ -18,6 +18,7 @@ var centsToDollars = function(value) {
 };
 
 var dollarsToCents = function(value) {
+	if (!value) { return null; }
 	return accounting.unformat(value)*100;
 };
 
@@ -28,7 +29,7 @@ Handlebars.registerHelper('accountingFormat', function(amount) {
 Handlebars.registerHelper('moneyInput', function(amount, id) {
 	value = moneyNumberFormat(centsToDollars(amount));
 
-	html = '$<input type="text" name="' + id +
+	html = '<div class="input-group-addon">$</div><input type="text" class="form-control" name="' + id +
 				 '" id="' + id +
 				 '" value="' + value +
 				 '">';

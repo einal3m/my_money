@@ -22,7 +22,7 @@ var formatDate = function(dateString) {
 Handlebars.registerHelper('datePickerInput', function(dateString, id) {
 	value = formatDate(dateString);
 
-	html = '<input type="text" name="' + id +
+	html = '<input type="text" class="form-control" name="' + id +
 				 '" id="' + id +
 				 '" value="' + value +
 				 '" data-provide="datepicker">';

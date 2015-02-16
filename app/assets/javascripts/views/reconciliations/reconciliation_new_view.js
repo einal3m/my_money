@@ -18,6 +18,7 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
     this.$el.html(HandlebarsTemplates[this.template]({
           account: this.account.toJSON(), 
           reconciliation: this.model.toJSON()}));
+    Backbone.Validation.bind(this);
     return this;
   },
 
@@ -28,7 +29,10 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
     var new_statement_balance = dollarsToCents(this.$('#statement_balance').val());
     this.model.set({statement_date: this.$('#statement_date').val()});
     this.model.set({statement_balance: new_statement_balance});
-    this.model.save({}, { wait: true, done: this.trigger('startReconcile') });
+
+    if(this.model.isValid(true)){
+      this.model.save({}, { wait: true, done: this.trigger('startReconcile') });
+    }
   },
 
   goBack: function(e) {
