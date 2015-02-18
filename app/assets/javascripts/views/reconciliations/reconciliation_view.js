@@ -92,6 +92,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
 
     this.update_reconciliation_balance(model.get('amount'), checked)
     model.set('reconciled', checked);
+    this.checkDone();
   },
 
   startReconcile: function() {
@@ -105,7 +106,13 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
                                 reconciliation_balance: that.reconciliation_balance,
                                 balance_difference: that.balance_difference}));
       that.renderSubViews();
+      that.checkDone();
     });  
+  },
+
+  checkDone: function() {
+    var done = (this.balance_difference == 0) && (this.reconciled_transactions().length > 0) 
+    this.$('#done').prop('disabled', !done);
   },
 
   reconciled_transactions: function() {
