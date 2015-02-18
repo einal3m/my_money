@@ -1,0 +1,24 @@
+td.links {
+	text-align: right;
+}
+td {
+	a:visited, a:link {
+		color: black;
+	}
+	
+	a:hover {
+		color: white;
+	}
+}
+td.money, th.money {
+	text-align: right;
+}
+
+td.centred, th.centred {
+	text-align: center;
+}
+
+tr.totals {
+	border-top: 2px solid black; 
+	border-bottom: 5px double black
+}

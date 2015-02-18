@@ -11,7 +11,20 @@
  * file per style scope.
  *
  *= require bootstrap-datepicker
- *= require_tree .
  *= require_self
  */
 
+@import 'partials/variables';
+@import 'bootstrap';
+
+@import "font-awesome";
+
+@import 'partials/fonts';
+@import 'partials/layout';
+@import 'partials/nav';
+@import 'partials/forms';
+@import 'partials/charts';
+@import 'partials/tables';
+
+@import 'custom';
+@import 'scaffolds';
