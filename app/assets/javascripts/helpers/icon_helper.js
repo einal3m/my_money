@@ -4,16 +4,6 @@ var iconHTML = function(text, iconClass) {
 	);
 };
 
-// var stackedIconHTML = function(iconBottomClass, iconTopClass) {
-
-// 	return new Handlebars.SafeString(
-// 		"<span class='fa-stack'>" +
-//   		"<i class='fa " + iconBottomClass + " fa-stack'></i>" +
-//   		"<i class='fa " + iconTopClass + " fa-stack'></i>" +
-// 		"</span>"
-// 	);
-// };
-
 Handlebars.registerHelper('editIcon', function(options) {
 	iconText = options.hash['text'] || '';
 	return iconHTML(iconText, "fa-edit");
@@ -22,4 +12,10 @@ Handlebars.registerHelper('editIcon', function(options) {
 Handlebars.registerHelper('showIcon', function(options) {
 	iconText = options.hash['text'] || '';
 	return iconHTML(iconText, "fa-hand-o-right fa-lg");
+});
+
+Handlebars.registerHelper('tickOrCross', function(value) {
+	var icon = "fa-check";
+	if (!value) { icon = "fa-times"; }
+	return iconHTML('', icon);
 });
