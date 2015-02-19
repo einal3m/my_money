@@ -15,7 +15,7 @@ class ReconciliationsController < ApplicationController
   # POST account/:account_id/reconciliations
   def create
     @reconciliation = Reconciliation.new(reconciliation_params)
-
+p reconciliation_params
     if @reconciliation.save
       render json: @reconciliation, status: :created
     else
@@ -45,7 +45,7 @@ class ReconciliationsController < ApplicationController
       end
       render json: @reconciliation, status: :ok
     else
-      if @reconciliation.update(params[:reconciliation])
+      if @reconciliation.update(reconciliation_params)
         render json: @reconciliation, status: :ok
       else
         render json: @reconciliation.errors, status: :unprocessable_entity
@@ -66,6 +66,6 @@ class ReconciliationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reconciliation_params
-      params.require(:reconciliation).permit(:account_id, :statement_date, :statement_balance, :last_reconciled_date, :last_reconciled_balance, :reconciled, :transactions)
+      params.require(:reconciliation).permit(:account_id, :statement_date, :statement_balance, :last_reconciled_date, :last_reconciled_balance, :reconciled)
     end
 end

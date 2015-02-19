@@ -15,64 +15,61 @@ feature "Reconciliations", :type => :feature do
   scenario "User performs bank reconciliation", :js => true do
   	# Given we have an account with some transactions
   	account = FactoryGirl.create(:account, name: "My Account", starting_balance: 10.00, starting_date: "2014-07-01")
-  	transaction1 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 25.00, reconciliation: nil)
-  	transaction2 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 15.00, reconciliation: nil)
-  	transaction3 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 2.00, reconciliation: nil)
-  	transaction4 = FactoryGirl.create(:transaction, account: account, date: Date.today, amount: 100.00, reconciliation: nil)
+  	transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-07-02", amount: 25.00, reconciliation: nil)
+  	transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-07-03", amount: 15.00, reconciliation: nil)
+  	transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-07-04", amount: 2.00, reconciliation: nil)
+  	transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-07-05", amount: 100.00, reconciliation: nil)
   	
   	# and we are on the accounts show page
   	visit('/my_money')
     click_on('show')
 
-  	# Click on the Reconcile button
+  	# when I click on the Reconcile button
     click_on('reconcile')
 
-  	# expect to see the new form with previous reconciliation details
+  	# then I see the new form
   	expect(page).to have_text('account reconciliation')
-    expect(page).to have_text('01-Jul-2014')
-    expect(page).to have_text('$10.00')
 
-  	# select account, fill in statement balance and date
-  	# select('My Account', from: 'reconciliation_account_id')
+  	# when I fill in statement balance and date
   	fill_in('statement_balance', with: 50.00)
-    fill_in('statement_date', with: "03-Jul-2014")
+    fill_in('statement_date', with: "2-Jul-2014")
 
-  	# # expect to see previous balance and date calculated
-  	# expect(find('#reconciliation_last_reconciled_date').value).to eq("2014-07-01")
-  	# expect(find('#reconciliation_last_reconciled_balance').value.to_f).to eq(10.00)
-
-  	# # click on the Start button
+  	# and click on the Start button
   	click_on('Start')
 
-  	# expect to see a list of transactions, and the Done button to be disabled
+    # then I see the reconciliation panel
+    expect(page).to have_text('2-Jul-2014')
+    expect(page).to have_text('$50.00')
+
+  	# and all unreconciled transactions are there
     expect(page.all('tbody tr').count).to eq(4)
-    expect(page).to have_button('reconcile', disabled: true)
 
-    # expect to see the reconciled balance equal to the last statement balance
-    expect(find('#reconciled_balance').text).to eq("$10.00")
+    # and one transaction is checked
 
-   #  # select the transactions to be reconciled
-   #  within(find("tr", text:"$25.00")){ check("transaction_add_to_reconciliation") }
-   #  within(find("tr", text:"$15.00")){ check("transaction_add_to_reconciliation") }
+    # and the done button is disabled
+    expect(page).to have_button('done', disabled: true)
 
-   #  # expect the Done button to be enabled and the balances to be equal
-   #  expect(page).to have_button('Done')
-   #  expect(find('#reconciled_balance').text).to eq("$50.00")
- 
-  	# # click the Done button
-   #  click_on('Done')
+    # and the reconciled balance and difference are calculated
+    expect(find('#reconciliation_balance')).to have_content('$35.00')
+    expect(find('#balance_difference')).to have_content('$15.00')
 
-   #  # expect 2 transactions to be reconciled
-   #  within(find("tr", text:"$25.00")){ expect(page).to have_content("R") }
-   #  within(find("tr", text:"$15.00")){ expect(page).to have_content("R") }
-   #  within(find("tr", text:"$2.00")){ expect(page).not_to have_content("R") }
-   #  within(find("tr", text:"$100.00")){ expect(page).not_to have_content("R") }
+    # when I add another transaction
+#    within(find("tr", text:"15.00")){ check("reconciled") }
+    within('tr', :text => '15.00') do
+      find('input.check').set(true)
+    end
+    # then the reconciliation balance and difference are updated
+    expect(find('#reconciliation_balance')).to have_content('$50.00')
+    expect(find('#balance_difference')).to have_content('$--')
 
-   #  # go to the reconciliation index page
-   #  visit('/reconciliations')
+    # and the done button is enabled
+    expect(page).to have_button('reconcile', disabled: false)
 
-  	# # expect the reconciliation to be completed
-   #  expect(find("tr", text:"My Account")).to have_css("span")
+  	# when click the Done button
+    click_on('Done')
+
+    # then I go to the account summary page
+    expect(page).to have_text('account summary')
  
   end
 end

@@ -36,8 +36,8 @@ feature "Accounts", :type => :feature do
     expect(page).to have_content("new account")
 
     # when I enter data into the form
-    fill_in 'Name', with: 'New Account Name'
-    fill_in 'Bank', with: 'New Account Bank'
+    fill_in 'name', with: 'New Account Name'
+    fill_in 'bank', with: 'New Account Bank'
     fill_in 'starting_balance', with: '10.00'
     fill_in 'starting_date', with: '09-Sep-2000'
 
@@ -71,10 +71,10 @@ feature "Accounts", :type => :feature do
     expect(page).to have_text("Edit Account")
 
     # when I edit the pattern
-    fill_in('Name', with: "New Account Name")
+    fill_in('name', with: "New Account Name")
 
     # and I click 'save'
-    click_on('Save')
+    click_on('save')
 
     # then I should see the new account details on the account summary page
     expect(page).to have_text("account summary")

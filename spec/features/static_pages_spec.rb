@@ -38,7 +38,7 @@ feature "Static Pages", :type => :feature do
   		expect(page).to have_link("patterns")
 
   		expect(page).to have_link("import OFX file")
-  		expect(page).to have_link("bank reconciliation")
+  		# expect(page).to have_link("bank reconciliation")
   		expect(page).to have_link("reports")
   	end
 
