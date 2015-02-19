@@ -4,7 +4,7 @@ FactoryGirl.define do
     f.date "2014-03-03"
     f.memo "This is a Memo"
     f.notes "This is a Note"
-    f.amount 5.55
+    f.amount 555
     f.fitid "This is a fitid"
     account
     category

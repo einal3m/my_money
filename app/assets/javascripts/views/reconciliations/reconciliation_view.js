@@ -97,7 +97,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
 
   startReconcile: function() {
     var that = this;
-    this.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: account.id});
+    this.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: account.id, action: 'reconcile'});
     $.when(this.transactions.fetch()).done(function () {
       that.set_reconciled_state();
       that.addSubView('panel2', new MyMoney.Views.ReconciliationTransactionsView({model: that.model, collection: that.transactions}));

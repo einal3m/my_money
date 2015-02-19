@@ -83,8 +83,8 @@ RSpec.describe Account, :type => :model do
     end
     
     it "sets a starting balance" do
-      a = FactoryGirl.create(:account, starting_balance: 50.01)
-  	  expect(a.starting_balance).to eq(50.01)
+      a = FactoryGirl.create(:account, starting_balance: 5001)
+  	  expect(a.starting_balance).to eq(5001)
     end
 
     it "sets a starting date" do
@@ -95,31 +95,31 @@ RSpec.describe Account, :type => :model do
 
   describe "methods" do
     before :each do
-      @a = FactoryGirl.create(:account, starting_balance: 10.00, starting_date: "2014-08-01")
+      @a = FactoryGirl.create(:account, starting_balance: 1000, starting_date: "2014-08-01")
     end
 
     it "calculates current balance when there are no transactions" do
-      expect(@a.current_balance).to eq(10.00)
+      expect(@a.current_balance).to eq(1000)
     end
 
     it "calculates current balance when there are transactions" do
-      FactoryGirl.create(:transaction, account: @a, date: "2014-08-4", amount: 20.00)
-      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 30.00)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-4", amount: 2000)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 3000)
 
-      expect(@a.current_balance).to eq(60.00)
+      expect(@a.current_balance).to eq(6000)
     end
 
     it "calculates eod balance for a given date" do
-      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 20.00)
-      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 30.00)
-      FactoryGirl.create(:transaction, account: @a, date: "2014-08-5", amount: 30.00)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 2000)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-2", amount: 3000)
+      FactoryGirl.create(:transaction, account: @a, date: "2014-08-5", amount: 3000)
 
-      expect(@a.eod_balance("2014-08-01")).to eq(10.00)
-      expect(@a.eod_balance("2014-08-02")).to eq(60.00)
-      expect(@a.eod_balance("2014-08-03")).to eq(60.00)
-      expect(@a.eod_balance("2014-08-04")).to eq(60.00)
-      expect(@a.eod_balance("2014-08-05")).to eq(90.00)
-      expect(@a.eod_balance("2014-08-06")).to eq(90.00)
+      expect(@a.eod_balance("2014-08-01")).to eq(1000)
+      expect(@a.eod_balance("2014-08-02")).to eq(6000)
+      expect(@a.eod_balance("2014-08-03")).to eq(6000)
+      expect(@a.eod_balance("2014-08-04")).to eq(6000)
+      expect(@a.eod_balance("2014-08-05")).to eq(9000)
+      expect(@a.eod_balance("2014-08-06")).to eq(9000)
     end
   end  
 end

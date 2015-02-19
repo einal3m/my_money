@@ -14,11 +14,11 @@ feature "Reconciliations", :type => :feature do
 
   scenario "User performs bank reconciliation", :js => true do
   	# Given we have an account with some transactions
-  	account = FactoryGirl.create(:account, name: "My Account", starting_balance: 10.00, starting_date: "2014-07-01")
-  	transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-07-02", amount: 25.00, reconciliation: nil)
-  	transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-07-03", amount: 15.00, reconciliation: nil)
-  	transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-07-04", amount: 2.00, reconciliation: nil)
-  	transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-07-05", amount: 100.00, reconciliation: nil)
+  	account = FactoryGirl.create(:account, name: "My Account", starting_balance: 1000, starting_date: "2014-07-01")
+  	transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-07-02", amount: 2500, reconciliation: nil)
+  	transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-07-03", amount: 1500, reconciliation: nil)
+  	transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-07-04", amount: 200, reconciliation: nil)
+  	transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-07-05", amount: 10000, reconciliation: nil)
   	
   	# and we are on the accounts show page
   	visit('/my_money')

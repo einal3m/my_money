@@ -1,25 +1,15 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:edit, :update, :destroy]
+  before_action :get_account, only: [:index]
 
   # GET /transactions
   # GET /transactions.json
   def index
-
     # get date range information from parameters, session or default
     get_date_range
 
-    # get selected account information
-    get_account
-
-    # if no account has been selected, return empty variables...
-    if @account.nil? then
-      @transactions = []
-      @current_balance = nil
-    else
-      #... otherwise, find transactions and current balance for selected account
-    	@transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
-    	@current_balance = @account.starting_balance + @account.transactions.sum(:amount)
-    end
+    transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
+    render json: transactions
   end
 
   # GET /transactions/1

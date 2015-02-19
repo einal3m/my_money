@@ -119,12 +119,12 @@ RSpec.describe Transaction, :type => :model do
 
   describe "callbacks" do
     before :each do
-          account = FactoryGirl.create(:account, starting_balance: 110.10, starting_date: "2014-08-19")
-          @transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 55.20)
-          @transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-08-21", amount: 22.25)
-          @transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-08-24", amount: 33.33)
-          @transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 44.44)
-          @transaction5 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 10.00)
+          account = FactoryGirl.create(:account, starting_balance: 11010, starting_date: "2014-08-19")
+          @transaction1 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 5520)
+          @transaction2 = FactoryGirl.create(:transaction, account: account, date: "2014-08-21", amount: 2225)
+          @transaction3 = FactoryGirl.create(:transaction, account: account, date: "2014-08-24", amount: 3333)
+          @transaction4 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 4444)
+          @transaction5 = FactoryGirl.create(:transaction, account: account, date: "2014-08-23", amount: 1000)
     end
 
     describe "before create" do
@@ -135,17 +135,17 @@ RSpec.describe Transaction, :type => :model do
           @transaction4.reload
           @transaction5.reload
 
-          expect(@transaction2.balance).to eq(132.35)
-          expect(@transaction1.balance).to eq(187.55)
-          expect(@transaction4.balance).to eq(231.99)
-          expect(@transaction5.balance).to eq(241.99)
-          expect(@transaction3.balance).to eq(275.32)
+          expect(@transaction2.balance).to eq(13235)
+          expect(@transaction1.balance).to eq(18755)
+          expect(@transaction4.balance).to eq(23199)
+          expect(@transaction5.balance).to eq(24199)
+          expect(@transaction3.balance).to eq(27532)
       end
     end
 
     describe "before update" do
       it "updates the balances when amount is changed" do
-          @transaction4.update(amount: 34.44)
+          @transaction4.update(amount: 3444)
 
           @transaction1.reload
           @transaction2.reload
@@ -153,11 +153,11 @@ RSpec.describe Transaction, :type => :model do
           @transaction4.reload
           @transaction5.reload
 
-          expect(@transaction2.balance).to eq(132.35)
-          expect(@transaction1.balance).to eq(187.55)
-          expect(@transaction4.balance).to eq(221.99)
-          expect(@transaction5.balance).to eq(231.99)
-          expect(@transaction3.balance).to eq(265.32)
+          expect(@transaction2.balance).to eq(13235)
+          expect(@transaction1.balance).to eq(18755)
+          expect(@transaction4.balance).to eq(22199)
+          expect(@transaction5.balance).to eq(23199)
+          expect(@transaction3.balance).to eq(26532)
       end
 
       it "updates the balances when date is changed to an earlier date" do
@@ -169,11 +169,11 @@ RSpec.describe Transaction, :type => :model do
           @transaction4.reload
           @transaction5.reload
 
-          expect(@transaction4.balance).to eq(154.54)
-          expect(@transaction2.balance).to eq(176.79)
-          expect(@transaction1.balance).to eq(231.99)
-          expect(@transaction5.balance).to eq(241.99)
-          expect(@transaction3.balance).to eq(275.32)
+          expect(@transaction4.balance).to eq(15454)
+          expect(@transaction2.balance).to eq(17679)
+          expect(@transaction1.balance).to eq(23199)
+          expect(@transaction5.balance).to eq(24199)
+          expect(@transaction3.balance).to eq(27532)
       end
       it "updates the balances when date is changed to a later date" do
           @transaction1.update(date: "2014-08-25")
@@ -184,11 +184,11 @@ RSpec.describe Transaction, :type => :model do
           @transaction4.reload
           @transaction5.reload
 
-          expect(@transaction2.balance).to eq(132.35)
-          expect(@transaction4.balance).to eq(176.79)
-          expect(@transaction5.balance).to eq(186.79)
-          expect(@transaction3.balance).to eq(220.12)
-          expect(@transaction1.balance).to eq(275.32)
+          expect(@transaction2.balance).to eq(13235)
+          expect(@transaction4.balance).to eq(17679)
+          expect(@transaction5.balance).to eq(18679)
+          expect(@transaction3.balance).to eq(22012)
+          expect(@transaction1.balance).to eq(27532)
       end
 
       it "doesnt change the balances when attribute other than date or amount is changed" do
@@ -199,11 +199,11 @@ RSpec.describe Transaction, :type => :model do
           @transaction4.reload
           @transaction5.reload
 
-          expect(@transaction2.balance).to eq(132.35)
-          expect(@transaction1.balance).to eq(187.55)
-          expect(@transaction4.balance).to eq(231.99)
-          expect(@transaction5.balance).to eq(241.99)
-          expect(@transaction3.balance).to eq(275.32)
+          expect(@transaction2.balance).to eq(13235)
+          expect(@transaction1.balance).to eq(18755)
+          expect(@transaction4.balance).to eq(23199)
+          expect(@transaction5.balance).to eq(24199)
+          expect(@transaction3.balance).to eq(27532)
           expect(@transaction4.memo).to eq("New Memo")
       end
 
@@ -218,10 +218,10 @@ RSpec.describe Transaction, :type => :model do
           @transaction3.reload
           @transaction5.reload
 
-          expect(@transaction2.balance).to eq(132.35)
-          expect(@transaction1.balance).to eq(187.55)
-          expect(@transaction5.balance).to eq(197.55)
-          expect(@transaction3.balance).to eq(230.88)
+          expect(@transaction2.balance).to eq(13235)
+          expect(@transaction1.balance).to eq(18755)
+          expect(@transaction5.balance).to eq(19755)
+          expect(@transaction3.balance).to eq(23088)
       end
     end
   end

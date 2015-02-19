@@ -8,3 +8,8 @@ def serialize_reconciliation(reconciliation)
   attrs = JSON.parse(reconciliation.to_json)
   attrs.extract!("id", "account_id", "statement_date", "statement_balance", "reconciled")
 end
+
+def serialize_transaction(transaction)
+  attrs = JSON.parse(transaction.to_json)
+  attrs.extract!("id", "account_id", "date", "amount", "memo", "notes", "category_id", "subcategory_id", "balance", "reconciliation_id")
+end
