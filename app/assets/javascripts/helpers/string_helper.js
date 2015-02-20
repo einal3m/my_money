@@ -1,15 +1,29 @@
 Handlebars.registerHelper('descriptionFormatter', function(memo, notes) {
+	var html = "";
+
 	if (memo && notes) {
-		return memo + "/" + notes;
+		html = memo + "/" + notes;
 	}
 
 	if (!memo) {
-		return notes;
+		html = notes;
 	}
 
 	if (!notes) {
-		return memo;
+		html = memo;
 	}
 
-	return "";
+	if (html != "") {
+		return new Handlebars.SafeString(html + "<br>");
+	}
+});
+
+Handlebars.registerHelper('categoryFormatter', function(category_id, subcategory_id) {
+	var categoryString = category_id;
+	if (subcategory_id) {
+		categoryString += "/" + subcategory_id;
+	}
+	if (categoryString) {
+		return new Handlebars.SafeString("<em>" + categoryString + "</em>");
+	}
 });

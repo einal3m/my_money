@@ -11,7 +11,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "accounts/:id/edit"    : "editAccount",
     "accounts/:id/show"    : "showAccount",
     "accounts/:id/reconciliation" : "newReconciliation",
-    ".*"                   : "accountIndex",
+    "accounts/:id/transactions" : "accountTransactions",
+    ".*"                   : "accountIndex"
   },
 
 // account routes
@@ -35,6 +36,17 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   showAccount: function(id) {
     account = this.accounts.get(id);
     this.showView(new MyMoney.Views.AccountSummaryView({model: account, collection: this.accounts}));
+  },
+
+// transaction routes
+  accountTransactions: function(id) {
+    var account = this.accounts.get(id);
+    var router = this;
+    router.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: id});
+
+    $.when(router.transactions.fetch()).done(function () {
+      router.showView(new MyMoney.Views.TransactionsIndexView({model: account, collection: router.transactions}));
+    });
   },
 
 // reconciliation routes
