@@ -13,8 +13,8 @@ RSpec.describe AccountsController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "sends a list of all accounts" do
-      account = FactoryGirl.create(:account, starting_balance: 10.00)
+    it "returns a list of all accounts" do
+      account = FactoryGirl.create(:account, starting_balance: 1000)
       get :index, {}, valid_session
 
       expect(response).to be_success
@@ -67,7 +67,7 @@ RSpec.describe AccountsController, :type => :controller do
           :account => FactoryGirl.attributes_for(:account,
             name: "New Account2",
             bank: "New Bank2",
-            starting_balance: 8.00,
+            starting_balance: 800,
             starting_date: "2014-02-02")}, valid_session
 
         expect(response).to be_success
@@ -77,7 +77,7 @@ RSpec.describe AccountsController, :type => :controller do
         expect(json['account']).to eq(serialize_account(@account)) 
         expect(@account.name).to eq("New Account2")
         expect(@account.bank).to eq("New Bank2")
-        expect(@account.starting_balance).to eq(8.00)
+        expect(@account.starting_balance).to eq(800)
         expect(@account.starting_date).to eq(Date.parse("2014-02-02"))
       end
     end
@@ -93,14 +93,10 @@ RSpec.describe AccountsController, :type => :controller do
   end
 
   describe "DELETE destroy" do
-
-    before :each do
-      @account = FactoryGirl.create(:account)
-    end
-
     it "destroys the requested account" do
+      account = FactoryGirl.create(:account)
       expect {
-        delete :destroy, {:id => @account.to_param}, valid_session
+        delete :destroy, {:id => account.to_param}, valid_session
       }.to change(Account, :count).by(-1)
       expect(response).to be_success
     end

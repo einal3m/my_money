@@ -16,59 +16,11 @@ RSpec.describe TransactionsController, :type => :controller do
       get :index, {:account_id => t1.account.id}, valid_session
 
       expect(response).to be_success
+      t1.reload
 
       json = JSON.parse(response.body)
       expect(json['transactions'].length).to eq(1)
       expect(json['transactions'][0]).to eq(serialize_transaction(t1)) 
-    end
-  end
-
-  describe "GET show" do
-    it "redirects the the index page" do
-      transaction = FactoryGirl.create(:transaction, date: Date.today)
-      get :show, {:id => transaction.to_param}, valid_session
-      expect(response).to redirect_to(transactions_url)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new transaction as @transaction" do
-      get :new, {}, valid_session
-      expect(assigns(:transaction)).to be_a_new(Transaction)
-    end
-
-    it "sets the account the account in the session" do
-      account = FactoryGirl.create(:account)
-      session[:account_id] = account.id
-      get :new, {}, valid_session
-      expect(assigns(:transaction).account).to eq(account)
-    end
-
-    it "renders the :new view" do
-      get :new, {}, valid_session
-      expect(response).to render_template(:new)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested transaction as @transaction" do
-      transaction = FactoryGirl.create(:transaction)
-      get :edit, {:id => transaction.to_param}, valid_session
-      expect(assigns(:transaction)).to eq(transaction)
-    end
-
-    it "assigns lists for categories and subcategories" do
-      subcategory = FactoryGirl.create(:subcategory)
-      transaction = FactoryGirl.create(:transaction, category: subcategory.category, subcategory: subcategory)
-      get :edit, {:id => transaction.to_param}, valid_session
-      expect(assigns(:categories)).to eq([subcategory.category])
-      expect(assigns(:subcategories)).to eq([subcategory])
-    end
-
-    it "renders the :edit view" do
-      transaction = FactoryGirl.create(:transaction)
-      get :edit, {:id => transaction.to_param}, valid_session
-      expect(response).to render_template(:edit)
     end
   end
 
@@ -80,69 +32,49 @@ RSpec.describe TransactionsController, :type => :controller do
         }.to change(Transaction, :count).by(1)
       end
 
-      it "assigns a newly created transaction as @transaction" do
+      it "sends the transaction, with status success" do
         post :create, {:transaction => build_attributes(:transaction)}, valid_session
-        expect(assigns(:transaction)).to be_a(Transaction)
-        expect(assigns(:transaction)).to be_persisted
-      end
+        expect(response.status).to eq(201)
 
-      it "redirects to the transactions index" do
-        post :create, {:transaction => build_attributes(:transaction)}, valid_session
-        expect(response).to redirect_to(transactions_url)
+        transaction = Transaction.first
+
+        json = JSON.parse(response.body)
+        expect(json['transaction']).to eq(serialize_transaction(transaction)) 
       end
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved transaction as @transaction" do
-        post :create, {:transaction => build_attributes(:transaction_invalid)}, valid_session
-        expect(assigns(:transaction)).to be_a_new(Transaction)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:transaction => build_attributes(:transaction_invalid)}, valid_session
-        expect(response).to render_template("new")
+      it "does not create a new transaction" do
+        expect {
+          post :create, {:transaction => build_attributes(:transaction_invalid)}, valid_session
+        }.not_to change(Transaction, :count)
+        expect(response.status).to eq(422)
       end
     end
   end
 
   describe "PUT update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
 
       it "updates the requested transaction" do
         new_subcategory = FactoryGirl.create(:subcategory)
         transaction = FactoryGirl.create(:transaction)
-        session[:last_transaction_page] = transactions_url
-        put :update, {:id => transaction.to_param, :transaction => {
+
+        new_attrs = {
               date: "2014-08-19",
-              amount: 10.11,
+              amount: 1011,
               memo: "New memo",
               notes: "New note",
               subcategory_id: new_subcategory.id,
-              category_id: new_subcategory.category.id}}, valid_session
-        transaction.reload
-        expect(assigns(:transaction).date).to eq(Date.parse("2014-08-19"))
-        expect(assigns(:transaction).amount).to eq(10.11)
-        expect(assigns(:transaction).memo).to eq("New memo")
-        expect(assigns(:transaction).notes).to eq("New note")
-        expect(assigns(:transaction).subcategory).to eq(new_subcategory)
-        expect(assigns(:transaction).category).to eq(new_subcategory.category)
-      end
+              category_id: new_subcategory.category.id            
+        }
 
-      it "assigns the requested transaction as @transaction" do
-        session[:last_transaction_page] = transactions_url
-        transaction = FactoryGirl.create(:transaction)
-        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction)}, valid_session
-        expect(assigns(:transaction)).to eq(transaction)
-      end
+        put :update, {:id => transaction.to_param, :transaction => new_attrs}, valid_session
 
-      it "redirects to the transactions index" do
-        session[:last_transaction_page] = transactions_url
-        transaction = FactoryGirl.create(:transaction)
-        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction)}, valid_session
-        expect(response).to redirect_to(transactions_url)
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json['transaction'].symbolize_keys).to include(new_attrs) 
+
       end
     end
 
@@ -150,13 +82,7 @@ RSpec.describe TransactionsController, :type => :controller do
       it "assigns the transaction as @transaction" do
         transaction = FactoryGirl.create(:transaction)
         put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction_invalid)}, valid_session
-        expect(assigns(:transaction)).to eq(transaction)
-      end
-
-      it "re-renders the 'edit' template" do
-        transaction = FactoryGirl.create(:transaction)
-        put :update, {:id => transaction.to_param, :transaction => build_attributes(:transaction_invalid)}, valid_session
-        expect(response).to render_template("edit")
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -167,12 +93,8 @@ RSpec.describe TransactionsController, :type => :controller do
       expect {
         delete :destroy, {:id => transaction.to_param}, valid_session
       }.to change(Transaction, :count).by(-1)
-    end
-
-    it "redirects to the transactions list" do
-      transaction = FactoryGirl.create(:transaction)
-      delete :destroy, {:id => transaction.to_param}, valid_session
-      expect(response).to redirect_to(transactions_url)
+      expect(response).to be_success
+      expect(response.body).to eq("")
     end
   end
 
@@ -193,7 +115,6 @@ RSpec.describe TransactionsController, :type => :controller do
     it "returns all unreconciled transactions" do
       a = FactoryGirl.create(:account)
       r = FactoryGirl.create(:reconciliation, account: a)
-
 
       t1 = FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
       t2 = FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)

@@ -12,28 +12,6 @@ class TransactionsController < ApplicationController
     render json: transactions
   end
 
-  # GET /transactions/1
-  # GET /transactions/1.json
-  def show
-    redirect_to transactions_url
-  end
-
-  # GET /transactions/new
-  def new
-    @transaction = Transaction.new
-    
-    load_form_data
-    @transaction.account_id = session[:account_id]
-  end
-
-  # GET /transactions/1/edit
-  def edit
-    load_form_data
-    
-    # remember where we came from
-    session[:last_transaction_page] = request.env['HTTP_REFERER'] || transactions_url
-  end
-  
   def load_form_data
   
     # lists for drop-downs
@@ -59,32 +37,22 @@ class TransactionsController < ApplicationController
   # POST /transactions
   # POST /transactions.json
   def create
-    @transaction = Transaction.new(transaction_params)
+    transaction = Transaction.new(transaction_params)
 
-    respond_to do |format|
-      if @transaction.save
-        format.html { redirect_to transactions_url, notice: 'Transaction was successfully created.' }
-        format.json { render :show, status: :created, location: @transaction }
-      else
-        load_form_data
-        format.html { render :new }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
-      end
+    if transaction.save
+      render json: transaction, status: :created
+    else
+      render json: transaction.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /transactions/1
   # PATCH/PUT /transactions/1.json
   def update
-    respond_to do |format|
-      if @transaction.update(transaction_params)
-        format.html { redirect_to session[:last_transaction_page], notice: 'Transaction was successfully updated.' }
-        format.json { render :show, status: :ok, location: @transaction }
-      else
-        load_form_data
-        format.html { render :edit }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
-      end
+    if @transaction.update(transaction_params)
+      render json: @transaction, status: :ok
+    else
+      render json: @transaction.errors, status: :unprocessable_entity
     end
   end
 
@@ -92,10 +60,7 @@ class TransactionsController < ApplicationController
   # DELETE /transactions/1.json
   def destroy
     @transaction.destroy
-    respond_to do |format|
-      format.html { redirect_to transactions_url, notice: 'Transaction was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    head :no_content
   end
 
   def import
