@@ -13,9 +13,6 @@ Rails.application.routes.draw do
   get 'import_transactions/file_chooser'
   post 'import_transactions/import'
 
-  resources :transactions do
-    get 'unreconciled', on: :collection
-  end
   
   post 'transactions/import'
   post 'transactions/index'
@@ -34,6 +31,9 @@ Rails.application.routes.draw do
   # backbones routes
   resources :accounts, only: [:create, :index, :destroy, :update] do
     resources :reconciliations
+    resources :transactions do
+      get 'unreconciled', on: :collection
+    end
   end
 
   #post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation

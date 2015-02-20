@@ -9,7 +9,7 @@ MyMoney.Collections.TransactionsCollection = Backbone.Collection.extend({
 
   url: function() {
     if (this.action == 'reconcile') {
-      return '/transactions/unreconciled?account_id=' + this.account_id;
+      return '/accounts/' + this.account_id + '/transactions/unreconciled';
     } else {
       return '/accounts/' + this.account_id + '/transactions';
     }
