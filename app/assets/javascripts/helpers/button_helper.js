@@ -36,9 +36,6 @@ Handlebars.registerHelper('newButton', function(options) {
 Handlebars.registerHelper('showButton', function(options) {
 	return buttonHTML('...', "show", "btn-xs btn-default");
 });
-Handlebars.registerHelper('inlineEditButton', function(options) {
-	return buttonHTML('<i class="fa fa-caret-down"></i>', "edit", "btn-xs btn-default");
-});
 
 Handlebars.registerHelper('goBackButton', function(options) {
 	buttonText = options.hash['text'] || 'Go Back';

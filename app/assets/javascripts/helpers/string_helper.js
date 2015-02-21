@@ -27,3 +27,9 @@ Handlebars.registerHelper('categoryFormatter', function(category_id, subcategory
 		return new Handlebars.SafeString("<em>" + categoryString + "</em>");
 	}
 });
+
+Handlebars.registerHelper('reconciledFormatter', function(reconcilation_id) {
+	if (reconcilation_id) {
+		return 'R';
+	}
+});
