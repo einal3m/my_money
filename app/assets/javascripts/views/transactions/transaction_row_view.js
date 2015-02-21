@@ -8,8 +8,13 @@ MyMoney.Views.TransactionRowView = Backbone.View.extend({
     "click #show": "showAccount"
   },
 
+  initialize: function() {
+    this.categories = this.options['categories'];
+    this.category = this.categories.get(this.model.get('category_id'));
+  },
+
   render: function(){
-    this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
+    this.$el.html(HandlebarsTemplates[this.template]({transaction: this.model.toJSON(), category: this.category}));
     return this;
   },
 

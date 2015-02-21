@@ -6,6 +6,11 @@ class CategoriesController < ApplicationController
   def index
     @income_categories = CategoryType.income.categories
     @expense_categories = CategoryType.expense.categories
+
+    respond_to do |format|
+        format.html { }
+        format.json { render json: Category.all }
+    end
   end
 
   # GET /categories/1

@@ -1,7 +1,7 @@
-<td class="date">{{dateFormatter date}}</td>
-<td>{{descriptionFormatter memo notes}}{{categoryFormatter category_id subcategory_id}}</td>
-<td>{{reconciledFormatter reconciliation_id}}</td>
-<td class="money">{{moneyIn amount}}</td>
-<td class="money">{{moneyOut amount}}</td>
-<td class="money">{{accountingFormat balance}}</td>
+<td class="date">{{dateFormatter transaction.date}}</td>
+<td>{{descriptionFormatter transaction.memo transaction.notes}}{{categoryFormatter category transaction.subcategory_id}}</td>
+<td>{{reconciledFormatter transaction.reconciliation_id}}</td>
+<td class="money">{{moneyIn transaction.amount}}</td>
+<td class="money">{{moneyOut transaction.amount}}</td>
+<td class="money">{{accountingFormat transaction.balance}}</td>
 <td class="centered edit">{{editIcon}}</td>

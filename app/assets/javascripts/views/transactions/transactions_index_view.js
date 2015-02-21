@@ -10,6 +10,10 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     "click #new": "newTransaction"
   },
 
+  initialize: function() {
+    this.categories = this.options['categories'];
+  },
+
 	addAll: function(){
 	    for (i = 0; i < this.collection.length; i++) { 
 	    	this.addOne(this.collection.models[i]);
@@ -17,7 +21,7 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 	},
 
 	addOne: function(model){
-	    var rowView = new MyMoney.Views.TransactionRowView({model: model});
+	    var rowView = new MyMoney.Views.TransactionRowView({model: model, categories: this.categories});
 	    this.$el.find('tbody').append(rowView.render().el);
 	},
 

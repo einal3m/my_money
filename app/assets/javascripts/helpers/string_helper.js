@@ -18,11 +18,18 @@ Handlebars.registerHelper('descriptionFormatter', function(memo, notes) {
 	}
 });
 
-Handlebars.registerHelper('categoryFormatter', function(category_id, subcategory_id) {
-	var categoryString = category_id;
+Handlebars.registerHelper('categoryFormatter', function(category, subcategory_id) {
+	
+	var categoryString;
+	
+	if (category) {
+		categoryString = category.get('name');
+	}
+
 	if (subcategory_id) {
 		categoryString += "/" + subcategory_id;
 	}
+
 	if (categoryString) {
 		return new Handlebars.SafeString("<em>" + categoryString + "</em>");
 	}
