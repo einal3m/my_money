@@ -7,11 +7,14 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 	template: "transactions/transactions_index",
 
   events: {
-    "click #new": "newTransaction"
+    "click #new": "newTransaction",
+    "click #cancel": "removeNewView",
+    "click .fa-edit": "editTransaction"
   },
 
   initialize: function() {
     this.categories = this.options['categories'];
+    this.listenTo(this.collection, 'add', this.fetchTransactions);
   },
 
 	addAll: function(){
@@ -23,6 +26,7 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 	addOne: function(model){
 	    var rowView = new MyMoney.Views.TransactionRowView({model: model, categories: this.categories});
 	    this.$el.find('tbody').append(rowView.render().el);
+
 	},
 
   render: function () {
@@ -31,10 +35,38 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     return this;
   },
 
+  editTransaction: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    alert('edit transaction');
+  },
+
   newTransaction: function(e) {
     e.preventDefault();
     e.stopPropagation();
-//    window.router.navigate('accounts/new', {trigger: true});
+
+    if (this.newView && this.newView.rendered) {
+      return;
+    }
+
+    this.newView = new MyMoney.Views.TransactionNewView({account: this.model, collection: this.collection, categories: this.categories});
+    this.$el.find('tbody').prepend(this.newView.render().el);
+    this.newView.rendered = true;
+  },
+
+  fetchTransactions: function() {
+    var thisView = this;
+      $.when(this.collection.fetch()).done(function () {
+        thisView.removeNewView();
+        thisView.render();
+    });
+  },
+
+  removeNewView: function() {
+    if (this.newView.rendered) {
+      this.newView.remove();
+      this.newView.rendered = false;
+    }
   }
 
 });

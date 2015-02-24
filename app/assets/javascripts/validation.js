@@ -13,3 +13,11 @@ _.extend(Backbone.Validation.callbacks, {
         $group.find('.help-block').html(error).removeClass('hidden');
     }
 });
+
+_.extend(Backbone.Validation.validators, {
+  money: function(value, attr, customValue, model) {
+    if(value !== customValue){
+      return 'error';
+    }
+  }
+});
