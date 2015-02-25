@@ -7,24 +7,20 @@
 # statement_balance, decimal
 # reconciled, boolean
 #
-
 class Reconciliation < ActiveRecord::Base
-
   # validations
-	validates :account_id, presence: true
-	validates :statement_date, presence: true
-	validates :statement_balance, presence: true
-	
+  validates :account_id, presence: true
+  validates :statement_date, presence: true
+  validates :statement_balance, presence: true
+
   # relationships
-	belongs_to :account
-	has_many :transactions
-	
-	
+  belongs_to :account
+  has_many :transactions
+
   # set reconciled to false by default when created
   after_initialize :defaults, unless: :persisted?
 
   def defaults
-  	self.reconciled = false
+    self.reconciled = false
   end
-  
 end

@@ -1,0 +1,43 @@
+ParameterLists:
+  Max: 4
+  CountKeywordArgs: true
+
+# Avoid more than `Max` levels of nesting.
+BlockNesting:
+  Max: 3
+
+HashSyntax:
+  Enabled: false
+
+Blocks:
+  Enabled: false
+
+SpaceInsideBrackets:
+  Enabled: false
+
+SingleLineMethods:
+  Enabled: false
+
+LineLength:
+  Max: 280
+
+Documentation:
+  Enabled: false
+
+ClassAndModuleChildren:
+  Enabled: false
+
+Lambda:
+  Enabled: false
+
+FormatString:
+  Enabled: false
+
+PredicateName:
+  Enabled: false
+
+ClassLength:
+  Max: 120
+
+TrivialAccessors:
+  Enabled: false

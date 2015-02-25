@@ -1,8 +1,6 @@
 class ImportedTransaction < Transaction
+  attr_accessor :import, :duplicate
 
-	attr_accessor :import, :duplicate
-
-	@import = true
-	@duplicate = false
-	
+  @import = true
+  @duplicate = false
 end
