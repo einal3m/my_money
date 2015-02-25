@@ -12,7 +12,7 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
+    this.$el.html(HandlebarsTemplates[this.template]({account: this.model.toJSON()}));
     return this;
   },
 
@@ -32,7 +32,7 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
     e.stopPropagation();
     this.model.set({name: this.$('#name').val()});
     this.model.set({bank: this.$('#bank').val()});
-    balance = accounting.unformat(this.$('#starting_balance').val());
+    balance = dollarsToCents(this.$('#starting_balance').val());
     this.model.set({starting_balance: balance});
     this.model.set({starting_date: this.$('#starting_date').val()});
     this.model.save({ }, { wait: true });

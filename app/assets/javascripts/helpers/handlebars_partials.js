@@ -1,0 +1,1 @@
+Handlebars.registerPartial('account_form', HandlebarsTemplates['accounts/account_form']);
