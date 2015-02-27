@@ -8,7 +8,7 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 
   events: {
     "click #new": "newTransaction",
-    "click #cancel": "removeNewView",
+    "click #cancel": "removeSubView",
     "click .fa-edit": "editTransaction"
   },
 
@@ -35,38 +35,53 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     return this;
   },
 
-  editTransaction: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    alert('edit transaction');
-  },
-
   newTransaction: function(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (this.newView && this.newView.rendered) {
+    if (this.subView && this.subView.rendered) {
       return;
     }
 
-    this.newView = new MyMoney.Views.TransactionNewView({account: this.model, collection: this.collection, categories: this.categories});
-    this.$el.find('tbody').prepend(this.newView.render().el);
-    this.newView.rendered = true;
+    this.subView = new MyMoney.Views.TransactionNewView({account: this.model, collection: this.collection, categories: this.categories});
+    this.$el.find('tbody').prepend(this.subView.render().el);
+    this.subView.rendered = true;
   },
 
   fetchTransactions: function() {
     var thisView = this;
       $.when(this.collection.fetch()).done(function () {
-        thisView.removeNewView();
+        thisView.removeSubView();
         thisView.render();
     });
   },
 
-  removeNewView: function() {
-    if (this.newView.rendered) {
-      this.newView.remove();
-      this.newView.rendered = false;
+  removeSubView: function() {
+    if (this.subView.rendered) {
+      this.subView.remove();
+      this.subView.rendered = false;
     }
+    if (this.edit_row) {
+      this.edit_row.removeClass('success');
+    }
+  },
+
+  editTransaction: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (this.subView && this.subView.rendered) {
+      return;
+    }
+
+    var txn_id = e.currentTarget.getAttribute('id')
+    var txn = this.collection.get(txn_id);
+    this.edit_row = this.$el.find('#'+txn_id).closest('tr');
+    this.subView = new MyMoney.Views.TransactionEditView({model: txn, categories: this.categories});
+    this.edit_row.after(this.subView.render().el);
+    this.edit_row.addClass('success');
+    this.subView.rendered = true;
+    this.listenTo(txn, 'change', this.fetchTransactions);
   }
 
 });
