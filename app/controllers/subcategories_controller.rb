@@ -4,7 +4,8 @@ class SubcategoriesController < ApplicationController
   # GET /subcategories
   # GET /subcategories.json
   def index
-    redirect_to categories_url
+    category = Category.find(params[:category_id])
+    render json: category.subcategories
   end
 
   # GET /subcategories/1
@@ -18,10 +19,10 @@ class SubcategoriesController < ApplicationController
     @subcategory = Subcategory.new
 
     # get category id from parameters, if it doesn't exist, return to category index
-    if params.has_key?(:category_id) then
+    if params.key?(:category_id)
       @subcategory.category = Category.find(params[:category_id])
     else
-      redirect_to categories_url, notice: "No category specified"
+      redirect_to categories_url, notice: 'No category specified'
     end
   end
 
@@ -70,14 +71,14 @@ class SubcategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_subcategory
-      @subcategory = Subcategory.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def subcategory_params
-      params.require(:subcategory).permit(:name, :category_id)
-    end
-    
+  # Use callbacks to share common setup or constraints between actions.
+  def set_subcategory
+    @subcategory = Subcategory.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def subcategory_params
+    params.require(:subcategory).permit(:name, :category_id)
+  end
 end

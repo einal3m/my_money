@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   post 'upload/upload_file'
 
   resources :subcategories
-  resources :categories
+  resources :categories do
+    resources :subcategories
+  end
   resources :category_types, only: [:index]
   post 'categories/subcategories_by_category'
   post 'reconciliations/:id/reconcile' => 'reconciliations#reconcile', as: :reconciliations_reconcile
