@@ -5,6 +5,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     this.accountIndex();
     this.categories = new MyMoney.Collections.CategoriesCollection();
     this.categories.fetch();
+    this.categoryTypes = new MyMoney.Collections.CategoryTypesCollection();
+    this.categoryTypes.fetch();
   },
 
   routes: {
@@ -47,7 +49,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     router.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: id});
 
     $.when(router.transactions.fetch()).done(function () {
-      router.showView(new MyMoney.Views.TransactionsIndexView({model: account, collection: router.transactions, categories: router.categories}));
+      router.showView(new MyMoney.Views.TransactionsIndexView({model: account, collection: router.transactions, categories: router.categories, categoryTypes: router.categoryTypes}));
     });
   },
 

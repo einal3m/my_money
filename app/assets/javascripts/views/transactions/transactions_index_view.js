@@ -14,6 +14,7 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 
   initialize: function() {
     this.categories = this.options['categories'];
+    this.categoryTypes = this.options['categoryTypes'];
     this.listenTo(this.collection, 'add', this.fetchTransactions);
   },
 
@@ -43,7 +44,12 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
       return;
     }
 
-    this.subView = new MyMoney.Views.TransactionNewView({account: this.model, collection: this.collection, categories: this.categories});
+    this.subView = new MyMoney.Views.TransactionNewView({
+      account: this.model,
+      collection: this.collection,
+      categories: this.categories,
+      categoryTypes: this.categoryTypes
+    });
     this.$el.find('tbody').prepend(this.subView.render().el);
     this.subView.rendered = true;
   },
@@ -77,7 +83,11 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     var txn_id = e.currentTarget.getAttribute('id')
     var txn = this.collection.get(txn_id);
     this.edit_row = this.$el.find('#'+txn_id).closest('tr');
-    this.subView = new MyMoney.Views.TransactionEditView({model: txn, categories: this.categories});
+    this.subView = new MyMoney.Views.TransactionEditView({
+      model: txn, 
+      categories: this.categories,
+      categoryTypes: this.categoryTypes
+    });
     this.edit_row.after(this.subView.render().el);
     this.edit_row.addClass('success');
     this.subView.rendered = true;

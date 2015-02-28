@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   get 'report/income_vs_expense'
   get 'report/income_expense_bar'
   get 'report/subcategory'
@@ -13,7 +12,6 @@ Rails.application.routes.draw do
   get 'import_transactions/file_chooser'
   post 'import_transactions/import'
 
-  
   post 'transactions/import'
   post 'transactions/index'
 
@@ -24,9 +22,9 @@ Rails.application.routes.draw do
 
   resources :subcategories
   resources :categories
+  resources :category_types, only: [:index]
   post 'categories/subcategories_by_category'
   post 'reconciliations/:id/reconcile' => 'reconciliations#reconcile', as: :reconciliations_reconcile
-
 
   # backbones routes
   resources :accounts, only: [:create, :index, :destroy, :update] do
@@ -36,12 +34,12 @@ Rails.application.routes.draw do
     end
   end
 
-  #post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
+  # post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'static_pages#home'
+  root 'static_pages#home'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
