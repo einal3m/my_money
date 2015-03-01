@@ -18,7 +18,7 @@ Handlebars.registerHelper('descriptionFormatter', function(memo, notes) {
 	}
 });
 
-Handlebars.registerHelper('categoryFormatter', function(category, subcategory_id) {
+Handlebars.registerHelper('categoryFormatter', function(category, subcategory) {
 	
 	var categoryString;
 	
@@ -26,8 +26,8 @@ Handlebars.registerHelper('categoryFormatter', function(category, subcategory_id
 		categoryString = category.get('name');
 	}
 
-	if (subcategory_id) {
-		categoryString += "/" + subcategory_id;
+	if (subcategory) {
+		categoryString += "/" + subcategory.get('name');
 	}
 
 	if (categoryString) {

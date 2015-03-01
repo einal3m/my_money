@@ -8,7 +8,8 @@ class TransactionsController < ApplicationController
     # get date range information from parameters, session or default
     get_date_range
 
-    transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
+    # transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
+    transactions = @account.transactions.reverse_date_order
     render json: transactions
   end
 

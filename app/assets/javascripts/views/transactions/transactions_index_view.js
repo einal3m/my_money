@@ -14,6 +14,7 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 
   initialize: function() {
     this.categories = this.options['categories'];
+    this.subcategories = this.options['subcategories'];
     this.categoryTypes = this.options['categoryTypes'];
     this.listenTo(this.collection, 'add', this.fetchTransactions);
   },
@@ -25,7 +26,11 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 	},
 
 	addOne: function(model){
-	    var rowView = new MyMoney.Views.TransactionRowView({model: model, categories: this.categories});
+	    var rowView = new MyMoney.Views.TransactionRowView({
+        model: model,
+        categories: this.categories,
+        subcategories: this.subcategories
+      });
 	    this.$el.find('tbody').append(rowView.render().el);
 
 	},
@@ -48,6 +53,7 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
       account: this.model,
       collection: this.collection,
       categories: this.categories,
+      subcategories: this.subcategories,
       categoryTypes: this.categoryTypes
     });
     this.$el.find('tbody').prepend(this.subView.render().el);
@@ -86,12 +92,13 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     this.subView = new MyMoney.Views.TransactionEditView({
       model: txn, 
       categories: this.categories,
+      subcategories: this.subcategories,
       categoryTypes: this.categoryTypes
     });
     this.edit_row.after(this.subView.render().el);
     this.edit_row.addClass('success');
     this.subView.rendered = true;
-    this.listenTo(txn, 'change', this.fetchTransactions);
+    this.listenTo(txn, 'sync', this.fetchTransactions);
   }
 
 });

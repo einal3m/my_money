@@ -3,11 +3,11 @@ RSpec.describe SubcategoriesController, :type => :controller do
   let(:valid_session) { {} }
 
   describe 'GET index' do
-    it 'returns subcategories for category' do
+    it 'returns all subcategories' do
       c = FactoryGirl.create(:category)
       s = FactoryGirl.create(:subcategory, category: c)
 
-      get :index, { category_id: c.id }, valid_session
+      get :index, {}, valid_session
       expect(response).to be_success
 
       json = JSON.parse(response.body)

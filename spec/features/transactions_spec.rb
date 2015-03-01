@@ -68,7 +68,8 @@ feature 'Transactions', :type => :feature do
   scenario 'User edits a transaction', :js => true  do
     a = FactoryGirl.create(:account, name: 'My New Account')
     FactoryGirl.create(:category, name: 'My Category', category_type: @ct_i)
-    FactoryGirl.create(:category, name: 'My Edit Category', category_type: @ct_i)
+    c = FactoryGirl.create(:category, name: 'My Edit Category', category_type: @ct_i)
+    FactoryGirl.create(:subcategory, name: 'My Edit Subcategory', category: c)
     FactoryGirl.create(
       :transaction,
       account: a,
@@ -98,6 +99,7 @@ feature 'Transactions', :type => :feature do
     fill_in('date', with: edit_date_text)
     fill_in('amount', with: 50.00)
     select('My Edit Category', from: 'category_id')
+    select('My Edit Subcategory', from: 'subcategory_id')
     click_on('save')
 
     expect(page.find('tbody')).to have_selector('tr')
@@ -106,7 +108,7 @@ feature 'Transactions', :type => :feature do
     within('tr', :text => 'Edit Transaction') do
       expect(page).to have_text('50.00')
       expect(page).to have_text(edit_date_text)
-      expect(page).to have_text('My Edit Category')
+      expect(page).to have_text('My Edit Category/My Edit Subcategory')
     end
   end
 end

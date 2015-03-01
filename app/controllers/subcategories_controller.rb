@@ -4,8 +4,7 @@ class SubcategoriesController < ApplicationController
   # GET /subcategories
   # GET /subcategories.json
   def index
-    category = Category.find(params[:category_id])
-    render json: category.subcategories
+    render json: Subcategory.all
   end
 
   # GET /subcategories/1
