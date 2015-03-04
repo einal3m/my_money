@@ -5,7 +5,8 @@ MyMoney.Views.TransactionEditView = Backbone.View.extend({
 
   events: {
     "click #save": "saveTransaction",
-    "change #category_id": "updateSubcategories"
+    "change #category_id": "updateSubcategories",
+    "click #delete": "deleteTransaction"
   },
 
   initialize: function() {
@@ -25,6 +26,16 @@ MyMoney.Views.TransactionEditView = Backbone.View.extend({
     }));
     Backbone.Validation.bind(this);
     return this;
+  },
+
+  deleteTransaction: function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    var r = confirm("Are you sure you want to delete this transaction?");
+    if (r == true) {
+      this.model.destroy({ wait: true });
+    }
   },
 
   set_current_subcategories: function() {
