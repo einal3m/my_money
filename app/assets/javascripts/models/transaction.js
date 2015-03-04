@@ -1,5 +1,7 @@
 MyMoney.Models.Transaction = Backbone.Model.extend({
 
+  name: "transaction",
+
   urlRoot: function() {
     return '/accounts/' + this.get('account_id') + '/transactions';
   },

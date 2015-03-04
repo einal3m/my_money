@@ -4,27 +4,17 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
   tagName: "div", 
   className: "accounts",
   template: "accounts/account_edit",
+  // mixins: [MyMoney.Mixins.DeleteModel],
 
   events: {
     "click #save" : "updateAccount",
-    "click #delete" : "deleteAccount",
-    "click #cancel" : "cancelEdit"
+    "click #cancel" : "cancelEdit",
+    "click #delete" : "deleteModel"
   },
 
   render: function() {
     this.$el.html(HandlebarsTemplates[this.template]({account: this.model.toJSON()}));
     return this;
-  },
-
-  deleteAccount: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-
-    var r = confirm("Are you sure you want to delete this account?");
-    if (r == true) {
-      this.model.destroy({ wait: true });
-      window.router.navigate('accounts', {trigger: true});    
-    }
   },
 
   updateAccount: function(e) {
@@ -43,6 +33,16 @@ MyMoney.Views.AccountEditView = Backbone.View.extend({
     e.preventDefault();
     e.stopPropagation();
     this.trigger("doneEditing");
+  },
+
+  deleteModel: function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    var r = confirm('Are you sure you want to delete this ' + this.model.name + '?');
+    if (r == true) {
+      this.model.destroy({ wait: true });
+    }
   }
 
 });

@@ -2,11 +2,12 @@ MyMoney.Views.TransactionEditView = Backbone.View.extend({
 
   template: "transactions/transaction_edit",
   tagName: "tr",
+  mixins: [MyMoney.Mixins.DeleteModel],
 
   events: {
     "click #save": "saveTransaction",
     "change #category_id": "updateSubcategories",
-    "click #delete": "deleteTransaction"
+    "click #delete" : "deleteModel"
   },
 
   initialize: function() {
@@ -26,16 +27,6 @@ MyMoney.Views.TransactionEditView = Backbone.View.extend({
     }));
     Backbone.Validation.bind(this);
     return this;
-  },
-
-  deleteTransaction: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-
-    var r = confirm("Are you sure you want to delete this transaction?");
-    if (r == true) {
-      this.model.destroy({ wait: true });
-    }
   },
 
   set_current_subcategories: function() {
@@ -67,5 +58,16 @@ MyMoney.Views.TransactionEditView = Backbone.View.extend({
     if(this.model.isValid(true)){
       this.model.save({ }, { wait: true });
     }
+  },
+
+  deleteModel: function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    var r = confirm('Are you sure you want to delete this ' + this.model.name + '?');
+    if (r == true) {
+      this.model.destroy({ wait: true });
+    }
   }
+
 });

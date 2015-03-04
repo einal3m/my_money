@@ -31,8 +31,6 @@ MyMoney.Views.AccountSummaryView = Backbone.View.extend({
   },
 
   goBack: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
     window.router.navigate('accounts', {trigger: true});
   },
 
@@ -40,6 +38,7 @@ MyMoney.Views.AccountSummaryView = Backbone.View.extend({
     this.accountSubView.remove();
     this.accountSubView = new MyMoney.Views.AccountEditView({model: this.model});
     this.listenTo(this.accountSubView, "doneEditing", this.doneEditing);
+    this.listenTo(this.model, "destroy", this.goBack);
     this.addAccountView();
   },
 
