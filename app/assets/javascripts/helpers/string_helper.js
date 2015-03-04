@@ -5,11 +5,11 @@ Handlebars.registerHelper('descriptionFormatter', function(memo, notes) {
 		html = memo + "/" + notes;
 	}
 
-	if (!memo) {
+	if (!memo && notes) {
 		html = notes;
 	}
 
-	if (!notes) {
+	if (memo && !notes) {
 		html = memo;
 	}
 

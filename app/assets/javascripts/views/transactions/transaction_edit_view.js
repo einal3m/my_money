@@ -51,6 +51,7 @@ MyMoney.Views.TransactionEditView = Backbone.View.extend({
     this.model.set({amount: amount});
     this.model.set({category_id: this.$('#category_id').val()});
     this.model.set({subcategory_id: this.$('#subcategory_id').val()});
+    this.model.set({notes: this.$('#notes').val()});
 
     if(this.model.isValid(true)){
       this.model.save({ }, { wait: true });

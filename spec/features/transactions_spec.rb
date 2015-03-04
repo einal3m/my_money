@@ -28,10 +28,8 @@ feature 'Transactions', :type => :feature do
     expect(page).to have_text('one')
     expect(page).to have_text('two')
     expect(page).to have_text('three')
-    expect(page).not_to have_text('four')
-    expect(page).not_to have_text('five')
-
-    # TODO: add filter tests
+    expect(page).to have_text('four')
+    expect(page).to have_text('five')
   end
 
   scenario 'User creates a new transaction', :js => true  do

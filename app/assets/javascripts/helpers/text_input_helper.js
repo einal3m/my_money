@@ -3,6 +3,6 @@ Handlebars.registerHelper('textInput', function(value, id) {
 	if (value) {
 		valueText = ' value="' + value + '"';
 	}
-	html = '<input class="form-control" id="' + id  + '"' + valueText + '">';
+	html = '<input class="form-control" size="50" id="' + id  + '"' + valueText + '">';
 	return new Handlebars.SafeString(html);
 });

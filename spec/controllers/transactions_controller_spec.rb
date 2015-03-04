@@ -7,7 +7,7 @@ RSpec.describe TransactionsController, :type => :controller do
     @dr_option = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'CurrentMonthDateRange', default: true)
   end
 
-  describe 'GET index' do
+  xdescribe 'GET index' do
     it 'returns all transactions for specified account for specified date' do
       t1 = FactoryGirl.create(:transaction, date: Date.today)
       FactoryGirl.create(:transaction, account: t1.account, date: Date.today >> 2)
