@@ -30,7 +30,10 @@ Rails.application.routes.draw do
   resources :accounts, only: [:create, :index, :destroy, :update] do
     resources :reconciliations
     resources :transactions do
-      get 'unreconciled', on: :collection
+      collection do
+        get 'unreconciled'
+        post 'ofx'
+      end
     end
   end
 

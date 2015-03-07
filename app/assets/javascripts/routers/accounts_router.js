@@ -18,6 +18,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "accounts/:id/show"    : "showAccount",
     "accounts/:id/reconciliation" : "newReconciliation",
     "accounts/:id/transactions" : "accountTransactions",
+    "accounts/:id/import"  : "importTransactions",
     ".*"                   : "accountIndex"
   },
 
@@ -59,6 +60,16 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
         categoryTypes: router.categoryTypes,
       }));
     });
+  },
+
+  importTransactions: function(id) {
+    var account = this.accounts.get(id);
+    console.log('accounts');
+    console.log(this.accounts);
+    this.showView(new MyMoney.Views.ImportView({
+      account: account,
+      accounts: this.accounts
+    }));
   },
 
 // reconciliation routes

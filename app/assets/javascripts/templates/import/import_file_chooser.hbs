@@ -1,0 +1,22 @@
+<h4><span class="text-info">Step 1 of 2</span> - Upload File</h4>
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">Account</label>
+    <div class="col-sm-10 col-md-3">
+      {{selectInput accounts account.id "account_id"}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">OFX File</label>
+    <div class="col-sm-10 col-md-5">
+      <input class="hidden" type="file" id="file_name">
+      {{actionButton icon='fa-folder-open-o' id='open_file'}}
+       <span id='show_file'></span>
+      <span class="help-block hidden"></span>
+    </div>
+  </div>
+</div>
+<div class="form-footer">
+  {{actionButton text="Upload" id="upload"}}
+  {{cancelButton}}
+</div>

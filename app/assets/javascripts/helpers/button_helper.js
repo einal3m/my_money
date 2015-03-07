@@ -44,7 +44,7 @@ Handlebars.registerHelper('goBackButton', function(options) {
 });
 
 Handlebars.registerHelper('actionButton', function(options) {
-	buttonText = options.hash['text'] || 'Action';
+	buttonText = options.hash['text'] || '';
 	buttonId = options.hash['id'] || 'action'
 	if (options.hash['icon']) {
 		buttonText = '<i class="fa ' + options.hash['icon'] + '"></i> ' + buttonText; 

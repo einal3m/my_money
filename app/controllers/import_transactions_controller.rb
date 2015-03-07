@@ -14,6 +14,7 @@ class ImportTransactionsController < ApplicationController
 
   # read the transaction information from the file and display
   def import
+    p params
   	  @account = Account.find(params[:account])
       @transactions = parseOFX(params[:money_file])
       @categories = Category.all

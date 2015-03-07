@@ -9,7 +9,8 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
   events: {
     "click #new": "newTransaction",
     "click #cancel": "removeSubView",
-    "click .fa-edit": "editTransaction"
+    "click .fa-edit": "editTransaction",
+    "click #import": "importTransactions"
   },
 
   initialize: function() {
@@ -99,6 +100,12 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     this.edit_row.addClass('success');
     this.subView.rendered = true;
     this.listenTo(txn, 'sync', this.fetchTransactions);
+  },
+
+  importTransactions: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.router.navigate('accounts/' + this.model.id + '/import', {trigger: true});
   }
 
 });

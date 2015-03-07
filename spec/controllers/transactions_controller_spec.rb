@@ -126,4 +126,56 @@ RSpec.describe TransactionsController, :type => :controller do
       expect(json['transactions'].length).to eq(2)
     end
   end
+
+  # ofx parses the OFX and returns a list of transactions
+  describe 'ofx' do
+    before :each do
+      @account = FactoryGirl.create(:account)
+      @file = fixture_file_upload('test.ofx')
+    end
+
+    it 'returns the transactions from the OFX file' do
+      get :ofx, { account_id: @account.id, data_file: @file }, valid_session
+      expect(response).to be_success
+      json = JSON.parse(response.body)
+
+      expect(json['transactions'].length).to eq(4)
+
+      expect(json['transactions'][0]['memo']).to eq('VILLAGE CINEMA')
+      expect(json['transactions'][0]['date']).to eq('2014-07-05')
+      expect(json['transactions'][0]['amount']).to eq(-5500)
+
+      expect(json['transactions'][1]['memo']).to eq('COLES SUPERMARKETS')
+      expect(json['transactions'][1]['date']).to eq('2014-07-04')
+      expect(json['transactions'][1]['amount']).to eq(-7476)
+
+      expect(json['transactions'][2]['memo']).to eq('MCDONALDS')
+      expect(json['transactions'][2]['date']).to eq('2014-07-03')
+      expect(json['transactions'][2]['amount']).to eq(-1920)
+
+      expect(json['transactions'][3]['memo']).to eq('PAYMENT RECEIVED')
+      expect(json['transactions'][3]['date']).to eq('2014-07-03')
+      expect(json['transactions'][3]['amount']).to eq(326_610)
+    end
+
+    it 'sets transactions to duplicate if they already exist' do
+      FactoryGirl.create(:transaction, account: @account, memo: 'COLES SUPERMARKETS', date: '2014-07-04', amount: -7476)
+      get :ofx, { account_id: @account.id, data_file: @file }, valid_session
+      json = JSON.parse(response.body)
+      expect(json['transactions'][1]['duplicate']).to be_truthy
+    end
+
+    it 'sets category and subcategory for transactions which match a pattern' do
+      category = FactoryGirl.create(:category)
+      subcategory = FactoryGirl.create(:subcategory, category: category)
+      FactoryGirl.create(:pattern, account: @account, match_text: 'MCDONALDS', notes: 'New Note', category: category, subcategory: subcategory)
+
+      get :ofx, { account_id: @account.id, data_file: @file }, valid_session
+      json = JSON.parse(response.body)
+
+      expect(json['transactions'][2]['category_id']).to eq(category.id)
+      expect(json['transactions'][2]['subcategory_id']).to eq(subcategory.id)
+      expect(json['transactions'][2]['notes']).to eq('New Note')
+    end
+  end
 end

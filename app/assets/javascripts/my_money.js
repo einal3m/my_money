@@ -17,5 +17,3 @@ window.MyMoney = {
         Backbone.history.start();
     }
 };
-
-console.log('loaded my money');
