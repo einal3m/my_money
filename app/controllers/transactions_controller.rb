@@ -60,23 +60,6 @@ class TransactionsController < ApplicationController
     head :no_content
   end
 
-  def import
-    account = params['account']['id'].to_i
-
-    params[:import_transactions].each do |transaction|
-      if transaction[:import] == '1'
-        transaction.delete('import')
-        transaction['date'] = transaction['date'].to_date
-        transaction['amount'] = transaction['amount'].to_f
-        transaction['account_id'] = account
-
-        Transaction.create(transaction.permit(:transaction_type, :date, :amount, :fitid, :memo, :notes, :account_id, :category_id, :subcategory_id))
-      end
-    end
-
-    redirect_to transactions_url, notice: 'Transactions imported'
-  end
-
   # GET transactions/unreconciled?account_id=?
   def unreconciled
     account = Account.find(params[:account_id])
@@ -158,7 +141,7 @@ class TransactionsController < ApplicationController
             txnDate = Date.iso8601(ofxArray[txn_i].reverse[0..-11].reverse)
           elsif (ofxArray[txn_i][0..7] == TRNAMT) then
             txnAmount = ofxArray[txn_i].gsub(/\s+/, "").reverse[0..-9].reverse.to_f
-            txnAmount = (txnAmount*100).to_i
+            txnAmount = (txnAmount*100).round
           elsif (ofxArray[txn_i][0..6] == FITID) then
             txnId = ofxArray[txn_i].reverse[0..-8].reverse
           elsif (ofxArray[txn_i][0..5] == MEMO) then

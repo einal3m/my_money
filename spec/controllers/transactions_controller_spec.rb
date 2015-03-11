@@ -109,19 +109,6 @@ RSpec.describe TransactionsController, :type => :controller do
     end
   end
 
-  # describe 'import' do
-
-  #   it 'saves the transactions with import set to true' do
-  #     account = FactoryGirl.create(:account)
-  #     expect { post :import, {:account => {:id => account.id}, :import_transactions => [
-  #       {:import => '1', :date => '2014-08-19', :amount => 8.15},
-  #       {:import => '0', :date => '2014-08-20', :amount => 7.05}]}, valid_session
-  #     }.to change(Transaction, :count).by(1)
-  #     expect(response).to redirect_to(transactions_url)
-  #   end
-
-  # end
-
   describe 'unreconciled' do
     it 'returns all unreconciled transactions' do
       a = FactoryGirl.create(:account)
@@ -150,7 +137,7 @@ RSpec.describe TransactionsController, :type => :controller do
       expect(response).to be_success
       json = JSON.parse(response.body)
 
-      expect(json['transactions'].length).to eq(4)
+      expect(json['transactions'].length).to eq(5)
 
       expect(json['transactions'][0]['memo']).to eq('VILLAGE CINEMA')
       expect(json['transactions'][0]['date']).to eq('2014-07-05')
@@ -167,6 +154,10 @@ RSpec.describe TransactionsController, :type => :controller do
       expect(json['transactions'][3]['memo']).to eq('PAYMENT RECEIVED')
       expect(json['transactions'][3]['date']).to eq('2014-07-03')
       expect(json['transactions'][3]['amount']).to eq(326_610)
+
+      expect(json['transactions'][4]['memo']).to eq('TARGET')
+      expect(json['transactions'][4]['date']).to eq('2014-07-03')
+      expect(json['transactions'][4]['amount']).to eq(-1699)
     end
 
     it 'sets transactions to duplicate if they already exist' do
