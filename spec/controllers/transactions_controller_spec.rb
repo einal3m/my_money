@@ -23,7 +23,7 @@ RSpec.describe TransactionsController, :type => :controller do
     end
   end
 
-  describe 'POST create' do
+  describe 'POST create one transaction' do
     context 'with valid params' do
       it 'creates a new Transaction' do
         a = FactoryGirl.create(:account)
@@ -51,6 +51,17 @@ RSpec.describe TransactionsController, :type => :controller do
           post :create, { account_id: a.id, transaction: build_attributes(:transaction_invalid) }, valid_session
         }.not_to change(Transaction, :count)
         expect(response.status).to eq(422)
+      end
+    end
+  end
+
+  describe 'POST create multiple transactions' do
+    context 'with valid params' do
+      it 'creates new Transactions' do
+        a = FactoryGirl.create(:account)
+        expect {
+          post :create, { account_id: a.id, _json: [build_attributes(:transaction), build_attributes(:transaction)] }, valid_session
+        }.to change(Transaction, :count).by(2)
       end
     end
   end

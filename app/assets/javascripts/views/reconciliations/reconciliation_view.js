@@ -59,7 +59,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
 
   set_reconciled_state: function() {
     var statement_date = new Date(this.model.get('statement_date'));
-    for (i = 0; i < this.transactions.length; i++) { 
+    for (var i = 0; i < this.transactions.length; i++) { 
       var transaction_date = new Date(this.transactions.models[i].get('date'));
       var reconcile = transaction_date <= statement_date;
       this.transactions.models[i].set('reconciled', reconcile);
@@ -117,7 +117,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
 
   reconciled_transactions: function() {
     var transactions = new MyMoney.Collections.TransactionsCollection();
-    for (i = 0; i < this.transactions.length; i++) { 
+    for (var i = 0; i < this.transactions.length; i++) { 
       var transaction = this.transactions.models[i];
       if (transaction.get('reconciled')) {
         transaction.set('reconciliation_id', this.model.get('id'));
@@ -131,7 +131,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
       window.router.navigate('accounts/' + this.model.get('account_id') + '/show', {trigger: true})
   },
 
-  finishReconcile: function() {;
+  finishReconcile: function() {
     this.model.set('reconciled', true);
     this.model.set('transactions', this.reconciled_transactions());
     this.model.save({}, { wait: true, done: this.goToAccount() });

@@ -1,0 +1,10 @@
+<td>{{dateFormatter transaction.date}}</td>
+<td>{{descriptionFormatter transaction.memo transaction.notes}}</td>
+<td>
+  {{selectGroupedInput categoryTypes 'category_type_id' categories transaction.category_id "category_id"}}
+</td>
+<td>
+  {{selectInput subcategories transaction.subcategory_id "subcategory_id"}}
+</td>
+<td class="money">{{accountingFormat transaction.amount}}</td>
+<td class="centred" name="reconciled">{{checkBox transaction.cid transaction.import}}</td>

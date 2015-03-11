@@ -3,7 +3,7 @@ MyMoney.Views.ReconciliationTransactionsView = Backbone.View.extend({
   template: "reconciliations/reconciliation_transactions",
 
   addAll: function(){
-    for (i = 0; i < this.collection.length; i++) { 
+    for (var i = 0; i < this.collection.length; i++) { 
       this.addOne(this.collection.models[i]);
     }
   },

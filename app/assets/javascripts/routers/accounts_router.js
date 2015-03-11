@@ -57,18 +57,19 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
         collection: router.transactions,
         categories: router.categories,
         subcategories: router.subcategories,
-        categoryTypes: router.categoryTypes,
+        categoryTypes: router.categoryTypes
       }));
     });
   },
 
   importTransactions: function(id) {
     var account = this.accounts.get(id);
-    console.log('accounts');
-    console.log(this.accounts);
     this.showView(new MyMoney.Views.ImportView({
       account: account,
-      accounts: this.accounts
+      accounts: this.accounts,
+      categories: router.categories,
+      subcategories: router.subcategories,
+      categoryTypes: router.categoryTypes,
     }));
   },
 

@@ -17,7 +17,7 @@ MyMoney.Views.AccountsNetWorthView = Backbone.View.extend({
   },
 
   calculateNetWorth: function(){
-    for (i = 0; i < this.collection.length; i++) { 
+    for (var i = 0; i < this.collection.length; i++) { 
         this.netWorth += parseFloat(this.collection.models[i].get("current_balance"));
     }
   }

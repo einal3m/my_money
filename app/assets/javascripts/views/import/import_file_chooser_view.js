@@ -7,9 +7,8 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
 
   events: {
     'click #open_file': 'openFileChooser',
-    'click #cancel' : 'goBack',
     'change #file_name' : 'updateFileName',
-    'click #upload' : 'uploadTransactions'
+    'click #uploadOFX' : 'uploadOFX'
   },
 
   initialize: function(options){
@@ -33,22 +32,9 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
     this.$('#show_file').html(this.$('#file_name').val());
   },
 
-  goBack: function() {
-    window.history.back();
-  },
-
-  uploadTransactions: function() {
+  uploadOFX: function() {
     if (this.file_selected()) {
-      // this.trigger('startImport');
-      var data = new FormData();
-      data.append('data_file', this.$('input[id="file_name"]')[0].files[0]);
-      $.ajax({
-        url: '/accounts/' + this.account.id + '/transactions/ofx',
-        type: 'POST',
-        data: data,
-        processData: false,
-        contentType: false
-      });
+      this.trigger('uploadOFX');
     }
   },
 

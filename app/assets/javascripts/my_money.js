@@ -17,3 +17,7 @@ window.MyMoney = {
         Backbone.history.start();
     }
 };
+
+Backbone.Collection.prototype.save = function (options) {
+    Backbone.sync("create", this, options);
+};

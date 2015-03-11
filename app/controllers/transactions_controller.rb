@@ -16,6 +16,14 @@ class TransactionsController < ApplicationController
   # POST /transactions
   # POST /transactions.json
   def create
+    if params.key?(:_json)
+      create_many
+    else 
+      create_one
+    end
+  end
+
+  def create_one
     transaction = Transaction.new(transaction_params)
 
     if transaction.save
@@ -23,6 +31,16 @@ class TransactionsController < ApplicationController
     else
       render json: transaction.errors, status: :unprocessable_entity
     end
+  end
+
+  def create_many
+    transactions = []
+    params[:_json].each do |txn_params|
+      transaction = Transaction.new(txn_params.permit(:transaction_type, :date, :amount, :fitid, :memo, :notes, :account_id, :category_id, :subcategory_id))
+      transaction.save
+      transactions << transaction
+    end
+    render json: transactions
   end
 
   # PATCH/PUT /transactions/1
