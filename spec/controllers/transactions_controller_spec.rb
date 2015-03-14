@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TransactionsController, :type => :controller do
+RSpec.describe TransactionsController, type: :controller do
   let(:valid_session) { {} }
 
   before :all do
@@ -12,7 +12,7 @@ RSpec.describe TransactionsController, :type => :controller do
       t1 = FactoryGirl.create(:transaction, date: Date.today)
       FactoryGirl.create(:transaction, account: t1.account, date: Date.today >> 2)
       FactoryGirl.create(:transaction, account: t1.account, date: Date.today << 2)
-      get :index, { :account_id => t1.account.id }, valid_session
+      get :index, { account_id: t1.account.id }, valid_session
 
       expect(response).to be_success
       t1.reload
@@ -92,7 +92,7 @@ RSpec.describe TransactionsController, :type => :controller do
     context 'with invalid params' do
       it 'assigns the transaction as @transaction' do
         t = FactoryGirl.create(:transaction)
-        put :update, { id: t.id, account_id: t.account_id, :transaction => build_attributes(:transaction_invalid) }, valid_session
+        put :update, { id: t.id, account_id: t.account_id, transaction: build_attributes(:transaction_invalid) }, valid_session
         expect(response.status).to eq(422)
       end
     end

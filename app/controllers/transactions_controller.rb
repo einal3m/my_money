@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:edit, :update, :destroy]
-  before_action :get_account, only: [:index]
+  before_action :get_account, only: [:index, :unreconciled, :ofx]
 
   # GET /transactions
   # GET /transactions.json
@@ -36,7 +36,9 @@ class TransactionsController < ApplicationController
   def create_many
     transactions = []
     params[:_json].each do |txn_params|
-      transaction = Transaction.new(txn_params.permit(:transaction_type, :date, :amount, :fitid, :memo, :notes, :account_id, :category_id, :subcategory_id))
+      transaction = Transaction.new(
+        txn_params.permit(:transaction_type, :date, :amount, :fitid, :memo, :notes, :account_id, :category_id, :subcategory_id)
+      )
       transaction.save
       transactions << transaction
     end
@@ -62,42 +64,37 @@ class TransactionsController < ApplicationController
 
   # GET transactions/unreconciled?account_id=?
   def unreconciled
-    account = Account.find(params[:account_id])
-    render json: Transaction.unreconciled(account).reverse_date_order
+    render json: Transaction.unreconciled(@account).reverse_date_order
   end
 
   def ofx
-    @account = Account.find(params[:account_id])
     ofx_parser = Lib::OfxParser.new(params[:data_file])
     @transactions = ofx_parser.transactions
-    #loop through transactions... 
+
     @transactions.each do |t|
-    
-       t.account = @account
-       t.duplicate = false
-       t.import = true
-       
-       # ... check if they are duplicates
-       if Transaction.exists?(date: t.date, memo: t.memo, amount: t.amount) then
-        t.duplicate = true
-        t.import = false
-       end         
-       
-       # ... check if they match any pattern
-       @patterns = Pattern.where(account_id: @account.id);
-       @patterns.each do |p|
-        if t.memo.downcase.include? p.match_text.downcase then
-          t.category_id = p.category_id
-          t.subcategory_id = p.subcategory_id
-          t.notes = p.notes
-          break
-        end
-       end  
+      build_transaction(t)
     end
     render json: @transactions
   end
 
   private
+
+  def build_transaction(t)
+    t.account = @account
+    t.duplicate = Transaction.exists?(date: t.date, memo: t.memo, amount: t.amount)
+    t.import = !t.duplicate
+    allocate_categories(t)
+  end
+
+  def allocate_categories(t)
+    Pattern.where(account_id: @account.id).each do |p|
+      next unless t.memo.downcase.include? p.match_text.downcase
+      t.category_id = p.category_id
+      t.subcategory_id = p.subcategory_id
+      t.notes = p.notes
+      break
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_transaction
