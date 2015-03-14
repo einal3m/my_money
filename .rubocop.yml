@@ -1,43 +1,46 @@
-ParameterLists:
-  Max: 4
-  CountKeywordArgs: true
+MethodLength:
+  Max: 25 # reek performs these checks anyway
 
-# Avoid more than `Max` levels of nesting.
-BlockNesting:
-  Max: 3
+# ParameterLists:
+#   Max: 4
+#   CountKeywordArgs: true
 
-HashSyntax:
-  Enabled: false
+# # Avoid more than `Max` levels of nesting.
+# BlockNesting:
+#   Max: 3
 
-Blocks:
-  Enabled: false
+# HashSyntax:
+#   Enabled: false
 
-SpaceInsideBrackets:
-  Enabled: false
+# Blocks:
+#   Enabled: false
 
-SingleLineMethods:
-  Enabled: false
+# SpaceInsideBrackets:
+#   Enabled: false
+
+# SingleLineMethods:
+#   Enabled: false
 
 LineLength:
-  Max: 280
+  Max: 100
 
 Documentation:
   Enabled: false
 
-ClassAndModuleChildren:
-  Enabled: false
+# ClassAndModuleChildren:
+#   Enabled: false
 
 Lambda:
   Enabled: false
 
-FormatString:
-  Enabled: false
+# FormatString:
+#   Enabled: false
 
-PredicateName:
-  Enabled: false
+# PredicateName:
+#   Enabled: false
 
-ClassLength:
-  Max: 120
+# ClassLength:
+#   Max: 120
 
-TrivialAccessors:
-  Enabled: false
+# TrivialAccessors:
+#   Enabled: false

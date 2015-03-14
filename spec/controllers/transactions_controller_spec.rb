@@ -133,31 +133,26 @@ RSpec.describe TransactionsController, :type => :controller do
     end
 
     it 'returns the transactions from the OFX file' do
-      get :ofx, { account_id: @account.id, data_file: @file }, valid_session
+      file = 'FILE'
+      memo = 'MEMO'
+      date = '2014-07-01'
+      amount = 333
+
+      ofx_parser = double :ofx_parser
+      transaction = ImportedTransaction.new(memo: memo, date: date, amount: amount)
+
+      expect(Lib::OfxParser).to receive(:new).with(file).and_return(ofx_parser)
+      expect(ofx_parser).to receive(:transactions).and_return([transaction])
+
+      get :ofx, { account_id: @account.id, data_file: file }, valid_session
       expect(response).to be_success
       json = JSON.parse(response.body)
 
-      expect(json['transactions'].length).to eq(5)
+      expect(json['transactions'].length).to eq(1)
 
-      expect(json['transactions'][0]['memo']).to eq('VILLAGE CINEMA')
-      expect(json['transactions'][0]['date']).to eq('2014-07-05')
-      expect(json['transactions'][0]['amount']).to eq(-5500)
-
-      expect(json['transactions'][1]['memo']).to eq('COLES SUPERMARKETS')
-      expect(json['transactions'][1]['date']).to eq('2014-07-04')
-      expect(json['transactions'][1]['amount']).to eq(-7476)
-
-      expect(json['transactions'][2]['memo']).to eq('MCDONALDS')
-      expect(json['transactions'][2]['date']).to eq('2014-07-03')
-      expect(json['transactions'][2]['amount']).to eq(-1920)
-
-      expect(json['transactions'][3]['memo']).to eq('PAYMENT RECEIVED')
-      expect(json['transactions'][3]['date']).to eq('2014-07-03')
-      expect(json['transactions'][3]['amount']).to eq(326_610)
-
-      expect(json['transactions'][4]['memo']).to eq('TARGET')
-      expect(json['transactions'][4]['date']).to eq('2014-07-03')
-      expect(json['transactions'][4]['amount']).to eq(-1699)
+      expect(json['transactions'][0]['memo']).to eq(memo)
+      expect(json['transactions'][0]['date']).to eq(date)
+      expect(json['transactions'][0]['amount']).to eq(amount)
     end
 
     it 'sets transactions to duplicate if they already exist' do
