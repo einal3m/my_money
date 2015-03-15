@@ -60,7 +60,6 @@ RSpec.describe ReportController, :type => :controller do
 
 			@dr1 = FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
 			@dr2 = FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
-
 		end
 
 		it "returns all transactions for the specified category and date range" do
