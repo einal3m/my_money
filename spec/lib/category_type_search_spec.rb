@@ -1,0 +1,34 @@
+require 'rails_helper'
+require 'date_range'
+
+RSpec.describe Lib::CategorySearch, type: :class do
+  before :each do
+    @ct = FactoryGirl.create(:category_type, name: 'Expense')
+    @c1 = FactoryGirl.create(:category, category_type: @ct)
+    @c2 = FactoryGirl.create(:category, category_type: @ct)
+    @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', category: @c1, amount: 400, subcategory: nil)
+    @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c1, subcategory: nil, amount: 1000)
+    @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200)
+    @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @c2, subcategory: nil, amount: 1500)
+    @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
+    @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @c2, subcategory: nil)
+    @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
+
+    @dr = CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
+  end
+
+  it 'returns transactions for the given category_type' do
+    search = Lib::CategoryTypeSearch.new(date_range: @dr, category_type: @ct)
+    expect(search.transactions).to eq([@t4, @t2, @t1])
+  end
+
+  it 'returns the sum of all transactions' do
+    search = Lib::CategoryTypeSearch.new(date_range: @dr, category_type: @ct)
+    expect(search.sum).to eq(2900) # 15+10+4
+  end
+
+  it 'returns a summary of all transactions by month' do
+    search = Lib::CategoryTypeSearch.new(date_range: @dr, category_type: @ct)
+    expect(search.month_totals).to eq([['Jan-14', 1400], ['Feb-14', 1500]])
+  end
+end

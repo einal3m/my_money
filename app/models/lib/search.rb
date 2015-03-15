@@ -30,7 +30,7 @@ module Lib
       # generate summary array
       summary = []
       months.each do |month_date|
-        summary << [month_date.strftime('%b-%y'), sql_data[month_date.strftime('%m-%Y')] || 0.00]
+        summary << [month_date.strftime('%b-%y'), sql_data[month_date.strftime('%m-%Y')] || 0]
       end
 
       summary

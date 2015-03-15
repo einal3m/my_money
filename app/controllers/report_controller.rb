@@ -6,57 +6,42 @@ class ReportController < ApplicationController
   def index
   end
 
-  def income_vs_expense
-      
-  # only interested in income and expense categories
-  income_type = CategoryType.income
-  expense_type = CategoryType.expense
-  
-  # get data for each category type
-  @report_data = {}
-  @unassigned_data = {}
-  @report_data["Income"] = get_category_type_data(income_type)
-  @report_data["Expense"] = get_category_type_data(expense_type)
-  
+  def income_vs_expense      
+    # only interested in income and expense categories
+    income_type = CategoryType.income
+    expense_type = CategoryType.expense
+    
+    # get data for each category type
+    @report_data = {}
+    @unassigned_data = {}
+    @report_data["Income"] = get_category_type_data(income_type)
+    @report_data["Expense"] = get_category_type_data(expense_type)
   end
   
   def income_expense_bar
-  
     # date range is previous 12 months
     @to_date = Date.new(Date.today.year, Date.today.month, -1)
     @from_date = (@to_date << 12) + 1
 
-  # only interested in income and expense categories
-  income_type = CategoryType.income
-  expense_type = CategoryType.expense
+    income_type = CategoryType.income
+    expense_type = CategoryType.expense
 
-  # get data for each category type
-  month_totals = {}
-  month_totals["Income"] = Hash[get_category_type_month_totals(income_type)]
-  month_totals["Expense"] = Hash[get_category_type_month_totals(expense_type)]
+    date_range = CustomDateRange.new(from_date: @from_date.to_s, to_date: @to_date.to_s)
+    income_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: income_type)
+    expense_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: expense_type)
 
-    @report_data = []
-    months = []
-    starting_date = Date.today >> 1
-    
-    # generate list of months to report on
-    12.times do |month|
-      months[month] = starting_date << (month+1)
+    @report_data = merge_data(income_search.month_totals, expense_search.month_totals)
+  end
+
+  def merge_data(income_data, expense_data)
+    data = []
+    income_data.each_with_index do |a, i|
+      data << [a[0], a[1], -expense_data[i][1]]
     end
-  
-    # fill report_data array
-    months.each do |month_date|
-      month_text = month_date.strftime('%m-%Y')
-      @report_data.unshift([month_date.strftime('%b-%y'), 
-        month_totals["Income"].has_key?(month_text) ? month_totals["Income"][month_text] : 0,
-        month_totals["Expense"].has_key?(month_text) ? month_totals["Expense"][month_text] : 0])
-    
-    end
-  
+    data
   end
   
   def get_category_type_data(category_type)
-
   # for expenses, reverse the sign
     factor = 1
     if (category_type.name == "Expense") then factor = -1 end
@@ -74,11 +59,9 @@ class ReportController < ApplicationController
     report_data.parse(Transaction.connection.select_all(my_sql).rows)
 
   return report_data
-    
   end
 
   def get_category_type_month_totals(category_type)
-
   # for expenses, reverse the sign
     factor = 1
     if (category_type.name == "Expense") then factor = -1 end
@@ -92,8 +75,6 @@ class ReportController < ApplicationController
   # balance
   # retrieves the end of day balance for the specified account for the date range
   def balance
-
-    # get selected account information
     get_account
 
     # if account has been selected, run search
@@ -103,8 +84,6 @@ class ReportController < ApplicationController
       search = Lib::BalanceSearch.new({account: @account, date_range: @date_range})    
       @line_chart_data = search.eod_balance
     end
-
-
   end
   
   def category
