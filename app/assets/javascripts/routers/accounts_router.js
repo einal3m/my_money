@@ -19,6 +19,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "accounts/:id/reconciliation" : "newReconciliation",
     "accounts/:id/transactions" : "accountTransactions",
     "accounts/:id/import"  : "importTransactions",
+    "reports/eod_balance"  : "reportEodBalance",
     ".*"                   : "accountIndex"
   },
 
@@ -27,6 +28,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     var router = this;
 
     $.when(router.accounts.fetch()).done(function () {
+      router.currentAccount = router.accounts.at(0);
       router.showView(new MyMoney.Views.AccountsIndexView({collection: router.accounts}));
     });
   },
@@ -85,6 +87,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     });  
   },
 
+// reports
+  reportEodBalance: function() {
+    this.showView(new MyMoney.Views.EodBalanceReportView({account: this.currentAccount, accounts: this.accounts}));
+    this.currentView.updateReport();
+  },
 
 // utilities
   showView: function(newView) {

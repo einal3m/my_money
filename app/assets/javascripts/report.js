@@ -240,7 +240,6 @@ function bar_chart(data, class_name) {
 // [[x1, y1], [x1, y1] ...]
 //
 function line_chart(data, class_name) {
-
   // then work out bar chart dimensions
   var chart_width = 1000,
       chart_height = 500;
