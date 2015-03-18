@@ -1,4 +1,4 @@
-require 'date_range'
+require 'lib/date_range'
 
 class ReportController < ApplicationController
   before_action :get_date_range, only: [:income_vs_expense, :category, :subcategory, :eod_balance]
@@ -26,7 +26,7 @@ class ReportController < ApplicationController
     income_type = CategoryType.income
     expense_type = CategoryType.expense
 
-    date_range = CustomDateRange.new(from_date: @from_date.to_s, to_date: @to_date.to_s)
+    date_range = Lib::CustomDateRange.new(from_date: @from_date.to_s, to_date: @to_date.to_s)
     income_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: income_type)
     expense_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: expense_type)
 

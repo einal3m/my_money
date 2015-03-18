@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'date_range'
+require 'lib/date_range'
 #
 #  Transaction
 #  
@@ -102,7 +102,7 @@ RSpec.describe Transaction, :type => :model do
       t3 = FactoryGirl.create(:transaction, date: "2014-01-05")
       t4 = FactoryGirl.create(:transaction, date: "2014-01-02")
       t5 = FactoryGirl.create(:transaction, date: "2014-01-04")
-      dr = CustomDateRange.new({from_date: "2014-01-02", to_date: "2014-01-04"})
+      dr = Lib::CustomDateRange.new({from_date: "2014-01-02", to_date: "2014-01-04"})
 
       expect(Transaction.find_by_date(dr)).to eq([t2, t4, t5])
     end

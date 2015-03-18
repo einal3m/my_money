@@ -10,7 +10,7 @@ module Lib
 
     def initialize(attrs)
       @account = attrs.fetch(:account, nil)
-      @date_range = attrs.fetch(:date_range, CurrentMonthDateRange.new)
+      @date_range = attrs.fetch(:date_range, Lib::CurrentMonthDateRange.new)
     end
 
     # returns an array of end of day balances with the following format:

@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'date_range'
+require 'lib/date_range'
 
 RSpec.describe Lib::SubcategorySearch, type: :class do
   before :each do
@@ -13,7 +13,7 @@ RSpec.describe Lib::SubcategorySearch, type: :class do
     @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @c, subcategory: nil)
     @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: @c, subcategory: @sc)
 
-    @dr = CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
+    @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
   end
 
   it 'sets default values if no arguments given' do

@@ -1,4 +1,4 @@
-require 'date_range'
+require 'lib/date_range'
 
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.

@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'date_range'
+require 'lib/date_range'
 
 RSpec.describe Lib::BalanceSearch, type: :class do
   before :each do
@@ -12,7 +12,7 @@ RSpec.describe Lib::BalanceSearch, type: :class do
     @t6 = FactoryGirl.create(:transaction, account: @a, date: '2014-03-02', amount: -6) # 16
     @t7 = FactoryGirl.create(:transaction, account: @a, date: '2014-03-31', amount: 7) # 23
 
-    @dr = CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-03-31')
+    @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-03-31')
   end
 
   it 'retrieves the end of day balances for date range' do
@@ -41,7 +41,7 @@ RSpec.describe Lib::BalanceSearch, type: :class do
   end
 
   it 'returns an empty array, if no data is found' do
-    dr_no_data = CustomDateRange.new(from_date: '2013-01-01', to_date: '2013-03-31')
+    dr_no_data = Lib::CustomDateRange.new(from_date: '2013-01-01', to_date: '2013-03-31')
     search = Lib::BalanceSearch.new(account: @a, date_range: dr_no_data)
 
     expect(search.eod_balance).to be_empty

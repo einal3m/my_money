@@ -15,8 +15,8 @@ feature "Reports", :type => :feature do
   	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
 
     # And I have some few date ranges
-    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
-    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
+    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "Lib::CurrentMonthDateRange", default: true)
+    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "Lib::CustomDateRange")
 
   	# And that I am on the Category reports page
   	visit ('/report/category')
@@ -87,8 +87,8 @@ feature "Reports", :type => :feature do
   	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
 
     # And I have some few date ranges
-    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "CurrentMonthDateRange", default: true)
-    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "CustomDateRange")
+    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "Lib::CurrentMonthDateRange", default: true)
+    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "Lib::CustomDateRange")
 
   	# And that I am on the Category reports page
   	visit ('/report/subcategory')

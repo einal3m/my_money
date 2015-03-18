@@ -13,7 +13,7 @@ RSpec.describe ReportController, type: :controller do
 
   describe 'EOD Balance Report' do
     before :each do
-      FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'CurrentMonthDateRange', default: true)
+      FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     end
 
     it 'returns an array of eod balances' do
@@ -53,8 +53,8 @@ RSpec.describe ReportController, type: :controller do
       @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @t1.category, subcategory: nil)
       @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
 
-      @dr1 = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'CurrentMonthDateRange', default: true)
-      @dr2 = FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'CustomDateRange')
+      @dr1 = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
+      @dr2 = FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     end
 
     it 'returns all transactions for the specified category and date range' do
@@ -119,8 +119,8 @@ RSpec.describe ReportController, type: :controller do
       @t3 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: nil, amount: 3)
       @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @c, subcategory: @sc, amount: 4)
       @t5 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: nil, amount: 5)
-      @dr1 = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'CurrentMonthDateRange', default: true)
-      @dr2 = FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'CustomDateRange')
+      @dr1 = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
+      @dr2 = FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     end
 
     it 'returns all transactions for the specfied subcategory' do

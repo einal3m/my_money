@@ -2,7 +2,7 @@ module Lib
   class CategoryTypeSearch < Search
     def initialize(attrs)
       @category_type = attrs.fetch(:category_type, nil)
-      @date_range = attrs.fetch(:date_range, CurrentMonthDateRange.new)
+      @date_range = attrs.fetch(:date_range, Lib::CurrentMonthDateRange.new)
     end
 
     def transaction_query

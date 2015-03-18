@@ -3,9 +3,9 @@ require 'rails_helper'
 feature 'Transactions', :type => :feature do
   before(:each) {
     # create a few date ranges
-    FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'CurrentMonthDateRange', default: true)
-    FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'CustomDateRange')
-    FactoryGirl.create(:date_range_option, description: 'Last 90 Days', klass: 'Last90DaysDateRange')
+    FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
+    FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
+    FactoryGirl.create(:date_range_option, description: 'Last 90 Days', klass: 'Lib::Last90DaysDateRange')
     FactoryGirl.create(:category_type, name: 'Expense')
     @ct_i = FactoryGirl.create(:category_type, name: 'Income')
   }

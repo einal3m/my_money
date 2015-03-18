@@ -4,7 +4,7 @@ module Lib
 
     def initialize(attrs)
       @category = attrs.fetch(:category, nil)
-      @date_range = attrs.fetch(:date_range, CurrentMonthDateRange.new)
+      @date_range = attrs.fetch(:date_range, Lib::CurrentMonthDateRange.new)
     end
 
     def transaction_query

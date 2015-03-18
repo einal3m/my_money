@@ -6,7 +6,7 @@ class DateRangeOption < ActiveRecord::Base
 
   def klass_must_be_a_valid_class
     return if klass.blank?
-    errors.add(klass, 'not a valid class') unless DateRange.valid?(klass)
+    errors.add(klass, 'not a valid class') unless Lib::DateRange.valid?(klass)
   end
 
   # scopes
