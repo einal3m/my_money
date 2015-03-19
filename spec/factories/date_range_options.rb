@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :date_range_option do
-    description "MyString"
-    klass "Lib::CurrentMonthDateRange"
+    description 'MyString'
+    klass 'Lib::CurrentMonthDateRange'
   end
 end

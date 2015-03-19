@@ -28,4 +28,8 @@ class DateRangeOption < ActiveRecord::Base
     current_default = DateRangeOption.find_by default: true
     current_default.update_column(:default, false) if current_default
   end
+
+  def date_range
+    @date_range ||= klass.constantize.new
+  end
 end
