@@ -6,6 +6,11 @@ class DateRangeOptionsController < ApplicationController
   def index
     @date_range_options = DateRangeOption.all
     @date_range_option = DateRangeOption.new
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @date_range_options }
+    # render json: @date_range_options
+    end
   end
 
   # GET /date_range_options/1/edit

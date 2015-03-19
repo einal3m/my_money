@@ -18,7 +18,10 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
     this.subcategories = this.options['subcategories'];
     this.categoryTypes = this.options['categoryTypes'];
     this.dateRangeOptions = this.options['dateRangeOptions'];
+    this.currentDateRange = this.options['currentDateRange'];
+    console.log('TransactionsIndexView.initialize');
     console.log(this.dateRangeOptions);
+    console.log(this.currentDateRange);
     this.listenTo(this.collection, 'add', this.fetchTransactions);
   },
 

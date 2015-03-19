@@ -1,6 +1,7 @@
 MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   initialize: function(options) {
+    var router = this;
     this.accounts = new MyMoney.Collections.AccountsCollection();
     this.categories = new MyMoney.Collections.CategoriesCollection();
     this.categories.fetch();
@@ -8,8 +9,12 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     this.categoryTypes.fetch();
     this.subcategories = new MyMoney.Collections.SubcategoriesCollection();
     this.subcategories.fetch();
+
     this.dateRangeOptions = new MyMoney.Collections.DateRangeOptionsCollection();
-    this.dateRangeOptions.fetch();
+    $.when(this.dateRangeOptions.fetch()).done(function () {
+      router.setCurrentDateRange();
+    });
+
     this.accountIndex();
   },
 
@@ -28,7 +33,6 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 // account routes
   accountIndex: function() {
     var router = this;
-
     $.when(router.accounts.fetch()).done(function () {
       router.currentAccount = router.accounts.at(0);
       router.showView(new MyMoney.Views.AccountsIndexView({collection: router.accounts}));
@@ -62,7 +66,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
         categories: router.categories,
         subcategories: router.subcategories,
         categoryTypes: router.categoryTypes,
-        dateRangeOptions: router.dateRangeOptions
+        dateRangeOptions: router.dateRangeOptions,
+        currentDateRange: router.currentDateRange
       }));
     });
   },
@@ -107,6 +112,10 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     if (this.currentView) {
       this.currentView.remove();
     }
+  },
+
+  setCurrentDateRange: function(date_range_option) {
+    this.currentDateRange = date_range_option || this.dateRangeOptions.where({default: true})[0];
   }
 
 });
