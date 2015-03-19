@@ -1,5 +1,5 @@
 
-MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
+MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 
   className: "accounts",
@@ -43,7 +43,12 @@ MyMoney.Views.TransactionsIndexView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template]());
+    this.addSubView('date_range', new MyMoney.Views.DateRangeFilterView({
+      model: this.currentDateRange,
+      collection: this.dateRangeOptions
+    }));
     this.addAll();
+    this.renderSubViews();
     return this;
   },
 

@@ -9,7 +9,6 @@ class DateRangeOptionsController < ApplicationController
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @date_range_options }
-    # render json: @date_range_options
     end
   end
 
@@ -27,8 +26,7 @@ class DateRangeOptionsController < ApplicationController
         format.html { redirect_to date_range_options_path, notice: 'Date range option was successfully created.' }
         format.json { render :show, status: :created, location: @date_range_option }
       else
-p @date_range_option.errors
-        format.html { redirect_to date_range_options_path, notice: 'Unable to create date range object: ' + @date_range_option.errors.full_messages.first }
+        format.html { redirect_to date_range_options_path, notice: 'Unable to create date range: ' + @date_range_option.errors.full_messages.first }
         format.json { render json: @date_range_option.errors, status: :unprocessable_entity }
       end
     end
@@ -61,13 +59,14 @@ p @date_range_option.errors
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_date_range_option
-      @date_range_option = DateRangeOption.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def date_range_option_params
-      params.require(:date_range_option).permit(:description, :klass, :default)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_date_range_option
+    @date_range_option = DateRangeOption.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def date_range_option_params
+    params.require(:date_range_option).permit(:description, :klass, :default)
+  end
 end
