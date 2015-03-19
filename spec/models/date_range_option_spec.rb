@@ -31,7 +31,7 @@ RSpec.describe DateRangeOption, :type => :model do
   		FactoryGirl.create(:date_range_option)
   		FactoryGirl.create(:date_range_option)
 
-  		expect(DateRangeOption.default).to eq(default)
+  		expect(DateRangeOption.default_option).to eq(default)
   	end
   end
 
@@ -55,20 +55,37 @@ RSpec.describe DateRangeOption, :type => :model do
 
   describe "callbacks on update default" do
 
-  	it "sets the default attribute to true, and the record currently default to false" do
-  	 	dro1 = FactoryGirl.create(:date_range_option)
-  		dro2 = FactoryGirl.create(:date_range_option)
-  		dro3 = FactoryGirl.create(:date_range_option)
+    it "sets the default attribute to true, and the record currently default to false" do
+      dro1 = FactoryGirl.create(:date_range_option)
+      dro2 = FactoryGirl.create(:date_range_option)
+      dro3 = FactoryGirl.create(:date_range_option)
 
-  		dro2.update(default: true)
+      dro2.update(default: true)
 
-  		dro1.reload
-  		dro2.reload
-  		dro3.reload
+      dro1.reload
+      dro2.reload
+      dro3.reload
 
-  		expect(dro1.default).to be_falsey
-  		expect(dro2.default).to be_truthy
-  		expect(dro3.default).to be_falsey
-  	end
+      expect(dro1.default).to be_falsey
+      expect(dro2.default).to be_truthy
+      expect(dro3.default).to be_falsey
+    end
+    it "sets the default attribute to true when there is no default" do
+      dro1 = FactoryGirl.create(:date_range_option)
+      dro2 = FactoryGirl.create(:date_range_option)
+
+      dro1.update(default: false)
+      dro1.reload
+      expect(dro1.default).to be_falsey
+      expect(dro2.default).to be_falsey
+
+      dro2.update(default: true)
+
+      dro1.reload
+      dro2.reload
+
+      expect(dro1.default).to be_falsey
+      expect(dro2.default).to be_truthy
+    end
   end
 end

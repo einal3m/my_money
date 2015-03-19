@@ -10,7 +10,7 @@ class DateRangeOption < ActiveRecord::Base
   end
 
   # scopes
-  scope :default, -> { find_by(default: true) }
+  scope :default_option, -> { find_by default: true }
 
   # callbacks
   before_validation :set_default_and_order, on: :create
@@ -23,9 +23,9 @@ class DateRangeOption < ActiveRecord::Base
     self.order = (DateRangeOption.maximum(:order) || 0) + 1
   end
 
-  # when setting default to true, update the existing default record to false
+  # when setting default to true, update the existing default option to false if it exists
   def set_default
-    current_default = DateRangeOption.default
-    current_default.update_column(:default, false)
+    current_default = DateRangeOption.find_by default: true
+    current_default.update_column(:default, false) if current_default
   end
 end

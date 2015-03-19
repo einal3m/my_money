@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   # defaults to current month
   def get_date_range
     # check params first, then session
-    @date_range_option = DateRangeOption.find(params.fetch(:date_range_option_id, session[:date_range_option_id]) || DateRangeOption.default.id)
+    @date_range_option = DateRangeOption.find(params.fetch(:date_range_option_id, session[:date_range_option_id]) || DateRangeOption.default_option.id)
     from_date = params.fetch(:from_date, session[:from_date])
     to_date = params.fetch(:to_date, session[:to_date])
 
