@@ -3,6 +3,10 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   initialize: function(options) {
     var router = this;
     this.accounts = new MyMoney.Collections.AccountsCollection();
+    $.when(router.accounts.fetch()).done(function () {
+      router.setCurrentAccount();
+    });
+
     this.categories = new MyMoney.Collections.CategoriesCollection();
     this.categories.fetch();
     this.categoryTypes = new MyMoney.Collections.CategoryTypesCollection();
@@ -24,6 +28,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "accounts/:id/edit"    : "editAccount",
     "accounts/:id/show"    : "showAccount",
     "accounts/:id/reconciliation" : "newReconciliation",
+    "accounts/current/transactions" : "currentAccountTransactions",
     "accounts/:id/transactions" : "accountTransactions",
     "accounts/:id/import"  : "importTransactions",
     "reports/eod_balance"  : "reportEodBalance",
@@ -56,6 +61,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 // transaction routes
   accountTransactions: function(id) {
     var account = this.accounts.get(id);
+    this.setCurrentAccount(account);
     var router = this;
 
     this.transactions = new MyMoney.Collections.TransactionsCollection([], {
@@ -75,6 +81,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
         currentDateRange: router.currentDateRange
       }));
     });
+  },
+
+  currentAccountTransactions: function() {
+    // this.accountTransactions(this.currentAccount.id);
+    this.navigate('accounts/' + this.currentAccount.id + '/transactions', {trigger: true});
   },
 
   importTransactions: function(id) {
@@ -121,6 +132,10 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   setCurrentDateRange: function(date_range_option) {
     this.currentDateRange = date_range_option || this.dateRangeOptions.where({default: true})[0];
+  },
+
+  setCurrentAccount: function(account) {
+    this.currentAccount = account || this.accounts.at(0);
   }
 
 });
