@@ -1,9 +1,10 @@
 <h1>my transactions {{newButton}} {{actionButton text='Import' id='import' icon='fa-file-text-o'}}</h1>
+<div id='account_filter'></div>
 <div id='date_range'></div>
 <div class="panel panel-default">
   
   <div class="panel-heading">
-    <h4>Transactions</h4>
+    <h4>Transactions for {{account.name}} ({{account.bank}})</h4>
   </div>
 
   <table class="table table-hover table-responsive">

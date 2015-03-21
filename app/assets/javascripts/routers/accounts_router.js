@@ -58,7 +58,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     var account = this.accounts.get(id);
     var router = this;
 
-    router.transactions = new MyMoney.Collections.TransactionsCollection([], {
+    this.transactions = new MyMoney.Collections.TransactionsCollection([], {
       account_id: id,
       date_range: this.currentDateRange
     });
@@ -66,6 +66,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     $.when(router.transactions.fetch()).done(function () {
       router.showView(new MyMoney.Views.TransactionsIndexView({
         model: account,
+        accounts: router.accounts,
         collection: router.transactions,
         categories: router.categories,
         subcategories: router.subcategories,

@@ -15,6 +15,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
   },
 
   initialize: function() {
+    this.accounts = this.options['accounts'];
     this.categories = this.options['categories'];
     this.subcategories = this.options['subcategories'];
     this.categoryTypes = this.options['categoryTypes'];
@@ -40,7 +41,13 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
 	},
 
   render: function () {
-    this.$el.html(HandlebarsTemplates[this.template]());
+    this.$el.html(HandlebarsTemplates[this.template]({
+      account: this.model.toJSON()
+    }));
+    this.addSubView('account_filter', new MyMoney.Views.AccountFilterView({
+      model: this.model,
+      collection: this.accounts
+    }))
     this.addSubView('date_range', new MyMoney.Views.DateRangeFilterView({
       model: this.currentDateRange,
       collection: this.dateRangeOptions
@@ -117,14 +124,18 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
   },
 
   searchTransactions: function(e) {
-    e.preventDefault();
+    // e.preventDefault();
     e.stopPropagation();
     // var from_date = this.$('#from_date').val();
     // var to_date = this.$('#to_date').val();
     var date_range_option_id = this.$('#date_range_option_id').val();
-
-    window.router.currentDateRange = this.dateRangeOptions.get(date_range_option_id);
-    window.router.accountTransactions(this.model.id);
+    window.router.setCurrentDateRange(this.dateRangeOptions.get(date_range_option_id));
+    
+    var accountSelected = this.$('#account_id').val();
+    if (accountSelected != this.model.id) {
+      window.router.navigate('accounts/' + accountSelected + '/transactions');
+    }
+    window.router.accountTransactions(accountSelected);
   }
 
 });
