@@ -12,10 +12,6 @@ RSpec.describe ReportController, type: :controller do
   end
 
   describe 'EOD Balance Report' do
-    before :each do
-      FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
-    end
-
     it 'returns an array of eod balances' do
       account_id = 11
       from_date = '2014-01-01'
@@ -24,8 +20,11 @@ RSpec.describe ReportController, type: :controller do
 
       account = double :account
       search = double :search
+      date_range = double :date_range
+
+      expect(Lib::CustomDateRange).to receive(:new).with(from_date: from_date, to_date: to_date).and_return(date_range)
       expect(Account).to receive(:find).with(account_id).and_return(account)
-      expect(Lib::BalanceSearch).to receive(:new).with(account: account, date_range: anything).and_return(search)
+      expect(Lib::BalanceSearch).to receive(:new).with(account: account, date_range: date_range).and_return(search)
       expect(search).to receive(:eod_balance).and_return(data)
 
       get :eod_balance, account_id: account_id, from_date: from_date, to_date: to_date

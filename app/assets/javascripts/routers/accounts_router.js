@@ -3,9 +3,9 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   initialize: function(options) {
     var router = this;
     this.accounts = new MyMoney.Collections.AccountsCollection();
-    $.when(router.accounts.fetch()).done(function () {
-      router.setCurrentAccount();
-    });
+    // $.when(router.accounts.fetch()).done(function () {
+    //   router.setCurrentAccount();
+    // });
 
     this.categories = new MyMoney.Collections.CategoriesCollection();
     this.categories.fetch();
@@ -39,7 +39,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   accountIndex: function() {
     var router = this;
     $.when(router.accounts.fetch()).done(function () {
-      router.currentAccount = router.accounts.at(0);
+      router.setCurrentAccount();
       router.showView(new MyMoney.Views.AccountsIndexView({collection: router.accounts}));
     });
   },
@@ -88,7 +88,6 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   },
 
   currentAccountTransactions: function() {
-    // this.accountTransactions(this.currentAccount.id);
     this.navigate('accounts/' + this.currentAccount.id + '/transactions', {trigger: true});
   },
 
@@ -117,7 +116,12 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
 // reports
   reportEodBalance: function() {
-    this.showView(new MyMoney.Views.EodBalanceReportView({account: this.currentAccount, accounts: this.accounts}));
+    this.showView(new MyMoney.Views.EodBalanceReportView({
+      account: this.currentAccount,
+      accounts: this.accounts,
+      dateRangeOptions: this.dateRangeOptions,
+      currentDateRange: this.currentDateRange
+    }));
     this.currentView.updateReport();
   },
 

@@ -1,7 +1,7 @@
 require 'lib/date_range'
 
 class ReportController < ApplicationController
-  before_action :get_date_range, only: [:income_vs_expense, :category, :subcategory, :eod_balance]
+  before_action :get_date_range, only: [:income_vs_expense, :category, :subcategory]
 
   def index
   end
@@ -76,12 +76,13 @@ class ReportController < ApplicationController
   # retrieves the end of day balance for the specified account for the date range
   def eod_balance
     get_account
+    date_range = Lib::CustomDateRange.new from_date: params[:from_date], to_date: params[:to_date]
 
     # if account has been selected, run search
     if @account.nil?
       @line_chart_data = []
     else
-      search = Lib::BalanceSearch.new(account: @account, date_range: @date_range)
+      search = Lib::BalanceSearch.new(account: @account, date_range: date_range)
       @line_chart_data = search.eod_balance
     end
 

@@ -49,7 +49,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
       accounts: this.accounts,
       date_range: this.currentDateRange,
       date_range_options: this.dateRangeOptions
-    }))
+    }));
     this.addAll();
     this.renderSubViews();
     return this;
