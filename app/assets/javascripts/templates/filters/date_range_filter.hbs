@@ -1,28 +1,26 @@
-<div class="form-horizontal">
-  <div class="row">
-    <div class="form-group col-md-4">
-      <label for="date_range_option_id" class="col-sm-4 col-md-4 control-label">Date Range</label>
-      <div class="col-sm-8 col-md-8">
-        {{selectInput date_range_options.models date_range.id "date_range_option_id"}}
-        <span class="help-block hidden"></span>
-      </div>
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="date_range_option_id" class="col-sm-4 col-md-4 control-label">Date Range</label>
+    <div class="col-sm-8 col-md-8">
+      {{selectInput date_range_options.models date_range.id "date_range_option_id"}}
+      <span class="help-block hidden"></span>
     </div>
-    <div class="form-group col-md-3">
-      <label for="from_date" class="col-sm-4 col-md-4 control-label">From</label>
-      <div class="col-sm-8 col-md-8">
-        {{datePickerInput date_range.from_date "from_date"}}
-        <span class="help-block hidden"></span>
-      </div>
+  </div>
+  <div class="form-group col-md-3">
+    <label for="from_date" class="col-sm-4 col-md-4 control-label">From</label>
+    <div class="col-sm-8 col-md-8">
+      {{datePickerInput date_range.from_date "from_date"}}
+      <span class="help-block hidden"></span>
     </div>
-    <div class="form-group col-md-3">
-      <label for="to_date" class="col-sm-4 col-md-4 control-label">To</label>
-      <div class="col-sm-8 col-md-8">
-        {{datePickerInput date_range.to_date "to_date"}}
-        <span class="help-block hidden"></span>
-      </div>
+  </div>
+  <div class="form-group col-md-3">
+    <label for="to_date" class="col-sm-4 col-md-4 control-label">To</label>
+    <div class="col-sm-8 col-md-8">
+      {{datePickerInput date_range.to_date "to_date"}}
+      <span class="help-block hidden"></span>
     </div>
-    <div class="form-group col-md-2 pull-right">
-      {{actionButton text='Search' id='search' icon='fa-search'}}
-    </div>
+  </div>
+  <div class="form-group col-md-2 pull-right">
+    {{actionButton text='Search' id='search' icon='fa-search'}}
   </div>
 </div>

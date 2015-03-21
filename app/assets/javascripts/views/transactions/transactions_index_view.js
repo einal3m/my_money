@@ -44,14 +44,12 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     this.$el.html(HandlebarsTemplates[this.template]({
       account: this.model.toJSON()
     }));
-    this.addSubView('account_filter', new MyMoney.Views.AccountFilterView({
-      model: this.model,
-      collection: this.accounts
+    this.addSubView('filter', new MyMoney.Views.FilterView({
+      account: this.model,
+      accounts: this.accounts,
+      date_range: this.currentDateRange,
+      date_range_options: this.dateRangeOptions
     }))
-    this.addSubView('date_range', new MyMoney.Views.DateRangeFilterView({
-      model: this.currentDateRange,
-      collection: this.dateRangeOptions
-    }));
     this.addAll();
     this.renderSubViews();
     return this;
