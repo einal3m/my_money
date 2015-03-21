@@ -69,7 +69,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       date_range: this.currentDateRange
     });
 
-    $.when(router.transactions.fetch()).done(function () {
+    $.when(router.transactions.fetch({ 
+      data: $.param({
+        from_date: this.currentDateRange.get('from_date'), 
+        to_date: this.currentDateRange.get('to_date') }) 
+    })).done(function () {
       router.showView(new MyMoney.Views.TransactionsIndexView({
         model: account,
         accounts: router.accounts,

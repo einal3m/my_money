@@ -12,10 +12,7 @@ MyMoney.Collections.TransactionsCollection = Backbone.Collection.extend({
     if (this.action == 'reconcile') {
       return '/accounts/' + this.account_id + '/transactions/unreconciled';
     } else {
-      return '/accounts/' + this.account_id + 
-             '/transactions?from_date=' + 
-             this.date_range.get('from_date') + '&to_date=' +
-             this.date_range.get('to_date');
+      return '/accounts/' + this.account_id + '/transactions'
     }
   },
 
