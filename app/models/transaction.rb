@@ -31,6 +31,9 @@ class Transaction < ActiveRecord::Base
   scope :find_by_date, ->(date_range) {
     where('date >= ? and date <= ?', date_range.from_date, date_range.to_date)
   }
+  scope :find_by_dates, ->(from_date, to_date) {
+    where('date >= ? and date <= ?', from_date, to_date)
+  }
 
   # non-persistant attributes
   attr_accessor :add_to_reconciliation

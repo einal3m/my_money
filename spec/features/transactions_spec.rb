@@ -16,8 +16,8 @@ feature 'Transactions', :type => :feature do
     FactoryGirl.create(:transaction, account: a, date: Date.today, notes: 'one')
     FactoryGirl.create(:transaction, account: a, date: Date.today, notes: 'two')
     FactoryGirl.create(:transaction, account: a, date: Date.today, notes: 'three')
-    FactoryGirl.create(:transaction, account: a, date: Date.today << 1, notes: 'four')
-    FactoryGirl.create(:transaction, account: a, date: Date.today << 2, notes: 'five')
+    FactoryGirl.create(:transaction, account: a, date: Date.today << 1, notes: 'txn4')
+    FactoryGirl.create(:transaction, account: a, date: Date.today << 2, notes: 'txn5')
 
     # when I go to accounts transactions page
     visit '/my_money'
@@ -28,8 +28,8 @@ feature 'Transactions', :type => :feature do
     expect(page).to have_text('one')
     expect(page).to have_text('two')
     expect(page).to have_text('three')
-    expect(page).to have_text('four')
-    expect(page).to have_text('five')
+    expect(page).not_to have_text('txn4')
+    expect(page).not_to have_text('txn5')
   end
 
   scenario 'User creates a new transaction', :js => true  do

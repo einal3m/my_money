@@ -7,19 +7,22 @@ RSpec.describe TransactionsController, type: :controller do
     @dr_option = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
   end
 
-  xdescribe 'GET index' do
+  describe 'GET index' do
     it 'returns all transactions for specified account for specified date' do
-      t1 = FactoryGirl.create(:transaction, date: Date.today)
-      FactoryGirl.create(:transaction, account: t1.account, date: Date.today >> 2)
-      FactoryGirl.create(:transaction, account: t1.account, date: Date.today << 2)
-      get :index, { account_id: t1.account.id }, valid_session
+      t1 = FactoryGirl.create(:transaction, date: '2014-07-03')
+      t2 = FactoryGirl.create(:transaction, account: t1.account, date: '2014-07-09')
+      FactoryGirl.create(:transaction, account: t1.account, date: '2014-07-21')
+      FactoryGirl.create(:transaction, account: t1.account, date: '2014-06-30')
+      get :index, { account_id: t1.account.id, from_date: '2014-07-01', to_date: '2014-07-10' }, valid_session
 
       expect(response).to be_success
       t1.reload
+      t2.reload
 
       json = JSON.parse(response.body)
-      expect(json['transactions'].length).to eq(1)
-      expect(json['transactions'][0]).to eq(serialize_transaction(t1))
+      expect(json['transactions'].length).to eq(2)
+      expect(json['transactions'][0]).to eq(serialize_transaction(t2))
+      expect(json['transactions'][1]).to eq(serialize_transaction(t1))
     end
   end
 

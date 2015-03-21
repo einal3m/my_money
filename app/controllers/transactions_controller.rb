@@ -5,11 +5,10 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.json
   def index
-    # get date range information from parameters, session or default
-    get_date_range
+    from_date = params[:from_date]
+    to_date = params[:to_date]
 
-    # transactions = @account.transactions.find_by_date(@date_range).reverse_date_order
-    transactions = @account.transactions.reverse_date_order
+    transactions = @account.transactions.find_by_dates(from_date, to_date).reverse_date_order
     render json: transactions
   end
 

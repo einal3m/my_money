@@ -10,7 +10,8 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     "click #new": "newTransaction",
     "click #cancel": "removeSubView",
     "click .fa-edit": "editTransaction",
-    "click #import": "importTransactions"
+    "click #import": "importTransactions",
+    "click #search": "searchTransactions"
   },
 
   initialize: function() {
@@ -19,9 +20,6 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     this.categoryTypes = this.options['categoryTypes'];
     this.dateRangeOptions = this.options['dateRangeOptions'];
     this.currentDateRange = this.options['currentDateRange'];
-    console.log('TransactionsIndexView.initialize');
-    console.log(this.dateRangeOptions);
-    console.log(this.currentDateRange);
     this.listenTo(this.collection, 'add', this.fetchTransactions);
   },
 
@@ -116,6 +114,17 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     e.preventDefault();
     e.stopPropagation();
     window.router.navigate('accounts/' + this.model.id + '/import', {trigger: true});
+  },
+
+  searchTransactions: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // var from_date = this.$('#from_date').val();
+    // var to_date = this.$('#to_date').val();
+    var date_range_option_id = this.$('#date_range_option_id').val();
+
+    window.router.currentDateRange = this.dateRangeOptions.get(date_range_option_id);
+    window.router.accountTransactions(this.model.id);
   }
 
 });
