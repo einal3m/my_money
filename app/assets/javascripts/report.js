@@ -40,11 +40,12 @@ var totalLabel = center_group.append("text")
   .text("TOTAL");
 
 //Total dollar amount
+total = (data.reduce(function(a, b){return a+b;})/100.0).toFixed(2);
 var totalValue = center_group.append("text")
   .attr("class", "pie-chart-total-amount")
   .attr("dy", 10)
   .attr("text-anchor", "middle") 
-  .text(total);
+  .text('$' + total);
 
 // Create arcs
 var arcs = vis.selectAll("g.arc")
@@ -93,7 +94,7 @@ arcs.append("path")
           return "end";
         }})
   	  .attr("display", function(d) { return d.value > 1 ? null : "none"; })
-  	  .text(function(d, i) { return "$" + d.value.toFixed(2); });
+  	  .text(function(d, i) { return "$" + (d.value/100.0).toFixed(2); });
 
 // add text for each group
 	arcs.append("text")
@@ -152,13 +153,14 @@ function bar_chart(data, class_name) {
           d3.min(data, function(d) {
             var min = 0; 
             for (var i = 1; i < d.length; i++) if (d[i] < min) min = d[i]; 
-            return min; }),
+            return min/100.0; }),
 
           d3.max(data, function(d) {
             var max = d[1]; 
             for (var i = 2; i < d.length; i++) if (d[i] > max) max = d[i]; 
-            return max; })])
+            return max/100.0; })])
     .range([max_bar_height, 0]);
+console.log(y_scale);
 
   // create scale for x labels
   var x_labels = []; 
@@ -201,17 +203,17 @@ function bar_chart(data, class_name) {
     // Create bars
     bars.append("rect")
       .attr("width", bar_width)
-      .attr("height", function(d) {return max_bar_height-y_scale(d[x])})
-      .attr("y", function(d) { return y_scale(d[x]) } );
+      .attr("height", function(d) {return max_bar_height-y_scale(d[x]/100.0)})
+      .attr("y", function(d) { return y_scale(d[x]/100.0) } );
 
      
     // add text to bars
     bars.append("text")
       .attr("x", bar_width - 2)
-      .attr("y", function(d) { return y_scale(d[x]) + 10 })
+      .attr("y", function(d) { return y_scale(d[x]/100.0) + 10 })
       .attr("text-anchor", "end")
       .attr("fill", "white")
-      .text(function(d) { if (d[x] > 0) return "$" + d[x].toFixed(0); });
+      .text(function(d) { if (d[x] > 0) return "$" + (d[x]/100.0).toFixed(0); });
 
   }
 
@@ -257,7 +259,7 @@ function line_chart(data, class_name) {
 
   var y_scale = d3.scale.linear()
     .range([height, 0])
-    .domain(d3.extent(data, function(d) { return d[1]; })); 
+    .domain(d3.extent(data, function(d) { return d[1]/100.0; })); 
 
   // Define the axes
   var xAxis = d3.svg.axis().scale(x_scale)
@@ -269,7 +271,7 @@ function line_chart(data, class_name) {
   // Define the line
   var line = d3.svg.line()
       .x(function(d) { return x_scale(new Date(d[0])); })
-      .y(function(d) { return y_scale(d[1]); })
+      .y(function(d) { return y_scale(d[1]/100.0); })
       .interpolate('step-after');
 
   // Adds the svg canvas
