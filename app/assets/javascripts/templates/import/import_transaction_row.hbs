@@ -1,5 +1,6 @@
 <td>{{dateFormatter transaction.date}}</td>
-<td>{{descriptionFormatter transaction.memo transaction.notes}}</td>
+<td>{{transaction.memo}}</td>
+<td>{{textInput transaction.notes "notes"}}</td>
 <td>
   {{selectGroupedInput categoryTypes 'category_type_id' categories transaction.category_id "category_id"}}
 </td>

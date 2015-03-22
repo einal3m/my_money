@@ -5,7 +5,8 @@ MyMoney.Views.ImportTransactionRowView = Backbone.View.extend({
 
   events: {
     "change #category_id": "updateSubcategorySelect",
-    "change #subcategory_id": "updateSubcategory"
+    "change #subcategory_id": "updateSubcategory",
+    "change #notes": "updateNotes"
   },
 
   initialize: function() {
@@ -21,6 +22,10 @@ MyMoney.Views.ImportTransactionRowView = Backbone.View.extend({
     } else {
       this.current_subcategories = null;
     }
+  },
+
+  updateNotes: function() {
+    this.model.set({notes: this.$('#notes').val()});
   },
 
   updateSubcategorySelect: function() {
