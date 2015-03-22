@@ -41,6 +41,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
 	},
 
   render: function () {
+    console.log('transactions_index_view.render');
     this.$el.html(HandlebarsTemplates[this.template]({
       account: this.model.toJSON()
     }));
@@ -75,11 +76,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
   },
 
   fetchTransactions: function() {
-    var thisView = this;
-      $.when(this.collection.fetch()).done(function () {
-        thisView.removeSubView();
-        thisView.render();
-    });
+    this.refreshPage(this.model.id);
   },
 
   removeSubView: function() {
@@ -133,7 +130,11 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     if (accountSelected != this.model.id) {
       window.router.navigate('accounts/' + accountSelected + '/transactions');
     }
-    window.router.accountTransactions(accountSelected);
+    this.refreshPage(accountSelected);
+  },
+
+  refreshPage: function(account_id) {
+    window.router.accountTransactions(account_id);
   }
 
 });
