@@ -1,0 +1,21 @@
+
+a {
+  color: #000;
+  &:visited {
+    color: #666;
+  }
+  &:hover {
+    color: #fff;
+    background-color: #000;
+  }
+}
+
+a:link, a:visited, a:hover, a:active { text-decoration: none; }
+
+.edit i {
+  cursor: pointer;
+}
+
+input, select {
+  cursor: pointer;
+}
