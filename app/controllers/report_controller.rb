@@ -36,7 +36,7 @@ class ReportController < ApplicationController
   def merge_data(income_data, expense_data)
     data = []
     income_data.each_with_index do |a, i|
-      data << [a[0], a[1], -expense_data[i][1]]
+      data << [a[0], a[1], expense_data[i][1]]
     end
     data
   end

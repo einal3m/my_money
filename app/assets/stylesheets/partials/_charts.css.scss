@@ -10,7 +10,7 @@ text.pie-chart-total-label{
   font-weight: bold;
 }
 
-text.pie-chart-data-amount {
+text.chart-data-amount {
   font-size: 14px;
   font-weight: bold;
 }
@@ -31,13 +31,13 @@ svg {
 /* bar chart styles */
 
 .x1 rect {
-	fill: #2ca02c;
+	fill: #98df8a;
 	stroke: white;
 	stroke-width: 1;
 }
 
 .x2 rect {
-	fill: #d62728;
+	fill: #ff9896;
 	stroke: white;
 	stroke-width: 1;
 }

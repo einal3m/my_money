@@ -86,7 +86,7 @@ arcs.append("path")
           return -10;
         }
       })
-  	  .attr("class", "pie-chart-data-amount")
+  	  .attr("class", "chart-data-amount")
   	  .attr("text-anchor", function(d){
         if ( (d.startAngle+d.endAngle)/2 < Math.PI ){
           return "beginning";
@@ -140,16 +140,15 @@ function bar_chart(data, class_name) {
   var width = 1000,
       height = 500,
       max_bar_height = 400,
-      bar_gap = 5,
-      bar_offset = 35,
+      bar_gap = 8,
       bar_x_margin = 50,
       bar_y_margin = 50;
-  var bar_width = (75.0 - (data_count-1)*bar_gap)/data_count 
+  var bar_width = 60.0;
+  var line = (data[0].length == 3); 
       
   // create scale for y 
   var y_scale = d3.scale.linear()
     .domain([
-
           d3.min(data, function(d) {
             var min = 0; 
             for (var i = 1; i < d.length; i++) if (d[i] < min) min = d[i]; 
@@ -160,7 +159,6 @@ function bar_chart(data, class_name) {
             for (var i = 2; i < d.length; i++) if (d[i] > max) max = d[i]; 
             return max/100.0; })])
     .range([max_bar_height, 0]);
-console.log(y_scale);
 
   // create scale for x labels
   var x_labels = []; 
@@ -168,7 +166,7 @@ console.log(y_scale);
 
   var x_scale = d3.scale.ordinal()
     .domain(x_labels)
-    .rangeRoundBands([0, 75*bar_count + bar_gap*(bar_count)]);
+    .rangeRoundBands([0, bar_width*bar_count + (bar_gap*2)*(bar_count)]);
 
   // create y axis
   var y_axis = d3.svg.axis()
@@ -192,29 +190,30 @@ console.log(y_scale);
     // container for bars
     var bar_group = vis.append("g")
       .attr("class", "x" + x)
-      .attr("transform", "translate(" + (bar_x_margin + (x-1)*bar_width + bar_gap) + ", " + bar_y_margin + ")");
+      .attr("transform", "translate(" + (bar_x_margin + bar_gap) + ", " + bar_y_margin + ")");
 
     // groups for bars with their text
     var bars = bar_group.selectAll("g")
       .data(data)
       .enter().append("g")
-        .attr("transform", function (d,i) { return "translate(" + i*(75  + bar_gap) + ", 0)"; });
+        .attr("transform", function (d,i) { return "translate(" + (i*(bar_width + 2*bar_gap)) + ", 0)"; });
 
     // Create bars
     bars.append("rect")
       .attr("width", bar_width)
-      .attr("height", function(d) {return max_bar_height-y_scale(d[x]/100.0)})
-      .attr("y", function(d) { return y_scale(d[x]/100.0) } );
-
+      .attr("height", function(d) { return Math.abs(y_scale(d[x]/100.0) - y_scale(0)) })
+      .attr("y", function(d) { return Math.min(y_scale(0),y_scale(d[x]/100.0)) } );
      
     // add text to bars
     bars.append("text")
-      .attr("x", bar_width - 2)
-      .attr("y", function(d) { return y_scale(d[x]/100.0) + 10 })
-      .attr("text-anchor", "end")
-      .attr("fill", "white")
-      .text(function(d) { if (d[x] > 0) return "$" + (d[x]/100.0).toFixed(0); });
-
+      .attr("class", "chart-data-amount")
+      .attr("x", bar_width/2)
+      .attr("y", function(d) { 
+        if (d[x] > 0) return y_scale(d[x]/100.0) - 5;
+        return y_scale(d[x]/100.0) + 14;
+      })
+      .attr("text-anchor", "middle")
+      .text(function(d) { if (d[x] != 0) return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); });
   }
 
   // add y axis
@@ -226,9 +225,26 @@ console.log(y_scale);
   // add x axis
   vis.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(" + bar_x_margin + "," + (max_bar_height + bar_y_margin) + ")")
+      .attr("transform", "translate(" + bar_x_margin + "," + (bar_y_margin + y_scale(0)) + ")")
       .call(xAxis);
 
+  if (line) {
+    // Define the line
+    var line = d3.svg.line()
+        .x(function(d) { console.log(x_scale(d[0])); return x_scale(d[0]); })
+        .y(function(d) { console.log((d[1]+d[2])/100.0); console.log(d[2]); return y_scale((d[1]+d[2])/100.0); })
+        .interpolate('linear');
+
+    // add the lines
+    var lines = vis.append("g")
+        .attr("transform", "translate(" + (bar_x_margin + bar_width/2 + bar_gap) + "," + bar_y_margin + ")");
+
+    lines.append('path')
+      .attr('d', line(data))
+      .attr('stroke', '#1F77B4')
+      .attr('stroke-width', 2)
+      .attr('fill', 'none');
+  }
 }
 
 //
