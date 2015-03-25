@@ -42,6 +42,37 @@ RSpec.describe ReportController, type: :controller do
     end
   end
 
+  describe 'Income vs Expense Bar Chart' do
+    it 'returns an array of monthly income and expenses' do
+      income_data = [['date1', 40], ['date2', 140]]
+      expense_data = [['date1', -60], ['date2', -70]]
+
+      date_range = double :date_range
+      income_category_type = double :income_category_type
+      expense_category_type = double :expense_category_type
+      income_search = double :income_search
+      expense_search = double :expense_search
+
+      expect(CategoryType).to receive(:income).and_return(income_category_type)
+      expect(CategoryType).to receive(:expense).and_return(expense_category_type)
+
+      expect(Lib::Last12MonthsDateRange).to receive(:new).and_return(date_range)
+      expect(Lib::CategoryTypeSearch).to receive(:new).with(category_type: income_category_type, date_range: date_range).and_return(income_search)
+      expect(Lib::CategoryTypeSearch).to receive(:new).with(category_type: expense_category_type, date_range: date_range).and_return(expense_search)
+
+      expect(income_search).to receive(:month_totals).and_return(income_data)
+      expect(expense_search).to receive(:month_totals).and_return(expense_data)
+
+      get :income_expense_bar
+
+      expect(response).to be_success
+
+      json = JSON.parse(response.body)
+      expect(json['report'].length).to eq(2)
+      expect(json['report']).to eq([['date1', 40, -60], ['date2', 140, -70]])
+    end
+  end
+
   describe 'category report' do
     before :each do
       @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 4.0, subcategory: nil)

@@ -32,6 +32,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "accounts/:id/transactions" : "accountTransactions",
     "accounts/:id/import"  : "importTransactions",
     "reports/eod_balance"  : "reportEodBalance",
+    "reports/income_expense_bar"  : "reportIncomeExpenseBar",
     ".*"                   : "accountIndex"
   },
 
@@ -122,6 +123,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       dateRangeOptions: this.dateRangeOptions,
       currentDateRange: this.currentDateRange
     }));
+    this.currentView.updateReport();
+  },
+
+  reportIncomeExpenseBar: function() {
+    this.showView(new MyMoney.Views.IncomeExpenseBarReportView());
     this.currentView.updateReport();
   },
 
