@@ -5,7 +5,7 @@ RSpec.describe Lib::CategorySearch, type: :class do
   before :each do
     @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 400, subcategory: nil)
     @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @t1.category, subcategory: nil, amount: 1000)
-    @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200)
+    @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
     @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @t1.category, subcategory: nil, amount: 1500)
     @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
     @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @t1.category, subcategory: nil)
@@ -15,18 +15,13 @@ RSpec.describe Lib::CategorySearch, type: :class do
   end
 
   it 'sets default values if no arguments given' do
-    search = Lib::CategorySearch.new({ })
+    search = Lib::CategorySearch.new({})
     expect(search.category).to be_nil
   end
 
   it 'returns transactions for the given category' do
     search = Lib::CategorySearch.new(date_range: @dr, category: @t1.category)
     expect(search.transactions).to eq([@t4, @t2, @t1])
-  end
-
-  it 'returns transactions with no category if category not specified' do
-    search = Lib::CategorySearch.new(date_range: @dr, category: nil)
-    expect(search.transactions).to eq([@t5, @t3])
   end
 
   it 'returns the sum of all transactions' do
@@ -37,5 +32,22 @@ RSpec.describe Lib::CategorySearch, type: :class do
   it 'returns a summary of all transactions by month' do
     search = Lib::CategorySearch.new(date_range: @dr, category: @t1.category)
     expect(search.month_totals).to eq([['Jan-14', 1400], ['Feb-14', 1500]])
+  end
+
+  it 'returns transactions with no category if category not specified' do
+    search = Lib::CategorySearch.new(date_range: @dr, category: nil)
+    expect(search.transactions).to eq([@t5, @t3])
+  end
+
+  it 'returns transactions with positive amounts if income category type provided' do
+    income_category_type = FactoryGirl.create(:category_type, name: 'Income')
+    search = Lib::CategorySearch.new(date_range: @dr, category: nil, category_type: income_category_type)
+    expect(search.transactions).to eq([@t5])
+  end
+
+  it 'returns transactions with negative amounts if expense category type provided' do
+    expense_category_type = FactoryGirl.create(:category_type, name: 'Expense')
+    search = Lib::CategorySearch.new(date_range: @dr, category: nil, category_type: expense_category_type)
+    expect(search.transactions).to eq([@t3])
   end
 end

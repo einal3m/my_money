@@ -1,21 +1,21 @@
 require 'lib/date_range'
 
 class ReportController < ApplicationController
-  before_action :get_date_range, only: [:income_vs_expense, :category, :subcategory]
+  before_action :get_date_range, only: [:category, :subcategory]
+  before_action :set_data_range, only: [:income_vs_expense, :eod_balance]
 
   def index
   end
 
   def income_vs_expense
-    # only interested in income and expense categories
-    income_type = CategoryType.income
-    expense_type = CategoryType.expense
+    category_types = { income: CategoryType.income, expense: CategoryType.expense }
+    report_data = { income: {}, expense: {} }
 
-    # get data for each category type
-    @report_data = {}
-    @unassigned_data = {}
-    @report_data['Income'] = get_category_type_data(income_type)
-    @report_data['Expense'] = get_category_type_data(expense_type)
+    [:income, :expense].each do |category_type|
+      report_data[category_type] = get_category_type_data(category_type, category_types)
+    end
+
+    render json: report_data
   end
 
   def income_expense_bar
@@ -30,47 +30,16 @@ class ReportController < ApplicationController
     render json: report_data
   end
 
-  def get_category_type_data(category_type)
-    # for expenses, reverse the sign
-    factor = 1
-    if (category_type.name == "Expense") then factor = -1 end
-
-    # create report data class
-    report_data = ReportData.new(:category_type_name => category_type.name)
-
-    # find any unassigned transactions
-    report_data.unassigned_total = factor * Transaction.where("category_id is null and ?*amount >=0 and date >= ? and date <= ?", factor, @date_range.from_date, @date_range.to_date).sum(:amount).to_f
-
-    # generate sql for category data
-    my_sql = "select categories.id, subcategory_id, (#{factor}*sum(transactions.amount)) FROM transactions, categories WHERE transactions.category_id = categories.id AND (date >= '#{@date_range.from_date}' and date <= '#{@date_range.to_date}') AND transactions.category_id IN (SELECT id FROM categories WHERE category_type_id = #{category_type.id}) GROUP BY transactions.category_id, transactions.subcategory_id ORDER BY categories.name"
-
-    report_data.parse(Transaction.connection.select_all(my_sql).rows)
-
-    return report_data
-  end
-
-  def get_category_type_month_totals(category_type)
-    # for expenses, reverse the sign
-    factor = 1
-    if (category_type.name == "Expense") then factor = -1 end
-
-    # generate sql for category type data
-    my_sql = "select strftime('%m-%Y', t.date), (#{factor}*sum(t.amount)) FROM transactions t LEFT JOIN categories c ON t.category_id = c.id WHERE (t.date >= '#{@from_date}' and t.date <= '#{@to_date}') AND (t.category_id IN (SELECT id FROM categories WHERE category_type_id = #{category_type.id}) OR (t.category_id is null and #{factor}*amount>=0)) GROUP BY strftime('%m-%Y', t.date)"
-    
-    Transaction.connection.select_all(my_sql).rows
-  end
-
   # balance
   # retrieves the end of day balance for the specified account for the date range
   def eod_balance
     get_account
-    date_range = Lib::CustomDateRange.new from_date: params[:from_date], to_date: params[:to_date]
 
     # if account has been selected, run search
     if @account.nil?
       @line_chart_data = []
     else
-      search = Lib::BalanceSearch.new(account: @account, date_range: date_range)
+      search = Lib::BalanceSearch.new(account: @account, date_range: @date_range)
       @line_chart_data = search.eod_balance
     end
 
@@ -103,22 +72,22 @@ class ReportController < ApplicationController
     @category_id = nil
     @subcategory = nil
     @subcategory_id = nil
-    if params.key?(:subcategory_id) && !params[:subcategory_id].blank? then
+    if params.key?(:subcategory_id) && !params[:subcategory_id].blank?
       @subcategory_id = params[:subcategory_id]
       @subcategory =  Subcategory.find(@subcategory_id)
       @category = @subcategory.category
     end
-      
+
     # if subcategory wasn't in params, check for category_id
-    if @subcategory.nil? && params.key?(:category_id) then
+    if @subcategory.nil? && params.key?(:category_id)
       @category = Category.find(params[:category_id])
     end
-    
+
     # data for select boxes
     @subcategories = []
     @categories = Category.all
-    if !@category.nil? then 
-      @category_id = @category.id 
+    unless @category.nil?
+      @category_id = @category.id
       @subcategories = @category.subcategories
     end
 
@@ -137,5 +106,21 @@ class ReportController < ApplicationController
       data << [a[0], a[1], expense_data[i][1]]
     end
     data
+  end
+
+  def get_category_type_data(category_type, category_types)
+    data = {}
+    search = Lib::CategoryTypeSearch.new(date_range: @date_range, category_type: category_types[category_type])
+    data[:subcategory_totals] = search.group_by(:category_id, :subcategory_id)
+    data[:category_totals] = search.group_by(:category_id)
+    unassigned_search = Lib::CategorySearch.new(date_range: @date_range, category: nil, category_type: category_types[category_type])
+    unassigned_sum = unassigned_search.sum
+    data[:category_totals] << { sum: unassigned_sum, category_id: nil }
+    data[:total] = search.sum + unassigned_sum
+    data
+  end
+
+  def set_data_range
+    @date_range = Lib::CustomDateRange.new from_date: params[:from_date], to_date: params[:to_date]
   end
 end

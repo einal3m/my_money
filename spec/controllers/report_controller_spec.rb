@@ -73,6 +73,55 @@ RSpec.describe ReportController, type: :controller do
     end
   end
 
+  describe 'Income vs Expense Report' do
+    it 'returns report data' do
+      from_date = '2014-12-01'
+      to_date = '2014-12-31'
+      unassigned_total = { income: 99, expense: 77 }
+      total = { income: 100, expense: 101 }
+
+      date_range = double :date_range
+      expect(Lib::CustomDateRange).to receive(:new).with(from_date: from_date, to_date: to_date).and_return(date_range)
+
+      [:income, :expense].each do |type|
+        category_type = double :category_type
+        category_type_search = double :category_type_search
+        unassigned_search = double :unassigned_search
+
+        expect(CategoryType).to receive(type).and_return(category_type)
+        expect(Lib::CategoryTypeSearch).to receive(:new)
+          .with(date_range: date_range, category_type: category_type)
+          .and_return(category_type_search)
+        expect(Lib::CategorySearch).to receive(:new)
+          .with(date_range: date_range, category: nil, category_type: category_type)
+          .and_return(unassigned_search)
+
+        expect(category_type_search).to receive(:group_by).with(:category_id, :subcategory_id)
+          .and_return([{ type => 100 }])
+        expect(category_type_search).to receive(:group_by).with(:category_id)
+          .and_return([{ type => 200 }])
+        expect(unassigned_search).to receive(:sum).and_return(unassigned_total[type])
+        expect(category_type_search).to receive(:sum).and_return(total[type])
+      end
+
+      get :income_vs_expense, from_date: from_date, to_date: to_date
+      expect(response).to be_success
+      json = JSON.parse(response.body)
+      expect(json).to eq(
+        'income' => {
+          'subcategory_totals' => [{ 'income' => 100 }],
+          'category_totals' => [{ 'income' => 200 }] << { 'sum' => unassigned_total[:income], 'category_id' => nil },
+          'total' => total[:income] + unassigned_total[:income]
+        },
+        'expense' => {
+          'subcategory_totals' => [{ 'expense' => 100 }],
+          'category_totals' => [{ 'expense' => 200 }] << { 'sum' => unassigned_total[:expense], 'category_id' => nil },
+          'total' => total[:expense] + unassigned_total[:expense]
+        }
+      )
+    end
+  end
+
   describe 'category report' do
     before :each do
       @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 4.0, subcategory: nil)

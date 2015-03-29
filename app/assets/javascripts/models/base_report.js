@@ -6,6 +6,6 @@ MyMoney.Models.BaseReport = Backbone.Model.extend({
 
   urlRoot: function() {
     return '/report/' + this.reportName;
-  },
+  }
 
 });

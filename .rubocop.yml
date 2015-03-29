@@ -15,6 +15,9 @@ MethodLength:
 Blocks:
   Enabled: false
 
+SignalException:
+  Enabled: false
+  
 # SpaceInsideBrackets:
 #   Enabled: false
 

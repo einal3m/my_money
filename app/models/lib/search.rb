@@ -5,7 +5,7 @@ module Lib
     end
 
     def sum
-      transactions.sum(:amount)
+      @sum ||= transactions.sum(:amount)
     end
 
     def month_totals
