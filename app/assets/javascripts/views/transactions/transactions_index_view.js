@@ -1,4 +1,3 @@
-
 MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 

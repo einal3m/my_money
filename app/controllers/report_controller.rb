@@ -1,8 +1,8 @@
 require 'lib/date_range'
 
 class ReportController < ApplicationController
-  before_action :get_date_range, only: [:category, :subcategory]
-  before_action :set_data_range, only: [:income_vs_expense, :eod_balance]
+  before_action :get_date_range, only: [:subcategory]
+  before_action :set_data_range, only: [:income_vs_expense, :eod_balance, :category]
 
   def index
   end
@@ -47,24 +47,13 @@ class ReportController < ApplicationController
   end
 
   def category
-    @category_id = params[:category_id]
-    if @category_id.nil? || @category_id.blank?
-      @category = nil
-      @category_id = nil
-    else
-      @category = Category.find(@category_id)
-    end
-
-    # data for select box
-    @categories = Category.all
-
-    # create search and run it
+    set_category
     search = Lib::CategorySearch.new(category: @category, date_range: @date_range)
-    @transactions = search.transactions
-    @transaction_total = search.sum
-    @monthly_totals = search.month_totals
+    transactions = search.transactions
+    month_totals = search.month_totals
 
-    result = { transactions: @transactions, transaction_total: @transaction_total, monthly_totals: @monthly_totals }
+    report_data = { transactions: transactions, month_totals: month_totals }
+    render json: report_data
   end
 
   def subcategory
@@ -122,5 +111,9 @@ class ReportController < ApplicationController
 
   def set_data_range
     @date_range = Lib::CustomDateRange.new from_date: params[:from_date], to_date: params[:to_date]
+  end
+
+  def set_category
+    @category = params.key?(:category_id) && !params[:category_id].blank? ? Category.find(params[:category_id]) : nil
   end
 end

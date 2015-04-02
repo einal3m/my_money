@@ -16,6 +16,7 @@ describe('MyMoney Router', function() {
     spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountTransactions'); 
     spyOn(MyMoney.Routers.AccountsRouter.prototype, 'importTransactions'); 
     spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportEodBalance'); 
+    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportCategory'); 
     spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportIncomeVsExpense'); 
     spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportIncomeExpenseBar'); 
 
@@ -76,6 +77,11 @@ describe('MyMoney Router', function() {
     it('EOD balance report route routes to reportEodBalance', function() {
       Backbone.history.navigate('reports/eod_balance', trigger);
       expect(router.reportEodBalance).toHaveBeenCalled();
+    });
+
+    it('Category report route routes to reportCategory', function() {
+      Backbone.history.navigate('reports/category', trigger);
+      expect(router.reportCategory).toHaveBeenCalled();
     });
 
     it ('income vs expenses report route routes to reportIncomeVsExpense', function() {

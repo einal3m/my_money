@@ -5,6 +5,7 @@ MyMoney.Views.FilterView = MyMoney.Views.BaseView.extend({
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]());
     this.addAccountFilter();
+    this.addCategoryFilter();
     this.addDateFilter();
     this.renderSubViews();
     return this;
@@ -24,6 +25,16 @@ MyMoney.Views.FilterView = MyMoney.Views.BaseView.extend({
       this.addSubView('date_filter', new MyMoney.Views.DateRangeFilterView({
         model: this.options['date_range'],
         collection: this.options['date_range_options']
+      }));
+    }
+  },
+
+  addCategoryFilter: function(){
+    if (this.options.hasOwnProperty('categories')) {
+      this.addSubView('category_filter', new MyMoney.Views.CategoryFilterView({
+        category_id: this.options['category_id'],
+        categories: this.options['categories'],
+        categoryTypes: this.options['categoryTypes']
       }));
     }
   }

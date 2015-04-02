@@ -13,13 +13,18 @@ MyMoney.Views.BaseView = Backbone.View.extend({
 			this.subViews[id].remove();
 		}
 		this.subViews[id] = view;
+    return view;
 	},
 
 	renderSubViews: function(){
 		for (var id in this.subViews){
-	    this.$el.find('#' + id).html(this.subViews[id].render().el);		
+      this.renderSubView(id);
 		}
 	},
+
+  renderSubView: function(id) {
+    this.$el.find('#' + id).html(this.subViews[id].render().el);    
+  },
 
 	subViews: function() {
 		return this.subViews;
