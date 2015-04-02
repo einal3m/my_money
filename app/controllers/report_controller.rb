@@ -1,8 +1,7 @@
 require 'lib/date_range'
 
 class ReportController < ApplicationController
-  before_action :get_date_range, only: [:subcategory]
-  before_action :set_data_range, only: [:income_vs_expense, :eod_balance, :category]
+  before_action :set_data_range, only: [:income_vs_expense, :eod_balance, :category, :subcategory]
 
   def index
   end
@@ -57,34 +56,20 @@ class ReportController < ApplicationController
   end
 
   def subcategory
-    @category = nil
-    @category_id = nil
-    @subcategory = nil
-    @subcategory_id = nil
-    if params.key?(:subcategory_id) && !params[:subcategory_id].blank?
-      @subcategory_id = params[:subcategory_id]
-      @subcategory =  Subcategory.find(@subcategory_id)
+    set_subcategory
+
+    if @subcategory
       @category = @subcategory.category
+    else
+      set_category
     end
 
-    # if subcategory wasn't in params, check for category_id
-    if @subcategory.nil? && params.key?(:category_id)
-      @category = Category.find(params[:category_id])
-    end
-
-    # data for select boxes
-    @subcategories = []
-    @categories = Category.all
-    unless @category.nil?
-      @category_id = @category.id
-      @subcategories = @category.subcategories
-    end
-
-    # create search and run it
     search = Lib::SubcategorySearch.new(category: @category, subcategory: @subcategory, date_range: @date_range)
-    @transactions = search.transactions
-    @transaction_total = search.sum
-    @monthly_totals = search.month_totals
+    transactions = search.transactions
+    month_totals = search.month_totals
+
+    report_data = { transactions: transactions, month_totals: month_totals }
+    render json: report_data
   end
 
   private
@@ -115,5 +100,9 @@ class ReportController < ApplicationController
 
   def set_category
     @category = params.key?(:category_id) && !params[:category_id].blank? ? Category.find(params[:category_id]) : nil
+  end
+
+  def set_subcategory
+    @subcategory = params.key?(:subcategory_id) && !params[:subcategory_id].blank? ? Subcategory.find(params[:subcategory_id]) : nil
   end
 end

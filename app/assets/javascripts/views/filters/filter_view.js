@@ -34,6 +34,8 @@ MyMoney.Views.FilterView = MyMoney.Views.BaseView.extend({
       this.addSubView('category_filter', new MyMoney.Views.CategoryFilterView({
         category_id: this.options['category_id'],
         categories: this.options['categories'],
+        subcategory_id: this.options['subcategory_id'],
+        subcategories: this.options['subcategories'],
         categoryTypes: this.options['categoryTypes']
       }));
     }

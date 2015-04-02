@@ -1,9 +1,9 @@
-MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
+MyMoney.Views.SubcategoryReportView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 
   className: "accounts",
 
-  template: "reports/category_report",
+  template: "reports/subcategory_report",
 
   events: {
     "click #search": "updateReport"
@@ -17,8 +17,13 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
     this.dateRangeOptions = this.options['dateRangeOptions'];
     this.currentDateRange = this.options['currentDateRange'];
 
-    this.model = new MyMoney.Models.CategoryReport({}, {reportName: 'category'});
-    this.model.set('category_id', this.options['category_id']);
+    this.model = new MyMoney.Models.CategoryReport({}, {reportName: 'subcategory'});
+    this.model.set('subcategory_id', this.options['subcategory_id']);
+    var category_id = null;
+    if (this.model.get('subcategory_id')) {
+      var subcategory = this.subcategories.get(this.model.get('subcategory_id'));
+      category_id = subcategory.get('category_id');
+    }
   },
 
   render: function () {
@@ -27,6 +32,8 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
       category_id: this.model.get('category_id'),
       categories: this.categories,
       categoryTypes: this.categoryTypes,
+      subcategory_id: this.model.get('subcategory_id'),
+      subcategories: this.subcategories,
       date_range: this.currentDateRange,
       date_range_options: this.dateRangeOptions
     }));
@@ -43,6 +50,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
       $.when(this.model.fetch({
         data: $.param({
           category_id: this.model.get('category_id'),
+          subcategory_id: this.model.get('subcategory_id'),
           from_date: this.currentDateRange.get('from_date'), 
           to_date: this.currentDateRange.get('to_date') }) 
       })).done(function () {
@@ -64,6 +72,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
   },
 
   updateModelData: function() {
+    var subcategory_id = this.$('#subcategory_id').val();
     var category_id = this.$('#category_id').val();
     var date_range_id = this.$('#date_range_option_id').val();
 
@@ -71,13 +80,10 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
     var from_date = this.$('#from_date').val();
     var to_date = this.$('#to_date').val();
 
+    this.model.set({subcategory_id: subcategory_id});
     this.model.set({category_id: category_id});
     this.model.set({from_date: from_date});
     this.model.set({to_date: to_date});
-  },
-
-  refreshPage: function(category_id) {
-    window.router.reportCategory(category_id);
   },
 
   draw: function() {

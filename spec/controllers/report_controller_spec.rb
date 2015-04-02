@@ -1,16 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ReportController, type: :controller do
-  describe 'income vs expense report' do
-    # setup two categories
-    # ct_in = FactoryGirl.create(:category_type, name: 'Income')
-    # ct_ex = FactoryGirl.create(:category_type, name: 'Expense')
-    # c_in = FactoryGirl.create(:category, category_type: ct_in)
-    # c_ex = FactoryGirl.create(:category, category_type: ct_ex)
-    # sc_in = FactoryGirl.create(:subcategory, category: c_in)
-    # sc_ex = FactoryGirl.create(:subcategory, category: c_ex)
-  end
-
   describe 'EOD Balance Report' do
     it 'returns an array of eod balances' do
       account_id = 11
@@ -155,45 +145,36 @@ RSpec.describe ReportController, type: :controller do
   end
 
   describe 'subcategory report' do
-    before :each do
-      @sc = FactoryGirl.create(:subcategory)
-      @c = @sc.category
-      @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', category: @c, subcategory: @sc, amount: 1)
-      @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: @sc, amount: 2)
-      @t3 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: nil, amount: 3)
-      @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @c, subcategory: @sc, amount: 4)
-      @t5 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: nil, amount: 5)
-      @dr1 = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
-      @dr2 = FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
-    end
+    it 'returns all transactions and summary data for the specified subcategory and date range' do
+      from_date = '2014-01-01'
+      to_date = '2014-02-28'
+      subcategory_id = 12
+      subcategory = double :subcategory, id: subcategory_id
+      category = double :category
+      date_range = double :date_range
+      search = double :search
+      t1 = FactoryGirl.create(:transaction)
+      t2 = FactoryGirl.create(:transaction)
+      month_data = [['date1', 40, -60], ['date2', 140, -70]]
 
-    it 'returns all transactions for the specfied subcategory' do
-      get :subcategory, category_id: @c, subcategory_id: @sc, date_range_option_id: @dr2.id, from_date: '2014-01-01', to_date: '2014-01-31'
-      expect(assigns(:transactions)).to eq([@t2, @t1])
-      expect(assigns(:monthly_totals)).to eq([['Jan-14', 3.0]])
-    end
+      expect(Lib::CustomDateRange).to receive(:new).with(from_date: from_date, to_date: to_date).and_return(date_range)
+      expect(Lib::SubcategorySearch).to receive(:new).with(category: category, subcategory: subcategory, date_range: date_range).and_return(search)
+      expect(Subcategory).to receive(:find).with(subcategory_id.to_s).and_return(subcategory)
+      expect(subcategory).to receive(:category).and_return(category)
+      expect(search).to receive(:month_totals).and_return(month_data)
+      expect(search).to receive(:transactions).and_return([t1, t2])
 
-    it 'returns all transactions for category and no subcategory' do
-      get :subcategory, category_id: @c, date_range_option_id: @dr2.id, from_date: '2014-01-01', to_date: '2014-01-31'
-      expect(assigns(:transactions)).to eq([@t5, @t3])
-      expect(assigns(:monthly_totals)).to eq([['Jan-14', 8.0]])
-    end
+      get :subcategory, subcategory_id: subcategory.id, from_date: from_date, to_date: to_date
 
-    it 'returns no transactions when no category or subcategory is selected' do
-      get :subcategory
-      expect(assigns(:transactions)).to eq([])
-    end
+      expect(response).to be_success
+      json = JSON.parse(response.body)
 
-    it 'provides a list of categories' do
-      get :subcategory
-      expect(assigns(:categories)).to eq([@c])
-    end
+      expect(json['month_totals'].length).to eq(2)
+      expect(json['month_totals']).to eq(month_data)
 
-    it 'provides a list of date range options and a default selected date range' do
-      get :subcategory, category_id: @t1.category, subcategory_id: @t1.subcategory
-
-      expect(assigns(:date_range_options)).to eq([@dr1, @dr2])
-      expect(assigns(:date_range_option)).to eq(@dr1)
+      expect(json['transactions'].length).to eq(2)
+      # expect(json['transactions'][0]).to eq(serialize_transaction(t1))
+      # expect(json['transactions'][1]).to eq(serialize_transaction(t2))
     end
   end
 end

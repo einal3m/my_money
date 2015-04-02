@@ -34,6 +34,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "reports/eod_balance"  : "reportEodBalance",
     "reports/category/:id"  : "reportCategory",
     "reports/category/"  : "reportUnassignedCategory",
+    "reports/subcategory/:id"  : "reportSubcategory",
+    "reports/subcategory/"  : "reportUnassignedSubcategory",
     "reports/income_vs_expense"  : "reportIncomeVsExpense",
     "reports/income_expense_bar"  : "reportIncomeExpenseBar",
     ".*"                   : "accountIndex"
@@ -146,6 +148,23 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   reportCategory: function(category_id) {
     this.showView(new MyMoney.Views.CategoryReportView({
       category_id: category_id,
+      accounts: this.accounts,
+      dateRangeOptions: this.dateRangeOptions,
+      currentDateRange: this.currentDateRange,
+      categoryTypes: router.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories
+    }));
+    this.currentView.updateReport();
+  },
+
+  reportUnassignedSubcategory: function() {
+    this.reportSubcategory(null);
+  },
+
+  reportSubcategory: function(subcategory_id) {
+    this.showView(new MyMoney.Views.SubcategoryReportView({
+      subcategory_id: subcategory_id,
       accounts: this.accounts,
       dateRangeOptions: this.dateRangeOptions,
       currentDateRange: this.currentDateRange,
