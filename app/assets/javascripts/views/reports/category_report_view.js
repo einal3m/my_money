@@ -58,6 +58,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
         }));
         view.renderSubView('transaction_table');
         view.listenTo(subView, "transactionsUpdated", view.updateReport);
+        view.draw();
       });
     }
   },
@@ -77,6 +78,21 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
 
   refreshPage: function(category_id) {
     window.router.reportCategory(category_id);
+  },
+
+  draw: function() {
+    console.log(this);
+    this.undraw();
+    console.log(this.model);
+    this.chartView = new MyMoney.Views.BarChartView({model: this.model.get('month_totals')});
+    this.chartView.render();
+  },
+
+  undraw: function() {
+    if (this.$('svg')) {
+      this.$('svg').remove();
+    }
   }
+
 
 });
