@@ -33,7 +33,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "accounts/:id/import"  : "importTransactions",
     "reports/eod_balance"  : "reportEodBalance",
     "reports/category/:id"  : "reportCategory",
-    "reports/category"  : "reportUnassignedCategory",
+    "reports/category/"  : "reportUnassignedCategory",
     "reports/income_vs_expense"  : "reportIncomeVsExpense",
     "reports/income_expense_bar"  : "reportIncomeExpenseBar",
     ".*"                   : "accountIndex"
