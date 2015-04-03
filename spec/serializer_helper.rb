@@ -23,3 +23,8 @@ def serialize_subcategory(subcategory)
   attrs = JSON.parse(subcategory.to_json)
   attrs.extract!('id', 'category_id', 'name')
 end
+
+def serialize_category(subcategory)
+  attrs = JSON.parse(subcategory.to_json)
+  attrs.extract!('id', 'name', 'category_type_id')
+end

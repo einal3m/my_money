@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CategoryTypesController, :type => :controller do
+RSpec.describe CategoryTypesController, type: :controller do
   let(:valid_session) { {} }
 
   describe 'GET index' do
