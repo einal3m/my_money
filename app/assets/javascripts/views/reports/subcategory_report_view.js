@@ -19,11 +19,7 @@ MyMoney.Views.SubcategoryReportView = MyMoney.Views.BaseView.extend({
 
     this.model = new MyMoney.Models.CategoryReport({}, {reportName: 'subcategory'});
     this.model.set('subcategory_id', this.options['subcategory_id']);
-    var category_id = null;
-    if (this.model.get('subcategory_id')) {
-      var subcategory = this.subcategories.get(this.model.get('subcategory_id'));
-      category_id = subcategory.get('category_id');
-    }
+    this.model.set('category_id', this.options['category_id']);
   },
 
   render: function () {

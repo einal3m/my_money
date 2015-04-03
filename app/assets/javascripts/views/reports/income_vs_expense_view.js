@@ -90,6 +90,7 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
   },
 
   addSubcategoryRow: function(subcategory, id){
+    console.log(subcategory);
     var rowView = new MyMoney.Views.ReportSubcategoryRowView({
       model: subcategory
     });
@@ -152,6 +153,7 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
       data[d.category_id].push({
         subcategory_name: name,
         subcategory_id: d.subcategory_id,
+        category_id: d.category_id,
         sum: Math.abs(d.sum)
       });
     });
