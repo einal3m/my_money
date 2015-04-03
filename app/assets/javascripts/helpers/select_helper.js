@@ -41,9 +41,10 @@ var selectContent = function(array, model_id, hasUnassigned) {
 
 var selectGroupedContent = function(group, group_by, collection, model_id, id, hasUnassigned) {
 	html = '<select class="form-control" id="' + id + '" name="' + id + '">';
-	if (!model_id) {
-		html += '<option value="" disabled selected>Please select...</option>';
-	}
+	html += addUnassignedOrPleaseSelect(model_id, hasUnassigned);
+	// if (!model_id) {
+	// 	html += '<option value="" disabled selected>Please select...</option>';
+	// }
 
 	var group_result = _.groupBy(collection.models, function(model){ return model.get(group_by); });
 	for (j = 0; j < group.models.length; j++) {
