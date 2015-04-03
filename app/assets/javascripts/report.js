@@ -131,7 +131,6 @@ arcs.append("path")
 // [[x, y1, y2...], [x, y1, y2...] ...]
 //
 function bar_chart(data, class_name) {
-
   // calculate how many data series, and how many bars for each series
   var bar_count = data.length;
   var data_count = data[0].length - 1;
@@ -231,8 +230,8 @@ function bar_chart(data, class_name) {
   if (line) {
     // Define the line
     var line = d3.svg.line()
-        .x(function(d) { console.log(x_scale(d[0])); return x_scale(d[0]); })
-        .y(function(d) { console.log((d[1]+d[2])/100.0); console.log(d[2]); return y_scale((d[1]+d[2])/100.0); })
+        .x(function(d) { return x_scale(d[0]); })
+        .y(function(d) { return y_scale((d[1]+d[2])/100.0); })
         .interpolate('linear');
 
     // add the lines

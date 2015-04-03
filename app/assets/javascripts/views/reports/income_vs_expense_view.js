@@ -28,17 +28,16 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
     this.model.set({from_date: from_date});
     this.model.set({to_date: to_date});
 
-    // if(this.model.isValid(true)){
+    if(this.model.isValid(true)){
       window.router.setCurrentDateRange(this.currentDateRange);
       $.when(this.model.fetch({
         data: $.param({
           from_date: this.currentDateRange.get('from_date'), 
           to_date: this.currentDateRange.get('to_date') }) 
       })).done(function () {
-        console.log(view.model);
         view.draw();
       });
-    // }
+    }
   },
 
   render: function () {
@@ -48,7 +47,7 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
       date_range_options: this.dateRangeOptions
     }))
     this.renderSubViews();
-    // Backbone.Validation.bind(this);
+    Backbone.Validation.bind(this);
     return this;
   },
 
@@ -61,12 +60,14 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
       var subcategory_data = view.buildSubcategoryData(category_data, view.model.get(type).subcategory_totals);
       var total = Math.abs(view.model.get(type).total);
 
-      var chartView = new MyMoney.Views.PieChartView({
-        report_id: '#' + type + '_pie',
-        sums: _.map(category_data, function(data){ return data.sum; }),
-        labels: _.map(category_data, function(data){ return data.category_name; })
-      });
-      chartView.render();
+      if (category_data.length > 0) {
+        var chartView = new MyMoney.Views.PieChartView({
+          report_id: '#' + type + '_pie',
+          sums: _.map(category_data, function(data){ return data.sum; }),
+          labels: _.map(category_data, function(data){ return data.category_name; })
+        });
+        chartView.render();
+      }
       view.renderTable(category_data, subcategory_data, type, total);
     });
   },
@@ -90,7 +91,6 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
   },
 
   addSubcategoryRow: function(subcategory, id){
-    console.log(subcategory);
     var rowView = new MyMoney.Views.ReportSubcategoryRowView({
       model: subcategory
     });
@@ -139,7 +139,6 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
   buildSubcategoryData: function(category_data, subcategory_data) {
     var view = this;
     var data = {};
-
     _.each(category_data, function(d){
       data[d.category_id] = [];
     });

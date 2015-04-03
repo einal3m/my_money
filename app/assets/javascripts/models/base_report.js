@@ -6,6 +6,14 @@ MyMoney.Models.BaseReport = Backbone.Model.extend({
 
   urlRoot: function() {
     return '/report/' + this.reportName;
-  }
+  },
 
+  validation: {
+    from_date: {
+      required: true
+    },
+    to_date: {
+      required: true
+    }
+  }
 });
