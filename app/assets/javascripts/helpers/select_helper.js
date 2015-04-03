@@ -1,16 +1,29 @@
-var selectInput = function(array, model_id, id) {
+var selectInput = function(array, model_id, id, hasUnassigned) {
 	html = '<select class="form-control" id="' + id + '" name="' + id + '">';
-	html += selectContent(array, model_id);
+	html += selectContent(array, model_id, hasUnassigned);
 
 	html += '</select>';
 	return new Handlebars.SafeString(html);
 };
 
-var selectContent = function(array, model_id) {
-	var html = "";
-	if ((model_id == null) || (model_id == "")) {
+var addUnassignedOrPleaseSelect = function(model_id, hasUnassigned) {
+	html = "";
+	if (hasUnassigned) {
+		html += '<option value=""';
+		if ((model_id == null) || (model_id == "")) {
+			html += ' selected';
+		}
+		html += '>Un-assigned</option>';
+
+	} else if ((model_id == null) || (model_id == "")) {
 		html += '<option value="" disabled selected>Please select...</option>';
 	}
+	return html;
+};
+
+var selectContent = function(array, model_id, hasUnassigned) {
+	var html = addUnassignedOrPleaseSelect(model_id, hasUnassigned);
+
 	if (array) {
 		for (i = 0; i < array.length; i++) { 
 			var model = array[i];
@@ -24,14 +37,9 @@ var selectContent = function(array, model_id) {
 		}
 	}
 	return html;
-}
+};
 
-Handlebars.registerHelper('selectInput', function(array, model_id, id) {
-	return selectInput(array, model_id, id);
-});
-
-Handlebars.registerHelper('selectGroupedInput', function(group, group_by, collection, model_id, id) {
-
+var selectGroupedContent = function(group, group_by, collection, model_id, id, hasUnassigned) {
 	html = '<select class="form-control" id="' + id + '" name="' + id + '">';
 	if (!model_id) {
 		html += '<option value="" disabled selected>Please select...</option>';
@@ -58,4 +66,19 @@ Handlebars.registerHelper('selectGroupedInput', function(group, group_by, collec
 
 	html += '</select>';
 	return new Handlebars.SafeString(html);
+};
+
+Handlebars.registerHelper('selectInput', function(array, model_id, id) {
+	return selectInput(array, model_id, id, false);
+});
+Handlebars.registerHelper('selectInputWithUnassigned', function(array, model_id, id) {
+	return selectInput(array, model_id, id, true);
+});
+
+Handlebars.registerHelper('selectGroupedInputWithUnassigned', function(group, group_by, collection, model_id, id) {
+	return selectGroupedContent(group, group_by, collection, model_id, id, true);
+});
+
+Handlebars.registerHelper('selectGroupedInput', function(group, group_by, collection, model_id, id) {
+	return selectGroupedContent(group, group_by, collection, model_id, id, false);
 });

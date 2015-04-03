@@ -39,7 +39,7 @@ MyMoney.Views.CategoryFilterView = Backbone.View.extend({
     if (this.hasSubcategories) {
       this.category_id = parseInt(this.$('#category_id').val());
       this.set_current_subcategories();
-      var html = selectContent(this.current_subcategories, null);
+      var html = selectContent(this.current_subcategories, null, true);
       this.$el.find('#subcategory_id').html(html);
     }
   },
