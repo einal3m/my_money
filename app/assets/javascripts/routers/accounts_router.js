@@ -40,7 +40,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "reports/subcategory"  : "reportSubcategoryNoData",    
     "reports/income_vs_expense"  : "reportIncomeVsExpense",
     "reports/income_expense_bar"  : "reportIncomeExpenseBar",
-    ".*"                   : "accountIndex"
+    ".*"                   : "accountIndex",
+    'categories' : 'categoryIndex'
   },
 
 // account routes
@@ -120,6 +121,15 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       router.showView(new MyMoney.Views.ReconciliationView({account: account, 
             collection: reconciliations, accounts: router.accounts}));
     });  
+  },
+
+// categories + subcategories
+  categoryIndex: function() {
+    this.showView(new MyMoney.Views.CategoryIndexView({
+      categoryTypes: this.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories
+    }));
   },
 
 // reports

@@ -2,33 +2,35 @@ describe('MyMoney Router', function() {
   var trigger = {trigger: true};
   var router
 
-  beforeEach(function() {
-    // This is the trick, right here:
-    // The Backbone history code dodges our spies
-    // unless we set them up exactly like this:
-    Backbone.history.stop(); //stop the router
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex'); //spy on our routes, and they won't get called
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'newAccount'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'editAccount'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'showAccount'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'newReconciliation'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'currentAccountTransactions'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountTransactions'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'importTransactions'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportEodBalance'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportCategory'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportIncomeVsExpense'); 
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportIncomeExpenseBar'); 
-
-    router = new MyMoney.Routers.AccountsRouter(); // Set up the spies _before_ creating the router
-    Backbone.history.start();
-  });
-
   describe('Initialize', function() {
 
   });
 
   describe('Routes', function() {
+    beforeEach(function() {
+      // This is the trick, right here:
+      // The Backbone history code dodges our spies
+      // unless we set them up exactly like this:
+      Backbone.history.stop(); //stop the router
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex'); //spy on our routes, and they won't get called
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'newAccount'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'editAccount'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'showAccount'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'newReconciliation'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'currentAccountTransactions'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountTransactions'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'importTransactions'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportEodBalance'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportCategory'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportUnassignedCategory'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportIncomeVsExpense'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'reportIncomeExpenseBar'); 
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'categoryIndex'); 
+
+      router = new MyMoney.Routers.AccountsRouter(); // Set up the spies _before_ creating the router
+      Backbone.history.start();
+    });
+
     it('empty route routes to accounts index', function(){
       Backbone.history.navigate('', trigger);
       expect(router.accountIndex).toHaveBeenCalled();
@@ -79,9 +81,14 @@ describe('MyMoney Router', function() {
       expect(router.reportEodBalance).toHaveBeenCalled();
     });
 
+    it('Category report route routes to reportUnassignedCategory', function() {
+      Backbone.history.navigate('reports/category/', trigger);
+      expect(router.reportUnassignedCategory).toHaveBeenCalled();
+    });
+
     it('Category report route routes to reportCategory', function() {
-      Backbone.history.navigate('reports/category', trigger);
-      expect(router.reportCategory).toHaveBeenCalled();
+      Backbone.history.navigate('reports/category/5', trigger);
+      expect(router.reportCategory).toHaveBeenCalledWith('5');
     });
 
     it ('income vs expenses report route routes to reportIncomeVsExpense', function() {
@@ -92,6 +99,21 @@ describe('MyMoney Router', function() {
     it ('income expenses bar report route routes to reportIncomeExpenseBar', function() {
       Backbone.history.navigate('reports/income_expense_bar', trigger);
       expect(router.reportIncomeExpenseBar).toHaveBeenCalled();
+    });
+
+    it ('category index route routes to categoryIndex', function() {
+      Backbone.history.navigate('categories', trigger);
+      expect(router.categoryIndex).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('reportCategory', function(){
+    it('creates the category index view and renders it', function(){
+      spyOn(router, "showView");
+      router = new MyMoney.Routers.AccountsRouter();
+      router.categoryIndex();
+      expect(router.showView).toHaveBeenCalled;
     });
   });
 
