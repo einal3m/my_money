@@ -7,31 +7,17 @@ MyMoney.Views.CategoryIndexView = Backbone.View.extend({
   template: "categories/category_index",
 
   events: {
-    "click .category": "editCategory",
-    "click .subcategory": "editSubcategory"
+    "click .category i": "editCategory",
+    "click .subcategory i": "editSubcategory",
+    "click .new i": "newSubcategory"
   },
 
   initialize: function() {
     this.categories = this.options['categories'];
     this.subcategories = this.options['subcategories'];
     this.categoryTypes = this.options['categoryTypes'];
+    this.listenTo(this.subcategories, 'add', this.dataChanged);
   },
-
-  // addAll: function(){
-  //     for (var i = 0; i < this.collection.length; i++) { 
-  //       this.addOne(this.collection.models[i]);
-  //     }
-  // },
-
-  // addOne: function(model){
-  //     var rowView = new MyMoney.Views.AccountView({model: model});
-  //     this.$el.find('tbody').append(rowView.render().el);
-  // },
-
-  // addNetWorth: function(){
-  //   var netWorthView = new MyMoney.Views.AccountsNetWorthView({collection: this.collection});
-  //   this.$el.find('tbody').append(netWorthView.render().el);
-  // },
 
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template]());
@@ -44,10 +30,9 @@ MyMoney.Views.CategoryIndexView = Backbone.View.extend({
           _.each(subcategories, function(subcategory) {
             view.addSubcategoryRow(subcategory, type);
           });
+          view.addNewSubcategoryRow(category, type);
       });
     });
-    // this.addAll();
-    // this.addNetWorth();
     return this;
   },
 
@@ -65,6 +50,14 @@ MyMoney.Views.CategoryIndexView = Backbone.View.extend({
     this.$el.find('#' + type + '_table').append(rowView.render().el);
   },
 
+  addNewSubcategoryRow: function(category, type){
+    var rowView = new MyMoney.Views.NewSubcategoryView({
+      category: category,
+      subcategories: this.subcategories
+    });
+    this.$el.find('#' + type + '_table').append(rowView.render().el);
+  },
+
   sortedCategories: function(type) {
     var categoryType = this.categoryTypes.where({name: type})[0];
     var categories = this.categories.where({category_type_id: categoryType.id});
@@ -77,26 +70,71 @@ MyMoney.Views.CategoryIndexView = Backbone.View.extend({
   },
 
   editCategory: function(e){
-    category = this.categories.get(e.currentTarget.id);
+    var category_row = $(e.currentTarget).closest('tr');
+    if (this.isReadOnly(category_row)) { return; }
+
+    var category = this.categories.get(category_row.attr('id'));
     var editRow = new MyMoney.Views.EditCategoryView({
       model: category,
       categoryTypes: this.categoryTypes
     });
-    category_row = this.$el.find('#'+e.currentTarget.id).closest('tr');
     category_row.after(editRow.render().el);
+    this.toggleReadOnly(category_row);
     this.listenTo(category, 'sync', this.dataChanged);
+    this.listenTo(editRow, 'cancelEdit', this.rowCancelled);
   },
 
   editSubcategory: function(e){
-    subcategory = this.subcategories.get(e.currentTarget.id);
+    var subcategory_row = $(e.currentTarget).closest('tr');
+    if (this.isReadOnly(subcategory_row)) { return; }
+
+    var subcategory = this.subcategories.get(subcategory_row.attr('id'));
     var editRow = new MyMoney.Views.EditSubcategoryView({
       model: subcategory,
       categories: this.categories,
       categoryTypes: this.categoryTypes
     });
-    subcategory_row = this.$el.find('#'+e.currentTarget.id).closest('tr');
     subcategory_row.after(editRow.render().el);
+    this.toggleReadOnly(subcategory_row);
     this.listenTo(subcategory, 'sync', this.dataChanged);
+    this.listenTo(editRow, 'cancelEdit', this.rowCancelled);
+  },
+
+  newSubcategory: function(e){
+    var subcategory_row = $(e.currentTarget).closest('tr');
+    if (this.isReadOnly(subcategory_row)) { return; }
+
+    var category_row = subcategory_row.prevUntil('.category').last().prev();
+    var category = this.categories.get(category_row.attr('id'));
+    var subcategory = new MyMoney.Models.Subcategory({ category_id: category.id });
+
+    var editRow = new MyMoney.Views.EditSubcategoryView({
+      model: subcategory,
+      categories: this.categories,
+      categoryTypes: this.categoryTypes,
+      subcategories: this.subcategories
+    });
+    subcategory_row.after(editRow.render().el);
+    this.toggleReadOnly(subcategory_row);
+    this.listenTo(subcategory, 'sync', this.dataChanged);
+    this.listenTo(editRow, 'cancelEdit', this.rowCancelled);
+  },
+
+  isReadOnly: function(row) {
+    return row.hasClass('read-only');
+  },
+
+  toggleReadOnly: function(row) {
+    row.toggleClass('read-only');
+  },
+
+  rowCancelled: function(modelCid, category_id) {
+    var row = this.$el.find('#'+modelCid).closest('tr');
+    if (row.length == 0) {
+      var categoryCid = this.categories.get(category_id).cid;
+      row = this.$el.find('#' + categoryCid).nextUntil('.new').last().next();
+    }
+    this.toggleReadOnly(row);
   },
 
   dataChanged: function(){

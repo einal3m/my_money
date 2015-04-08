@@ -34,6 +34,7 @@ MyMoney.Views.EditCategoryView = Backbone.View.extend({
   },
 
   removeView: function(){
+    this.trigger('cancelEdit', this.model.cid);
     this.remove();
   }
 });

@@ -11,6 +11,7 @@ MyMoney.Views.EditSubcategoryView = Backbone.View.extend({
   initialize: function(){
     this.categories = this.options['categories'];
     this.categoryTypes = this.options['categoryTypes'];
+    this.subcategories = this.options['subcategories'];
   },
 
   render: function(){
@@ -31,11 +32,16 @@ MyMoney.Views.EditSubcategoryView = Backbone.View.extend({
     this.model.set({name: this.$('#name').val()});
 
     if(this.model.isValid(true)){
-      this.model.save({ }, { wait: true });
+      if (this.model.isNew()) {
+        this.subcategories.create(this.model, { wait: true });
+      } else {
+        this.model.save({ }, { wait: true });
+      }
     }
   },
 
   removeView: function(){
+    this.trigger('cancelEdit', this.model.cid, this.model.get('category_id'));
     this.remove();
   }
 });

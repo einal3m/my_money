@@ -51,4 +51,3 @@ Handlebars.registerHelper('actionButton', function(options) {
 	}
 	return buttonHTML(buttonText, buttonId, "btn-default");
 });
-
