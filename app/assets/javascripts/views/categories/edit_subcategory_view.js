@@ -6,7 +6,8 @@ MyMoney.Views.EditSubcategoryView = Backbone.View.extend({
 
   events: {
     "click #cancel": "removeView",
-    "click #save": "saveSubcategory"
+    "click #save": "saveSubcategory",
+    "click #delete": "deleteSubcategory"
   },
   initialize: function(){
     this.categories = this.options['categories'];
@@ -38,6 +39,20 @@ MyMoney.Views.EditSubcategoryView = Backbone.View.extend({
         this.model.save({ }, { wait: true });
       }
     }
+  },
+
+  deleteSubcategory: function(e){
+    var r = confirm('Are you sure you want to delete this ' + this.model.name + '?');
+    if (r == true) {
+      this.model.destroy({ wait: true, error: this.deleteError });
+    }
+
+  },
+
+  deleteError: function(model, response){
+    this.$('.form-footer').addClass('has-error');
+    this.$('.form-footer .help-block').text('Delete Error: ' + response.responseText);
+    this.$('.form-footer .help-block').removeClass('hidden');
   },
 
   removeView: function(){

@@ -21,8 +21,14 @@ class SubcategoriesController < ApplicationController
   end
 
   def destroy
-    subcategory.destroy
-    head :no_content
+    if subcategory.transactions.length > 0
+      render json: 'Subcategory has transactions', status: :unprocessable_entity
+    elsif subcategory.patterns.length > 0
+      render json: 'Subcategory has patterns', status: :unprocessable_entity
+    else
+      subcategory.destroy
+      head :no_content
+    end
   end
 
   private

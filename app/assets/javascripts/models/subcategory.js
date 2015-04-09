@@ -1,5 +1,6 @@
 MyMoney.Models.Subcategory = Backbone.Model.extend({
 
+  name: 'subcategory',
   urlRoot: 'subcategories',
 
   parse : function(resp, xhr) {

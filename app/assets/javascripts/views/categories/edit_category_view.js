@@ -5,7 +5,8 @@ MyMoney.Views.EditCategoryView = Backbone.View.extend({
 
   events: {
     "click #cancel": "removeView",
-    "click #save": "saveCategory"
+    "click #save": "saveCategory",
+    "click #delete": "deleteCategory"
   },
 
   initialize: function(){
@@ -31,6 +32,20 @@ MyMoney.Views.EditCategoryView = Backbone.View.extend({
     if(this.model.isValid(true)){
       this.model.save({ }, { wait: true });
     }
+  },
+
+  deleteCategory: function(e){
+    var r = confirm('Are you sure you want to delete this ' + this.model.name + '?');
+    if (r == true) {
+      this.model.destroy({ wait: true, error: this.deleteError });
+    }
+
+  },
+
+  deleteError: function(model, response){
+    this.$('.form-footer').addClass('has-error');
+    this.$('.form-footer .help-block').text('Delete Error: ' + response.responseText);
+    this.$('.form-footer .help-block').removeClass('hidden');
   },
 
   removeView: function(){

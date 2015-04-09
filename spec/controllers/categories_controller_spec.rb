@@ -84,5 +84,38 @@ RSpec.describe CategoriesController, type: :controller do
       }.to change(Category, :count).by(-1)
       expect(response).to be_success
     end
+
+    it 'doesnt destroy the category if it has subcategories' do
+      category = FactoryGirl.create(:category)
+      FactoryGirl.create(:subcategory, category: category)
+      expect {
+        delete :destroy, { id: category.id }, valid_session
+      }.not_to change(Category, :count)
+      expect(response.status).to eq(422)
+      json = JSON.parse(response.body)
+      expect(json['subcategory'][0]).to eq('Category has subcategories')
+    end
+
+    it 'doesnt destroy the category if it has transactions' do
+      category = FactoryGirl.create(:category)
+      FactoryGirl.create(:transaction, category: category)
+      expect {
+        delete :destroy, { id: category.id }, valid_session
+      }.not_to change(Category, :count)
+      expect(response.status).to eq(422)
+      json = JSON.parse(response.body)
+      expect(json['transaction'][0]).to eq('Category has transactions')
+    end
+
+    it 'doesnt destroy the category if it has patterns' do
+      category = FactoryGirl.create(:category)
+      FactoryGirl.create(:pattern, category: category)
+      expect {
+        delete :destroy, { id: category.id }, valid_session
+      }.not_to change(Category, :count)
+      expect(response.status).to eq(422)
+      json = JSON.parse(response.body)
+      expect(json['patterns'][0]).to eq('Category has patterns')
+    end
   end
 end

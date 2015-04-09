@@ -74,5 +74,25 @@ RSpec.describe SubcategoriesController, type: :controller do
       }.to change(Subcategory, :count).by(-1)
       expect(response).to be_success
     end
+
+    it 'doesnt destroy the subcategory if it has transactions' do
+      subcategory = FactoryGirl.create(:subcategory)
+      FactoryGirl.create(:transaction, subcategory: subcategory)
+      expect {
+        delete :destroy, { id: subcategory.id }, valid_session
+      }.not_to change(Subcategory, :count)
+      expect(response.status).to eq(422)
+      expect(response.body).to eq('Subcategory has transactions')
+    end
+
+    it 'doesnt destroy the subcategory if it has patterns' do
+      subcategory = FactoryGirl.create(:subcategory)
+      FactoryGirl.create(:pattern, subcategory: subcategory)
+      expect {
+        delete :destroy, { id: subcategory.id }, valid_session
+      }.not_to change(Subcategory, :count)
+      expect(response.status).to eq(422)
+      expect(response.body).to eq('Subcategory has patterns')
+    end
   end
 end

@@ -21,10 +21,15 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    category.destroy
-    head :no_content
+    validate_delete
+    if category.errors.empty?
+      category.destroy
+      head :no_content
+    else
+      render json: category.errors, status: :unprocessable_entity
+    end
   end
-  
+
   # called when user changes category on transaction forms
   def subcategories_by_category
     if params[:category_id].present?
@@ -35,6 +40,13 @@ class CategoriesController < ApplicationController
   end
 
   private
+
+  def validate_delete
+    # TODO: should be moved to model
+    category.errors.add(:subcategory, 'Category has subcategories') if category.subcategories.length > 0
+    category.errors.add(:transaction, 'Category has transactions') if category.transactions.length > 0
+    category.errors.add(:patterns, 'Category has patterns') if category.patterns.length > 0
+  end
 
   def category
     @category ||= Category.find(params[:id])
