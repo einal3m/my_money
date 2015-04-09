@@ -46,4 +46,20 @@ RSpec.describe Subcategory, type: :model do
       expect(s.patterns.length).to eq(2)
     end
   end
+
+  describe 'callbacks' do
+    it 'will not delete a Subcategory with transactions' do
+      subcategory = FactoryGirl.create(:subcategory)
+      FactoryGirl.create(:transaction, subcategory: subcategory)
+      expect(subcategory.destroy).to be_falsey
+      expect(subcategory.errors[:transactions][0]).to eq('Subcategory has transactions')
+    end
+
+    it 'will not delete a Subcategory with patterns' do
+      subcategory = FactoryGirl.create(:subcategory)
+      FactoryGirl.create(:pattern, subcategory: subcategory)
+      expect(subcategory.destroy).to be_falsey
+      expect(subcategory.errors[:patterns][0]).to eq('Subcategory has patterns')
+    end
+  end
 end
