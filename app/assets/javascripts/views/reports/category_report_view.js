@@ -17,7 +17,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
     this.dateRangeOptions = this.options['dateRangeOptions'];
     this.currentDateRange = this.options['currentDateRange'];
 
-    this.model = new MyMoney.Models.CategoryReport({}, {reportName: 'category'});
+    this.model = new MyMoney.Models.Report({}, {reportName: 'category'});
     this.model.set('category_id', this.options['category_id']);
   },
 

@@ -1,13 +1,14 @@
-MyMoney.Models.Report = MyMoney.Models.BaseReport.extend({
+MyMoney.Models.Report = Backbone.Model.extend({
+
+  initialize: function(attributes, options) {
+    this.reportName = _.result(options, 'reportName');
+  },
 
   urlRoot: function() {
-    return '/report/' + this.reportName + '?account_id=' + this.get('account_id');
+    return 'report/' + this.reportName;
   },
 
   validation: {
-    account_id: {
-      required: true
-    },
     from_date: {
       required: true
     },
@@ -15,5 +16,4 @@ MyMoney.Models.Report = MyMoney.Models.BaseReport.extend({
       required: true
     }
   }
-
 });

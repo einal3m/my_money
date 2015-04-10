@@ -3,8 +3,8 @@ MyMoney.Models.Subcategory = Backbone.Model.extend({
   name: 'subcategory',
   urlRoot: 'subcategories',
 
-  parse : function(resp, xhr) {
-  return resp["subcategory"] || resp;
+  parse : function(response, xhr) {
+    return response.subcategory || response;
   },
 
   validation: {
@@ -12,9 +12,8 @@ MyMoney.Models.Subcategory = Backbone.Model.extend({
       required: true
     },
     category_id: {
-      required: true
+      required: true,
+      msg: 'Category is required'
     }
   }
-
-
 });

@@ -1,3 +1,5 @@
+_.extend(Backbone.Model.prototype, Backbone.Validation.mixin);
+
 _.extend(Backbone.Validation.callbacks, {
     valid: function (view, attr, selector) {
         var $el = view.$('[name=' + attr + ']') ,

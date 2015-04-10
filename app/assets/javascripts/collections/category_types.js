@@ -1,6 +1,6 @@
 MyMoney.Collections.CategoryTypesCollection = Backbone.Collection.extend({
 
-  model: MyMoney.Models.CategoryTypes,
+  model: MyMoney.Models.CategoryType,
 
   url: '/category_types',
 

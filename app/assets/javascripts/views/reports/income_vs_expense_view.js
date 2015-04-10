@@ -10,7 +10,7 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
   },
 
   initialize: function() {
-    this.model = new MyMoney.Models.BaseReport({}, {reportName: 'income_vs_expense'});
+    this.model = new MyMoney.Models.Report({}, {reportName: 'income_vs_expense'});
     this.dateRangeOptions = this.options['dateRangeOptions'];
     this.currentDateRange = this.options['currentDateRange'];
     this.categories = this.options['categories'];

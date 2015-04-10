@@ -1,11 +1,23 @@
 MyMoney.Models.Account = Backbone.Model.extend({
 
+  name: "account",
   urlRoot: 'accounts',
 
-  name: "account",
+  parse : function(response, xhr) {
+    return response.account || response;
+  },
 
-  parse : function(resp, xhr) {
-	return resp["account"] || resp;
+  validation: {
+    name: {
+      required: true
+    },
+    starting_balance: {
+      required: true,
+      msg: 'Opening balance is required'
+    },
+    starting_date: {
+      required: true,
+      msg: 'Opening balance date is required'
+    }
   }
-
 });

@@ -7,7 +7,7 @@ MyMoney.Views.IncomeExpenseBarReportView = MyMoney.Views.BaseView.extend({
 
 
   initialize: function() {
-    this.model = new MyMoney.Models.BaseReport({}, {reportName: 'income_expense_bar'});
+    this.model = new MyMoney.Models.Report({}, {reportName: 'income_expense_bar'});
   },
 
   updateReport: function() {

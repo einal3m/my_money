@@ -10,7 +10,7 @@ MyMoney.Views.EodBalanceReportView = MyMoney.Views.BaseView.extend({
   },
 
   initialize: function() {
-    this.model = new MyMoney.Models.Report({}, {reportName: 'eod_balance'});
+    this.model = new MyMoney.Models.ReportForAccount({}, {reportName: 'eod_balance'});
     this.accounts = this.options['accounts'];
     this.account = this.options['account'];
     this.dateRangeOptions = this.options['dateRangeOptions'];

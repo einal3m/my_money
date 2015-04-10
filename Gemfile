@@ -51,6 +51,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'jasmine'
+  gem 'jslint_on_rails'
 end
 
 group :test do

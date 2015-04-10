@@ -1,11 +1,11 @@
 MyMoney.Models.Reconciliation = Backbone.Model.extend({
 
   urlRoot: function() {
-    return '/accounts/' + this.get('account_id') + '/reconciliations';
+    return 'accounts/' + this.get('account_id') + '/reconciliations';
   },
 
-  parse : function(resp, xhr) {
-		return resp["reconciliation"] || resp;
+  parse : function(response, xhr) {
+		return response.reconciliation || response;
   },
 
   validation: {
