@@ -1,4 +1,4 @@
-describe("date helpers", function() {
+describe("money helpers", function() {
   var helpers = Handlebars.helpers;
 
   describe("Handlebar Helpers", function() {
@@ -20,7 +20,7 @@ describe("date helpers", function() {
     it("moneyInput creates a money input field", function(){
       var moneyInput = helpers.moneyInput('123456', 'money_id');
       var moneyHTML = '<div class="input-group-addon">$</div><input type="text" class="form-control" name="money_id" id="money_id" value="1,234.56">'
-      expect(moneyInput.toEqual(moneyHTML);
+      expect(moneyInput.string).toEqual(moneyHTML);
     });
   });
 
@@ -30,14 +30,15 @@ describe("date helpers", function() {
       expect(accountingFormat(-1234.56)).toEqual('$(1,234.56)');
     });
     it("moneyNumberFormat formats money with commas", function(){
-      expect(accountingFormat(1234.56)).toEqual('1,234.56');
-      expect(accountingFormat(-1234.56)).toEqual('-1,234.56');
+      expect(moneyNumberFormat(1234.56)).toEqual('1,234.56');
+      expect(moneyNumberFormat(-1234.56)).toEqual('-1,234.56');
     });
     it("centsToDollars converts cents to dollars", function(){
       expect(centsToDollars(123456)).toEqual(1234.56);
     });
     it("dollarsToCents converts cents to dollars", function(){
       expect(dollarsToCents(1234.56)).toEqual(123456);
+      expect(dollarsToCents(40855.13)).toEqual(4085513);
     });
   });
 });

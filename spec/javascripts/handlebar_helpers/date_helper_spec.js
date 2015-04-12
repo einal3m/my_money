@@ -3,19 +3,19 @@ describe("date helpers", function() {
 
   describe("Handlebar Helpers", function() {
     it("dateFormatter formats the given date", function() {
-      expect(helpers.dateFormatter('2014-07-19')).toEqual('19-Jul-2014');
+      expect(helpers.dateFormatter('2014-07-19').string).toEqual('19-Jul-2014');
     });
 
     it("datePickerInput creates a date input", function(){
       var datePickerInput = helpers.datePickerInput('2014-07-19', 'date_id');
       var dateHTML = '<input type="text" class="form-control" name="date_id" id="date_id" value="19-Jul-2014" data-provide="datepicker">'
-      expect(datePickerInput.toEqual(dateHTML);
+      expect(datePickerInput.string).toEqual(dateHTML);
     });
   });
 
   describe("functions", function(){
-    it("dateFormat formats date strings", function(){
-      expect(dateFormat('2014-07-19')).toEqual('19-Jul-2014');
+    it("formatDate formats date strings", function(){
+      expect(formatDate('2014-07-19')).toEqual('19-Jul-2014');
     });
   });
 });

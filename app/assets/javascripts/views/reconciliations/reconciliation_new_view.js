@@ -2,9 +2,6 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
 
   template: "reconciliations/reconciliation_new",
 
-  // tagName: "div", 
-  // id: "panel1",
-
   events: {
     "click #reconcile": "reconcileAccount",
     "click #cancel" : "goBack"   

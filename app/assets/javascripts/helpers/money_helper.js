@@ -19,7 +19,7 @@ var centsToDollars = function(value) {
 
 var dollarsToCents = function(value) {
 	if (!value) { return null; }
-	return accounting.unformat(value)*100;
+	return Math.round(accounting.unformat(value)*100);
 };
 
 Handlebars.registerHelper('accountingFormat', function(amount) {
