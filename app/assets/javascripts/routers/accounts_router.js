@@ -3,9 +3,9 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   initialize: function(options) {
     var router = this;
     this.accounts = new MyMoney.Collections.AccountsCollection();
-    // $.when(router.accounts.fetch()).done(function () {
-    //   router.setCurrentAccount();
-    // });
+    $.when(router.accounts.fetch()).done(function () {
+      router.setCurrentAccount();
+    });
 
     this.categories = new MyMoney.Collections.CategoriesCollection();
     this.categories.fetch();
@@ -41,7 +41,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "reports/income_vs_expense"  : "reportIncomeVsExpense",
     "reports/income_expense_bar"  : "reportIncomeExpenseBar",
     ".*"                   : "accountIndex",
-    'categories' : 'categoryIndex'
+    'categories' : 'categoryIndex',
+    'patterns': 'patternIndex'
   },
 
 // account routes
@@ -126,6 +127,18 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 // categories + subcategories
   categoryIndex: function() {
     this.showView(new MyMoney.Views.CategoryIndexView({
+      categoryTypes: this.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories
+    }));
+  },
+
+// patterns
+  patternIndex: function() {
+    this.showView(new MyMoney.Views.PatternIndexView({
+      collection: this.patterns
+      account: this.account,
+      accounts: this.accounts,
       categoryTypes: this.categoryTypes,
       categories: this.categories,
       subcategories: this.subcategories

@@ -28,3 +28,8 @@ def serialize_category(subcategory)
   attrs = JSON.parse(subcategory.to_json)
   attrs.extract!('id', 'name', 'category_type_id')
 end
+
+def serialize_pattern(pattern)
+  attrs = JSON.parse(pattern.to_json)
+  attrs.extract!('id', 'account_id', 'match_text', 'category_id', 'subcategory_id')
+end
