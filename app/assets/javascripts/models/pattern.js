@@ -1,4 +1,4 @@
-MyMoney.Models.Pattern = Backbone.Model.extend({
+MyMoney.Models.Pattern = MyMoney.Models.BaseModel.extend({
 
   name: "pattern",
   _isDestroyed: false,
@@ -23,25 +23,6 @@ MyMoney.Models.Pattern = Backbone.Model.extend({
       required: true,
       msg: 'Account is required'
     }
-  },
-
-  saveState: function(){
-    this.savedState = this.toJSON();
-  },
-
-  restoreSavedState: function(){
-    this.set(this.savedState);
-  },
-
-  isDestroyed: function(){
-    return this._isDestroyed;
-  },
-
-  setDestroyed: function(){
-    this._isDestroyed = true;
-  },
-
-  isNew: function(){
-    return !(_.isNumber(this.id));
   }
+
 });

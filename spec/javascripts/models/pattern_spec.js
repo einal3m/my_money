@@ -28,37 +28,4 @@ describe('Pattern', function(){
       expect(pattern.preValidate('account_id', 2)).toEqual('');
     });
   });
-
-  describe('saved state', function(){
-    it('saves the current state of the model', function(){
-      pattern.saveState();
-      expect(pattern.savedState).toEqual(pattern.toJSON());
-    });
-
-    it('restores the saved state to the model', function(){
-      pattern.saveState();
-      expect(pattern.get('account_id')).toEqual(14);
-      pattern.set({account_id: 11});
-      expect(pattern.get('account_id')).toEqual(11);
-      pattern.restoreSavedState();
-      expect(pattern.get('account_id')).toEqual(14);
-    });
-  });
-
-  describe('isNew', function(){
-    it('is true if model is new', function(){
-      var new_pattern = new MyMoney.Models.Pattern();
-      expect(new_pattern.isNew()).toBeTruthy();
-    });
-
-    it('is false if model exists', function(){
-      expect(pattern.isNew()).toBeFalsy();
-    });
-  });
-
-  it('sets the destroy flag', function(){
-    expect(pattern.isDestroyed()).toBeFalsy();
-    pattern.setDestroyed();
-    expect(pattern.isDestroyed()).toBeTruthy();
-  });
 });
