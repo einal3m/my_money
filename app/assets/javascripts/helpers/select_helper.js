@@ -23,7 +23,6 @@ var addUnassignedOrPleaseSelect = function(model_id, hasUnassigned) {
 
 var selectContent = function(array, model_id, hasUnassigned) {
 	var html = addUnassignedOrPleaseSelect(model_id, hasUnassigned);
-
 	if (array) {
 		for (i = 0; i < array.length; i++) { 
 			var model = array[i];

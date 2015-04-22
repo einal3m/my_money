@@ -52,7 +52,7 @@ RSpec.describe PatternsController, type: :controller do
         new_subcategory = FactoryGirl.create(:subcategory)
         new_category = new_subcategory.category
 
-        put :update, { id: pattern.id, pattern: {
+        put :update, { id: pattern.id, account_id: pattern.account.id, pattern: {
           match_text: 'New Text',
           notes: 'New Note',
           category_id: new_category.id,
@@ -74,7 +74,7 @@ RSpec.describe PatternsController, type: :controller do
     context 'with invalid params' do
       it 'assigns the pattern as @pattern' do
         pattern = FactoryGirl.create(:pattern)
-        put :update, { id: pattern.id, pattern: build_attributes(:pattern_invalid) }, valid_session
+        put :update, { id: pattern.id, account_id: pattern.account.id, pattern: build_attributes(:pattern_invalid) }, valid_session
 
         json = JSON.parse(response.body)
         expect(response.status).to eq(422)
@@ -87,7 +87,7 @@ RSpec.describe PatternsController, type: :controller do
     it 'destroys the requested pattern' do
       pattern = FactoryGirl.create(:pattern)
       expect {
-        delete :destroy, { id: pattern.id }, valid_session
+        delete :destroy, { id: pattern.id, account_id: pattern.account.id }, valid_session
       }.to change(Pattern, :count).by(-1)
       expect(response).to be_success
     end

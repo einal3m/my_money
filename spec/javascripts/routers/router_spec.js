@@ -1,12 +1,12 @@
-xdescribe('MyMoney Router', function() {
+describe('MyMoney Router', function() {
   var trigger = {trigger: true};
-  var router
+  var router;
 
-  describe('Initialize', function() {
+  xdescribe('Initialize', function() {
 
   });
 
-  describe('Routes', function() {
+  xdescribe('Routes', function() {
     beforeEach(function() {
       // This is the trick, right here:
       // The Backbone history code dodges our spies
@@ -105,16 +105,35 @@ xdescribe('MyMoney Router', function() {
       Backbone.history.navigate('categories', trigger);
       expect(router.categoryIndex).toHaveBeenCalled();
     });
-
   });
 
-  describe('reportCategory', function(){
-    xit('creates the category index view and renders it', function(){
-      spyOn(router, "showView");
+  describe('route functions', function(){
+    beforeEach(function(){
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'fetchData');
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex');
       router = new MyMoney.Routers.AccountsRouter();
-      router.categoryIndex();
-      expect(router.showView).toHaveBeenCalled;
+      router.accounts = new MyMoney.Collections.AccountsCollection([{
+        id: 1,
+        name: 'Bank Account'
+      }])
+      router.currentAccount = router.accounts.at(0);
+    });
+
+    xdescribe('patternIndex', function(){
+      it('creates the patternIndexView', function(){
+        spyOn(router, 'showView');
+        router.patternIndex(1);
+        expect(router.showView).toHaveBeenCalled();
+      });
+    });
+
+    xdescribe('reportCategory', function(){
+      xit('creates the category index view and renders it', function(){
+        spyOn(router, "showView");
+        router = new MyMoney.Routers.AccountsRouter();
+        router.categoryIndex();
+        expect(router.showView).toHaveBeenCalled;
+      });
     });
   });
-
 });

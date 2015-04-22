@@ -1,90 +1,73 @@
 require 'rails_helper'
 
-feature "Patterns", :type => :feature do
-  scenario "User views the patterns list for an account" do
-
-  	account = FactoryGirl.create(:account, name: 'My Account')
-  	pattern = FactoryGirl.create(:pattern, account: account, match_text: "Pattern Spec Match")
-
-  	# go to the patterns index page, select your account and click refresh
-    visit "/patterns"
-    within(".panel-heading") do
-	  select('My Account', :from => 'account_id')
-      click_on('Refresh')
-    end
-
-    # should see a list of patterns for this account
-    expect(page).to have_text("Pattern Spec Match")
-
+feature 'Patterns', type: :feature, js: true do
+  before :each do
+    a1 = FactoryGirl.create(:account, name: 'My First Account')
+    FactoryGirl.create(:pattern, account: a1, match_text: 'Pattern Spec Match 1')
+    a2 = FactoryGirl.create(:account, name: 'My Second Account')
+    FactoryGirl.create(:pattern, account: a2, match_text: 'Pattern Spec Match 2')
+    c1 = FactoryGirl.create(:category, name: 'My Test Category')
+    FactoryGirl.create(:subcategory, name: 'My Test Subcategory', category: c1)
+    c2 = FactoryGirl.create(:category, name: 'Another Test Category')
+    FactoryGirl.create(:subcategory, name: 'Another Test Subcategory', category: c2)
   end
 
-  scenario "User creates a new Pattern", :js => true do
+  scenario 'User views the patterns list for an account' do
+    visit_patterns
 
-  	account = FactoryGirl.create(:account, name: 'My Account')
-  	subcategory = FactoryGirl.create(:subcategory)
+    expect(page).to have_select('account_id', selected: 'My First Account')
+    expect(page).to have_text('Pattern Spec Match 1')
 
-  	# go to the patterns index page, select your account and click refresh
-    visit "/patterns"
-    within(".panel-heading") do
-	  select('My Account', :from => 'account_id')
-      click_on('Refresh')
-    end
-
-    # click on the new button
-    within("h1") do
-    	find(".btn").click
-    end
-
-    # expect to see a new form
-    expect(page).to have_content("New Pattern")
-    expect(page).to have_selector('form')
-
-    # enter data into the form
-    fill_in 'Match text', :with => 'My Match Text'
-    fill_in 'Notes', :with => "New Note"
-	  select(subcategory.category.name, :from => 'pattern_category_id')
-
-	  # selecting category, should make the subcategory name appear in the 
-	  # subcategory select box
-	  expect(page).to have_content(subcategory.name)
-
-		select(subcategory.name, :from => 'pattern_subcategory_id')
-		click_on('Save')
-
-		# should see our new pattern on the index page
-    expect(page).to have_text("Pattern was successfully created.")
-    expect(page).to have_text("My Match Text")
-    expect(page).to have_text("New Note")
+    select('My Second Account', from: 'account_id')
+    expect(page).to have_text('Pattern Spec Match 2')
   end
 
-  scenario "User edits a pattern" do
+  scenario 'User creates a new Pattern', js: true do
+    visit_patterns
+    click_on 'new'
 
-  	account = FactoryGirl.create(:account, name: 'My Account')
-  	pattern = FactoryGirl.create(:pattern, account: account, match_text: "Pattern Spec Match")
+    expect(page).to have_selector('.form-horizontal')
 
-  	# go to the patterns index page, select your account and click refresh
-    visit "/patterns"
-    within(".panel-heading") do
-	  select('My Account', :from => 'account_id')
-      click_on('Refresh')
+    fill_in 'match_text', with: 'My Match Text'
+    fill_in 'notes', with: 'New Note'
+    select 'My Test Category', from: 'category_id'
+    select 'My Test Subcategory', from: 'subcategory_id'
+
+    click_on 'save'
+
+    expect(page).to have_text('My Match Text')
+    expect(page).to have_text('New Note')
+  end
+
+  scenario 'User deletes a Pattern', js: true do
+    visit_patterns
+
+    find('tr', text: 'Pattern Spec Match 1').click
+    expect(page).to have_selector('.form-horizontal')
+
+    click_on 'delete'
+    page.driver.browser.switch_to.alert.accept
+
+    expect(page).not_to have_text('Pattern Spec Match 1')
+  end
+
+  scenario 'User edits a pattern', js: true do
+    visit_patterns
+
+    find('tr', text: 'Pattern Spec Match 1').click
+    expect(page).to have_selector('.form-horizontal')
+
+    fill_in 'match_text', with: 'New Match Text'
+    fill_in 'notes', with: 'New Notes'
+    select 'Another Test Category', from: 'category_id'
+    select 'Another Test Subcategory', from: 'subcategory_id'
+
+    click_on 'save'
+
+    within 'tr', text: 'New Match Text' do
+      expect(page).to have_text('New Notes')
+      expect(page).to have_text('Another Test Category')
+      expect(page).to have_text('Another Test Subcategory')
     end
-
-    # click on the edit button for the pattern
-    within('tr', text: 'My Account') do
-    	find('a').click
-    end
-
-    # should see the edit form for this page
-    expect(page).to have_text("Edit Pattern")
-    expect(page).to have_selector('form')
-
-    # edit the pattern
-    fill_in('Match text', with: "New Match Text")
-    click_on('Save')
-
-    # user should see the new text
-    expect(page).to have_text("Patterns")
-    expect(page).to have_text("New Match Text")
-
   end
 end

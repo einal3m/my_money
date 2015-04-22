@@ -8,7 +8,7 @@
 
 paths:
   # - app/assets/javascripts/**/*.js
-  - app/assets/javascripts/models/*.js
+  - app/assets/javascripts/views/patterns/*.js
 
 exclude_paths:
 

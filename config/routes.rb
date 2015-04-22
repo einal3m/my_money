@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   get 'report/eod_balance'
   get 'report/index'
 
-  resources :patterns
   resources :date_range_options
 
   get 'import_transactions/file_chooser'
@@ -35,6 +34,7 @@ Rails.application.routes.draw do
         post 'ofx'
       end
     end
+    resources :patterns
   end
 
   # post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation

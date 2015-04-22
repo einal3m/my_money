@@ -1,6 +1,11 @@
 MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   initialize: function(options) {
+    this.fetchData();
+    this.accountIndex();
+  },
+
+  fetchData: function(){
     var router = this;
     this.accounts = new MyMoney.Collections.AccountsCollection();
     $.when(router.accounts.fetch()).done(function () {
@@ -18,8 +23,6 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     $.when(this.dateRangeOptions.fetch()).done(function () {
       router.setCurrentDateRange();
     });
-
-    this.accountIndex();
   },
 
   routes: {
@@ -42,7 +45,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "reports/income_expense_bar"  : "reportIncomeExpenseBar",
     ".*"                   : "accountIndex",
     'categories' : 'categoryIndex',
-    'patterns': 'patternIndex'
+    'patterns': 'patternIndex',
+    'accounts/:id/patterns': 'patternIndexForAccount'
   },
 
 // account routes
@@ -134,15 +138,26 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   },
 
 // patterns
+  patternIndexForAccount: function(account_id){
+    this.setCurrentAccount(this.accounts.get(account_id));
+    console.log(account_id);
+    console.log(this.currentAccount);
+    this.patternIndex();
+  },
+
   patternIndex: function() {
-    this.showView(new MyMoney.Views.PatternIndexView({
-      collection: this.patterns
-      account: this.account,
-      accounts: this.accounts,
-      categoryTypes: this.categoryTypes,
-      categories: this.categories,
-      subcategories: this.subcategories
-    }));
+    var patterns = new MyMoney.Collections.Patterns([], {account_id: this.currentAccount.id});
+    var router = this;
+    $.when(patterns.fetch()).done(function() {
+      router.showView(new MyMoney.Views.PatternIndexView({
+        collection: patterns,
+        account: router.currentAccount,
+        accounts: router.accounts,
+        categoryTypes: router.categoryTypes,
+        categories: router.categories,
+        subcategories: router.subcategories
+      }));
+    }, this);
   },
 
 // reports

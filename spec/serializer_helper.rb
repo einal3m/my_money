@@ -31,5 +31,5 @@ end
 
 def serialize_pattern(pattern)
   attrs = JSON.parse(pattern.to_json)
-  attrs.extract!('id', 'account_id', 'match_text', 'category_id', 'subcategory_id')
+  attrs.extract!('id', 'account_id', 'match_text', 'notes', 'category_id', 'subcategory_id')
 end
