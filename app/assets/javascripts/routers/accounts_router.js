@@ -140,24 +140,17 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 // patterns
   patternIndexForAccount: function(account_id){
     this.setCurrentAccount(this.accounts.get(account_id));
-    console.log(account_id);
-    console.log(this.currentAccount);
     this.patternIndex();
   },
 
   patternIndex: function() {
-    var patterns = new MyMoney.Collections.Patterns([], {account_id: this.currentAccount.id});
-    var router = this;
-    $.when(patterns.fetch()).done(function() {
-      router.showView(new MyMoney.Views.PatternIndexView({
-        collection: patterns,
-        account: router.currentAccount,
-        accounts: router.accounts,
-        categoryTypes: router.categoryTypes,
-        categories: router.categories,
-        subcategories: router.subcategories
-      }));
-    }, this);
+    this.loadView(new MyMoney.Views.PatternIndexView({
+      account: this.currentAccount,
+      accounts: this.accounts,
+      categoryTypes: this.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories
+    }));
   },
 
 // reports
@@ -233,7 +226,17 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     this.currentView.updateReport();
   },
 
-// utilities
+// utilities 
+  loadView: function(view){
+    var router = this;
+    $.when(view.fetchData()).done(function(){
+      router.removeCurrentView();
+      router.currentView = view;
+      view.render();
+      $('#content').html(view.el)
+    });
+  },
+
   showView: function(newView) {
     this.removeCurrentView;
     this.currentView = newView;

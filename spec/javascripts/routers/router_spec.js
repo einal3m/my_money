@@ -112,28 +112,42 @@ describe('MyMoney Router', function() {
       spyOn(MyMoney.Routers.AccountsRouter.prototype, 'fetchData');
       spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex');
       router = new MyMoney.Routers.AccountsRouter();
-      router.accounts = new MyMoney.Collections.AccountsCollection([{
-        id: 1,
-        name: 'Bank Account'
-      }])
-      router.currentAccount = router.accounts.at(0);
+      router.currentAccount = 'currentAccount';
+      router.accounts = 'accounts';
+      router.categoryTypes = 'categoryTypes';
+      router.categories = 'categories';
+      router.subcategories = 'subcategories';
     });
 
-    xdescribe('patternIndex', function(){
-      it('creates the patternIndexView', function(){
-        spyOn(router, 'showView');
-        router.patternIndex(1);
-        expect(router.showView).toHaveBeenCalled();
+    it('patternIndex', function(){
+      spyOn(MyMoney.Views.PatternIndexView.prototype, 'initialize').and.callThrough();
+      spyOn(router, 'loadView');
+      router.patternIndex();
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.PatternIndexView));
+      expect(MyMoney.Views.PatternIndexView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.PatternIndexView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        account: 'currentAccount',
+        accounts: 'accounts',
+        categoryTypes: 'categoryTypes',
+        categories: 'categories',
+        subcategories: 'subcategories'
       });
     });
+  });
+  
+  it('loadView', function(){
+    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'fetchData');
+    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex');
 
-    xdescribe('reportCategory', function(){
-      xit('creates the category index view and renders it', function(){
-        spyOn(router, "showView");
-        router = new MyMoney.Routers.AccountsRouter();
-        router.categoryIndex();
-        expect(router.showView).toHaveBeenCalled;
-      });
-    });
+    router = new MyMoney.Routers.AccountsRouter();
+    spyOn(router, 'removeCurrentView');
+
+    view = jasmine.createSpyObj('view', ['render', 'fetchData', 'el']);
+    router.loadView(view);
+
+    expect(router.removeCurrentView).toHaveBeenCalled();
+    expect(router.currentView).toEqual(view);
+    expect(view.fetchData).toHaveBeenCalled();
+    expect(view.render).toHaveBeenCalled();
   });
 });

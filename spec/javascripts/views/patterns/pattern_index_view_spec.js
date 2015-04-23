@@ -18,7 +18,6 @@ describe("PatternIndexView", function(){
     patterns = new MyMoney.Collections.Patterns([pattern]);
 
     view = new MyMoney.Views.PatternIndexView({
-      collection: patterns,
       account: account,
       accounts: accounts,
       categoryTypes: categoryTypes,
@@ -37,11 +36,24 @@ describe("PatternIndexView", function(){
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
     expect(view.categoryTypes).toEqual(categoryTypes);
-    expect(view.collection).toEqual(patterns);
+    expect(view.collection).not.toBeDefined();
+  });
+
+  describe('fetchData', function(){
+    it('gets pattern data for account', function(){
+      spyOn(MyMoney.Collections.Patterns.prototype, 'initialize').and.callThrough();
+      spyOn(MyMoney.Collections.Patterns.prototype, 'fetch');
+
+      view.fetchData();
+
+      expect(MyMoney.Collections.Patterns.prototype.initialize).toHaveBeenCalledWith([], {account_id: 13})
+      expect(MyMoney.Collections.Patterns.prototype.fetch).toHaveBeenCalled();
+    });
   });
 
   describe("render", function(){
     beforeEach(function(){
+      view.collection = patterns;
       view.render();
     });
 
@@ -62,12 +74,10 @@ describe("PatternIndexView", function(){
 
   describe("change account", function(){
     it("reloadPage", function(){
-      router = jasmine.createSpyObj('router', ['navigate', 'patternIndexForAccount']);
-      window.router = router;
+      view.collection = patterns;
       view.render();
       view.reloadPage();
-      expect(window.router.navigate).toHaveBeenCalledWith('accounts/13/patterns', {trigger: true});
-      expect(window.router.patternIndexForAccount).toHaveBeenCalledWith('13');
+      expect(window.location.hash).toEqual('#accounts/13/patterns')
     });
 
     xit("calls the reloadPage function", function(){

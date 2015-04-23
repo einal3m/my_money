@@ -77,7 +77,6 @@ describe("PatternTableView", function(){
       view.$('#new').click();
       expect(view.editView).toBeDefined();
       expect(view.editView.el).not.toContainElement('button#delete');
-      console.log(view.editView.model);
       expect(view.editView.collection.account_id).toEqual(17);
       expect(view.editView.model.get('id')).not.toBeDefined();
     });

@@ -17,6 +17,11 @@ MyMoney.Views.PatternIndexView = MyMoney.Views.BaseView.extend({
     this.categoryTypes = this.options.categoryTypes;
   },
 
+  fetchData: function(){
+    this.collection = new MyMoney.Collections.Patterns([], {account_id: this.account.id});
+    return this.collection.fetch();
+  },
+
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template]());
     var filterView = new MyMoney.Views.FilterView({
@@ -25,7 +30,6 @@ MyMoney.Views.PatternIndexView = MyMoney.Views.BaseView.extend({
     });
 
     this.addSubView('filter', filterView);
-    // this.listenTo(filterView, 'change #account_id', this.refreshPage);
 
     this.addSubView('pattern-table', new MyMoney.Views.PatternTableView({
       collection: this.collection,
@@ -37,38 +41,11 @@ MyMoney.Views.PatternIndexView = MyMoney.Views.BaseView.extend({
     return this;
   },
 
-  // newTransaction: function(e) {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-
-  //   if (this.subView && this.subView.rendered) {
-  //     return;
-  //   }
-
-  //   this.subView = new MyMoney.Views.TransactionNewView({
-  //     account: this.model,
-  //     collection: this.collection,
-  //     categories: this.categories,
-  //     subcategories: this.subcategories,
-  //     categoryTypes: this.categoryTypes
-  //   });
-  //   this.$el.find('tbody').prepend(this.subView.render().el);
-  //   this.subView.rendered = true;
-  // },
-
-  // removeSubView: function() {
-  //   if (this.subView.rendered) {
-  //     this.subView.remove();
-  //     this.subView.rendered = false;
-  //   }
-  //   if (this.edit_row) {
-  //     this.edit_row.removeClass('success');
-  //   }
-  // },
-
   reloadPage: function() {
     var account_id = this.$('#account_id').val();
-    window.router.navigate('accounts/' + account_id + '/patterns', {trigger: true});
-    window.router.patternIndexForAccount(account_id);
+    window.location = '#accounts/' + account_id + '/patterns';
+
+    // window.router.navigate('accounts/' + account_id + '/patterns', {trigger: true});
+    // window.router.patternIndexForAccount(account_id);
   }
 });
