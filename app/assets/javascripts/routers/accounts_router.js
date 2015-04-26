@@ -12,11 +12,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       router.setCurrentAccount();
     });
 
-    this.categories = new MyMoney.Collections.CategoriesCollection();
+    this.categories = new MyMoney.Collections.Categories();
     this.categories.fetch();
-    this.categoryTypes = new MyMoney.Collections.CategoryTypesCollection();
+    this.categoryTypes = new MyMoney.Collections.CategoryTypes();
     this.categoryTypes.fetch();
-    this.subcategories = new MyMoney.Collections.SubcategoriesCollection();
+    this.subcategories = new MyMoney.Collections.Subcategories();
     this.subcategories.fetch();
 
     this.dateRangeOptions = new MyMoney.Collections.DateRangeOptionsCollection();
@@ -130,7 +130,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
 // categories + subcategories
   categoryIndex: function() {
-    this.showView(new MyMoney.Views.CategoryIndexView({
+    this.loadView(new MyMoney.Views.CategoryIndexView({
       categoryTypes: this.categoryTypes,
       categories: this.categories,
       subcategories: this.subcategories

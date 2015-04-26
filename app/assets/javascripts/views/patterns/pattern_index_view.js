@@ -44,8 +44,6 @@ MyMoney.Views.PatternIndexView = MyMoney.Views.BaseView.extend({
   reloadPage: function() {
     var account_id = this.$('#account_id').val();
     window.location = '#accounts/' + account_id + '/patterns';
-
-    // window.router.navigate('accounts/' + account_id + '/patterns', {trigger: true});
-    // window.router.patternIndexForAccount(account_id);
   }
+  
 });

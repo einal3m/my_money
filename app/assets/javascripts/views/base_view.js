@@ -28,5 +28,9 @@ MyMoney.Views.BaseView = Backbone.View.extend({
 
 	subViews: function() {
 		return this.subViews;
-	}
+	},
+
+  fetchData: function(){
+    return $.Deferred().resolve().promise();
+  }
 });

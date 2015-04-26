@@ -13,11 +13,11 @@ describe("PatternTableView", function(){
       {id: 1, name: 'Income'},
       {id: 2, name: 'Expense'}
     ]);
-    categories = new MyMoney.Collections.CategoriesCollection([
+    categories = new MyMoney.Collections.Categories([
       {id: 3, name: 'Category1', category_type_id: 1},
       {id: 4, name: 'Category2', category_type_id: 2}
     ]);
-    subcategories = new MyMoney.Collections.SubcategoriesCollection([
+    subcategories = new MyMoney.Collections.Subcategories([
       {id: 5, name: 'Subcategory1', category_id: 3},
       {id: 6, name: 'Subcategory2', category_id: 4}
     ]);

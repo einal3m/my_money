@@ -133,6 +133,19 @@ describe('MyMoney Router', function() {
         subcategories: 'subcategories'
       });
     });
+
+    it('categoryIndex', function(){
+      spyOn(MyMoney.Views.CategoryIndexView.prototype, 'initialize').and.callThrough();
+      spyOn(router, 'loadView');
+      router.categoryIndex();
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.CategoryIndexView));
+      expect(MyMoney.Views.CategoryIndexView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.CategoryIndexView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        categoryTypes: 'categoryTypes',
+        categories: 'categories',
+        subcategories: 'subcategories'
+      });
+    });
   });
   
   it('loadView', function(){
