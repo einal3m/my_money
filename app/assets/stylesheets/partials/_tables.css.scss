@@ -44,7 +44,12 @@
 	tr.clickable {
 		cursor: pointer;
 	  &:hover {
-	    background-color: $very-light-color;
+	    background-color: $light-color;
 	  }
+	}
+
+	tr.editing {
+		background-color: $dark-color;
+		color: white;
 	}
 }

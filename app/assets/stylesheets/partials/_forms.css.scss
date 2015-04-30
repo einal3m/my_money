@@ -14,3 +14,17 @@
 .form-table {
 	border: solid 2px $main-color;
 }
+
+tr.edit {
+  border: solid 2px $dark-color;
+
+  .form-horizontal {
+    margin: 0;
+    border: none;
+  }
+
+  .form-footer {
+    padding: 10px;
+    margin: 0;
+  }
+}

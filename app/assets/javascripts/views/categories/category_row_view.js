@@ -22,6 +22,7 @@ MyMoney.Views.CategoryRowView = Backbone.View.extend({
     e.stopPropagation();
     if (this.$el.hasClass('clickable')) {
       this.$el.removeClass('clickable');
+      this.$el.addClass('editing');
       this.editModel();
     }
   },
@@ -46,6 +47,7 @@ MyMoney.Views.CategoryRowView = Backbone.View.extend({
 
   editCancelled: function(){
     this.$el.addClass('clickable');
+    this.$el.removeClass('editing');
   }
 
 });

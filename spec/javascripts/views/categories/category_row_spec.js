@@ -53,10 +53,13 @@ describe("CategoryRowView", function(){
 
     it("sets class to clickable", function(){
       expect(view.el).toHaveClass('clickable');
+      expect(view.el).not.toHaveClass('editing');
       view.$el.click();
       expect(view.el).not.toHaveClass('clickable');
+      expect(view.el).toHaveClass('editing');
       view.$('button#cancel').click();
       expect(view.el).toHaveClass('clickable');
+      expect(view.el).not.toHaveClass('editing');
     });
   });
 });

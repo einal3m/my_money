@@ -1,6 +1,7 @@
 MyMoney.Views.SubcategoryEditView = Backbone.View.extend({
 
   tagName: "tr",
+  className: 'edit',
   template: "categories/edit_subcategory",
  
   events: {
