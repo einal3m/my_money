@@ -43,5 +43,8 @@
 
 	tr.clickable {
 		cursor: pointer;
+	  &:hover {
+	    background-color: $very-light-color;
+	  }
 	}
 }

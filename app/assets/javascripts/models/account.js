@@ -1,4 +1,6 @@
-MyMoney.Models.Account = Backbone.Model.extend({
+//= require ./base_model
+
+MyMoney.Models.Account = MyMoney.Models.BaseModel.extend({
 
   name: "account",
   urlRoot: 'accounts',
@@ -20,4 +22,5 @@ MyMoney.Models.Account = Backbone.Model.extend({
       msg: 'Opening balance date is required'
     }
   }
+
 });

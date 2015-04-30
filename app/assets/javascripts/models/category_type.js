@@ -1,4 +1,4 @@
-MyMoney.Models.CategoryType = Backbone.Model.extend({
+MyMoney.Models.CategoryType = MyMoney.Models.BaseModel.extend({
 
   urlRoot: 'category_types',
 

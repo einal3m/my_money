@@ -115,8 +115,8 @@ describe('MyMoney Router', function() {
       router.currentAccount = 'currentAccount';
       router.accounts = 'accounts';
       router.categoryTypes = 'categoryTypes';
-      router.categories = 'categories';
-      router.subcategories = 'subcategories';
+      router.categories = new MyMoney.Collections.Categories([]);
+      router.subcategories = new MyMoney.Collections.Subcategories([]);
     });
 
     it('patternIndex', function(){
@@ -129,8 +129,8 @@ describe('MyMoney Router', function() {
         account: 'currentAccount',
         accounts: 'accounts',
         categoryTypes: 'categoryTypes',
-        categories: 'categories',
-        subcategories: 'subcategories'
+        categories: router.categories,
+        subcategories: router.subcategories
       });
     });
 
@@ -142,8 +142,8 @@ describe('MyMoney Router', function() {
       expect(MyMoney.Views.CategoryIndexView.prototype.initialize).toHaveBeenCalled();
       expect(MyMoney.Views.CategoryIndexView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
         categoryTypes: 'categoryTypes',
-        categories: 'categories',
-        subcategories: 'subcategories'
+        categories: router.categories,
+        subcategories: router.subcategories
       });
     });
   });

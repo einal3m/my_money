@@ -1,4 +1,4 @@
-MyMoney.Models.Category = Backbone.Model.extend({
+MyMoney.Models.Category = MyMoney.Models.BaseModel.extend({
 
   name: 'category',
   urlRoot: 'categories',
@@ -16,4 +16,5 @@ MyMoney.Models.Category = Backbone.Model.extend({
       msg: 'Category type is required'
     }
   }
+
 });

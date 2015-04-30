@@ -1,4 +1,4 @@
-MyMoney.Models.Subcategory = Backbone.Model.extend({
+MyMoney.Models.Subcategory = MyMoney.Models.BaseModel.extend({
 
   name: 'subcategory',
   urlRoot: 'subcategories',

@@ -1,7 +1,7 @@
-MyMoney.Views.SubcategoryEditView = Backbone.View.extend({
+MyMoney.Views.CategoryEditView = Backbone.View.extend({
 
   tagName: "tr",
-  template: "categories/edit_subcategory",
+  template: "categories/edit_category",
  
   events: {
     "click #cancel": "cancelEdit",
@@ -11,7 +11,6 @@ MyMoney.Views.SubcategoryEditView = Backbone.View.extend({
 
   initialize: function(){
     _.bindAll(this);
-    this.categories = this.options.categories;
     this.categoryTypes = this.options.categoryTypes;
     this.model.saveState();
   },
@@ -21,19 +20,18 @@ MyMoney.Views.SubcategoryEditView = Backbone.View.extend({
     Backbone.Validation.bind(this);
     return this;
   },
-  
+
   templateData: function(){
     return {
-      subcategory: this.model.toJSON(),
-      allowDelete: !this.model.isNew(),
-      categories: this.categories,
-      categoryTypes: this.categoryTypes
+      category: this.model.toJSON(),
+      allowDelete: !(this.model.isNew()),
+      categoryTypes: this.categoryTypes,
     };
   },
 
   saveModel: function(){
     this.model.set({
-      category_id: parseInt(this.$('#category_id').val()),
+      category_type_id: parseInt(this.$('#category_type_id').val()),
       name: this.$('#name').val()
     });
 
