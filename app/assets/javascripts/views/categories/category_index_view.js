@@ -19,10 +19,13 @@ MyMoney.Views.CategoryIndexView = MyMoney.Views.BaseView.extend({
 
     _(['Income', 'Expense']).each(function(type) {
       var categoryType = this.categoryTypes.where({name: type})[0];
+      var filteredCategories = this.categories.findByCategoryType(categoryType);
+
       var tableView = this.addSubView(type + '_categories', new MyMoney.Views.CategoryTypeTableView({
         model: categoryType,
         categoryTypes: this.categoryTypes,
-        categories: this.categories.sortByNameForCategoryType(categoryType), 
+        filteredCategories: filteredCategories,
+        categories: this.categories,
         subcategories: this.subcategories
       }));
     }, this);

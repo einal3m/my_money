@@ -4,10 +4,11 @@ describe("CategoryTableView", function(){
     categoryType = new MyMoney.Models.CategoryType({id: 1, name: 'Category Type'});
     categoryTypes = new MyMoney.Collections.CategoryTypesCollection([categoryType]);
 
-    categories = new MyMoney.Collections.Categories([
+    filteredCategories = new MyMoney.Collections.Categories([
       {id: 3, name: 'Category1', category_type_id: 1},
       {id: 4, name: 'Category2', category_type_id: 1}
     ]);
+    categories = new MyMoney.Collections.Categories([]);
     subcategories = new MyMoney.Collections.Subcategories([
       {id: 5, name: 'Subcategory1', category_id: 3},
       {id: 6, name: 'Subcategory2', category_id: 4}
@@ -16,6 +17,7 @@ describe("CategoryTableView", function(){
     view = new MyMoney.Views.CategoryTypeTableView({
       model: categoryType,
       categoryTypes: categoryTypes,
+      filteredCategories: filteredCategories,
       categories: categories,
       subcategories: subcategories
     })
@@ -29,6 +31,7 @@ describe("CategoryTableView", function(){
     expect(view.model).toEqual(categoryType);
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
+    expect(view.filteredCategories).toEqual(filteredCategories);
     expect(view.subcategories).toEqual(subcategories);
   });
 
@@ -41,7 +44,6 @@ describe("CategoryTableView", function(){
       expect(view.el).toContainElement('.panel');
       expect(view.$('.panel-heading')).toContainText('Category Type');
       expect(view.$('.panel')).toContainElement('table');
-      // expect(view.$('table.patterns tbody tr').length).toEqual(1);
     });
 
     it('has a new button', function(){

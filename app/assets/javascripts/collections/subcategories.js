@@ -1,11 +1,15 @@
 MyMoney.Collections.Subcategories = Backbone.Collection.extend({
 
   model: MyMoney.Models.Subcategory,
-
+  comparator: 'name',
   url: '/subcategories',
 
   parse : function(resp, xhr) {
     return resp.subcategories;
+  },
+
+  findByCategory: function(category) {
+    return new MyMoney.Collections.Subcategories(this.where({category_id: category.id}));
   },
 
   sortByNameForCategory: function(category){

@@ -11,6 +11,8 @@ MyMoney.Views.CategoryTypeTableView = MyMoney.Views.BaseTableView.extend({
 
   initialize: function() {
     this.categories = this.options.categories;
+    this.filteredCategories = this.options.filteredCategories;
+    console.log(this.filteredCategories);
     this.subcategories = this.options.subcategories;
     this.categoryTypes = this.options.categoryTypes;
   },
@@ -20,10 +22,10 @@ MyMoney.Views.CategoryTypeTableView = MyMoney.Views.BaseTableView.extend({
   },
 
   addTableRows: function () {
-    this.categories.each(function(category) {
+    this.filteredCategories.each(function(category) {
       this.addCategoryRow(category);
-      var subcategories = this.subcategories.sortByNameForCategory(category);
-      subcategories.each(function(subcategory) {
+      var filteredSubcategories = this.subcategories.findByCategory(category);
+      filteredSubcategories.each(function(subcategory) {
         this.addSubcategoryRow(subcategory);
       }, this);
       this.addNewSubcategoryRow(category);

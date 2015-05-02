@@ -6,10 +6,10 @@ describe("CategoryIndexView", function(){
       {id: 2, name: 'Expense'}
     ]);
     categories = new MyMoney.Collections.Categories([
-      {id: 3, name: 'Category One', category_type_id: 1},
-      {id: 4, name: 'Category Two', category_type_id: 1},
-      {id: 5, name: 'Category Three', category_type_id: 2},
-      {id: 6, name: 'Category Four', category_type_id: 2}
+      {id: 3, name: 'Category A', category_type_id: 1},
+      {id: 4, name: 'Category B', category_type_id: 1},
+      {id: 5, name: 'Category C', category_type_id: 2},
+      {id: 6, name: 'Category D', category_type_id: 2}
     ]);
     subcategories = new MyMoney.Collections.Subcategories([
       {id: 5, name: 'Subcategory1', category_id: 3},
@@ -56,14 +56,16 @@ describe("CategoryIndexView", function(){
     var argsForExpense = MyMoney.Views.CategoryTypeTableView.prototype.initialize.calls.argsFor(1)[0];
 
     expect(argsForIncome.model).toEqual(categoryTypes.at(0))
-    expect(argsForIncome.categories.at(0)).toEqual(categories.at(0));
-    expect(argsForIncome.categories.at(1)).toEqual(categories.at(1));
+    expect(argsForIncome.filteredCategories.at(0).id).toEqual(categories.at(0).id);
+    expect(argsForIncome.filteredCategories.at(1).id).toEqual(categories.at(1).id);
+    expect(argsForIncome.categories).toEqual(categories);
     expect(argsForIncome.subcategories).toEqual(subcategories);
     expect(argsForIncome.categoryTypes).toEqual(categoryTypes);
 
     expect(argsForExpense.model).toEqual(categoryTypes.at(1))
-    expect(argsForExpense.categories.at(0)).toEqual(categories.at(3));
-    expect(argsForExpense.categories.at(1)).toEqual(categories.at(2));
+    expect(argsForExpense.filteredCategories.at(0).id).toEqual(categories.at(2).id);
+    expect(argsForExpense.filteredCategories.at(1).id).toEqual(categories.at(3).id);
+    expect(argsForExpense.categories).toEqual(categories);
     expect(argsForExpense.subcategories).toEqual(subcategories);
     expect(argsForExpense.categoryTypes).toEqual(categoryTypes);
   });
