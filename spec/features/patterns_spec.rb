@@ -12,6 +12,10 @@ feature 'Patterns', type: :feature, js: true do
     FactoryGirl.create(:subcategory, name: 'Another Test Subcategory', category: c2)
   end
 
+  after :all  do
+    DatabaseCleaner.clean
+  end
+
   scenario 'User views the patterns list for an account' do
     visit_patterns
 
@@ -42,11 +46,11 @@ feature 'Patterns', type: :feature, js: true do
   scenario 'User deletes a Pattern', js: true do
     visit_patterns
 
-    find('tr', text: 'Pattern Spec Match 1').click
+    click_on_row_with_text 'Pattern Spec Match 1'
     expect(page).to have_selector('.form-horizontal')
 
     click_on 'delete'
-    page.driver.browser.switch_to.alert.accept
+    confirm_alert
 
     expect(page).not_to have_text('Pattern Spec Match 1')
   end
@@ -54,7 +58,7 @@ feature 'Patterns', type: :feature, js: true do
   scenario 'User edits a pattern', js: true do
     visit_patterns
 
-    find('tr', text: 'Pattern Spec Match 1').click
+    click_on_row_with_text 'Pattern Spec Match 1'
     expect(page).to have_selector('.form-horizontal')
 
     fill_in 'match_text', with: 'New Match Text'

@@ -1,15 +1,19 @@
 require 'rails_helper'
 
-feature 'Accounts', :type => :feature do
-  before(:each) {
+feature 'Accounts', type: :feature do
+  before :each do
     # create a few date ranges
     FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     FactoryGirl.create(:category_type, name: 'Expense')
     FactoryGirl.create(:category_type, name: 'Income')
-  }
+  end
 
-  scenario 'User views the accounts list for an account', :js => true do
+  after :all  do
+    DatabaseCleaner.clean
+  end
+
+  scenario 'User views the accounts list for an account', js: true do
     # given I have an account
     FactoryGirl.create(:account, name: 'My New Account', bank: 'My New Bank')
 
@@ -25,9 +29,9 @@ feature 'Accounts', :type => :feature do
     expect(page).to have_text('Net Worth')
   end
 
-  scenario 'User creates a new Account', :js => true do
+  scenario 'User creates a new Account', js: true do
     # when I go to the accounts index page
-    visit '/my_money'
+    visit_accounts
 
     # and click on the new button
     click_on('new')
@@ -52,12 +56,12 @@ feature 'Accounts', :type => :feature do
     expect(page).to have_text('9-Sep-2000')
   end
 
-  scenario 'User edits an account', :js => true do
+  scenario 'User edits an account', js: true do
     # given I have an account
     FactoryGirl.create(:account, name: 'My Edit Account')
 
     # when I go to the accounts index page
-    visit '/my_money'
+    visit_accounts
 
     # and I click on the show button for the account
     click_on('show')
@@ -81,12 +85,12 @@ feature 'Accounts', :type => :feature do
     expect(page).to have_text('New Account Name')
   end
 
-  scenario 'User deletes an account', :js => true do
+  scenario 'User deletes an account', js: true do
     # given I have an account
     FactoryGirl.create(:account, name: 'My Edit Account')
 
     # when I go to the accounts index page
-    visit '/my_money'
+    visit_accounts
 
     # and I click on show
     click_on('show')
@@ -96,7 +100,7 @@ feature 'Accounts', :type => :feature do
 
     # and I click on delete and click ok
     click_on('delete')
-    page.driver.browser.switch_to.alert.accept
+    confirm_alert
 
     # then I see the index page
     expect(page).to have_text('my accounts')

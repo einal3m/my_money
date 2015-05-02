@@ -1,145 +1,71 @@
 require 'rails_helper'
 
-feature "Reports", :type => :feature do
+feature 'Reports', type: :feature do
+  before :each do
+    FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
+    FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
 
-	after(:all) {
+    c1 = FactoryGirl.create(:category, name: 'First Category')
+    sc = FactoryGirl.create(:subcategory, name: 'First Subcategory', category: c1)
+    FactoryGirl.create(:transaction, category: c1, subcategory: sc, date: Date.today, notes: 'First Transaction')
+    FactoryGirl.create(:transaction, category: c1, subcategory: nil, date: Date.today, notes: 'Second Transaction')
+    FactoryGirl.create(:transaction, category: nil, subcategory: nil, date: Date.today, notes: 'Third Transaction')
+  end
+
+  after :all  do
     DatabaseCleaner.clean
-	}
+  end
 
-  scenario "User views the categories report", :js => true do
-  	# Given I have some transactions
-  	sc = FactoryGirl.create(:subcategory)
-  	c = sc.category
-  	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
-  	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
-  	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
+  scenario 'User views the categories report', js: true do
+    visit_report 'Category Report'
 
-    # And I have some few date ranges
-    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "Lib::CurrentMonthDateRange", default: true)
-    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "Lib::CustomDateRange")
+    expect(page).to have_text('category report')
+    expect(page).to have_select('category_id', selected: 'Please select...')
+    expect(page).to have_select('date_range_option_id', selected: 'Current Month')
 
-  	# And that I am on the Category reports page
-  	visit ('/report/category')
-
-  	# When I select a category and date range
-    select(c.name, from: 'category_id')
-    select("Current Month", from: 'date_range_option_id')
-
-    # Then I expect to not see custom dates
-    expect(page).not_to have_field('from_date')
-    expect(page).not_to have_field('to_date')
-
-  	# When I click Search
-    click_on('Search')
-
-  	# Then I see a graph
-  	expect(page).to have_content('Graph')
-
-  	# When that I click on the data tab
-  	click_on('Data')
-
-  	# Then I should see a data and chart tab
-  	within('.nav-tabs') do
-  		expect(page).to have_link('Data')
-  		expect(page).to have_link('Graph')
+    within('.nav-tabs') do
+      expect(page).to have_link('Data')
+      expect(page).to have_link('Graph')
     end
 
-  	# And I should see data
-  	expect(page.all('tbody tr').count).to eq(4)
-  	expect(page).to have_content('Total')
+    # default, category unassigned
+    click_on 'Data'
+    within 'tbody' do
+      expect(page.all('tr').count).to eq(1)
+      expect(page).to have_text('Third Transaction')
+    end
 
-  	# When I select the Custom Dates the date range
-  	select("Custom Dates", from: 'date_range_option_id')
+    # select a different category
+    select 'First Category', from: 'category_id'
+    click_on 'search'
 
-  	# Then I should see the custom date range appear
-    expect(page).to have_field('from_date')
-    expect(page).to have_field('to_date')
+    click_on 'Data'
+    within 'tbody' do
+      expect(page.all('tr').count).to eq(2)
+      expect(page).to have_text('First Transaction')
+      expect(page).to have_text('Second Transaction')
+    end
 
-  	# When I fill in my custom dates
-  	fill_in('from_date', with: Date.today << 1)
-  	fill_in('to_date', with: Date.today >> 1)
-
-  	# And I click Search
-  	click_on('Search')
-
-  	# Then I see a new graph
-  	expect(page).to have_content('Graph')
-
-  	# And the date info should be visible
-  	expect(find_field('from_date').value).to eq((Date.today << 1).to_s)
-  	expect(find_field('to_date').value).to eq((Date.today >> 1).to_s)
-
-  	# When I click on Data
-  	click_on('Data')
-
-  	# And I should see data
-  	expect(page.all('tbody tr').count).to eq(4)
-  	expect(page).to have_content('Total')
-
+    # need to check for graph
+    # need to add custom date range
   end
 
-  scenario "User views the sub-categories report", :js => true do
-  	# Given I have some transactions
-  	sc = FactoryGirl.create(:subcategory)
-  	c = sc.category
-  	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
-  	FactoryGirl.create(:transaction, category: c, subcategory: nil, date: Date.today)
-  	FactoryGirl.create(:transaction, category: c, subcategory: sc, date: Date.today)
+  scenario 'User views the sub-categories report', js: true do
+    visit_report 'Subcategory Report'
 
-    # And I have some few date ranges
-    FactoryGirl.create(:date_range_option, description: "Current Month", klass: "Lib::CurrentMonthDateRange", default: true)
-    FactoryGirl.create(:date_range_option, description: "Custom Dates", klass: "Lib::CustomDateRange")
+    expect(page).to have_text('subcategory report')
 
-  	# And that I am on the Category reports page
-  	visit ('/report/subcategory')
+    # select another subcategory
+    select 'First Category', from: 'category_id'
+    select 'First Subcategory', from: 'subcategory_id'
+    click_on 'search'
 
-  	# When I select a category and date range
-    select(c.name, from: 'category_id')
-    select(sc.name, from: 'subcategory_id')
-    select("Current Month", from: 'date_range_option_id')
+    click_on 'Data'
+    within 'tbody' do
+      expect(page.all('tr').count).to eq(1)
+      expect(page).to have_text('First Transaction')
+    end
 
-    # Then I expect to not see custom dates
-    expect(page).not_to have_field('from_date')
-    expect(page).not_to have_field('to_date')
-
-  	# When I click Search
-    click_on('Search')
-
-    # Then I see a new graph
-    expect(page).to have_content('Graph')
-
-    # When I click on Data
-    click_on('Data')
-
-  	# Then I should see data
-  	expect(page.all('tbody tr').count).to eq(3)
-  	expect(page).to have_content('Total')
-
-  	# When I select the Custom Dates the date range
-  	select("Custom Dates", from: 'date_range_option_id')
-
-  	# Then I should see the custom date range appear
-    expect(page).to have_field('from_date')
-    expect(page).to have_field('to_date')
-
-  	# When I fill in my custom dates
-  	fill_in('from_date', with: Date.today << 1)
-  	fill_in('to_date', with: Date.today >> 1)
-
-  	# And I click Search
-  	click_on('Search')
-
-  	# Then the date info should be visible
-  	expect(find_field('from_date').value).to eq((Date.today << 1).to_s)
-  	expect(find_field('to_date').value).to eq((Date.today >> 1).to_s)
-
-    # When I click on Data
-    click_on('Data')
-
-  	# Then I should see data
-  	expect(page.all('tbody tr').count).to eq(3)
-  	expect(page).to have_content('Total')
-
+    # need to add check for graph
   end
-
 end

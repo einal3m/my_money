@@ -11,7 +11,11 @@ feature 'Categories and Subcategories', type: :feature do
     @sc = FactoryGirl.create(:subcategory, category: @c1, name: 'Subcategory One')
   end
 
-  scenario 'User views and edits categories', js: true do
+  after :all  do
+    DatabaseCleaner.clean
+  end
+
+  scenario 'User views categories and subcategories', js: true do
     visit_categories
 
     expect(page).to have_text('my categories')
@@ -28,6 +32,10 @@ feature 'Categories and Subcategories', type: :feature do
       expect(page).to have_text('Category Two')
       expect(page).to have_text('New...')
     end
+  end
+
+  scenario 'User edits categories', js: true do
+    visit_categories
 
     within '.panel', text: 'Income' do
       click_on 'new'
@@ -36,7 +44,7 @@ feature 'Categories and Subcategories', type: :feature do
       click_on 'save'
       expect(page).to have_text('New Name')
 
-      page.find('tr', :text => 'New Name').click
+      click_on_row_with_text 'New Name'
       fill_in 'name', with: 'Another New Name'
       select 'Expense', from: 'category_type_id'
       click_on 'save'
@@ -45,25 +53,25 @@ feature 'Categories and Subcategories', type: :feature do
     within '.panel', text: 'Expense' do
       expect(page).to have_text('Another New Name')
 
-      page.find('tr', :text => 'Another New Name').click
+      click_on_row_with_text 'Another New Name'
       click_on 'delete'
-      page.driver.browser.switch_to.alert.accept
+      confirm_alert
     end
 
     expect(page).not_to have_text('Another New Name')
   end
 
-  scenario 'User views and edits categories', js: true do
+  scenario 'User edits subcategories', js: true do
     visit_categories
 
     within '.panel', text: 'Income' do
-      page.find('tr', :text => 'New...').click
+      click_on_row_with_text 'New...'
       fill_in 'name', with: 'New Subcategory Name'
       select 'Category One', from: 'category_id'
       click_on 'save'
       expect(page).to have_text('New Subcategory Name')
 
-      page.find('tr', :text => 'New Subcategory Name').click
+      click_on_row_with_text 'New Subcategory Name'
       fill_in 'name', with: 'Another New Name'
       select 'Category Two', from: 'category_id'
       click_on 'save'
@@ -72,9 +80,9 @@ feature 'Categories and Subcategories', type: :feature do
     within '.panel', text: 'Expense' do
       expect(page).to have_text('Another New Name')
 
-      page.find('tr', :text => 'Another New Name').click
+      click_on_row_with_text 'Another New Name'
       click_on 'delete'
-      page.driver.browser.switch_to.alert.accept
+      confirm_alert
     end
 
     expect(page).not_to have_text('Another New Name')
