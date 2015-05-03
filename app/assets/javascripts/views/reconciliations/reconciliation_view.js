@@ -77,8 +77,6 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
       this.reconciliation_balance -= amount;
     }
     this.balance_difference = this.model.get('statement_balance') - this.reconciliation_balance;
-    console.log(this.balance_difference);
-    console.log(this.reconciliation_balance);
     this.$('#reconciliation_balance').html(accountingFormat(centsToDollars(this.reconciliation_balance)));
     this.$('#balance_difference').html(accountingFormat(centsToDollars(this.balance_difference)));
   },

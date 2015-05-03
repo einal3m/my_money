@@ -41,7 +41,6 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
 	},
 
   render: function () {
-    console.log('transactions_index_view.render');
     this.$el.html(HandlebarsTemplates[this.template]({
       account: this.model.toJSON()
     }));

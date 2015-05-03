@@ -14,7 +14,6 @@ MyMoney.Views.AccountFilterView = Backbone.View.extend({
   accountChanged: function(e){
     e.preventDefault();
     e.stopPropagation();
-    console.log
     this.trigger('accountChanged', this.$('#account_id').val());
   }
 });

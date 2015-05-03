@@ -12,7 +12,6 @@ MyMoney.Views.CategoryTypeTableView = MyMoney.Views.BaseTableView.extend({
   initialize: function() {
     this.categories = this.options.categories;
     this.filteredCategories = this.options.filteredCategories;
-    console.log(this.filteredCategories);
     this.subcategories = this.options.subcategories;
     this.categoryTypes = this.options.categoryTypes;
   },

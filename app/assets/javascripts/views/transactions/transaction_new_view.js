@@ -35,11 +35,8 @@ MyMoney.Views.TransactionNewView = Backbone.View.extend({
 
   updateSubcategories: function() {
     this.model.set('category_id', parseInt(this.$('#category_id').val()));
-    console.log(this.model);
     this.set_current_subcategories();
-    console.log(this.current_subcategories);
     var html = selectContent(this.current_subcategories, null);
-    console.log(html);
     this.$el.find('#subcategory_id').html(html);
   },
 
