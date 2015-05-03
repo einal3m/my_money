@@ -8,6 +8,11 @@ MyMoney.Views.BaseView = Backbone.View.extend({
     Backbone.View.apply(this, arguments);
   },
 
+  render: function () {
+    this.$el.html(HandlebarsTemplates[this.template](this.templateData()));
+    return this;
+  },
+
 	addSubView: function(id, view){
 		if (this.subViews[id]) {
 			this.subViews[id].remove();

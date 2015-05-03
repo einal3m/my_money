@@ -1,40 +1,36 @@
-describe("PatternEditView", function(){
-  var view, account, categories, subcategories, categoryTypes, pattern, patterns;
+describe("TransactionEditView", function(){
+  var view, account, categories, subcategories, categoryTypes, transaction, transactions;
   beforeEach(function(){
-    account = new MyMoney.Models.Account({
-      id: 13,
-      name: 'My Account'
-    });
-
-    pattern = new MyMoney.Models.Pattern({
-      id: 12,
-      match_text: 'My match text',
-      notes: 'My Notes',
-      category_id: 4,
-      subcategory_id: 6
-    });
-    patterns = new MyMoney.Collections.Patterns([pattern], {account_id: 13});
-
     categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
-      {id: 1, name: 'Income'},
-      {id: 2, name: 'Expense'}
-    ]);
+      {id: 1, name: 'Category Type'}
+    ]);    
     categories = new MyMoney.Collections.Categories([
       {id: 3, name: 'Category1', category_type_id: 1},
-      {id: 4, name: 'Category2', category_type_id: 2}
+      {id: 4, name: 'Category2', category_type_id: 1}      
     ]);
     subcategories = new MyMoney.Collections.Subcategories([
       {id: 5, name: 'Subcategory1', category_id: 3},
-      {id: 6, name: 'Subcategory2', category_id: 4}
+      {id: 6, name: 'Subcategory2', category_id: 4}      
     ]);
+    transaction = new MyMoney.Models.Transaction({
+      id: 7, 
+      date: formatDate((new Date()).toDateString()),
+      amount: 500,
+      memo: 'This is a memo',
+      notes: 'This is a note',
+      category_id: 3,
+      subcategory_id: 5,
+      balance: 4000,
+      reconciliation_id: 4
+    })
+    transactions = new MyMoney.Collections.TransactionsCollection([transaction]);
 
-    view = new MyMoney.Views.PatternEditView({
-      model: pattern,
+    view = new MyMoney.Views.TransactionEditView({
+      model: transaction,
       categoryTypes: categoryTypes,
       categories: categories,
       subcategories: subcategories
     })
-
   });
 
   afterEach(function(){
@@ -42,13 +38,10 @@ describe("PatternEditView", function(){
   });
 
   it("initializes data", function(){
-    expect(view.model).toEqual(pattern);
+    expect(view.model).toEqual(transaction);
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
-    expect(view.filteredSubcategories.length).toEqual(1);
-    expect(view.filteredSubcategories[0]).toEqual(subcategories.at(1));
-    expect(view.model.savedState).toBeDefined();
   });
 
   describe("render", function(){
@@ -59,12 +52,11 @@ describe("PatternEditView", function(){
     it("displays a table row with pattern form", function(){
       expect(view.el).toEqual('tr');
       expect(view.el).toContainElement('.form-horizontal');
-
-      expect(view.el).toContainElement('input#match_text');
+      expect(view.el).toContainElement('input#amount');
+      expect(view.el).toContainElement('input#date');
       expect(view.el).toContainElement('input#notes');
       expect(view.el).toContainElement('select#category_id');
       expect(view.el).toContainElement('select#subcategory_id');
-
       expect(view.el).toContainElement('button#cancel');
       expect(view.el).toContainElement('button#save');
     });
@@ -74,41 +66,28 @@ describe("PatternEditView", function(){
     });
 
     it("doesn't display a delete button if model is new", function(){
-      view.model = new MyMoney.Models.Pattern();
+      view.model = new MyMoney.Models.Transaction();
       view.render();
       expect(view.el).not.toContainElement('button#delete');
-    });
-
-    describe("categories", function(){
-      it("displays categories", function(){
-        expect(view.$('#category_id option').length).toEqual(2);
-        expect(view.$('#category_id option')[0].text).toEqual('Category1');
-        expect(view.$('#category_id option')[1].text).toEqual('Category2');
-      });
-
-      it("displays subcategories only for selected category", function(){
-        expect(view.$('#subcategory_id option').length).toEqual(2);
-        expect(view.$('#subcategory_id option')[0].text).toEqual('Un-assigned');
-        expect(view.$('#subcategory_id option')[1].text).toEqual('Subcategory2');
-      });
-
-      it("updates subcategory list", function(){
-        view.$('#category_id').val('3').change();
-        expect(view.filteredSubcategories.length).toEqual(1);
-        expect(view.filteredSubcategories[0]).toEqual(subcategories.at(0));
-        expect(view.$('#subcategory_id option').length).toEqual(2);
-        expect(view.$('#subcategory_id option')[0].text).toEqual('Un-assigned');
-        expect(view.$('#subcategory_id option')[1].text).toEqual('Subcategory1');
-      });
     });
 
     describe("events", function(){
       it("save with valid attributes", function(){
         spyOn(view.model, 'isValid').and.returnValue(true);
-        spyOn(view.model, 'save');
+        spyOn(view.model, "save");
+        view.$('#date').val('1-Jan-2015');
+        view.$('#amount').val('52.14');
+        view.$('#category_id').val('4').change();
+        view.$('#subcategory_id').val('6');
+        view.$('#notes').val('New Notes');
         view.$('#save').click();
         expect(view.model.isValid).toHaveBeenCalled();
         expect(view.model.save).toHaveBeenCalled();
+        expect(view.model.get('date')).toEqual('1-Jan-2015');
+        expect(view.model.get('amount')).toEqual(5214);
+        expect(view.model.get('category_id')).toEqual(4);
+        expect(view.model.get('subcategory_id')).toEqual(6);
+        expect(view.model.get('notes')).toEqual('New Notes');
       });
 
       it("save with invalid attributes", function(){
@@ -120,13 +99,17 @@ describe("PatternEditView", function(){
       });
 
       it('save with new model', function(){
-        view.model = new MyMoney.Models.Pattern({
-          match_text: 'My match text',
-          notes: 'My Notes',
-          category_id: 4,
-          subcategory_id: 6
+        view.model = new MyMoney.Models.Transaction({
+          date: formatDate((new Date()).toDateString()),
+          amount: 500,
+          memo: 'This is a memo',
+          notes: 'This is a note',
+          category_id: 3,
+          subcategory_id: 5,
+          balance: 4000,
+          reconciliation_id: 4
         });
-        view.collection = patterns;
+        view.collection = transactions;
 
         spyOn(view.model, 'isValid').and.returnValue(true);
         spyOn(view.collection, 'create');

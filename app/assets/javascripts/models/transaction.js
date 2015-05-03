@@ -1,4 +1,4 @@
-MyMoney.Models.Transaction = Backbone.Model.extend({
+MyMoney.Models.Transaction = MyMoney.Models.BaseModel.extend({
 
   name: "transaction",
 

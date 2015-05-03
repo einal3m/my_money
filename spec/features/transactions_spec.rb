@@ -71,26 +71,23 @@ feature 'Transactions', type: :feature do
     end
   end
 
-  xscenario 'User edits a transaction', js: true  do
+  scenario 'User edits a transaction', js: true  do
     visit_accounts
     click_on('My New Account')
 
     expect(page).to have_text('my transactions')
-    within 'tr', text: 'First Transaction' do
-      find('.fa-edit').click
-    end
 
-    expect(page).to have_button('save')
-    expect(page).to have_button('cancel')
+    click_on_row_with_text 'First Transaction'
+    within 'tbody' do
+      expect(page).to have_selector('.form-horizontal')
+    end
 
     click_on('cancel')
-    expect(page).not_to have_button('save')
-    expect(page).not_to have_button('cancel')
-
-    within 'tr', text: 'First Transaction' do
-      find('.fa-edit').click
+    within 'tbody' do
+      expect(page).not_to have_selector('.form-horizontal')
     end
 
+    click_on_row_with_text 'First Transaction'
     edit_date_text = (Date.today - 1.day).strftime('%-d-%b-%Y')
     fill_in 'notes', with: 'Edit Transaction'
     fill_in 'date', with: edit_date_text

@@ -1,22 +1,37 @@
 
-MyMoney.Views.TransactionRowView = Backbone.View.extend({
+MyMoney.Views.TransactionRowView = MyMoney.Views.BaseTableRowView.extend({
 
   template: "transactions/transaction_row",
   tagName: "tr",
+  className: 'clickable',
+
+  events: {
+    "click": "toggleClickable"
+  }, 
 
   initialize: function() {
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
+    this.categoryTypes = this.options.categoryTypes;
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
+
     this.category = this.categories.get(this.model.get('category_id'));
     this.subcategory = this.subcategories.get(this.model.get('subcategory_id'));
   },
-
-  render: function(){
-    this.$el.html(HandlebarsTemplates[this.template]({
-      transaction: this.model.toJSON(),
+ 
+  templateData: function(){
+    return _.extend(this.model.toJSON(), {
       category: this.category,
       subcategory: this.subcategory
-    }));
-    return this;
+    });
+  },
+
+  createEditView: function(){
+    return new MyMoney.Views.TransactionEditView({
+      model: this.model,
+      categoryTypes: this.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories
+    });
   }
+
 });

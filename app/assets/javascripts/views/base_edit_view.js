@@ -1,43 +1,31 @@
-MyMoney.Views.SubcategoryEditView = Backbone.View.extend({
+//= require ./base_view.js
 
-  tagName: "tr",
-  className: 'edit',
-  template: "categories/edit_subcategory",
- 
-  events: {
-    "click #cancel": "cancelEdit",
-    "click #save": "saveModel",
-    "click #delete": "deleteModel"
-  },
-
-  initialize: function(){
-    _.bindAll(this);
-    this.categories = this.options.categories;
-    this.categoryTypes = this.options.categoryTypes;
-    this.model.saveState();
-  },
+MyMoney.Views.BaseEditView = MyMoney.Views.BaseView.extend({
 
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template](this.templateData()));
     Backbone.Validation.bind(this);
     return this;
   },
-  
-  templateData: function(){
-    return {
-      subcategory: this.model.toJSON(),
-      allowDelete: !this.model.isNew(),
-      categories: this.categories,
-      categoryTypes: this.categoryTypes
-    };
+
+  // TODO: put this in subcategory collection
+  subcategoriesForCategory: function(category_id) {
+    if (category_id) {
+      return this.subcategories.where({category_id: category_id});
+    }
+    return null;
+  },
+
+  updateSubcategories: function() {
+    var category_id = parseInt(this.$('#category_id').val(), 10);
+    this.filteredSubcategories = this.subcategoriesForCategory(category_id);
+    var html = selectContent(this.filteredSubcategories, null, true);
+    this.$el.find('#subcategory_id').html(html);
   },
 
   saveModel: function(){
-    this.model.set({
-      category_id: parseInt(this.$('#category_id').val()),
-      name: this.$('#name').val()
-    });
-
+    this.setModelAttributes();
+    
     if(this.model.isValid(true)){
       if (this.model.isNew()){
         this.collection.create(this.model, { wait: true });

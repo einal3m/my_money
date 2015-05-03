@@ -32,6 +32,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
 	addOne: function(model){
 	    var rowView = new MyMoney.Views.TransactionRowView({
         model: model,
+        categoryTypes: this.categoryTypes,
         categories: this.categories,
         subcategories: this.subcategories
       });
@@ -52,6 +53,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     }));
     this.addAll();
     this.renderSubViews();
+    this.collection.on('add destroy change', this.render, this);
     return this;
   },
 

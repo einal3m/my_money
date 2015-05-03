@@ -38,6 +38,7 @@ MyMoney.Views.PatternIndexView = MyMoney.Views.BaseView.extend({
       subcategories: this.subcategories
     }));
     this.renderSubViews();
+    this.collection.on('add destroy change', this.render, this);
     return this;
   },
 

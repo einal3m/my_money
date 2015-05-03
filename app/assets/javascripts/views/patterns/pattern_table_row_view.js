@@ -1,4 +1,4 @@
-MyMoney.Views.PatternTableRowView = MyMoney.Views.BaseView.extend({
+MyMoney.Views.PatternTableRowView = MyMoney.Views.BaseTableRowView.extend({
 
   tagName: "tr",
   className: "clickable",
@@ -14,11 +14,6 @@ MyMoney.Views.PatternTableRowView = MyMoney.Views.BaseView.extend({
     this.categoryTypes = this.options.categoryTypes;
   },
 
-  render: function () {
-    this.$el.html(HandlebarsTemplates[this.template](this.templateData()));
-    return this;
-  },
-
   templateData: function(){
     var category = this.categories.get(this.model.get('category_id'));
     var subcategory = this.subcategories.get(this.model.get('subcategory_id'));
@@ -29,21 +24,6 @@ MyMoney.Views.PatternTableRowView = MyMoney.Views.BaseView.extend({
     });
   },
 
-  toggleClickable: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    if (this.$el.hasClass('clickable')) {
-      this.$el.removeClass('clickable');
-      this.editModel();
-    }
-  },
-
-  editModel: function(){
-    this.editView = this.createEditView();
-    this.renderEditView();
-    this.listenTo(this.editView, 'cancelEdit', this.afterEdit);
-  },
-
   createEditView: function(){
     return new MyMoney.Views.PatternEditView({
       model: this.model,
@@ -51,18 +31,6 @@ MyMoney.Views.PatternTableRowView = MyMoney.Views.BaseView.extend({
       categories: this.categories,
       subcategories: this.subcategories
     });
-  },
-
-  renderEditView: function(){
-    this.$el.after(this.editView.render().el);
-  },
-
-  afterEdit: function(){
-    this.$el.addClass('clickable');
-    if (this.model.isDestroyed()){
-      this.remove();
-    } else {
-      this.render();
-    }
   }
+
 });

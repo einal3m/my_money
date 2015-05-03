@@ -1,4 +1,4 @@
-MyMoney.Views.SubcategoryRowView = Backbone.View.extend({
+MyMoney.Views.SubcategoryRowView = MyMoney.Views.BaseTableRowView.extend({
 
   template: "categories/subcategory_row",
   tagName: "tr",
@@ -6,16 +6,11 @@ MyMoney.Views.SubcategoryRowView = Backbone.View.extend({
 
   events: {
     "click": "toggleClickable"
-  },
+  }, 
 
   initialize: function() {
     this.categories = this.options.categories;
     this.categoryTypes = this.options.categoryTypes;
-  },
-
-  render: function(){
-    this.$el.html(HandlebarsTemplates[this.template](this.templateData()));
-    return this;
   },
 
   templateData: function(){
@@ -26,22 +21,6 @@ MyMoney.Views.SubcategoryRowView = Backbone.View.extend({
     }
   },
 
-  toggleClickable: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    if (this.$el.hasClass('clickable')) {
-      this.$el.removeClass('clickable');
-      this.$el.addClass('editing');
-      this.editModel();
-    }
-  },
-
-  editModel: function(){
-    this.editView = this.createEditView();
-    this.listenTo(this.editView, 'cancel', this.editCancelled);
-    this.renderEditView();
-  },
-
   createEditView: function(){
     return new MyMoney.Views.SubcategoryEditView({
       model: this.model,
@@ -49,15 +28,6 @@ MyMoney.Views.SubcategoryRowView = Backbone.View.extend({
       categories: this.categories,
       categoryTypes: this.categoryTypes
     });
-  },
-
-  renderEditView: function(){
-    this.$el.after(this.editView.render().el);
-  },
-
-  editCancelled: function(){
-    this.$el.addClass('clickable');
-    this.$el.removeClass('editing');
   }
 
 });

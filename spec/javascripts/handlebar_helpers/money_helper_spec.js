@@ -19,7 +19,7 @@ describe("money helpers", function() {
 
     it("moneyInput creates a money input field", function(){
       var moneyInput = helpers.moneyInput('123456', 'money_id');
-      var moneyHTML = '<div class="input-group-addon">$</div><input type="text" class="form-control" name="money_id" id="money_id" value="1,234.56">'
+      var moneyHTML = '<div class="input-group"><div class="input-group-addon">$</div><input type="text" class="form-control" name="money_id" id="money_id" value="1,234.56"></div>'
       expect(moneyInput.string).toEqual(moneyHTML);
     });
   });

@@ -1,8 +1,8 @@
-MyMoney.Views.CategoryEditView = MyMoney.Views.BaseEditView.extend({
+MyMoney.Views.SubcategoryEditView = MyMoney.Views.BaseEditView.extend({
 
   tagName: "tr",
   className: 'edit',
-  template: "categories/edit_category",
+  template: "categories/edit_subcategory",
  
   events: {
     "click #cancel": "cancelEdit",
@@ -12,23 +12,25 @@ MyMoney.Views.CategoryEditView = MyMoney.Views.BaseEditView.extend({
 
   initialize: function(){
     _.bindAll(this);
+    this.categories = this.options.categories;
     this.categoryTypes = this.options.categoryTypes;
     this.model.saveState();
   },
 
   templateData: function(){
     return {
-      category: this.model.toJSON(),
-      allowDelete: !(this.model.isNew()),
+      subcategory: this.model.toJSON(),
+      allowDelete: !this.model.isNew(),
+      categories: this.categories,
       categoryTypes: this.categoryTypes
     };
   },
 
   setModelAttributes: function(){
     this.model.set({
-      category_type_id: parseInt(this.$('#category_type_id').val(), 10),
+      category_id: parseInt(this.$('#category_id').val(), 10),
       name: this.$('#name').val()
     });
   }
-  
+
 });

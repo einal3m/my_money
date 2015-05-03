@@ -26,6 +26,7 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseView.extend({
   addOne: function(model){
     var rowView = new MyMoney.Views.TransactionRowView({
       model: model,
+      categoryTypes: this.categoryTypes,
       categories: this.categories,
       subcategories: this.subcategories
     });

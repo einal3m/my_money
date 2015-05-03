@@ -29,10 +29,10 @@ Handlebars.registerHelper('accountingFormat', function(amount) {
 Handlebars.registerHelper('moneyInput', function(amount, id) {
 	value = moneyNumberFormat(centsToDollars(amount));
 
-	html = '<div class="input-group-addon">$</div><input type="text" class="form-control" name="' + id +
+	html = '<div class="input-group"><div class="input-group-addon">$</div><input type="text" class="form-control" name="' + id +
 				 '" id="' + id +
 				 '" value="' + value +
-				 '">';
+				 '"></div>';
 
 	return new Handlebars.SafeString(html);
 });

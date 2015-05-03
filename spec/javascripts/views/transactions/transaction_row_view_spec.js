@@ -1,38 +1,35 @@
-describe("PatternTableRowView", function(){
-  var view, account, categories, subcategories, categoryTypes, pattern;
+describe("CategoryRowView", function(){
+  var view, account, transaction, transactions, categories, subcategories, categoryTypes;
   beforeEach(function(){
-    account = new MyMoney.Models.Account({
-      id: 13,
-      name: 'My Account'
-    });
-
-    pattern = new MyMoney.Models.Pattern({
-      id: 12,
-      match_text: 'My match text',
-      notes: 'My Notes',
-      category_id: 4,
-      subcategory_id: 6
-    });
-
     categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
-      {id: 1, name: 'Income'},
-      {id: 2, name: 'Expense'}
-    ]);
+      {id: 1, name: 'Category Type'}
+    ]);    
     categories = new MyMoney.Collections.Categories([
       {id: 3, name: 'Category1', category_type_id: 1},
-      {id: 4, name: 'Category2', category_type_id: 2}
+      {id: 4, name: 'Category2', category_type_id: 1}      
     ]);
     subcategories = new MyMoney.Collections.Subcategories([
       {id: 5, name: 'Subcategory1', category_id: 3},
-      {id: 6, name: 'Subcategory2', category_id: 4}
+      {id: 6, name: 'Subcategory2', category_id: 4}      
     ]);
+    transaction = new MyMoney.Models.Transaction({
+      id: 7, 
+      date: formatDate((new Date()).toDateString()),
+      amount: 500,
+      memo: 'This is a memo',
+      notes: 'This is a note',
+      category_id: 3,
+      subcategory_id: 5,
+      balance: 4000,
+      reconciliation_id: 4
+    });
 
-    view = new MyMoney.Views.PatternTableRowView({
-      model: pattern,
+    view = new MyMoney.Views.TransactionRowView({
+      model: transaction,
       categoryTypes: categoryTypes,
       categories: categories,
       subcategories: subcategories
-    })
+    });
   });
 
   afterEach(function(){
@@ -40,7 +37,7 @@ describe("PatternTableRowView", function(){
   });
 
   it("initializes data", function(){
-    expect(view.model).toEqual(pattern);
+    expect(view.model).toEqual(transaction);
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
@@ -51,15 +48,17 @@ describe("PatternTableRowView", function(){
       view.render();
     });
 
-    it("displays a table row with pattern data", function(){
+    it("displays a table row with details", function(){
       expect(view.el).toEqual('tr');
 
       var columns = view.$('td');
-      expect(columns.length).toEqual(4);
-      expect(columns[0]).toContainText('My match text');
-      expect(columns[1]).toContainText('My Notes');
-      expect(columns[2]).toContainText('Category2');
-      expect(columns[3]).toContainText('Subcategory2');
+      expect(columns.length).toEqual(7);
+      expect(columns[0]).toContainText(transaction.get('date'));
+      expect(columns[1]).toContainText('This is a memo/This is a note');
+      expect(columns[1]).toContainText('Category1/Subcategory1');
+      expect(columns[2]).toContainText('R');
+      expect(columns[3]).toContainText('5.00');
+      expect(columns[5]).toContainText('$40.00');
     });
 
     it("row is clickable", function(){
@@ -70,16 +69,11 @@ describe("PatternTableRowView", function(){
       expect(view.editView).not.toBeDefined();
       view.$el.click();
       expect(view.editView).toBeDefined();
+      expect(view.editView.model).toEqual(transaction);
+      expect(view.editView.categoryTypes).toEqual(categoryTypes);
+      expect(view.editView.categories).toEqual(categories);
+      expect(view.editView.subcategories).toEqual(subcategories);
       expect(view.el).not.toHaveClass('clickable');
-    });
-  });
-
-  describe("render with no subcategory", function(){
-    it("renders successfully", function(){
-      view.model.set('subcategory_id', null);
-      view.render();
-      expect(view.el).toEqual('tr');
-      expect(view.$('td')[3]).toHaveText('');
     });
   });
 
@@ -87,6 +81,7 @@ describe("PatternTableRowView", function(){
     beforeEach(function(){
       view.render();
     });
+
     it("sets class to clickable", function(){
       expect(view.el).toHaveClass('clickable');
       expect(view.el).not.toHaveClass('editing');
@@ -98,4 +93,11 @@ describe("PatternTableRowView", function(){
       expect(view.el).not.toHaveClass('editing');
     });
   });
+
+  // function today() {
+  //   var yyyy = this.getFullYear().toString();
+  //   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+  //   var dd  = this.getDate().toString();
+  //   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+  // }
 });
