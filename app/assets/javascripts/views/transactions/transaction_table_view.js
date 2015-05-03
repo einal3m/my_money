@@ -1,4 +1,4 @@
-MyMoney.Views.TransactionTableView = MyMoney.Views.BaseView.extend({
+MyMoney.Views.TransactionTableView = MyMoney.Views.BaseTableView.extend({
 
   tagName: "div", 
   className: "transaction_table",
@@ -6,75 +6,43 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseView.extend({
   template: "transactions/transaction_table",
 
   events: {
-    "click #cancel": "removeSubView",
-    "click .fa-edit": "editTransaction",
+    "click #new": "addNewView"
   },
 
   initialize: function() {
-    this.accounts = this.options['accounts'];
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
-    this.categoryTypes = this.options['categoryTypes'];
+    this.account = this.options.account;
+    this.categoryTypes = this.options.categoryTypes;
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
   },
 
-  addAll: function(){
-    for (var i = 0; i < this.collection.length; i++) { 
-      this.addOne(this.collection.models[i]);
+  templateData: function(){
+    if (this.account) {
+      return _.extend(this.account.toJSON(), {allowNew: true});
+    } else {
+      return {allowNew: false};
     }
   },
 
-  addOne: function(model){
-    var rowView = new MyMoney.Views.TransactionRowView({
+  createTableRow: function(model){
+    return new MyMoney.Views.TransactionRowView({
       model: model,
+      account: this.account,
       categoryTypes: this.categoryTypes,
       categories: this.categories,
       subcategories: this.subcategories
     });
-    this.$el.find('tbody').append(rowView.render().el);
   },
 
-  render: function () {
-    this.$el.html(HandlebarsTemplates[this.template]());
-    this.addAll();
-    this.renderSubViews();
-    return this;
-  },
-
-  removeSubView: function() {
-    if (this.subView.rendered) {
-      this.subView.remove();
-      this.subView.rendered = false;
-    }
-    if (this.edit_row) {
-      this.edit_row.removeClass('success');
-    }
-  },
-
-  editTransaction: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (this.subView && this.subView.rendered) {
-      return;
-    }
-
-    var txn_id = e.currentTarget.getAttribute('id')
-    var txn = this.collection.get(txn_id);
-    this.edit_row = this.$el.find('#'+txn_id).closest('tr');
-    this.subView = new MyMoney.Views.TransactionEditView({
-      model: txn, 
+  createNewView: function(){
+    var newModel = new MyMoney.Models.Transaction({account_id: this.account.id});
+    this.editView = new MyMoney.Views.TransactionEditView({
+      model: newModel,
+      collection: this.collection,
+      categoryTypes: this.categoryTypes,
       categories: this.categories,
-      subcategories: this.subcategories,
-      categoryTypes: this.categoryTypes
+      subcategories: this.subcategories
     });
-    this.edit_row.after(this.subView.render().el);
-    this.edit_row.addClass('success');
-    this.subView.rendered = true;
-    this.listenTo(txn, 'sync', this.transactionSaved);
-  },
-
-  transactionSaved: function(){
-    this.trigger('transactionsUpdated');
   }
 
 });
