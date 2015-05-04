@@ -1,26 +1,3 @@
-<h1>my transactions {{newButton}} {{actionButton text='Import' id='import' icon='fa-file-text-o'}}</h1>
+<h1>my transactions {{actionButton text='Import' id='import' icon='fa-file-text-o'}}</h1>
 <div id='filter'></div>
-<div class="panel panel-default">
-  
-  <div class="panel-heading">
-    <h4>Transactions for {{account.name}} ({{account.bank}})</h4>
-  </div>
-
-  <table class="table table-responsive">
-    <thead>
-      <tr>
-        <th class="date">Date</th>
-        <th>Description</th>
-        <th class="reconciled"></th>
-        <th class="money">Money In</th>
-        <th class="money">Money Out</th>
-        <th class="money">Balance</th>
-        <th class="edit"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-    </tbody>
-  </table>
-
-</div>
+<div id='transactions-table'></div>

@@ -76,29 +76,16 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   accountTransactions: function(id) {
     var account = this.accounts.get(id);
     this.setCurrentAccount(account);
-    var router = this;
 
-    this.transactions = new MyMoney.Collections.TransactionsCollection([], {
-      account_id: id,
-      date_range: this.currentDateRange
-    });
-
-    $.when(router.transactions.fetch({ 
-      data: $.param({
-        from_date: this.currentDateRange.get('from_date'), 
-        to_date: this.currentDateRange.get('to_date') }) 
-    })).done(function () {
-      router.showView(new MyMoney.Views.TransactionsIndexView({
-        model: account,
-        accounts: router.accounts,
-        collection: router.transactions,
-        categories: router.categories,
-        subcategories: router.subcategories,
-        categoryTypes: router.categoryTypes,
-        dateRangeOptions: router.dateRangeOptions,
-        currentDateRange: router.currentDateRange
-      }));
-    });
+    this.loadView(new MyMoney.Views.TransactionsIndexView({
+      account: this.currentAccount,
+      accounts: this.accounts,
+      categoryTypes: this.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories,
+      dateRangeOptions: this.dateRangeOptions,
+      currentDateRange: this.currentDateRange
+    }));
   },
 
   currentAccountTransactions: function() {
@@ -110,9 +97,9 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     this.showView(new MyMoney.Views.ImportView({
       account: account,
       accounts: this.accounts,
-      categories: router.categories,
-      subcategories: router.subcategories,
-      categoryTypes: router.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories,
+      categoryTypes: this.categoryTypes,
     }));
   },
 

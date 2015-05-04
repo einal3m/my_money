@@ -113,10 +113,30 @@ describe('MyMoney Router', function() {
       spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex');
       router = new MyMoney.Routers.AccountsRouter();
       router.currentAccount = 'currentAccount';
-      router.accounts = 'accounts';
+      router.accounts = new MyMoney.Collections.AccountsCollection([]);
       router.categoryTypes = 'categoryTypes';
       router.categories = new MyMoney.Collections.Categories([]);
       router.subcategories = new MyMoney.Collections.Subcategories([]);
+    });
+
+    it('transactionsIndex', function(){
+      var account = 'account';
+      spyOn(MyMoney.Views.TransactionsIndexView.prototype, 'initialize').and.callThrough();
+      spyOn(router, 'loadView');
+      spyOn(router.accounts, 'get').and.returnValue(account);
+      router.accountTransactions(13);
+      expect(router.accounts.get).toHaveBeenCalledWith(13);
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.TransactionsIndexView));
+      expect(MyMoney.Views.TransactionsIndexView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.TransactionsIndexView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        account: account,
+        accounts: router.accounts,
+        categoryTypes: 'categoryTypes',
+        categories: router.categories,
+        subcategories: router.subcategories,
+        dateRangeOptions: router.dateRangeOptions,
+        currentDateRange: router.currentDateRange
+      });
     });
 
     it('patternIndex', function(){
@@ -127,7 +147,7 @@ describe('MyMoney Router', function() {
       expect(MyMoney.Views.PatternIndexView.prototype.initialize).toHaveBeenCalled();
       expect(MyMoney.Views.PatternIndexView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
         account: 'currentAccount',
-        accounts: 'accounts',
+        accounts: router.accounts,
         categoryTypes: 'categoryTypes',
         categories: router.categories,
         subcategories: router.subcategories
