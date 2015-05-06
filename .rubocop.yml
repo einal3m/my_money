@@ -1,6 +1,9 @@
 MethodLength:
   Max: 25 # reek performs these checks anyway
 
+WordArray:
+  Enabled: false
+
 # ParameterLists:
 #   Max: 4
 #   CountKeywordArgs: true
@@ -17,7 +20,7 @@ Blocks:
 
 SignalException:
   Enabled: false
-  
+
 # SpaceInsideBrackets:
 #   Enabled: false
 

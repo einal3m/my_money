@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   resources :subcategories
   resources :categories
   resources :category_types, only: [:index]
+  resources :account_types, only: [:index]
+
   post 'categories/subcategories_by_category'
   post 'reconciliations/:id/reconcile' => 'reconciliations#reconcile', as: :reconciliations_reconcile
 

@@ -1,7 +1,12 @@
 def serialize_account(account)
   attrs = JSON.parse(account.to_json)
   attrs['current_balance'] = account.current_balance.as_json
-  attrs.extract!('id', 'name', 'bank', 'starting_balance', 'starting_date', 'current_balance')
+  attrs.extract!('id', 'account_type_id', 'name', 'bank', 'starting_balance', 'starting_date', 'current_balance')
+end
+
+def serialize_account_type(account_type)
+  attrs = JSON.parse(account_type.to_json)
+  attrs.extract!('id', 'name')
 end
 
 def serialize_reconciliation(reconciliation)

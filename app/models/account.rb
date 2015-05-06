@@ -2,6 +2,7 @@
 #  Account
 #
 #  id: int, primary key
+#  account_type_id: int, foreign key
 #  name: string
 #  bank: string
 #  starting_balance: decimal
@@ -9,11 +10,13 @@
 #
 class Account < ActiveRecord::Base
   # model relationships
+  belongs_to :account_type
   has_many :transactions
   has_many :patterns
   has_many :reconciliations
 
   # validations
+  validates :account_type_id, presence: true
   validates :name, presence: true
   validates :starting_balance, presence: true, numericality: true
   validates :starting_date, presence: true
