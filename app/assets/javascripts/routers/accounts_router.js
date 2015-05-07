@@ -2,24 +2,26 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   initialize: function(options) {
     this.fetchData();
-    this.accountIndex();
   },
 
   fetchData: function(){
     var router = this;
     this.accounts = new MyMoney.Collections.AccountsCollection();
-    $.when(router.accounts.fetch()).done(function () {
-      router.setCurrentAccount();
-    });
-
-    this.categories = new MyMoney.Collections.Categories();
-    this.categories.fetch();
+    this.accountTypes = new MyMoney.Collections.AccountTypes();
     this.categoryTypes = new MyMoney.Collections.CategoryTypes();
-    this.categoryTypes.fetch();
+    this.categories = new MyMoney.Collections.Categories();
     this.subcategories = new MyMoney.Collections.Subcategories();
+    this.dateRangeOptions = new MyMoney.Collections.DateRangeOptionsCollection();
+
+    $.when(router.accounts.fetch(), router.accountTypes.fetch()).done(function () {
+      router.setCurrentAccount();
+      router.accountIndex();
+    }, this);
+
+    this.categories.fetch();
+    this.categoryTypes.fetch();
     this.subcategories.fetch();
 
-    this.dateRangeOptions = new MyMoney.Collections.DateRangeOptionsCollection();
     $.when(this.dateRangeOptions.fetch()).done(function () {
       router.setCurrentDateRange();
     });
@@ -51,11 +53,9 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
 // account routes
   accountIndex: function() {
-    var router = this;
-    $.when(router.accounts.fetch()).done(function () {
-      router.setCurrentAccount();
-      router.showView(new MyMoney.Views.AccountsIndexView({collection: router.accounts}));
-    });
+    this.loadView(new MyMoney.Views.AccountsIndexView({
+      accountTypes: this.accountTypes
+    }));
   },
 
   newAccount: function() {
@@ -99,7 +99,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       accounts: this.accounts,
       categories: this.categories,
       subcategories: this.subcategories,
-      categoryTypes: this.categoryTypes,
+      categoryTypes: this.categoryTypes
     }));
   },
 
@@ -220,12 +220,12 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       router.removeCurrentView();
       router.currentView = view;
       view.render();
-      $('#content').html(view.el)
+      $('#content').html(view.el);
     });
   },
 
   showView: function(newView) {
-    this.removeCurrentView;
+    this.removeCurrentView();
     this.currentView = newView;
     $('#content').html(this.currentView.render().el);
   },

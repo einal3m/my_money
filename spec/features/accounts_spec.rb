@@ -22,11 +22,9 @@ feature 'Accounts', type: :feature do
 
     # then I should see a list of accounts
     expect(page).to have_text('my accounts')
-    expect(page).to have_text('Account Summary')
     expect(page).to have_text('My New Account')
     expect(page).to have_text('My New Bank')
     expect(page).to have_text('Current Balance')
-    expect(page).to have_text('Net Worth')
   end
 
   scenario 'User creates a new Account', js: true do
@@ -87,7 +85,7 @@ feature 'Accounts', type: :feature do
 
   scenario 'User deletes an account', js: true do
     # given I have an account
-    FactoryGirl.create(:account, name: 'My Edit Account')
+    FactoryGirl.create(:account, name: 'My Delete Account')
 
     # when I go to the accounts index page
     visit_accounts
@@ -104,6 +102,6 @@ feature 'Accounts', type: :feature do
 
     # then I see the index page
     expect(page).to have_text('my accounts')
-    expect(page).not_to have_text('My Edit Account')
+    expect(page).not_to have_text('My Delete Account')
   end
 end

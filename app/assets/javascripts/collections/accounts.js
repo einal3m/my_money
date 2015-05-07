@@ -6,7 +6,10 @@ MyMoney.Collections.AccountsCollection = Backbone.Collection.extend({
   url: '/accounts',
 
   parse : function(resp, xhr) {
-  	return resp.accounts;
+    return resp.accounts;
   },
 
+  findByAccountType: function(accountType){
+    return new MyMoney.Collections.AccountsCollection(this.where({account_type_id: accountType.id}));
+  }
 });

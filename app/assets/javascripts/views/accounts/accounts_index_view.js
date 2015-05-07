@@ -1,35 +1,45 @@
 
-MyMoney.Views.AccountsIndexView = Backbone.View.extend({
+MyMoney.Views.AccountsIndexView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 
   className: "accounts",
 
-	template: "accounts/account_index",
+  template: "accounts/account_index",
 
   events: {
     "click #new": "newAccount"
   },
 
-	addAll: function(){
-	    for (var i = 0; i < this.collection.length; i++) { 
-	    	this.addOne(this.collection.models[i]);
-    	}
-	},
+  initialize: function(){
+    this.accountTypes = this.options.accountTypes;
+  },
 
-	addOne: function(model){
-	    var rowView = new MyMoney.Views.AccountView({model: model});
-	    this.$el.find('tbody').append(rowView.render().el);
-	},
+  fetchData: function(){
+    this.collection = new MyMoney.Collections.AccountsCollection([]);
+    return this.collection.fetch();
+  },
 
-	addNetWorth: function(){
-		var netWorthView = new MyMoney.Views.AccountsNetWorthView({collection: this.collection});
-		this.$el.find('tbody').append(netWorthView.render().el);
-	},
+  // addNetWorth: function(){
+  //   var netWorthView = new MyMoney.Views.AccountsNetWorthView({collection: this.collection});
+  //   this.$el.find('tbody').append(netWorthView.render().el);
+  // },
 
   render: function () {
+    console.log('AccountsIndexView.render');
     this.$el.html(HandlebarsTemplates[this.template]());
-    this.addAll();
-    this.addNetWorth();
+    this.accountTypes.each(function(accountType) {
+      var filteredAccounts = this.collection.findByAccountType(accountType);
+      if (filteredAccounts.length > 0) {
+        var tableView = new MyMoney.Views.AccountTypeTableView({
+          model: accountType,
+          collection: filteredAccounts,
+          accounts: this.collection
+        });
+        this.$el.find('#account-types').append(tableView.render().el);
+      }
+    }, this);
+
+    // this.addNetWorth();
     return this;
   },
 
