@@ -12,11 +12,11 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
   },
 
   initialize: function(options){
-    this.account = this.options['account'];
-    this.accounts = this.options['accounts'];
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
-    this.categoryTypes = this.options['categoryTypes'];
+    this.account = this.options.account;
+    this.accounts = this.options.accounts;
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
+    this.categoryTypes = this.options.categoryTypes;
     this.addSubView('import', new MyMoney.Views.ImportFileChooserView({account: this.account, 
                                                                accounts: this.accounts}));
     this.listenTo(this.subViews['import'], "uploadOFX", this.uploadOFX);
@@ -43,7 +43,10 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
       processData: false,
       contentType: false,
       success: function(data){
-        view.transactions = new MyMoney.Collections.TransactionsCollection(data['transactions'], { account_id: view.account.id });
+        view.transactions = new MyMoney.Collections.Transactions(
+          data.transactions,
+          { account_id: view.account.id }
+        );
         view.addSubView('import', new MyMoney.Views.ImportTransactionSelectView({
           collection: view.transactions,
           categories: view.categories,
@@ -65,7 +68,7 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
 
   uploadTransactions: function(e) {
     var view = this;
-    var txns_to_upload = new MyMoney.Collections.TransactionsCollection(
+    var txns_to_upload = new MyMoney.Collections.Transactions(
       this.transactions.where({ import: true }),
       { account_id: this.account.id }
     );
@@ -76,7 +79,7 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
   },
 
   goToTransactions: function() {
-    window.router.navigate('accounts/' + this.account.id + '/transactions', {trigger: true})
-  },
+    window.router.navigate('accounts/' + this.account.id + '/transactions', {trigger: true});
+  }
 
 });

@@ -4,7 +4,7 @@ describe("CategoryRowView", function(){
     category = new MyMoney.Models.Category({id: 3, name: 'Category1', category_type_id: 1});
     categories = new MyMoney.Collections.Categories([category]);
     var categoryType = new MyMoney.Models.CategoryType({id: 1, name: 'Category Type'});
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([categoryType]);    
+    categoryTypes = new MyMoney.Collections.CategoryTypes([categoryType]);    
 
     view = new MyMoney.Views.CategoryRowView({
       model: category,

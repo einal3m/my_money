@@ -15,7 +15,7 @@ describe("PatternEditView", function(){
     });
     patterns = new MyMoney.Collections.Patterns([pattern], {account_id: 13});
 
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
+    categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Income'},
       {id: 2, name: 'Expense'}
     ]);

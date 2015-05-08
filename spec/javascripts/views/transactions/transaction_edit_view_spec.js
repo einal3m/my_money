@@ -1,7 +1,7 @@
 describe("TransactionEditView", function(){
   var view, account, categories, subcategories, categoryTypes, transaction, transactions;
   beforeEach(function(){
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
+    categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
     ]);    
     categories = new MyMoney.Collections.Categories([
@@ -23,7 +23,7 @@ describe("TransactionEditView", function(){
       balance: 4000,
       reconciliation_id: 4
     })
-    transactions = new MyMoney.Collections.TransactionsCollection([transaction]);
+    transactions = new MyMoney.Collections.Transactions([transaction]);
 
     view = new MyMoney.Views.TransactionEditView({
       model: transaction,

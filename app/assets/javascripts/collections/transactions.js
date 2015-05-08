@@ -1,4 +1,4 @@
-MyMoney.Collections.TransactionsCollection = Backbone.Collection.extend({
+MyMoney.Collections.Transactions = Backbone.Collection.extend({
 
   model: MyMoney.Models.Transaction,
 
@@ -12,11 +12,11 @@ MyMoney.Collections.TransactionsCollection = Backbone.Collection.extend({
     if (this.action == 'reconcile') {
       return '/accounts/' + this.account_id + '/transactions/unreconciled';
     } else {
-      return '/accounts/' + this.account_id + '/transactions'
+      return '/accounts/' + this.account_id + '/transactions';
     }
   },
 
   parse : function(resp, xhr) {
-  	return resp.transactions;
+    return resp.transactions;
   }
 });

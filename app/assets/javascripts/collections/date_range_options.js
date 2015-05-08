@@ -1,5 +1,4 @@
-
-MyMoney.Collections.DateRangeOptionsCollection = Backbone.Collection.extend({
+MyMoney.Collections.DateRangeOptions = Backbone.Collection.extend({
 
   model: MyMoney.Models.DateRangeOption,
 
@@ -7,6 +6,6 @@ MyMoney.Collections.DateRangeOptionsCollection = Backbone.Collection.extend({
 
   parse : function(resp, xhr) {
     return resp.date_range_options;
-  },
+  }
 
 });

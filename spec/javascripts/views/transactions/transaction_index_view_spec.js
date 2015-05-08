@@ -7,7 +7,7 @@ describe("TransactionIndexView", function(){
     });
 
     accounts = new MyMoney.Collections.Accounts([account]);
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([]);
+    categoryTypes = new MyMoney.Collections.CategoryTypes([]);
     categories = new MyMoney.Collections.Categories([]);
     subcategories = new MyMoney.Collections.Subcategories([]);
     currentDateRange = new MyMoney.Models.DateRangeOption({
@@ -16,7 +16,7 @@ describe("TransactionIndexView", function(){
       from_date: '1-Jan-2015',
       to_date: '31-Jan-2015'
     });
-    dateRangeOptions = new MyMoney.Collections.DateRangeOptionsCollection([currentDateRange]);
+    dateRangeOptions = new MyMoney.Collections.DateRangeOptions([currentDateRange]);
     
     transaction = new MyMoney.Models.Transaction({
       id: 7,
@@ -30,7 +30,7 @@ describe("TransactionIndexView", function(){
       balance: 4000,
       reconciliation_id: 4
     });
-    transactions = new MyMoney.Collections.TransactionsCollection([transaction]);
+    transactions = new MyMoney.Collections.Transactions([transaction]);
 
     view = new MyMoney.Views.TransactionsIndexView({
       account: account,
@@ -60,13 +60,13 @@ describe("TransactionIndexView", function(){
 
   describe('fetchData', function(){
     it('gets transaction data for account', function(){
-      spyOn(MyMoney.Collections.TransactionsCollection.prototype, 'initialize').and.callThrough();
-      spyOn(MyMoney.Collections.TransactionsCollection.prototype, 'fetch');
+      spyOn(MyMoney.Collections.Transactions.prototype, 'initialize').and.callThrough();
+      spyOn(MyMoney.Collections.Transactions.prototype, 'fetch');
 
       view.fetchData();
 
-      expect(MyMoney.Collections.TransactionsCollection.prototype.initialize).toHaveBeenCalledWith([], {account_id: 13})
-      expect(MyMoney.Collections.TransactionsCollection.prototype.fetch).toHaveBeenCalled();
+      expect(MyMoney.Collections.Transactions.prototype.initialize).toHaveBeenCalledWith([], {account_id: 13})
+      expect(MyMoney.Collections.Transactions.prototype.fetch).toHaveBeenCalled();
     });
   });
 

@@ -2,7 +2,7 @@ describe("CategoryTableView", function(){
   var view, categories, subcategories, categoryType, categoryTypes;
   beforeEach(function(){
     categoryType = new MyMoney.Models.CategoryType({id: 1, name: 'Category Type'});
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([categoryType]);
+    categoryTypes = new MyMoney.Collections.CategoryTypes([categoryType]);
 
     filteredCategories = new MyMoney.Collections.Categories([
       {id: 3, name: 'Category1', category_type_id: 1},

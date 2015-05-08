@@ -10,13 +10,13 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
   },
 
   initialize: function(options){
-    this.account = this.options['account'];
-    this.accounts = this.options['accounts'];
+    this.account = this.options.account;
+    this.accounts = this.options.accounts;
     this.get_this_reconciliation();
     this.addSubView('panel1', new MyMoney.Views.ReconciliationNewView({model: this.model, 
                                                                account: this.account}));
     this.addSubView('panel2', new MyMoney.Views.ReconciliationHistoryView({collection: this.collection}));
-    this.listenTo(this.subViews['panel1'], "startReconcile", this.startReconcile);
+    this.listenTo(this.subViews.panel1, "startReconcile", this.startReconcile);
   },
 
   get_this_reconciliation: function() {
@@ -39,7 +39,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
   },
 
   get_new_reconciliation: function() {
-    this.model = new MyMoney.Models.Reconciliation;
+    this.model = new MyMoney.Models.Reconciliation();
     this.model.set({account_id: this.account.id});
   },
 
@@ -88,17 +88,21 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
     var id = e.currentTarget.id;
     var model = this.transactions.get(id);
 
-    this.update_reconciliation_balance(model.get('amount'), checked)
+    this.update_reconciliation_balance(model.get('amount'), checked);
     model.set('reconciled', checked);
     this.checkDone();
   },
 
   startReconcile: function() {
     var that = this;
-    this.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: account.id, action: 'reconcile'});
+    this.transactions = new MyMoney.Collections.Transactions(
+      [],
+      {account_id: account.id, action: 'reconcile'}
+    );
     $.when(this.transactions.fetch()).done(function () {
       that.set_reconciled_state();
-      that.addSubView('panel2', new MyMoney.Views.ReconciliationTransactionsView({model: that.model, collection: that.transactions}));
+      that.addSubView('panel2', new MyMoney.Views.ReconciliationTransactionsView({model: that.model,
+                                collection: that.transactions}));
       that.addSubView('panel1', new MyMoney.Views.ReconciliationPanelView({model: that.model, 
                                 account: that.account, 
                                 reconciliation_balance: that.reconciliation_balance,
@@ -109,12 +113,12 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
   },
 
   checkDone: function() {
-    var done = (this.balance_difference == 0) && (this.reconciled_transactions().length > 0) 
+    var done = (this.balance_difference === 0) && (this.reconciled_transactions().length > 0);
     this.$('#done').prop('disabled', !done);
   },
 
   reconciled_transactions: function() {
-    var transactions = new MyMoney.Collections.TransactionsCollection();
+    var transactions = new MyMoney.Collections.Transactions();
     for (var i = 0; i < this.transactions.length; i++) { 
       var transaction = this.transactions.models[i];
       if (transaction.get('reconciled')) {
@@ -126,7 +130,7 @@ MyMoney.Views.ReconciliationView = MyMoney.Views.BaseView.extend({
   },
 
   goToAccount: function() {
-      window.router.navigate('accounts/' + this.model.get('account_id') + '/show', {trigger: true})
+      window.router.navigate('accounts/' + this.model.get('account_id') + '/show', {trigger: true});
   },
 
   finishReconcile: function() {

@@ -22,34 +22,12 @@ if (obj[key] === value) return;
 checking app/assets/javascripts/collections/account_types.js... OK
 checking app/assets/javascripts/collections/accounts.js... OK
 checking app/assets/javascripts/collections/categories.js... OK
-checking app/assets/javascripts/collections/category_types.js... 2 errors:
-
-Lint at line 9 character 4: Extra comma.
-},
-
-Lint at line 21 character 4: Extra comma.
-},
-
-checking app/assets/javascripts/collections/date_range_options.js... 1 error:
-
-Lint at line 10 character 4: Extra comma.
-},
-
+checking app/assets/javascripts/collections/category_types.js... OK
+checking app/assets/javascripts/collections/date_range_options.js... OK
 checking app/assets/javascripts/collections/patterns.js... OK
-checking app/assets/javascripts/collections/reconciliations.js... 1 error:
-
-Lint at line 15 character 2: Mixed spaces and tabs.
-return resp.reconciliations;
-
+checking app/assets/javascripts/collections/reconciliations.js... OK
 checking app/assets/javascripts/collections/subcategories.js... OK
-checking app/assets/javascripts/collections/transactions.js... 2 errors:
-
-Lint at line 15 character 60: Missing semicolon.
-return '/accounts/' + this.account_id + '/transactions'
-
-Lint at line 20 character 2: Mixed spaces and tabs.
-return resp.transactions;
-
+checking app/assets/javascripts/collections/transactions.js... OK
 checking app/assets/javascripts/helpers/button_helper.js... 11 errors:
 
 Lint at line 9 character 29: ['text'] is better written in dot notation.
@@ -465,37 +443,10 @@ this.subcategories = this.options['subcategories'];
 Lint at line 8 character 39: ['categoryTypes'] is better written in dot notation.
 this.categoryTypes = this.options['categoryTypes'];
 
-checking app/assets/javascripts/views/import/import_view.js... 10 errors:
+checking app/assets/javascripts/views/import/import_view.js... 1 error:
 
-Lint at line 15 character 33: ['account'] is better written in dot notation.
-this.account = this.options['account'];
-
-Lint at line 16 character 34: ['accounts'] is better written in dot notation.
-this.accounts = this.options['accounts'];
-
-Lint at line 17 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 18 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 19 character 39: ['categoryTypes'] is better written in dot notation.
-this.categoryTypes = this.options['categoryTypes'];
-
-Lint at line 46 character 130: Line too long.
-view.transactions = new MyMoney.Collections.TransactionsCollection(data['transactions'], { account_id: view.account.id });
-
-Lint at line 46 character 81: ['transactions'] is better written in dot notation.
-view.transactions = new MyMoney.Collections.TransactionsCollection(data['transactions'], { account_id: view.account.id });
-
-Lint at line 69 character 33: Expected an identifier and instead saw 'import' (a reserved word).
+Lint at line 72 character 33: Expected an identifier and instead saw 'import' (a reserved word).
 this.transactions.where({ import: true }),
-
-Lint at line 79 character 93: Missing semicolon.
-window.router.navigate('accounts/' + this.account.id + '/transactions', {trigger: true})
-
-Lint at line 80 character 4: Extra comma.
-},
 
 checking app/assets/javascripts/views/patterns/pattern_edit_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_index_view.js... OK
@@ -531,62 +482,13 @@ Backbone.history.history.back()
 checking app/assets/javascripts/views/reconciliations/reconciliation_row_view.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_transaction_row.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_transactions_view.js... OK
-checking app/assets/javascripts/views/reconciliations/reconciliation_view.js... 10 errors:
-
-Lint at line 13 character 33: ['account'] is better written in dot notation.
-this.account = this.options['account'];
-
-Lint at line 14 character 34: ['accounts'] is better written in dot notation.
-this.accounts = this.options['accounts'];
-
-Lint at line 19 character 33: ['panel1'] is better written in dot notation.
-this.listenTo(this.subViews['panel1'], "startReconcile", this.startReconcile);
-
-Lint at line 42 character 51: Missing '()' invoking a constructor.
-this.model = new MyMoney.Models.Reconciliation;
-
-Lint at line 91 character 69: Missing semicolon.
-this.update_reconciliation_balance(model.get('amount'), checked)
-
-Lint at line 98 character 122: Line too long.
-this.transactions = new MyMoney.Collections.TransactionsCollection([], {account_id: account.id, action: 'reconcile'});
-
-Lint at line 101 character 134: Line too long.
-that.addSubView('panel2', new MyMoney.Views.ReconciliationTransactionsView({model: that.model, collection: that.transactions}));
-
-Lint at line 112 character 41: Use '===' to compare with '0'.
-var done = (this.balance_difference == 0) && (this.reconciled_transactions().length > 0)
-
-Lint at line 112 character 93: Missing semicolon.
-var done = (this.balance_difference == 0) && (this.reconciled_transactions().length > 0)
-
-Lint at line 129 character 100: Missing semicolon.
-window.router.navigate('accounts/' + this.model.get('account_id') + '/show', {trigger: true})
-
+checking app/assets/javascripts/views/reconciliations/reconciliation_view.js... OK
 checking app/assets/javascripts/views/reports/bar_chart_view.js... 1 error:
 
 Lint at line 3 character 40: Missing semicolon.
 bar_chart(this.model, '#bar_chart')
 
-checking app/assets/javascripts/views/reports/category_report_view.js... 7 errors:
-
-Lint at line 13 character 34: ['accounts'] is better written in dot notation.
-this.accounts = this.options['accounts'];
-
-Lint at line 14 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 15 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 16 character 39: ['categoryTypes'] is better written in dot notation.
-this.categoryTypes = this.options['categoryTypes'];
-
-Lint at line 17 character 42: ['dateRangeOptions'] is better written in dot notation.
-this.dateRangeOptions = this.options['dateRangeOptions'];
-
-Lint at line 18 character 42: ['currentDateRange'] is better written in dot notation.
-this.currentDateRange = this.options['currentDateRange'];
+checking app/assets/javascripts/views/reports/category_report_view.js... 1 error:
 
 Lint at line 21 character 48: ['category_id'] is better written in dot notation.
 this.model.set('category_id', this.options['category_id']);
@@ -657,35 +559,10 @@ checking app/assets/javascripts/views/reports/report_category_row_view.js... OK
 checking app/assets/javascripts/views/reports/report_subcategory_row_view.js... OK
 checking app/assets/javascripts/views/reports/report_total_row_view.js... OK
 checking app/assets/javascripts/views/reports/report_view.js... OK
-checking app/assets/javascripts/views/reports/subcategory_report_view.js... 8 errors:
-
-Lint at line 13 character 34: ['accounts'] is better written in dot notation.
-this.accounts = this.options['accounts'];
-
-Lint at line 14 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 15 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 16 character 39: ['categoryTypes'] is better written in dot notation.
-this.categoryTypes = this.options['categoryTypes'];
-
-Lint at line 17 character 42: ['dateRangeOptions'] is better written in dot notation.
-this.dateRangeOptions = this.options['dateRangeOptions'];
-
-Lint at line 18 character 42: ['currentDateRange'] is better written in dot notation.
-this.currentDateRange = this.options['currentDateRange'];
-
-Lint at line 21 character 51: ['subcategory_id'] is better written in dot notation.
-this.model.set('subcategory_id', this.options['subcategory_id']);
-
-Lint at line 22 character 48: ['category_id'] is better written in dot notation.
-this.model.set('category_id', this.options['category_id']);
-
+checking app/assets/javascripts/views/reports/subcategory_report_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_edit_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_row_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_table_view.js... OK
 checking app/assets/javascripts/views/transactions/transactions_index_view.js... OK
 
-Found 186 errors.
+Found 147 errors.

@@ -1,7 +1,7 @@
 describe("CategoryRowView", function(){
   var view, account, transaction, transactions, categories, subcategories, categoryTypes;
   beforeEach(function(){
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
+    categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
     ]);    
     categories = new MyMoney.Collections.Categories([

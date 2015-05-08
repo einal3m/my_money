@@ -11,7 +11,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     this.categoryTypes = new MyMoney.Collections.CategoryTypes();
     this.categories = new MyMoney.Collections.Categories();
     this.subcategories = new MyMoney.Collections.Subcategories();
-    this.dateRangeOptions = new MyMoney.Collections.DateRangeOptionsCollection();
+    this.dateRangeOptions = new MyMoney.Collections.DateRangeOptions();
 
     $.when(router.accounts.fetch(), router.accountTypes.fetch()).done(function () {
       router.setCurrentAccount();
@@ -107,7 +107,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   newReconciliation: function(account_id) {
     var router = this;
     account = this.accounts.get(account_id);
-    reconciliations = new MyMoney.Collections.ReconciliationsCollection([], {account_id: account.id});
+    reconciliations = new MyMoney.Collections.Reconciliations([], {account_id: account.id});
     
     $.when(reconciliations.fetch()).done(function () {
       router.showView(new MyMoney.Views.ReconciliationView({account: account, 

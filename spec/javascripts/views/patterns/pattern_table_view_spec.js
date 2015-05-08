@@ -9,7 +9,7 @@ describe("PatternTableView", function(){
       category_id: 4,
       subcategory_id: 6
     }], { account_id: 17 });
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
+    categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Income'},
       {id: 2, name: 'Expense'}
     ]);

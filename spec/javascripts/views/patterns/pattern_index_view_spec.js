@@ -12,7 +12,7 @@ describe("PatternIndexView", function(){
     });
 
     accounts = new MyMoney.Collections.Accounts([account]);
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([]);
+    categoryTypes = new MyMoney.Collections.CategoryTypes([]);
     categories = new MyMoney.Collections.Categories([]);
     subcategories = new MyMoney.Collections.Subcategories([]);
     patterns = new MyMoney.Collections.Patterns([pattern]);

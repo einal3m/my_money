@@ -14,7 +14,7 @@ describe("PatternTableRowView", function(){
       subcategory_id: 6
     });
 
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
+    categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Income'},
       {id: 2, name: 'Expense'}
     ]);

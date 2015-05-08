@@ -1,7 +1,7 @@
 describe("CategoryEditView", function(){
   var view, account, categories, subcategories, categoryTypes, pattern, patterns;
   beforeEach(function(){
-    categoryTypes = new MyMoney.Collections.CategoryTypesCollection([
+    categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Income'},
       {id: 2, name: 'Expense'}
     ]);

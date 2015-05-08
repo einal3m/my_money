@@ -10,15 +10,15 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
   },
 
   initialize: function() {
-    this.accounts = this.options['accounts'];
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
-    this.categoryTypes = this.options['categoryTypes'];
-    this.dateRangeOptions = this.options['dateRangeOptions'];
-    this.currentDateRange = this.options['currentDateRange'];
+    this.accounts = this.options.accounts;
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
+    this.categoryTypes = this.options.categoryTypes;
+    this.dateRangeOptions = this.options.dateRangeOptions;
+    this.currentDateRange = this.options.currentDateRange;
 
     this.model = new MyMoney.Models.Report({}, {reportName: 'category'});
-    this.model.set('category_id', this.options['category_id']);
+    this.model.set('category_id', this.options.category_id);
   },
 
   render: function () {
@@ -46,7 +46,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
           from_date: this.currentDateRange.get('from_date'), 
           to_date: this.currentDateRange.get('to_date') }) 
       })).done(function () {
-        view.transactions = new MyMoney.Collections.TransactionsCollection(
+        view.transactions = new MyMoney.Collections.Transactions(
           view.model.get('transactions')
         );
         var subView = view.addSubView('transaction_table', new MyMoney.Views.TransactionTableView({

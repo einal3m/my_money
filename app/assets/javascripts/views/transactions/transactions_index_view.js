@@ -20,7 +20,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
   },
 
   fetchData: function(){
-    this.collection = new MyMoney.Collections.TransactionsCollection([], {account_id: this.account.id});
+    this.collection = new MyMoney.Collections.Transactions([], {account_id: this.account.id});
     return this.collection.fetch({ 
       data: $.param({
         from_date: this.currentDateRange.get('from_date'), 

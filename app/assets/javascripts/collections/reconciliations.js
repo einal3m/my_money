@@ -1,5 +1,5 @@
 
-MyMoney.Collections.ReconciliationsCollection = Backbone.Collection.extend({
+MyMoney.Collections.Reconciliations = Backbone.Collection.extend({
 
   model: MyMoney.Models.Reconciliation,
 
@@ -12,7 +12,7 @@ MyMoney.Collections.ReconciliationsCollection = Backbone.Collection.extend({
   },
 
   parse : function(resp, xhr) {
-  	return resp.reconciliations;
+    return resp.reconciliations;
   }
 
 });
