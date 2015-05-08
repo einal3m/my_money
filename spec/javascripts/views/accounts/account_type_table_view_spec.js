@@ -2,10 +2,10 @@ describe("AccountTypeTableView", function(){
   var view, accounts, filteredAccounts, accountType;
   beforeEach(function(){
     accountType = new MyMoney.Models.AccountType({id: 2, name: 'Account Type 2'});
-    filteredAccounts = new MyMoney.Collections.AccountsCollection([
+    filteredAccounts = new MyMoney.Collections.Accounts([
       {id: 5, name: 'Account C', account_type_id: 2}
     ]);
-    accounts = new MyMoney.Collections.AccountsCollection([
+    accounts = new MyMoney.Collections.Accounts([
       {id: 3, name: 'Account A', account_type_id: 1},
       {id: 4, name: 'Account B', account_type_id: 1},
       {id: 5, name: 'Account C', account_type_id: 2},

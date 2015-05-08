@@ -1,5 +1,5 @@
 
-MyMoney.Collections.AccountsCollection = Backbone.Collection.extend({
+MyMoney.Collections.Accounts = Backbone.Collection.extend({
 
   model: MyMoney.Models.Account,
 
@@ -10,6 +10,6 @@ MyMoney.Collections.AccountsCollection = Backbone.Collection.extend({
   },
 
   findByAccountType: function(accountType){
-    return new MyMoney.Collections.AccountsCollection(this.where({account_type_id: accountType.id}));
+    return new MyMoney.Collections.Accounts(this.where({account_type_id: accountType.id}));
   }
 });

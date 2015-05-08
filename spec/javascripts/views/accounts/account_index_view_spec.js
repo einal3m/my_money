@@ -6,7 +6,7 @@ describe("AccountsIndexView", function(){
       {id: 2, name: 'Account Type 2'},
       {id: 3, name: 'Account Type 3'}
     ]);
-    accounts = new MyMoney.Collections.AccountsCollection([
+    accounts = new MyMoney.Collections.Accounts([
       {id: 3, name: 'Account A', account_type_id: 1},
       {id: 4, name: 'Account B', account_type_id: 1},
       {id: 5, name: 'Account C', account_type_id: 3},
@@ -30,13 +30,13 @@ describe("AccountsIndexView", function(){
 
   describe('fetchData', function(){
     it('gets account data', function(){
-      spyOn(MyMoney.Collections.AccountsCollection.prototype, 'initialize').and.callThrough();
-      spyOn(MyMoney.Collections.AccountsCollection.prototype, 'fetch');
+      spyOn(MyMoney.Collections.Accounts.prototype, 'initialize').and.callThrough();
+      spyOn(MyMoney.Collections.Accounts.prototype, 'fetch');
 
       view.fetchData();
 
-      expect(MyMoney.Collections.AccountsCollection.prototype.initialize).toHaveBeenCalledWith([])
-      expect(MyMoney.Collections.AccountsCollection.prototype.fetch).toHaveBeenCalled();
+      expect(MyMoney.Collections.Accounts.prototype.initialize).toHaveBeenCalledWith([])
+      expect(MyMoney.Collections.Accounts.prototype.fetch).toHaveBeenCalled();
     });
   });
 

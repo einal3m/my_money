@@ -115,7 +115,7 @@ describe('MyMoney Router', function() {
       router = new MyMoney.Routers.AccountsRouter();
       router.currentAccount = 'currentAccount';
       router.accountTypes = new MyMoney.Collections.AccountTypes([]);
-      router.accounts = new MyMoney.Collections.AccountsCollection([]);
+      router.accounts = new MyMoney.Collections.Accounts([]);
       router.categoryTypes = 'categoryTypes';
       router.categories = new MyMoney.Collections.Categories([]);
       router.subcategories = new MyMoney.Collections.Subcategories([]);

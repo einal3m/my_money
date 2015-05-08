@@ -6,7 +6,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   fetchData: function(){
     var router = this;
-    this.accounts = new MyMoney.Collections.AccountsCollection();
+    this.accounts = new MyMoney.Collections.Accounts();
     this.accountTypes = new MyMoney.Collections.AccountTypes();
     this.categoryTypes = new MyMoney.Collections.CategoryTypes();
     this.categories = new MyMoney.Collections.Categories();

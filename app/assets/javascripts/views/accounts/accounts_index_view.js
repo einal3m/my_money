@@ -15,7 +15,7 @@ MyMoney.Views.AccountsIndexView = MyMoney.Views.BaseView.extend({
   },
 
   fetchData: function(){
-    this.collection = new MyMoney.Collections.AccountsCollection([]);
+    this.collection = new MyMoney.Collections.Accounts([]);
     return this.collection.fetch();
   },
 

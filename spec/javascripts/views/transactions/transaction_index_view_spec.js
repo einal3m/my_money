@@ -6,7 +6,7 @@ describe("TransactionIndexView", function(){
       name: 'My Account'
     });
 
-    accounts = new MyMoney.Collections.AccountsCollection([account]);
+    accounts = new MyMoney.Collections.Accounts([account]);
     categoryTypes = new MyMoney.Collections.CategoryTypesCollection([]);
     categories = new MyMoney.Collections.Categories([]);
     subcategories = new MyMoney.Collections.Subcategories([]);
