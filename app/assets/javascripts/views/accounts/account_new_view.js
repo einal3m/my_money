@@ -25,6 +25,7 @@ MyMoney.Views.AccountNewView = Backbone.View.extend({
 
     this.model.set({name: this.$('#name').val()});
     this.model.set({bank: this.$('#bank').val()});
+    this.model.set({account_type_id: 1});
     var starting_balance = dollarsToCents(this.$('#starting_balance').val());
     this.model.set({starting_balance: starting_balance});
     this.model.set({starting_date: this.$('#starting_date').val()});

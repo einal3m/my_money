@@ -17,8 +17,7 @@ feature 'Accounts', type: :feature do
     # given I have an account
     FactoryGirl.create(:account, name: 'My New Account', bank: 'My New Bank')
 
-    # when I go to the accounts index page
-    visit '/my_money'
+    start_my_money
 
     # then I should see a list of accounts
     expect(page).to have_text('my accounts')
@@ -28,8 +27,7 @@ feature 'Accounts', type: :feature do
   end
 
   scenario 'User creates a new Account', js: true do
-    # when I go to the accounts index page
-    visit_accounts
+    start_my_money
 
     # and click on the new button
     click_on('new')
@@ -58,8 +56,7 @@ feature 'Accounts', type: :feature do
     # given I have an account
     FactoryGirl.create(:account, name: 'My Edit Account')
 
-    # when I go to the accounts index page
-    visit_accounts
+    start_my_money
 
     # and I click on the show button for the account
     click_on('show')
@@ -87,8 +84,7 @@ feature 'Accounts', type: :feature do
     # given I have an account
     FactoryGirl.create(:account, name: 'My Delete Account')
 
-    # when I go to the accounts index page
-    visit_accounts
+    start_my_money
 
     # and I click on show
     click_on('show')

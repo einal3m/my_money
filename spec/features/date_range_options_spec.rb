@@ -10,7 +10,7 @@ feature 'DateRangeOptions', type: :feature do
     DatabaseCleaner.clean
   end
 
-  scenario 'User views the date range options' do
+  xscenario 'User views the date range options' do
     visit_date_range_options
 
     within 'tr', text: 'First Date Range' do
@@ -23,7 +23,7 @@ feature 'DateRangeOptions', type: :feature do
     expect(page).to have_selector('form#new_date_range_option')
   end
 
-  scenario 'User adds a new date range option' do
+  xscenario 'User adds a new date range option' do
     visit_date_range_options
 
     click_on '+ New'
@@ -38,7 +38,7 @@ feature 'DateRangeOptions', type: :feature do
     expect(page).to have_text('successfully created')
   end
 
-  scenario 'user updates a date range option' do
+  xscenario 'user updates a date range option' do
     visit_date_range_options
 
     within 'tr', text: 'Second Date Range'  do
@@ -67,7 +67,7 @@ feature 'DateRangeOptions', type: :feature do
     expect(page).to have_text('successfully updated')
   end
 
-  scenario 'User deletes a date range option', js: true do
+  xscenario 'User deletes a date range option', js: true do
     visit_date_range_options
 
     within('tr', text: 'First Date Range') do

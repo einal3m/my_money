@@ -15,7 +15,6 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
     $.when(router.accounts.fetch(), router.accountTypes.fetch()).done(function () {
       router.setCurrentAccount();
-      router.accountIndex();
     }, this);
 
     this.categories.fetch();
@@ -211,6 +210,17 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   reportIncomeExpenseBar: function() {
     this.showView(new MyMoney.Views.IncomeExpenseBarReportView());
     this.currentView.updateReport();
+  },
+
+// header + footer
+  loadHeader: function(){
+    this.header = new MyMoney.Views.HeaderView();
+    $('#header').html(this.header.render().el);
+  },
+
+  loadFooter: function(){
+    this.footer = new MyMoney.Views.FooterView();
+    $('#footer').html(this.footer.render().el);
   },
 
 // utilities 

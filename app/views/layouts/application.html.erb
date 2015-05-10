@@ -7,10 +7,17 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-	<%= render 'layouts/header' %>
+  <div id='header'></div>
 	<div class="container">
-		<%= yield %>
+    <div id="content"></div>
+
+    <script type="text/javascript">
+        $(function() {
+            MyMoney.init();
+        });
+    </script>
+
 	</div>
-	<%= render 'layouts/footer' %>
+  <div id='footer'></div>
 </body>
 </html>

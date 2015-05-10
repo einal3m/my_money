@@ -2,6 +2,7 @@ require 'rails_helper'
 
 feature 'Patterns', type: :feature, js: true do
   before :each do
+    # create_accounts
     a1 = FactoryGirl.create(:account, name: 'My First Account')
     FactoryGirl.create(:pattern, account: a1, match_text: 'Pattern Spec Match 1')
     a2 = FactoryGirl.create(:account, name: 'My Second Account')
@@ -17,6 +18,7 @@ feature 'Patterns', type: :feature, js: true do
   end
 
   scenario 'User views the patterns list for an account' do
+    start_my_money
     visit_patterns
 
     expect(page).to have_select('account_id', selected: 'My First Account')
@@ -27,51 +29,39 @@ feature 'Patterns', type: :feature, js: true do
   end
 
   scenario 'User creates a new Pattern', js: true do
+    start_my_money
     visit_patterns
-    click_on 'new'
 
-    expect(page).to have_selector('.form-horizontal')
+    pattern_params = {
+      match_text: 'My Match Text',
+      notes: 'New Note',
+      category: 'My Test Category',
+      subcategory: 'My Test Subcategory'
+    }
 
-    fill_in 'match_text', with: 'My Match Text'
-    fill_in 'notes', with: 'New Note'
-    select 'My Test Category', from: 'category_id'
-    select 'My Test Subcategory', from: 'subcategory_id'
-
-    click_on 'save'
-
-    expect(page).to have_text('My Match Text')
-    expect(page).to have_text('New Note')
+    create_pattern(pattern_params)
+    verify_pattern(pattern_params)
   end
 
   scenario 'User deletes a Pattern', js: true do
+    start_my_money
     visit_patterns
 
-    click_on_row_with_text 'Pattern Spec Match 1'
-    expect(page).to have_selector('.form-horizontal')
-
-    click_on 'delete'
-    confirm_alert
-
-    expect(page).not_to have_text('Pattern Spec Match 1')
+    delete_pattern('Pattern Spec Match 1')
   end
 
   scenario 'User edits a pattern', js: true do
+    start_my_money
     visit_patterns
 
-    click_on_row_with_text 'Pattern Spec Match 1'
-    expect(page).to have_selector('.form-horizontal')
-
-    fill_in 'match_text', with: 'New Match Text'
-    fill_in 'notes', with: 'New Notes'
-    select 'Another Test Category', from: 'category_id'
-    select 'Another Test Subcategory', from: 'subcategory_id'
-
-    click_on 'save'
-
-    within 'tr', text: 'New Match Text' do
-      expect(page).to have_text('New Notes')
-      expect(page).to have_text('Another Test Category')
-      expect(page).to have_text('Another Test Subcategory')
-    end
+    text = 'Pattern Spec Match 1'
+    pattern_params = {
+      match_text: 'Edit Match Text',
+      notes: 'Edit Notes',
+      category: 'Another Test Category',
+      subcategory: 'Another Test Subcategory'
+    }
+    edit_pattern(text, pattern_params)
+    verify_pattern(pattern_params)
   end
 end

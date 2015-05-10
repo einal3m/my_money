@@ -17,6 +17,7 @@ feature 'Reports', type: :feature do
   end
 
   scenario 'User views the categories report', js: true do
+    start_my_money
     visit_report 'Category Report'
 
     expect(page).to have_text('category report')
@@ -51,6 +52,7 @@ feature 'Reports', type: :feature do
   end
 
   scenario 'User views the sub-categories report', js: true do
+    start_my_money
     visit_report 'Subcategory Report'
 
     expect(page).to have_text('subcategory report')

@@ -14,7 +14,10 @@ window.MyMoney = {
 
     init: function() {
         window.router = new MyMoney.Routers.AccountsRouter();
+        window.router.loadHeader();
+        window.router.loadFooter();
         Backbone.history.start();
+        
     }
 };
 
