@@ -52,6 +52,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'jasmine'
   gem 'jslint_on_rails'
+  gem 'rubocop'
 end
 
 group :test do
