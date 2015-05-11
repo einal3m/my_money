@@ -1,21 +1,20 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+// Pie chart, bar chart and line chart using d3.js
 
-function pie_chart(data, labels, links, total, class_name) {
+function pie_chart(data, labels, class_name) {
 
 // pie dimensions
   var width = 500,
-  	  height = 350,
-  	  outerRadius = 120,
-  	  innerRadius = 40,
-  	  color = d3.scale.category20(),
-  	  pie = d3.layout.pie().sort(null),
-  	  arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+      height = 350,
+      outerRadius = 120,
+      innerRadius = 40,
+      color = d3.scale.category20(),
+      pie = d3.layout.pie().sort(null),
+      arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
 // main svg container
   var vis = d3.select(class_name).append("svg")
-  	.attr("width", width)
-  	.attr("height", height);
+    .attr("width", width)
+    .attr("height", height);
 
 // GROUP FOR CENTER TEXT  
 var center_group = vis.append("g")
@@ -74,8 +73,8 @@ arcs.append("path")
       });
 
 // add text for each group
-	arcs.append("text")
-	  .attr("transform", function(d) {
+  arcs.append("text")
+    .attr("transform", function(d) {
         var c = arc.centroid(d);
         return "translate(" + c[0]*1.7 +"," + c[1]*1.7 + ")";
        })
@@ -86,19 +85,19 @@ arcs.append("path")
           return -10;
         }
       })
-  	  .attr("class", "chart-data-amount")
-  	  .attr("text-anchor", function(d){
+      .attr("class", "chart-data-amount")
+      .attr("text-anchor", function(d){
         if ( (d.startAngle+d.endAngle)/2 < Math.PI ){
           return "beginning";
         } else {
           return "end";
         }})
-  	  .attr("display", function(d) { return d.value > 1 ? null : "none"; })
-  	  .text(function(d, i) { return "$" + (d.value/100.0).toFixed(2); });
+      .attr("display", function(d) { return d.value > 1 ? null : "none"; })
+      .text(function(d, i) { return "$" + (d.value/100.0).toFixed(2); });
 
 // add text for each group
-	arcs.append("text")
-	  .attr("transform", function(d) {
+  arcs.append("text")
+    .attr("transform", function(d) {
         var c = arc.centroid(d);
         return "translate(" + c[0]*1.7 +"," + c[1]*1.7 + ")";
        })
@@ -109,15 +108,15 @@ arcs.append("path")
           return 5;
         }
       })
-  	  .attr("class", "pie-chart-data-label")
-  	  .attr("text-anchor", function(d){
+      .attr("class", "pie-chart-data-label")
+      .attr("text-anchor", function(d){
         if ( (d.startAngle+d.endAngle)/2 < Math.PI ){
           return "beginning";
         } else {
           return "end";
         }})
-  	  .attr("display", function(d) { return d.value > 1 ? null : "none"; })
-  	  .text(function(d, i) { return labels[i]; });
+      .attr("display", function(d) { return d.value > 1 ? null : "none"; })
+      .text(function(d, i) { return labels[i]; });
 }
 
 //
@@ -143,25 +142,25 @@ function bar_chart(data, class_name) {
       bar_x_margin = 50,
       bar_y_margin = 50;
   var bar_width = 60.0;
-  var line = (data[0].length == 3); 
+  var hasLineData = (data[0].length == 3); 
       
   // create scale for y 
   var y_scale = d3.scale.linear()
     .domain([
           d3.min(data, function(d) {
             var min = 0; 
-            for (var i = 1; i < d.length; i++) if (d[i] < min) min = d[i]; 
+            for (var i = 1; i < d.length; i++) { if (d[i] < min) { min = d[i]; } }
             return min/100.0; }),
 
           d3.max(data, function(d) {
             var max = d[1]; 
-            for (var i = 2; i < d.length; i++) if (d[i] > max) max = d[i]; 
+            for (var i = 2; i < d.length; i++) { if (d[i] > max) { max = d[i]; } }
             return max/100.0; })])
     .range([max_bar_height, 0]);
 
   // create scale for x labels
   var x_labels = []; 
-  for (var i = 0; i< data.length; i++) x_labels.push(data[i][0]); 
+  for (var i = 0; i< data.length; i++) { x_labels.push(data[i][0]); }
 
   var x_scale = d3.scale.ordinal()
     .domain(x_labels)
@@ -200,19 +199,19 @@ function bar_chart(data, class_name) {
     // Create bars
     bars.append("rect")
       .attr("width", bar_width)
-      .attr("height", function(d) { return Math.abs(y_scale(d[x]/100.0) - y_scale(0)) })
-      .attr("y", function(d) { return Math.min(y_scale(0),y_scale(d[x]/100.0)) } );
+      .attr("height", function(d) { return Math.abs(y_scale(d[x]/100.0) - y_scale(0)); })
+      .attr("y", function(d) { return Math.min(y_scale(0),y_scale(d[x]/100.0)); } );
      
     // add text to bars
     bars.append("text")
       .attr("class", "chart-data-amount")
       .attr("x", bar_width/2)
       .attr("y", function(d) { 
-        if (d[x] > 0) return y_scale(d[x]/100.0) - 5;
+        if (d[x] > 0) { return y_scale(d[x]/100.0) - 5; }
         return y_scale(d[x]/100.0) + 14;
       })
       .attr("text-anchor", "middle")
-      .text(function(d) { if (d[x] != 0) return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); });
+      .text(function(d) { if (d[x] !== 0) { return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); } } );
   }
 
   // add y axis
@@ -227,7 +226,7 @@ function bar_chart(data, class_name) {
       .attr("transform", "translate(" + bar_x_margin + "," + (bar_y_margin + y_scale(0)) + ")")
       .call(xAxis);
 
-  if (line) {
+  if (hasLineData) {
     // Define the line
     var line = d3.svg.line()
         .x(function(d) { return x_scale(d[0]); })
@@ -299,7 +298,7 @@ function line_chart(data, class_name) {
                 "translate(" + margin.left + "," + margin.top + ")");
 
   // add the lines
-  var lines = svg.append("g")
+  var lines = svg.append("g");
   lines.append('path')
     .attr('d', line(data))
     .attr('stroke', 'blue')
