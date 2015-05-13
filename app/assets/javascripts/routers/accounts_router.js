@@ -16,17 +16,15 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
     $.when(router.accounts.fetch(),
            router.accountTypes.fetch(),
-           router.transactionTypes).done(function () {
+           router.transactionTypes.fetch(),
+           router.categories.fetch(),
+           router.categoryTypes.fetch(),
+           router.subcategories.fetch(),
+           router.dateRangeOptions.fetch()
+    ).done(function () {
       router.setCurrentAccount();
-    }, this);
-
-    this.categories.fetch();
-    this.categoryTypes.fetch();
-    this.subcategories.fetch();
-
-    $.when(this.dateRangeOptions.fetch()).done(function () {
       router.setCurrentDateRange();
-    });
+    }, this);
   },
 
   routes: {

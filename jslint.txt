@@ -27,6 +27,7 @@ checking app/assets/javascripts/collections/date_range_options.js... OK
 checking app/assets/javascripts/collections/patterns.js... OK
 checking app/assets/javascripts/collections/reconciliations.js... OK
 checking app/assets/javascripts/collections/subcategories.js... OK
+checking app/assets/javascripts/collections/transaction_types.js... OK
 checking app/assets/javascripts/collections/transactions.js... OK
 checking app/assets/javascripts/helpers/button_helper.js... 11 errors:
 
@@ -165,6 +166,7 @@ checking app/assets/javascripts/models/report.js... OK
 checking app/assets/javascripts/models/report_for_account.js... OK
 checking app/assets/javascripts/models/subcategory.js... OK
 checking app/assets/javascripts/models/transaction.js... OK
+checking app/assets/javascripts/models/transaction_type.js... OK
 checking app/assets/javascripts/my_money.js... OK
 checking app/assets/javascripts/reconciliations.js... 11 errors:
 
