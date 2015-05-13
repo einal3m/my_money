@@ -7,11 +7,11 @@ MyMoney.Views.CategoryFilterView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.categories = this.options['categories'];
-    this.category_id = this.options['category_id'];
-    this.subcategory_id = this.options['subcategory_id'];
-    this.subcategories = this.options['subcategories'];
-    this.categoryTypes = this.options['categoryTypes'];
+    this.categories = this.options.categories;
+    this.category_id = this.options.category_id;
+    this.subcategory_id = this.options.subcategory_id;
+    this.subcategories = this.options.subcategories;
+    this.categoryTypes = this.options.categoryTypes;
     this.set_current_subcategories();
   },
 
@@ -28,16 +28,16 @@ MyMoney.Views.CategoryFilterView = Backbone.View.extend({
   },
 
   set_current_subcategories: function() {
-    if (this.hasSubcategories && this.category_id) {
-      this.current_subcategories = this.subcategories.where({category_id: parseInt(this.category_id)});
+    if (this.hasSubcategories() && this.category_id) {
+      this.current_subcategories = this.subcategories.where({category_id: parseInt(this.category_id, 10)});
     } else {
       this.current_subcategories = null;
     }
   },
 
   updateSubcategories: function() {
-    if (this.hasSubcategories) {
-      this.category_id = parseInt(this.$('#category_id').val());
+    if (this.hasSubcategories()) {
+      this.category_id = parseInt(this.$('#category_id').val(), 10);
       this.set_current_subcategories();
       var html = selectContent(this.current_subcategories, null, true);
       this.$el.find('#subcategory_id').html(html);

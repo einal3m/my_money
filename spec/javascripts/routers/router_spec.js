@@ -180,21 +180,62 @@ describe('MyMoney Router', function() {
         subcategories: router.subcategories
       });
     });
+
+    it('categoryReport', function(){
+      var category = 'category';
+      spyOn(MyMoney.Views.CategoryReportView.prototype, 'initialize').and.callThrough();
+      spyOn(router.categories, 'get').and.returnValue(category);
+      spyOn(router, 'loadView');
+      router.reportCategory(13);
+      expect(router.categories.get).toHaveBeenCalledWith(13);
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.CategoryReportView));
+      expect(MyMoney.Views.CategoryReportView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.CategoryReportView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        category: category,
+        categoryTypes: 'categoryTypes',
+        categories: router.categories,
+        subcategories: router.subcategories,
+        dateRangeOptions: router.dateRangeOptions,
+        currentDateRange: router.currentDateRange
+      });
+    });
   });
-  
-  it('loadView', function(){
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'fetchData');
-    spyOn(MyMoney.Routers.AccountsRouter.prototype, 'accountIndex');
 
-    router = new MyMoney.Routers.AccountsRouter();
-    spyOn(router, 'removeCurrentView');
+  describe('functions', function(){
+    beforeEach(function(){
+      spyOn(MyMoney.Routers.AccountsRouter.prototype, 'fetchData');
+      router = new MyMoney.Routers.AccountsRouter();
+    });
 
-    view = jasmine.createSpyObj('view', ['render', 'fetchData', 'el']);
-    router.loadView(view);
+    it('#loadView', function(){
+      spyOn(router, 'removeCurrentView');
 
-    expect(router.removeCurrentView).toHaveBeenCalled();
-    expect(router.currentView).toEqual(view);
-    expect(view.fetchData).toHaveBeenCalled();
-    expect(view.render).toHaveBeenCalled();
-  });
+      view = jasmine.createSpyObj('view', ['render', 'fetchData', 'el', 'draw']);
+      router.loadView(view);
+
+      expect(router.removeCurrentView).toHaveBeenCalled();
+      expect(router.currentView).toEqual(view);
+      expect(view.fetchData).toHaveBeenCalled();
+      expect(view.render).toHaveBeenCalled();
+      expect(view.draw).toHaveBeenCalled();
+    });
+    describe('#setCurrentDateRange', function(){
+      beforeEach(function(){
+        dateRanges = new MyMoney.Collections.DateRangeOptions([
+          {id: 1, name: 'One', default: false},
+          {id: 2, name: 'Two', default: true},
+          {id: 3, name: 'Three', default: false}
+        ]);
+        router.dateRangeOptions = dateRanges;
+      });
+      it('default', function(){
+        router.setCurrentDateRange();
+        expect(router.currentDateRange).toEqual(dateRanges.at(1));
+      });
+      it('specific', function(){
+        router.setCurrentDateRange(dateRanges.at(2));
+        expect(router.currentDateRange).toEqual(dateRanges.at(2));
+      })
+    });
+  });  
 });

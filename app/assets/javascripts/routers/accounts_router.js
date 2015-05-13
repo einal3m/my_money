@@ -169,16 +169,16 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   },
 
   reportCategory: function(category_id) {
-    this.showView(new MyMoney.Views.CategoryReportView({
-      category_id: category_id,
-      accounts: this.accounts,
-      dateRangeOptions: this.dateRangeOptions,
-      currentDateRange: this.currentDateRange,
-      categoryTypes: router.categoryTypes,
+    var category = this.categories.get(category_id);
+
+    this.loadView(new MyMoney.Views.CategoryReportView({
+      category: category,
+      categoryTypes: this.categoryTypes,
       categories: this.categories,
-      subcategories: this.subcategories
+      subcategories: this.subcategories,
+      dateRangeOptions: this.dateRangeOptions,
+      currentDateRange: this.currentDateRange
     }));
-    this.currentView.updateReport();
   },
 
   reportSubcategoryNoData: function() {
@@ -231,6 +231,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       router.currentView = view;
       view.render();
       $('#content').html(view.el);
+      if (view.draw) { view.draw(); }
     });
   },
 
@@ -247,7 +248,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   },
 
   setCurrentDateRange: function(date_range_option) {
-    this.currentDateRange = date_range_option || this.dateRangeOptions.where({default: true})[0];
+    this.currentDateRange = date_range_option || this.dateRangeOptions.where({'default': true})[0];
   },
 
   setCurrentAccount: function(account) {

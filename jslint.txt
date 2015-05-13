@@ -201,112 +201,24 @@ $.post('/accounts/' + $(this).val() + '/last_reconciliation', null, "script");
 Lint at line 36 character 2: Mixed spaces and tabs.
 });
 
-checking app/assets/javascripts/report.js... 33 errors:
+checking app/assets/javascripts/report.js... 5 errors:
 
-Lint at line 8 character 2: Mixed spaces and tabs.
-height = 350,
-
-Lint at line 9 character 2: Mixed spaces and tabs.
-outerRadius = 120,
-
-Lint at line 10 character 2: Mixed spaces and tabs.
-innerRadius = 40,
-
-Lint at line 11 character 2: Mixed spaces and tabs.
-color = d3.scale.category20(),
-
-Lint at line 12 character 2: Mixed spaces and tabs.
-pie = d3.layout.pie().sort(null),
-
-Lint at line 13 character 2: Mixed spaces and tabs.
-arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
-
-Lint at line 17 character 2: Mixed spaces and tabs.
-.attr("width", width)
-
-Lint at line 18 character 2: Mixed spaces and tabs.
-.attr("height", height);
-
-Lint at line 89 character 2: Mixed spaces and tabs.
-.attr("class", "chart-data-amount")
-
-Lint at line 90 character 2: Mixed spaces and tabs.
-.attr("text-anchor", function(d){
-
-Lint at line 96 character 2: Mixed spaces and tabs.
-.attr("display", function(d) { return d.value > 1 ? null : "none"; })
-
-Lint at line 97 character 2: Mixed spaces and tabs.
-.text(function(d, i) { return "$" + (d.value/100.0).toFixed(2); });
-
-Lint at line 112 character 2: Mixed spaces and tabs.
-.attr("class", "pie-chart-data-label")
-
-Lint at line 113 character 2: Mixed spaces and tabs.
-.attr("text-anchor", function(d){
-
-Lint at line 119 character 2: Mixed spaces and tabs.
-.attr("display", function(d) { return d.value > 1 ? null : "none"; })
-
-Lint at line 120 character 2: Mixed spaces and tabs.
-.text(function(d, i) { return labels[i]; });
-
-Lint at line 153 character 48: Expected '{' and instead saw 'if'.
-for (var i = 1; i < d.length; i++) if (d[i] < min) min = d[i];
-
-Lint at line 153 character 64: Expected '{' and instead saw 'min'.
-for (var i = 1; i < d.length; i++) if (d[i] < min) min = d[i];
-
-Lint at line 158 character 48: Expected '{' and instead saw 'if'.
-for (var i = 2; i < d.length; i++) if (d[i] > max) max = d[i];
-
-Lint at line 158 character 64: Expected '{' and instead saw 'max'.
-for (var i = 2; i < d.length; i++) if (d[i] > max) max = d[i];
-
-Lint at line 164 character 40: Expected '{' and instead saw 'x_labels'.
-for (var i = 0; i< data.length; i++) x_labels.push(data[i][0]);
-
-Lint at line 198 character 106: Don't make functions within a loop.
+Lint at line 197 character 106: Don't make functions within a loop.
 .attr("transform", function (d,i) { return "translate(" + (i*(bar_width + 2*bar_gap)) + ", 0)"; });
 
-Lint at line 203 character 86: Missing semicolon.
-.attr("height", function(d) { return Math.abs(y_scale(d[x]/100.0) - y_scale(0)) })
+Lint at line 202 character 89: Don't make functions within a loop.
+.attr("height", function(d) { return Math.abs(y_scale(d[x]/100.0) - y_scale(0)); })
 
-Lint at line 203 character 88: Don't make functions within a loop.
-.attr("height", function(d) { return Math.abs(y_scale(d[x]/100.0) - y_scale(0)) })
+Lint at line 203 character 83: Don't make functions within a loop.
+.attr("y", function(d) { return Math.min(y_scale(0),y_scale(d[x]/100.0)); } );
 
-Lint at line 204 character 79: Missing semicolon.
-.attr("y", function(d) { return Math.min(y_scale(0),y_scale(d[x]/100.0)) } );
-
-Lint at line 204 character 82: Don't make functions within a loop.
-.attr("y", function(d) { return Math.min(y_scale(0),y_scale(d[x]/100.0)) } );
-
-Lint at line 211 character 23: Expected '{' and instead saw 'return'.
-if (d[x] > 0) return y_scale(d[x]/100.0) - 5;
-
-Lint at line 213 character 8: Don't make functions within a loop.
+Lint at line 212 character 8: Don't make functions within a loop.
 })
 
-Lint at line 215 character 36: Use '!==' to compare with '0'.
-.text(function(d) { if (d[x] != 0) return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); });
+Lint at line 214 character 115: Don't make functions within a loop.
+.text(function(d) { if (d[x] !== 0) { return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); } } );
 
-Lint at line 215 character 42: Expected '{' and instead saw 'return'.
-.text(function(d) { if (d[x] != 0) return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); });
-
-Lint at line 215 character 109: Don't make functions within a loop.
-.text(function(d) { if (d[x] != 0) return accounting.formatMoney(Math.abs(d[x]/100.0), '$', 0, ","); });
-
-Lint at line 232 character 14: 'line' is already defined.
-var line = d3.svg.line()
-
-Lint at line 302 character 30: Missing semicolon.
-var lines = svg.append("g")
-
-checking app/assets/javascripts/routers/accounts_router.js... 1 error:
-
-Lint at line 240 character 79: Expected an identifier and instead saw 'default' (a reserved word).
-this.currentDateRange = date_range_option || this.dateRangeOptions.where({default: true})[0];
-
+checking app/assets/javascripts/routers/accounts_router.js... OK
 checking app/assets/javascripts/validation.js... OK
 checking app/assets/javascripts/views/accounts/account_edit_view.js... 1 error:
 
@@ -344,29 +256,7 @@ checking app/assets/javascripts/views/categories/category_type_table_view.js... 
 checking app/assets/javascripts/views/categories/subcategory_edit_view.js... OK
 checking app/assets/javascripts/views/categories/subcategory_row_view.js... OK
 checking app/assets/javascripts/views/filters/account_filter_view.js... OK
-checking app/assets/javascripts/views/filters/category_filter_view.js... 7 errors:
-
-Lint at line 10 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 11 character 37: ['category_id'] is better written in dot notation.
-this.category_id = this.options['category_id'];
-
-Lint at line 12 character 40: ['subcategory_id'] is better written in dot notation.
-this.subcategory_id = this.options['subcategory_id'];
-
-Lint at line 13 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 14 character 39: ['categoryTypes'] is better written in dot notation.
-this.categoryTypes = this.options['categoryTypes'];
-
-Lint at line 32 character 75: Missing radix parameter.
-this.current_subcategories = this.subcategories.where({category_id: parseInt(this.category_id)});
-
-Lint at line 40 character 26: Missing radix parameter.
-this.category_id = parseInt(this.$('#category_id').val());
-
+checking app/assets/javascripts/views/filters/category_filter_view.js... OK
 checking app/assets/javascripts/views/filters/date_range_filter.js... 1 error:
 
 Lint at line 6 character 50: Extra comma.
@@ -448,6 +338,8 @@ checking app/assets/javascripts/views/import/import_view.js... 1 error:
 Lint at line 72 character 33: Expected an identifier and instead saw 'import' (a reserved word).
 this.transactions.where({ import: true }),
 
+checking app/assets/javascripts/views/layout/footer_view.js... OK
+checking app/assets/javascripts/views/layout/header_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_edit_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_index_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_table_row_view.js... OK
@@ -483,27 +375,8 @@ checking app/assets/javascripts/views/reconciliations/reconciliation_row_view.js
 checking app/assets/javascripts/views/reconciliations/reconciliation_transaction_row.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_transactions_view.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_view.js... OK
-checking app/assets/javascripts/views/reports/bar_chart_view.js... 1 error:
-
-Lint at line 3 character 40: Missing semicolon.
-bar_chart(this.model, '#bar_chart')
-
-checking app/assets/javascripts/views/reports/category_report_view.js... 1 error:
-
-Lint at line 21 character 48: ['category_id'] is better written in dot notation.
-this.model.set('category_id', this.options['category_id']);
-
-checking app/assets/javascripts/views/reports/chart_view.js... 3 errors:
-
-Lint at line 58 character 7: Expected '{' and instead saw 'this'.
-this.collection.on("sync", _.bind(this.render, this));
-
-Lint at line 60 character 7: Expected '{' and instead saw 'this'.
-this.data = this.options.data;
-
-Lint at line 98 character 7: Expected '{' and instead saw 'this'.
-this.data = this.collection.toJSON();
-
+checking app/assets/javascripts/views/reports/bar_chart_view.js... OK
+checking app/assets/javascripts/views/reports/category_report_view.js... OK
 checking app/assets/javascripts/views/reports/eod_balance_view.js... 5 errors:
 
 Lint at line 14 character 34: ['accounts'] is better written in dot notation.
@@ -539,22 +412,8 @@ this.subcategories = this.options['subcategories'];
 Lint at line 48 character 8: Missing semicolon.
 }))
 
-checking app/assets/javascripts/views/reports/line_chart_view.js... 1 error:
-
-Lint at line 3 character 56: Missing semicolon.
-line_chart(this.model.get('report'), '#line_chart')
-
-checking app/assets/javascripts/views/reports/pie_chart_view.js... 3 errors:
-
-Lint at line 4 character 35: ['report_id'] is better written in dot notation.
-this.report_id = this.options['report_id'];
-
-Lint at line 5 character 30: ['sums'] is better written in dot notation.
-this.sums = this.options['sums'];
-
-Lint at line 6 character 32: ['labels'] is better written in dot notation.
-this.labels = this.options['labels'];
-
+checking app/assets/javascripts/views/reports/line_chart_view.js... OK
+checking app/assets/javascripts/views/reports/pie_chart_view.js... OK
 checking app/assets/javascripts/views/reports/report_category_row_view.js... OK
 checking app/assets/javascripts/views/reports/report_subcategory_row_view.js... OK
 checking app/assets/javascripts/views/reports/report_total_row_view.js... OK
@@ -565,4 +424,4 @@ checking app/assets/javascripts/views/transactions/transaction_row_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_table_view.js... OK
 checking app/assets/javascripts/views/transactions/transactions_index_view.js... OK
 
-Found 147 errors.
+Found 102 errors.
