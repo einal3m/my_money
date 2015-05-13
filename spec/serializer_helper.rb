@@ -9,6 +9,11 @@ def serialize_account_type(account_type)
   attrs.extract!('id', 'name')
 end
 
+def serialize_transaction_type(transaction_type)
+  attrs = JSON.parse(transaction_type.to_json)
+  attrs.extract!('id', 'name')
+end
+
 def serialize_reconciliation(reconciliation)
   attrs = JSON.parse(reconciliation.to_json)
   attrs.extract!('id', 'account_id', 'statement_date', 'statement_balance', 'reconciled')

@@ -5,10 +5,12 @@
 #  date: date
 #  fitid: string
 #  memo: string
-#  amount: decimal
+#  notes: string
+#  amount: int (cents)
 #  account_id: int, foreign key
-#  category_id: int, foreign key, ('I', 'E' or 'T')
+#  category_id: int, foreign key
 #  subcategory_id: int foreign key
+#  transaction_type_id: int foreign key
 #
 class Transaction < ActiveRecord::Base
   # model relationships
@@ -16,6 +18,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :category
   belongs_to :subcategory
   belongs_to :reconciliation
+  belongs_to :transaction_type
 
   # validations
   validates :date, presence: true

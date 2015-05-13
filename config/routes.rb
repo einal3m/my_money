@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :subcategories
   resources :categories
   resources :category_types, only: [:index]
+  resources :transaction_types, only: [:index]
   resources :account_types, only: [:index]
 
   post 'categories/subcategories_by_category'

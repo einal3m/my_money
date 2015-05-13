@@ -39,6 +39,11 @@ RSpec.describe Transaction, type: :model do
   end
 
   describe 'relationships' do
+    it 'belongs to transaction type' do
+      tt = FactoryGirl.create(:transaction_type)
+      expect(FactoryGirl.create(:transaction, transaction_type: tt).transaction_type).to eq(tt)
+    end
+
     it 'belongs to account' do
       a = FactoryGirl.create(:account)
       expect(FactoryGirl.create(:transaction, account: a).account).to eq(a)
