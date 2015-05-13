@@ -8,12 +8,15 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     var router = this;
     this.accounts = new MyMoney.Collections.Accounts();
     this.accountTypes = new MyMoney.Collections.AccountTypes();
+    this.transactionTypes = new MyMoney.Collections.TransactionTypes();
     this.categoryTypes = new MyMoney.Collections.CategoryTypes();
     this.categories = new MyMoney.Collections.Categories();
     this.subcategories = new MyMoney.Collections.Subcategories();
     this.dateRangeOptions = new MyMoney.Collections.DateRangeOptions();
 
-    $.when(router.accounts.fetch(), router.accountTypes.fetch()).done(function () {
+    $.when(router.accounts.fetch(),
+           router.accountTypes.fetch(),
+           router.transactionTypes).done(function () {
       router.setCurrentAccount();
     }, this);
 
