@@ -78,7 +78,6 @@ describe("AccountsIndexView", function(){
       view.$('#new').click();
       expect(window.router.navigate).toHaveBeenCalledWith('accounts/new', {trigger: true});
     });
-    // new account
     // account details
     // account transactions
   });

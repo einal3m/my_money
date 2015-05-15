@@ -1,19 +1,6 @@
 Running JSLint:
 
-checking app/assets/javascripts/application.js... 4 errors:
-
-Lint at line 51 character 2: Mixed spaces and tabs.
-$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
-
-Lint at line 59 character 2: Mixed spaces and tabs.
-$.post('/categories/subcategories_by_category', {category_id: $(this).val()}, null, "script");
-
-Lint at line 66 character 7: Expected '{' and instead saw '$'.
-$("#custom_dates").show();
-
-Lint at line 68 character 7: Expected '{' and instead saw '$'.
-$("#custom_dates").hide();
-
+checking app/assets/javascripts/application.js... OK
 checking app/assets/javascripts/Cocktail.js... 1 error:
 
 Lint at line 33 character 45: Expected '{' and instead saw 'return'.
@@ -160,6 +147,7 @@ checking app/assets/javascripts/models/base_model.js... OK
 checking app/assets/javascripts/models/category.js... OK
 checking app/assets/javascripts/models/category_type.js... OK
 checking app/assets/javascripts/models/date_range_option.js... OK
+checking app/assets/javascripts/models/filter.js... OK
 checking app/assets/javascripts/models/pattern.js... OK
 checking app/assets/javascripts/models/reconciliation.js... OK
 checking app/assets/javascripts/models/report.js... OK
@@ -168,41 +156,6 @@ checking app/assets/javascripts/models/subcategory.js... OK
 checking app/assets/javascripts/models/transaction.js... OK
 checking app/assets/javascripts/models/transaction_type.js... OK
 checking app/assets/javascripts/my_money.js... OK
-checking app/assets/javascripts/reconciliations.js... 11 errors:
-
-Lint at line 10 character 2: Mixed spaces and tabs.
-// are we adding or removing the amount
-
-Lint at line 11 character 2: Mixed spaces and tabs.
-var factor = $(this).prop('checked') ? 1 : -1;
-
-Lint at line 13 character 2: Mixed spaces and tabs.
-// find the transaction amount and strip $ sign
-
-Lint at line 19 character 66: Missing semicolon.
-balance = parseFloat(balance) + factor * parseFloat(amount)
-
-Lint at line 21 character 83: Missing semicolon.
-balance = '$' + balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-
-Lint at line 25 character 5: Mixed spaces and tabs.
-$("#button_done").removeAttr('disabled');
-
-Lint at line 27 character 5: Mixed spaces and tabs.
-$("#button_done").attr("disabled", true)
-
-Lint at line 27 character 49: Missing semicolon.
-$("#button_done").attr("disabled", true)
-
-Lint at line 32 character 2: Mixed spaces and tabs.
-$("#reconciliation_account_id").change(function() {
-
-Lint at line 34 character 2: Mixed spaces and tabs.
-$.post('/accounts/' + $(this).val() + '/last_reconciliation', null, "script");
-
-Lint at line 36 character 2: Mixed spaces and tabs.
-});
-
 checking app/assets/javascripts/report.js... 5 errors:
 
 Lint at line 197 character 106: Don't make functions within a loop.
@@ -227,7 +180,16 @@ checking app/assets/javascripts/views/accounts/account_edit_view.js... 1 error:
 Lint at line 43 character 11: Use '===' to compare with 'true'.
 if (r == true) {
 
-checking app/assets/javascripts/views/accounts/account_new_view.js... OK
+checking app/assets/javascripts/views/accounts/account_form_view.js... 1 error:
+
+Lint at line 11 character 31: Extra comma.
+"click #save": "saveModel",
+
+checking app/assets/javascripts/views/accounts/account_new_view.js... 1 error:
+
+Lint at line 39 character 33: ['new_form'] is better written in dot notation.
+this.listenTo(this.subViews['new_form'], 'cancelEdit', this.goBack);
+
 checking app/assets/javascripts/views/accounts/account_show_view.js... OK
 checking app/assets/javascripts/views/accounts/account_stats_view.js... OK
 checking app/assets/javascripts/views/accounts/account_summary_view.js... 1 error:
@@ -258,44 +220,14 @@ checking app/assets/javascripts/views/categories/category_type_table_view.js... 
 checking app/assets/javascripts/views/categories/subcategory_edit_view.js... OK
 checking app/assets/javascripts/views/categories/subcategory_row_view.js... OK
 checking app/assets/javascripts/views/filters/account_filter_view.js... OK
+checking app/assets/javascripts/views/filters/account_type_filter_view.js... OK
 checking app/assets/javascripts/views/filters/category_filter_view.js... OK
 checking app/assets/javascripts/views/filters/date_range_filter.js... 1 error:
 
 Lint at line 6 character 50: Extra comma.
 "change #date_range_option_id": "updateDates",
 
-checking app/assets/javascripts/views/filters/filter_view.js... 10 errors:
-
-Lint at line 17 character 29: ['account'] is better written in dot notation.
-model: this.options['account'],
-
-Lint at line 18 character 34: ['accounts'] is better written in dot notation.
-collection: this.options['accounts']
-
-Lint at line 19 character 10: Missing semicolon.
-}))
-
-Lint at line 26 character 29: ['date_range'] is better written in dot notation.
-model: this.options['date_range'],
-
-Lint at line 27 character 34: ['date_range_options'] is better written in dot notation.
-collection: this.options['date_range_options']
-
-Lint at line 35 character 35: ['category_id'] is better written in dot notation.
-category_id: this.options['category_id'],
-
-Lint at line 36 character 34: ['categories'] is better written in dot notation.
-categories: this.options['categories'],
-
-Lint at line 37 character 38: ['subcategory_id'] is better written in dot notation.
-subcategory_id: this.options['subcategory_id'],
-
-Lint at line 38 character 37: ['subcategories'] is better written in dot notation.
-subcategories: this.options['subcategories'],
-
-Lint at line 39 character 37: ['categoryTypes'] is better written in dot notation.
-categoryTypes: this.options['categoryTypes']
-
+checking app/assets/javascripts/views/filters/filter_view.js... OK
 checking app/assets/javascripts/views/import/import_file_chooser_view.js... 3 errors:
 
 Lint at line 15 character 33: ['account'] is better written in dot notation.
@@ -426,4 +358,4 @@ checking app/assets/javascripts/views/transactions/transaction_row_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_table_view.js... OK
 checking app/assets/javascripts/views/transactions/transactions_index_view.js... OK
 
-Found 102 errors.
+Found 79 errors.

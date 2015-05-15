@@ -1,44 +1,47 @@
-MyMoney.Views.AccountNewView = Backbone.View.extend({
+//= require ../base_table_view
+MyMoney.Views.AccountNewView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 
   className: "accounts",
 
   template: "accounts/account_new",
 
-  events: {
-    "click #save": "saveAccount",
-    "click #cancel" : "cancelNew"   
-  },
-
   initialize: function(){
-    this.model = new MyMoney.Models.Account({});
+    this.accountTypes = this.options.accountTypes;
+    this.model = new MyMoney.Models.Account();
+    this.filterModel = new MyMoney.Models.Filter();
+    this.listenTo(this.filterModel, 'change', this.filterChanged);
+    this.listenTo(this.collection, 'add', this.goBack);
   },
 
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]({ account: this.model.toJSON() }));
+    this.addSubView('filter', new MyMoney.Views.FilterView({
+      model: this.filterModel,
+      accountTypes: this.accountTypes
+    }));
+    this.renderSubViews();
     return this;
   },
 
-  saveAccount: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.model.set({name: this.$('#name').val()});
-    this.model.set({bank: this.$('#bank').val()});
-    this.model.set({account_type_id: 1});
-    var starting_balance = dollarsToCents(this.$('#starting_balance').val());
-    this.model.set({starting_balance: starting_balance});
-    this.model.set({starting_date: this.$('#starting_date').val()});
-    this.collection.create(this.model, { wait: true, success: this.goToShow });
+  filterChanged: function(){
+    this.addFormView();
   },
 
-  cancelNew: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    window.router.navigate('accounts', {trigger: true});    
+  addFormView: function(){
+    var account_type_id = this.filterModel.get('account_type_id');
+    this.model.set({account_type_id: account_type_id});
+    this.addSubView('new_form', new MyMoney.Views.AccountFormView({
+      model: this.model,
+      collection: this.collection,
+      accountType: this.accountTypes.get(account_type_id)
+    }));
+    this.listenTo(this.subViews.new_form, 'cancelEdit', this.goBack);
+    this.renderSubView('new_form');
   },
 
-  goToShow: function(model, response, options) {
-    window.router.navigate('accounts/' + model.id + '/show', {trigger: true});
+  goBack: function(){
+    window.router.navigate('accounts', {trigger: true});
   }
+
 });

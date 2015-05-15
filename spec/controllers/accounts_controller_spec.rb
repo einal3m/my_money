@@ -37,6 +37,9 @@ RSpec.describe AccountsController, type: :controller do
         account = Account.first
 
         json = JSON.parse(response.body)
+        p build_attributes(:account)
+        p json['account']
+        p serialize_account(account)
         expect(json['account']).to eq(serialize_account(account))
       end
     end

@@ -26,6 +26,7 @@ def edit_account(account_name, params)
 end
 
 def fill_in_account_form(params)
+  select 'Savings', from: 'account_type_id'
   fill_in 'name', with: params[:name]
   fill_in 'bank', with: params[:bank]
   fill_in 'starting_balance', with: params[:starting_balance]
@@ -33,7 +34,7 @@ def fill_in_account_form(params)
 
   click_on 'save'
   wait_for_ajax
-  expect(page).to have_content('account summary')
+  expect(page).to have_content('my accounts')
 end
 
 def delete_account(account_name)
@@ -47,9 +48,9 @@ def delete_account(account_name)
   expect(page).not_to have_content(account_name)
 end
 
-def verify_account(params)
-  expect(page).to have_text(params[:name])
-  expect(page).to have_text(params[:bank])
-  expect(page).to have_text('$' + params[:starting_balance])
-  expect(page).to have_text(params[:starting_date])
+def verify_account(name, bank, balance)
+  expect(page).to have_text(name)
+  expect(page).to have_text(bank)
+  expect(page).to have_text('$' + balance)
+  # expect(page).to have_text(params[:starting_date])
 end

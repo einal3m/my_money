@@ -59,7 +59,10 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
   },
 
   newAccount: function() {
-    this.showView(new MyMoney.Views.AccountNewView({collection: this.accounts}));
+    this.loadView(new MyMoney.Views.AccountNewView({
+      collection: this.accounts,
+      accountTypes: this.accountTypes
+    }));
   },
 
   editAccount: function(id) {

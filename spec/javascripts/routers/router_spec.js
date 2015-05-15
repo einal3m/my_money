@@ -133,6 +133,18 @@ describe('MyMoney Router', function() {
       });
     });
 
+    it('newAccount', function(){
+      spyOn(MyMoney.Views.AccountNewView.prototype, 'initialize').and.callThrough();
+      spyOn(router, 'loadView');
+      router.newAccount();
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.AccountNewView));
+      expect(MyMoney.Views.AccountNewView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.AccountNewView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        collection: router.accounts,
+        accountTypes: router.accountTypes
+      });
+    });
+
     it('transactionsIndex', function(){
       var account = 'account';
       spyOn(MyMoney.Views.TransactionsIndexView.prototype, 'initialize').and.callThrough();

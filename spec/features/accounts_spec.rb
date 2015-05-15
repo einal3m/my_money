@@ -1,62 +1,37 @@
 require 'rails_helper'
 
 feature 'Accounts', type: :feature do
-  before :each do
+  before :all do
     # create a few date ranges
     FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     FactoryGirl.create(:category_type, name: 'Expense')
     FactoryGirl.create(:category_type, name: 'Income')
+    FactoryGirl.create(:account_type, name: 'Savings')
   end
 
   after :all  do
     DatabaseCleaner.clean
   end
 
-  scenario 'User views the accounts list for an account', js: true do
-    # given I have an account
-    FactoryGirl.create(:account, name: 'My New Account', bank: 'My New Bank')
-
-    start_my_money
-
-    # then I should see a list of accounts
-    expect(page).to have_text('my accounts')
-    expect(page).to have_text('My New Account')
-    expect(page).to have_text('My New Bank')
-    expect(page).to have_text('Current Balance')
-  end
-
   scenario 'User creates a new Account', js: true do
     start_my_money
 
-    # and click on the new button
-    click_on('new')
+    create_account({
+        name: 'New Account Name',
+        bank: 'New Account Bank',
+        starting_date: '09-Sep-2000',
+        starting_balance: '10.00'
+    })
 
-    # then I expect to see a new form
-    expect(page).to have_content('new account')
-
-    # when I enter data into the form
-    fill_in 'name', with: 'New Account Name'
-    fill_in 'bank', with: 'New Account Bank'
-    fill_in 'starting_balance', with: '10.00'
-    fill_in 'starting_date', with: '09-Sep-2000'
-
-    # and I click 'save'
-    click_on('save')
-
-    # then I should see our new account on the account summary page
-    expect(page).to have_content('account summary')
-    expect(page).to have_text('New Account Name')
-    expect(page).to have_text('New Account Bank')
-    expect(page).to have_text('$10.00')
-    expect(page).to have_text('9-Sep-2000')
+    verify_account('New Account Name', 'New Account Bank', '10.00')
   end
 
   scenario 'User edits an account', js: true do
-    # given I have an account
-    FactoryGirl.create(:account, name: 'My Edit Account')
-
     start_my_money
+    visit_accounts
+    create_account({name: 'Edit Account'})
+
 
     # and I click on the show button for the account
     click_on('show')
