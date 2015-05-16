@@ -1,52 +1,46 @@
-
-MyMoney.Views.AccountSummaryView = Backbone.View.extend({
+MyMoney.Views.AccountSummaryView = MyMoney.Views.BaseView.extend({
 
   tagName: "div", 
   className: "accounts",
 	template: "accounts/account_summary",
 
   events: {
-    "click #go_back": "goBack",
+    "click #reconcile": "reconcileAccount"
   },
 
   initialize: function(){
-    this.accountSubView = new MyMoney.Views.AccountShowView({model: this.model});
-    this.statsSubView = new MyMoney.Views.AccountStatsView({model: this.model});
-    this.listenTo(this.accountSubView, "editAccount", this.editAccount);
-  },
-
-  addAccountView: function(){
-      this.$el.find('#panel1').html(this.accountSubView.render().el);
-  },
-
-  addStatsView: function(){
-      this.$el.find('#panel2').html(this.statsSubView.render().el);
+    this.accountType = this.options.accountType;
   },
 
   render: function() {
     this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
-    this.addAccountView();
-    this.addStatsView();
+    this.loadShowView();
     return this;
   },
 
-  goBack: function(e) {
-    window.router.navigate('accounts', {trigger: true});
+  loadEditView: function() {
+    this.addSubView('account', new MyMoney.Views.AccountFormView({
+      model: this.model,
+      accountType: this.accountType
+    }));
+    this.listenTo(this.model, 'sync', this.loadShowView);
+    this.listenTo(this.subViews.account, 'cancel', this.loadShowView);
+    this.renderSubViews();
   },
 
-  editAccount: function() {
-    this.accountSubView.remove();
-    this.accountSubView = new MyMoney.Views.AccountEditView({model: this.model});
-    this.listenTo(this.accountSubView, "doneEditing", this.doneEditing);
-    this.listenTo(this.model, "destroy", this.goBack);
-    this.addAccountView();
+  loadShowView: function() {
+    this.addSubView('account', new MyMoney.Views.AccountShowView({
+      model: this.model,
+      accountType: this.accountType
+    }));
+    this.listenTo(this.subViews.account, 'edit', this.loadEditView);
+    this.renderSubViews();
   },
 
-  doneEditing: function() {
-    this.accountSubView.remove();
-    this.accountSubView = new MyMoney.Views.AccountShowView({model: this.model});
-    this.listenTo(this.accountSubView, "editAccount", this.editAccount);
-    this.addAccountView();
+  reconcileAccount: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.router.navigate('accounts/' + this.model.id + '/reconciliation', {trigger: true});    
   }
-
+  
 });

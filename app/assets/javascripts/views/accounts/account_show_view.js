@@ -7,6 +7,10 @@ MyMoney.Views.AccountShowView = Backbone.View.extend({
     "click #edit": "editAccount"
   },
 
+  initialize: function(){
+    this.accountType = this.options.accountType;
+  },
+
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
     return this;
@@ -15,7 +19,7 @@ MyMoney.Views.AccountShowView = Backbone.View.extend({
   editAccount: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.trigger('editAccount');
+    this.trigger('edit');
   }
 
 });

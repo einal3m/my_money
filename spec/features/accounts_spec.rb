@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Accounts', type: :feature do
-  before :all do
+  before :each do
     # create a few date ranges
     FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
@@ -18,44 +18,32 @@ feature 'Accounts', type: :feature do
     start_my_money
 
     create_account({
-        name: 'New Account Name',
-        bank: 'New Account Bank',
-        starting_date: '09-Sep-2000',
-        starting_balance: '10.00'
+      name: 'New Account Name',
+      bank: 'New Account Bank',
+      starting_date: '9-Sep-2000',
+      starting_balance: '10.00'
     })
+    expect(page).to have_content('my accounts')
 
-    verify_account('New Account Name', 'New Account Bank', '10.00')
+    show_account('New Account Name')
+    verify_account('New Account Name', 'New Account Bank', '9-Sep-2000', '$10.00')
   end
 
   scenario 'User edits an account', js: true do
     start_my_money
-    visit_accounts
     create_account({name: 'Edit Account'})
 
-
-    # and I click on the show button for the account
-    click_on('show')
-
-    # then I should see the show page
-    expect(page).to have_text('account summary')
-
-    # when I click on the edit button
-    click_on('edit')
-
-    # then I should see the edit form for this page
-    expect(page).to have_text('Edit Account')
-
-    # when I edit the account
-    fill_in('name', with: 'New Account Name')
-    # and I click 'save'
-    click_on('save')
-
-    # then I should see the new account details on the account summary page
-    expect(page).to have_text('account summary')
-    expect(page).to have_text('New Account Name')
+    show_account('Edit Account')
+    edit_account({
+      name: 'New Edit Name',
+      bank: 'New Edit Bank',
+      starting_date: '1-Jan-2014',
+      starting_balance: '30.00'
+    })
+    verify_account('New Edit Name', 'New Edit Bank', '1-Jan-2014', '$30.00')
   end
 
-  scenario 'User deletes an account', js: true do
+  xscenario 'User deletes an account', js: true do
     # given I have an account
     FactoryGirl.create(:account, name: 'My Delete Account')
 

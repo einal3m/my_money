@@ -1,4 +1,4 @@
-describe('MyMoney Router', function() {
+describe('RouterSpec', function() {
   var trigger = {trigger: true};
   var router;
 
@@ -142,6 +142,22 @@ describe('MyMoney Router', function() {
       expect(MyMoney.Views.AccountNewView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
         collection: router.accounts,
         accountTypes: router.accountTypes
+      });
+    });
+
+    it('showAccount', function(){
+      var account = new MyMoney.Models.Account({id: 1, account_type_id: 1, name: 'Account'});
+      spyOn(router.accounts, 'get').and.returnValue(account);
+      var accountType = 'accountType';
+      spyOn(router.accountTypes, 'get').and.returnValue(accountType);
+      spyOn(MyMoney.Views.AccountSummaryView.prototype, 'initialize').and.callThrough();
+      spyOn(router, 'loadView');
+      router.showAccount(1);
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.AccountSummaryView));
+      expect(MyMoney.Views.AccountSummaryView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.AccountSummaryView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        model: account,
+        accountType: accountType
       });
     });
 

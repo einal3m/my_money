@@ -175,28 +175,10 @@ Lint at line 214 character 115: Don't make functions within a loop.
 
 checking app/assets/javascripts/routers/accounts_router.js... OK
 checking app/assets/javascripts/validation.js... OK
-checking app/assets/javascripts/views/accounts/account_edit_view.js... 1 error:
-
-Lint at line 43 character 11: Use '===' to compare with 'true'.
-if (r == true) {
-
-checking app/assets/javascripts/views/accounts/account_form_view.js... 1 error:
-
-Lint at line 11 character 31: Extra comma.
-"click #save": "saveModel",
-
-checking app/assets/javascripts/views/accounts/account_new_view.js... 1 error:
-
-Lint at line 39 character 33: ['new_form'] is better written in dot notation.
-this.listenTo(this.subViews['new_form'], 'cancelEdit', this.goBack);
-
+checking app/assets/javascripts/views/accounts/account_form_view.js... OK
+checking app/assets/javascripts/views/accounts/account_new_view.js... OK
 checking app/assets/javascripts/views/accounts/account_show_view.js... OK
-checking app/assets/javascripts/views/accounts/account_stats_view.js... OK
-checking app/assets/javascripts/views/accounts/account_summary_view.js... 1 error:
-
-Lint at line 9 character 31: Extra comma.
-"click #go_back": "goBack",
-
+checking app/assets/javascripts/views/accounts/account_summary_view.js... OK
 checking app/assets/javascripts/views/accounts/account_type_table_view.js... OK
 checking app/assets/javascripts/views/accounts/account_view.js... OK
 checking app/assets/javascripts/views/accounts/accounts_index_view.js... OK
@@ -358,4 +340,4 @@ checking app/assets/javascripts/views/transactions/transaction_row_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_table_view.js... OK
 checking app/assets/javascripts/views/transactions/transactions_index_view.js... OK
 
-Found 79 errors.
+Found 75 errors.
