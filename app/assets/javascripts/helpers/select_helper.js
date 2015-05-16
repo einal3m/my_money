@@ -1,21 +1,13 @@
-var selectInput = function(array, model_id, id, hasUnassigned) {
-	html = '<select class="form-control" id="' + id + '" name="' + id + '">';
-	html += selectContent(array, model_id, hasUnassigned);
-
-	html += '</select>';
-	return new Handlebars.SafeString(html);
-};
-
 var addUnassignedOrPleaseSelect = function(model_id, hasUnassigned) {
 	html = "";
 	if (hasUnassigned) {
 		html += '<option value=""';
-		if ((model_id == null) || (model_id == "")) {
+		if ((model_id === null) || (model_id === "")) {
 			html += ' selected';
 		}
 		html += '>Un-assigned</option>';
 
-	} else if ((model_id == null) || (model_id == "")) {
+	} else if ((model_id === null) || (model_id === "")) {
 		html += '<option value="" disabled selected>Please select...</option>';
 	}
 	return html;
@@ -32,11 +24,20 @@ var selectContent = function(array, model_id, hasUnassigned) {
 			}
 			html += '>';
 			html += model.get('name');
-			html += '</option>'
+			html += '</option>';
 		}
 	}
 	return html;
 };
+
+var selectInput = function(array, model_id, id, hasUnassigned) {
+	html = '<select class="form-control" id="' + id + '" name="' + id + '">';
+	html += selectContent(array, model_id, hasUnassigned);
+
+	html += '</select>';
+	return new Handlebars.SafeString(html);
+};
+
 
 var selectGroupedContent = function(group, group_by, collection, model_id, id, hasUnassigned) {
 	html = '<select class="form-control" id="' + id + '" name="' + id + '">';
@@ -45,7 +46,7 @@ var selectGroupedContent = function(group, group_by, collection, model_id, id, h
 	var group_result = _.groupBy(collection.models, function(model){ return model.get(group_by); });
 	for (j = 0; j < group.models.length; j++) {
 		html += '<optgroup label="' + group.models[j].get('name') + '">';
-			var group_id = group.models[j].id
+			var group_id = group.models[j].id;
 			var group_models = group_result[group_id];
 
 			if (!group_models) { continue; }
@@ -58,7 +59,7 @@ var selectGroupedContent = function(group, group_by, collection, model_id, id, h
 				}
 				html += '>';
 				html += model.get('name');
-				html += '</option>'
+				html += '</option>';
 			}
 		html += '</optgroup>';
 	}

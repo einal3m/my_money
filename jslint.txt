@@ -1,11 +1,6 @@
 Running JSLint:
 
 checking app/assets/javascripts/application.js... OK
-checking app/assets/javascripts/Cocktail.js... 1 error:
-
-Lint at line 33 character 45: Expected '{' and instead saw 'return'.
-if (obj[key] === value) return;
-
 checking app/assets/javascripts/collections/account_types.js... OK
 checking app/assets/javascripts/collections/accounts.js... OK
 checking app/assets/javascripts/collections/categories.js... OK
@@ -16,131 +11,15 @@ checking app/assets/javascripts/collections/reconciliations.js... OK
 checking app/assets/javascripts/collections/subcategories.js... OK
 checking app/assets/javascripts/collections/transaction_types.js... OK
 checking app/assets/javascripts/collections/transactions.js... OK
-checking app/assets/javascripts/helpers/button_helper.js... 11 errors:
-
-Lint at line 9 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || 'Delete';
-
-Lint at line 14 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || 'Save';
-
-Lint at line 20 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || 'Edit';
-
-Lint at line 26 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || 'Cancel';
-
-Lint at line 31 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || 'New';
-
-Lint at line 41 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || 'Go Back';
-
-Lint at line 47 character 29: ['text'] is better written in dot notation.
-buttonText = options.hash['text'] || '';
-
-Lint at line 48 character 27: ['id'] is better written in dot notation.
-buttonId = options.hash['id'] || 'action'
-
-Lint at line 48 character 42: Missing semicolon.
-buttonId = options.hash['id'] || 'action'
-
-Lint at line 49 character 20: ['icon'] is better written in dot notation.
-if (options.hash['icon']) {
-
-Lint at line 50 character 49: ['icon'] is better written in dot notation.
-buttonText = '<i class="fa ' + options.hash['icon'] + '"></i> ' + buttonText;
-
+checking app/assets/javascripts/helpers/button_helper.js... OK
 checking app/assets/javascripts/helpers/checkbox_helper.js... OK
-checking app/assets/javascripts/helpers/date_helper.js... 5 errors:
-
-Lint at line 7 character 20: Expected '{' and instead saw 'return'.
-if (!dateString) return '';
-
-Lint at line 9 character 27: Expected ')' and instead saw 'Jan'.
-var m_names = new Array("Jan", "Feb", "Mar",
-
-Lint at line 9 character 34: Expected an identifier and instead saw 'Feb'.
-var m_names = new Array("Jan", "Feb", "Mar",
-
-Lint at line 9 character 34: Stopping, unable to continue. (25% scanned).
-
-
+checking app/assets/javascripts/helpers/date_helper.js... OK
 checking app/assets/javascripts/helpers/handlebars_partials.js... OK
-checking app/assets/javascripts/helpers/icon_helper.js... 8 errors:
-
-Lint at line 8 character 2: Missing semicolon.
-}
-
-Lint at line 11 character 27: ['text'] is better written in dot notation.
-iconText = options.hash['text'] || '';
-
-Lint at line 12 character 25: ['id'] is better written in dot notation.
-idText = options.hash['id'] || 'edit';
-
-Lint at line 17 character 27: ['text'] is better written in dot notation.
-iconText = options.hash['text'] || '';
-
-Lint at line 18 character 25: ['id'] is better written in dot notation.
-idText = options.hash['id'] || 'new';
-
-Lint at line 23 character 27: ['text'] is better written in dot notation.
-iconText = options.hash['text'] || '';
-
-Lint at line 24 character 25: ['id'] is better written in dot notation.
-idText = options.hash['id'] || 'delete';
-
-Lint at line 29 character 27: ['text'] is better written in dot notation.
-iconText = options.hash['text'] || '';
-
-checking app/assets/javascripts/helpers/money_helper.js... 2 errors:
-
-Lint at line 26 character 50: Missing semicolon.
-return accountingFormat(centsToDollars(amount))
-
-Lint at line 32 character 127: Line too long.
-html = '<div class="input-group"><div class="input-group-addon">$</div><input type="text" class="form-control" name="' + id +
-
-checking app/assets/javascripts/helpers/select_helper.js... 8 errors:
-
-Lint at line 13 character 19: Use '===' to compare with 'null'.
-if ((model_id == null) || (model_id == "")) {
-
-Lint at line 13 character 41: Use '===' to compare with ''.
-if ((model_id == null) || (model_id == "")) {
-
-Lint at line 18 character 24: Use '===' to compare with 'null'.
-} else if ((model_id == null) || (model_id == "")) {
-
-Lint at line 18 character 46: Use '===' to compare with ''.
-} else if ((model_id == null) || (model_id == "")) {
-
-Lint at line 24 character 19: 'selectContent' was used before it was defined.
-var selectContent = function(array, model_id, hasUnassigned) {
-
-Lint at line 35 character 24: Missing semicolon.
-html += '</option>'
-
-Lint at line 48 character 40: Missing semicolon.
-var group_id = group.models[j].id
-
-Lint at line 61 character 26: Missing semicolon.
-html += '</option>'
-
-checking app/assets/javascripts/helpers/string_helper.js... 1 error:
-
-Lint at line 16 character 12: Use '!==' to compare with ''.
-if (html != "") {
-
+checking app/assets/javascripts/helpers/icon_helper.js... OK
+checking app/assets/javascripts/helpers/money_helper.js... OK
+checking app/assets/javascripts/helpers/select_helper.js... OK
+checking app/assets/javascripts/helpers/string_helper.js... OK
 checking app/assets/javascripts/helpers/text_input_helper.js... OK
-checking app/assets/javascripts/mixins/delete_model.js... 2 errors:
-
-Lint at line 12 character 11: Use '===' to compare with 'true'.
-if (r == true) {
-
-Lint at line 16 character 2: Missing semicolon.
-}
-
 checking app/assets/javascripts/models/account.js... OK
 checking app/assets/javascripts/models/account_type.js... OK
 checking app/assets/javascripts/models/base_model.js... OK
@@ -340,4 +219,4 @@ checking app/assets/javascripts/views/transactions/transaction_row_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_table_view.js... OK
 checking app/assets/javascripts/views/transactions/transactions_index_view.js... OK
 
-Found 75 errors.
+Found 37 errors.

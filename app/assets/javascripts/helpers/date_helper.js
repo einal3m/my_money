@@ -4,20 +4,17 @@ $.fn.datepicker.defaults.autoclose = true;
 
 var formatDate = function(dateString) {
 
-	if (!dateString) return '';
+	if (!dateString) { return ''; }
 
-	var m_names = new Array("Jan", "Feb", "Mar", 
-	"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
-	"Oct", "Nov", "Dec");
+	var m_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 	var d = new Date(dateString);
 	var curr_date = d.getDate();
 	var curr_month = d.getMonth();
 	var curr_year = d.getFullYear();
 	
-	return (curr_date + "-" + m_names[curr_month] 
-	+ "-" + curr_year);
-}
+	return (curr_date + "-" + m_names[curr_month] + "-" + curr_year);
+};
 
 Handlebars.registerHelper('datePickerInput', function(dateString, id) {
 	value = formatDate(dateString);

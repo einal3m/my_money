@@ -1,4 +1,4 @@
-describe("money helpers", function() {
+describe("MoneyHelpers", function() {
   var helpers = Handlebars.helpers;
 
   describe("Handlebar Helpers", function() {

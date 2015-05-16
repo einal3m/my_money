@@ -23,7 +23,6 @@
 //= require backbone_rails_sync
 //= require backbone_datalink
 //= require backbone-validation
-//= require Cocktail
 //= require my_money
 //= require_tree ./templates
 //= require_tree .

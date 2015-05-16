@@ -13,7 +13,7 @@ Handlebars.registerHelper('descriptionFormatter', function(memo, notes) {
 		html = memo;
 	}
 
-	if (html != "") {
+	if (html !== "") {
 		return new Handlebars.SafeString(html + "<br>");
 	}
 });
