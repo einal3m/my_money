@@ -11,10 +11,10 @@ MyMoney.Views.EodBalanceReportView = MyMoney.Views.BaseView.extend({
 
   initialize: function() {
     this.model = new MyMoney.Models.ReportForAccount({}, {reportName: 'eod_balance'});
-    this.accounts = this.options['accounts'];
-    this.account = this.options['account'];
-    this.dateRangeOptions = this.options['dateRangeOptions'];
-    this.currentDateRange = this.options['currentDateRange'];
+    this.accounts = this.options.accounts;
+    this.account = this.options.account;
+    this.dateRangeOptions = this.options.dateRangeOptions;
+    this.currentDateRange = this.options.currentDateRange;
   },
 
   updateReport: function() {
@@ -50,7 +50,7 @@ MyMoney.Views.EodBalanceReportView = MyMoney.Views.BaseView.extend({
       accounts: this.accounts,
       date_range: this.currentDateRange,
       date_range_options: this.dateRangeOptions
-    }))
+    }));
     this.renderSubViews();
     Backbone.Validation.bind(this);
     return this;

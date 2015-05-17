@@ -17,7 +17,6 @@ MyMoney.Views.ReconciliationHistoryView = Backbone.View.extend({
     this.$el.html(HandlebarsTemplates[this.template]());
     this.addAll();
     return this;
-  },
-
+  }
 
 });

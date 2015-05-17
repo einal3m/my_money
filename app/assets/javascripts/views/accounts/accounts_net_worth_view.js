@@ -3,17 +3,17 @@ MyMoney.Views.AccountsNetWorthView = Backbone.View.extend({
 
   tagName: "tr", 
   className: "totals",
-	template: "accounts/account_net_worth",
+  template: "accounts/account_net_worth",
 
-	netWorth: parseFloat("0.00"),
+  netWorth: parseFloat("0.00"),
 
-	initialize: function(){
-		this.calculateNetWorth();
-	},
+  initialize: function(){
+    this.calculateNetWorth();
+  },
 
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]({netWorth: this.netWorth}));
-  	return this;
+    return this;
   },
 
   calculateNetWorth: function(){

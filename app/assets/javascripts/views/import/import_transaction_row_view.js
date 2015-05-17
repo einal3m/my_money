@@ -10,9 +10,9 @@ MyMoney.Views.ImportTransactionRowView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
-    this.categoryTypes = this.options['categoryTypes'];
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
+    this.categoryTypes = this.options.categoryTypes;
     this.set_current_subcategories();
   },
   
@@ -29,14 +29,14 @@ MyMoney.Views.ImportTransactionRowView = Backbone.View.extend({
   },
 
   updateSubcategorySelect: function() {
-    this.model.set('category_id', parseInt(this.$('#category_id').val()));
+    this.model.set('category_id', parseInt(this.$('#category_id').val(), 10));
     this.set_current_subcategories();
     var html = selectContent(this.current_subcategories, null);
     this.$el.find('#subcategory_id').html(html);
   },
 
   updateSubcategory: function() {
-    this.model.set('subcategory_id', parseInt(this.$('#subcategory_id').val()));
+    this.model.set('subcategory_id', parseInt(this.$('#subcategory_id').val(), 10));
   },
 
   render: function(){

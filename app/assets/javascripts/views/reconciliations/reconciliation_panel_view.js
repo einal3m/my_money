@@ -8,9 +8,9 @@ MyMoney.Views.ReconciliationPanelView = Backbone.View.extend({
   },
 
   initialize: function(options){
-    this.account = this.options['account'];
-    this.reconciliation_balance = this.options['reconciliation_balance'];
-    this.balance_difference = this.options['balance_difference'];
+    this.account = this.options.account;
+    this.reconciliation_balance = this.options.reconciliation_balance;
+    this.balance_difference = this.options.balance_difference;
   },
 
   render: function(){
@@ -31,7 +31,7 @@ MyMoney.Views.ReconciliationPanelView = Backbone.View.extend({
   goBack: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    Backbone.history.history.back()  
+    Backbone.history.history.back();
   }
 
 });

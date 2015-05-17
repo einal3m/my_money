@@ -3,7 +3,7 @@ MyMoney.Views.DateRangeFilterView = Backbone.View.extend({
   template: "filters/date_range_filter",
 
   events: {
-    "change #date_range_option_id": "updateDates",
+    "change #date_range_option_id": "updateDates"
   },
 
   render: function(){

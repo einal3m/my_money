@@ -69,7 +69,7 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
   uploadTransactions: function(e) {
     var view = this;
     var txns_to_upload = new MyMoney.Collections.Transactions(
-      this.transactions.where({ import: true }),
+      this.transactions.where({ 'import': true }),
       { account_id: this.account.id }
     );
 

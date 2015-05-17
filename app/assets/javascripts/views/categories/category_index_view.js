@@ -32,6 +32,6 @@ MyMoney.Views.CategoryIndexView = MyMoney.Views.BaseView.extend({
     this.renderSubViews();
 
     return this;
-  },
+  }
 
 });

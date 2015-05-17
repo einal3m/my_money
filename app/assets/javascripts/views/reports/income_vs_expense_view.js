@@ -11,10 +11,10 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
 
   initialize: function() {
     this.model = new MyMoney.Models.Report({}, {reportName: 'income_vs_expense'});
-    this.dateRangeOptions = this.options['dateRangeOptions'];
-    this.currentDateRange = this.options['currentDateRange'];
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
+    this.dateRangeOptions = this.options.dateRangeOptions;
+    this.currentDateRange = this.options.currentDateRange;
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
   },
 
   updateReport: function() {
@@ -45,7 +45,7 @@ MyMoney.Views.IncomeVsExpenseReportView = MyMoney.Views.BaseView.extend({
     this.addSubView('filter', new MyMoney.Views.FilterView({
       date_range: this.currentDateRange,
       date_range_options: this.dateRangeOptions
-    }))
+    }));
     this.renderSubViews();
     Backbone.Validation.bind(this);
     return this;

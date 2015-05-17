@@ -8,7 +8,7 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
   },
 
   initialize: function(options){
-    this.account = this.options['account'];
+    this.account = this.options.account;
   },
 
   render: function(){
@@ -35,7 +35,7 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
   goBack: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    Backbone.history.history.back()  
+    Backbone.history.history.back(); 
   }
 
 });

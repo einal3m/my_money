@@ -36,7 +36,7 @@ checking app/assets/javascripts/models/transaction.js... OK
 checking app/assets/javascripts/models/transaction_type.js... OK
 checking app/assets/javascripts/my_money.js... OK
 checking app/assets/javascripts/report.js... 5 errors:
-
+ 
 Lint at line 197 character 106: Don't make functions within a loop.
 .attr("transform", function (d,i) { return "translate(" + (i*(bar_width + 2*bar_gap)) + ", 0)"; });
 
@@ -61,21 +61,13 @@ checking app/assets/javascripts/views/accounts/account_summary_view.js... OK
 checking app/assets/javascripts/views/accounts/account_type_table_view.js... OK
 checking app/assets/javascripts/views/accounts/account_view.js... OK
 checking app/assets/javascripts/views/accounts/accounts_index_view.js... OK
-checking app/assets/javascripts/views/accounts/accounts_net_worth_view.js... 1 error:
-
-Lint at line 16 character 2: Mixed spaces and tabs.
-return this;
-
+checking app/assets/javascripts/views/accounts/accounts_net_worth_view.js... OK
 checking app/assets/javascripts/views/base_edit_view.js... OK
 checking app/assets/javascripts/views/base_table_row_view.js... OK
 checking app/assets/javascripts/views/base_table_view.js... OK
 checking app/assets/javascripts/views/base_view.js... OK
 checking app/assets/javascripts/views/categories/category_edit_view.js... OK
-checking app/assets/javascripts/views/categories/category_index_view.js... 1 error:
-
-Lint at line 35 character 4: Extra comma.
-},
-
+checking app/assets/javascripts/views/categories/category_index_view.js... OK
 checking app/assets/javascripts/views/categories/category_row_view.js... OK
 checking app/assets/javascripts/views/categories/category_type_table_view.js... OK
 checking app/assets/javascripts/views/categories/subcategory_edit_view.js... OK
@@ -83,130 +75,30 @@ checking app/assets/javascripts/views/categories/subcategory_row_view.js... OK
 checking app/assets/javascripts/views/filters/account_filter_view.js... OK
 checking app/assets/javascripts/views/filters/account_type_filter_view.js... OK
 checking app/assets/javascripts/views/filters/category_filter_view.js... OK
-checking app/assets/javascripts/views/filters/date_range_filter.js... 1 error:
-
-Lint at line 6 character 50: Extra comma.
-"change #date_range_option_id": "updateDates",
-
+checking app/assets/javascripts/views/filters/date_range_filter.js... OK
 checking app/assets/javascripts/views/filters/filter_view.js... OK
-checking app/assets/javascripts/views/import/import_file_chooser_view.js... 3 errors:
-
-Lint at line 15 character 33: ['account'] is better written in dot notation.
-this.account = this.options['account'];
-
-Lint at line 16 character 34: ['accounts'] is better written in dot notation.
-this.accounts = this.options['accounts'];
-
-Lint at line 28 character 49: Missing semicolon.
-this.$el.find('#file_name').trigger('click')
-
-checking app/assets/javascripts/views/import/import_transaction_row_view.js... 5 errors:
-
-Lint at line 13 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 14 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 15 character 39: ['categoryTypes'] is better written in dot notation.
-this.categoryTypes = this.options['categoryTypes'];
-
-Lint at line 32 character 35: Missing radix parameter.
-this.model.set('category_id', parseInt(this.$('#category_id').val()));
-
-Lint at line 39 character 38: Missing radix parameter.
-this.model.set('subcategory_id', parseInt(this.$('#subcategory_id').val()));
-
-checking app/assets/javascripts/views/import/import_transaction_select_view.js... 3 errors:
-
-Lint at line 6 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 7 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 8 character 39: ['categoryTypes'] is better written in dot notation.
-this.categoryTypes = this.options['categoryTypes'];
-
-checking app/assets/javascripts/views/import/import_view.js... 1 error:
-
-Lint at line 72 character 33: Expected an identifier and instead saw 'import' (a reserved word).
-this.transactions.where({ import: true }),
-
+checking app/assets/javascripts/views/import/import_file_chooser_view.js... OK
+checking app/assets/javascripts/views/import/import_transaction_row_view.js... OK
+checking app/assets/javascripts/views/import/import_transaction_select_view.js... OK
+checking app/assets/javascripts/views/import/import_view.js... OK
 checking app/assets/javascripts/views/layout/footer_view.js... OK
 checking app/assets/javascripts/views/layout/header_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_edit_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_index_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_table_row_view.js... OK
 checking app/assets/javascripts/views/patterns/pattern_table_view.js... OK
-checking app/assets/javascripts/views/reconciliations/reconciliation_history_view.js... 1 error:
-
-Lint at line 20 character 4: Extra comma.
-},
-
-checking app/assets/javascripts/views/reconciliations/reconciliation_new_view.js... 2 errors:
-
-Lint at line 11 character 33: ['account'] is better written in dot notation.
-this.account = this.options['account'];
-
-Lint at line 38 character 36: Missing semicolon.
-Backbone.history.history.back()
-
-checking app/assets/javascripts/views/reconciliations/reconciliation_panel_view.js... 4 errors:
-
-Lint at line 11 character 33: ['account'] is better written in dot notation.
-this.account = this.options['account'];
-
-Lint at line 12 character 48: ['reconciliation_balance'] is better written in dot notation.
-this.reconciliation_balance = this.options['reconciliation_balance'];
-
-Lint at line 13 character 44: ['balance_difference'] is better written in dot notation.
-this.balance_difference = this.options['balance_difference'];
-
-Lint at line 34 character 36: Missing semicolon.
-Backbone.history.history.back()
-
+checking app/assets/javascripts/views/reconciliations/reconciliation_history_view.js... OK
+checking app/assets/javascripts/views/reconciliations/reconciliation_new_view.js... OK
+checking app/assets/javascripts/views/reconciliations/reconciliation_panel_view.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_row_view.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_transaction_row.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_transactions_view.js... OK
 checking app/assets/javascripts/views/reconciliations/reconciliation_view.js... OK
 checking app/assets/javascripts/views/reports/bar_chart_view.js... OK
 checking app/assets/javascripts/views/reports/category_report_view.js... OK
-checking app/assets/javascripts/views/reports/eod_balance_view.js... 5 errors:
-
-Lint at line 14 character 34: ['accounts'] is better written in dot notation.
-this.accounts = this.options['accounts'];
-
-Lint at line 15 character 33: ['account'] is better written in dot notation.
-this.account = this.options['account'];
-
-Lint at line 16 character 42: ['dateRangeOptions'] is better written in dot notation.
-this.dateRangeOptions = this.options['dateRangeOptions'];
-
-Lint at line 17 character 42: ['currentDateRange'] is better written in dot notation.
-this.currentDateRange = this.options['currentDateRange'];
-
-Lint at line 53 character 8: Missing semicolon.
-}))
-
+checking app/assets/javascripts/views/reports/eod_balance_view.js... OK
 checking app/assets/javascripts/views/reports/income_expense_bar_view.js... OK
-checking app/assets/javascripts/views/reports/income_vs_expense_view.js... 5 errors:
-
-Lint at line 14 character 42: ['dateRangeOptions'] is better written in dot notation.
-this.dateRangeOptions = this.options['dateRangeOptions'];
-
-Lint at line 15 character 42: ['currentDateRange'] is better written in dot notation.
-this.currentDateRange = this.options['currentDateRange'];
-
-Lint at line 16 character 36: ['categories'] is better written in dot notation.
-this.categories = this.options['categories'];
-
-Lint at line 17 character 39: ['subcategories'] is better written in dot notation.
-this.subcategories = this.options['subcategories'];
-
-Lint at line 48 character 8: Missing semicolon.
-}))
-
+checking app/assets/javascripts/views/reports/income_vs_expense_view.js... OK
 checking app/assets/javascripts/views/reports/line_chart_view.js... OK
 checking app/assets/javascripts/views/reports/pie_chart_view.js... OK
 checking app/assets/javascripts/views/reports/report_category_row_view.js... OK
@@ -219,4 +111,4 @@ checking app/assets/javascripts/views/transactions/transaction_row_view.js... OK
 checking app/assets/javascripts/views/transactions/transaction_table_view.js... OK
 checking app/assets/javascripts/views/transactions/transactions_index_view.js... OK
 
-Found 37 errors.
+Found 5 errors.

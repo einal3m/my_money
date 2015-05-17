@@ -3,9 +3,9 @@ MyMoney.Views.ImportTransactionSelectView = Backbone.View.extend({
   template: "import/import_transaction_select",
 
   initialize: function() {
-    this.categories = this.options['categories'];
-    this.subcategories = this.options['subcategories'];
-    this.categoryTypes = this.options['categoryTypes'];   
+    this.categories = this.options.categories;
+    this.subcategories = this.options.subcategories;
+    this.categoryTypes = this.options.categoryTypes;   
   },
 
   addAll: function(){

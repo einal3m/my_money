@@ -12,8 +12,8 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
   },
 
   initialize: function(options){
-    this.account = this.options['account'];
-    this.accounts = this.options['accounts'];
+    this.account = this.options.account;
+    this.accounts = this.options.accounts;
   },
 
   render: function(){
@@ -25,7 +25,7 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
 
   openFileChooser: function(e) {
     e.stopPropagation();
-    this.$el.find('#file_name').trigger('click')
+    this.$el.find('#file_name').trigger('click');
   },
 
   updateFileName: function(e) {
