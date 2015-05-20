@@ -18,8 +18,24 @@ class Account < ActiveRecord::Base
   # validations
   validates :account_type_id, presence: true
   validates :name, presence: true
-  validates :starting_balance, presence: true, numericality: true
-  validates :starting_date, presence: true
+  validates :starting_balance, presence: true, numericality: true, if: :savings?
+  validates :starting_date, presence: true, if: :savings?
+  validates :ticker, presence: true, if: :share?
+
+  def savings?
+    account_type_id == 1
+  end
+
+  def share?
+    account_type_id == 2
+  end
+
+  # defaults
+  after_initialize :init
+
+  def init
+    self.starting_balance ||= 0.0
+  end
 
   # current_balance gets the balance of the last transaction, or if none
   # exist, then the starting balance of the account

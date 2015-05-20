@@ -4,18 +4,20 @@ def visit_accounts
   expect(page).to have_content('my accounts')
 end
 
-def create_account(params = {})
+def create_account(account_type, params = {})
   account_params = {
     name: 'Default Account Name',
     bank: 'Default Bank',
     starting_date: '19-Dec-2014',
-    starting_balance: '50.00'
+    starting_balance: '50.00',
+    ticker: 'tck'
   }.merge(params)
 
   click_on 'new'
   expect(page).to have_content('new account')
-  select 'Savings', from: 'account_type_id'
-  fill_in_account_form(account_params)
+  select account_type, from: 'account_type_id'
+
+  fill_in_account_form(account_type, account_params)
 end
 
 def show_account(name)
@@ -24,16 +26,33 @@ def show_account(name)
   end
 end
 
-def edit_account(params)
+def edit_account(account_type, params)
   click_on 'edit'
-  fill_in_account_form(params)
+  fill_in_account_form(account_type, params)
 end
 
-def fill_in_account_form(params)
+def fill_in_account_form(account_type, params)
+  case account_type
+  when 'Shares'
+    fill_in_share_account_form(params)
+  when 'Savings'
+    fill_in_savings_account_form(params)
+  end
+end
+
+def fill_in_savings_account_form(params)
   fill_in 'name', with: params[:name]
   fill_in 'bank', with: params[:bank]
   fill_in 'starting_balance', with: params[:starting_balance]
   fill_in 'starting_date', with: params[:starting_date]
+
+  click_on 'save'
+  wait_for_ajax
+end
+
+def fill_in_share_account_form(params)
+  fill_in 'name', with: params[:name]
+  fill_in 'ticker', with: params[:ticker]
 
   click_on 'save'
   wait_for_ajax
@@ -50,9 +69,8 @@ def delete_account(account_name)
   expect(page).not_to have_content(account_name)
 end
 
-def verify_account(name, bank, date, balance)
-  expect(page).to have_text(name)
-  expect(page).to have_text(bank)
-  expect(page).to have_text(balance)
-  expect(page).to have_text(date)
+def verify_account(content)
+  content.each do |text|
+    expect(page).to have_text(text)
+  end
 end

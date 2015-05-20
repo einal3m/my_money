@@ -26,18 +26,40 @@ RSpec.describe AccountsController, type: :controller do
 
   describe 'POST create' do
     context 'with valid params' do
-      it 'creates a new Account' do
-        expect {
+      context 'Savings account' do
+        it 'creates a new Savings Account' do
+          expect {
+            post :create, { account: build_attributes(:account) }, valid_session
+          }.to change(Account, :count).by(1)
+        end
+
+        it 'sends the account' do
           post :create, { account: build_attributes(:account) }, valid_session
-        }.to change(Account, :count).by(1)
+          account = Account.first
+
+          json = JSON.parse(response.body)
+          expect(json['account']).to eq(serialize_account(account))
+        end
       end
 
-      it 'sends the account' do
-        post :create, { account: build_attributes(:account) }, valid_session
-        account = Account.first
+      context 'Share account' do
+        it 'creates a new Share Account' do
+          expect {
+            post :create, { account: { account_type_id: 2, name: 'Name', ticker: 'TCK' } }, valid_session
+          }.to change(Account, :count).by(1)
+        end
 
-        json = JSON.parse(response.body)
-        expect(json['account']).to eq(serialize_account(account))
+        it 'sends the account' do
+          post :create, { account: { account_type_id: 2, name: 'Name', ticker: 'TCK' } }, valid_session
+          account = Account.first
+
+          expect(account.name).to eq('Name')
+          expect(account.ticker).to eq('TCK')
+          expect(account.starting_balance).to eq(0)
+          
+          json = JSON.parse(response.body)
+          expect(json['account']).to eq(serialize_account(account))
+        end
       end
     end
 

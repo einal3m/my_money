@@ -18,7 +18,7 @@ feature 'Accounts', type: :feature do
 
   scenario 'Import OFX', js: true do
     start_my_money
-    create_account({ name: 'Import Account' })
+    create_account('Savings', { name: 'Import Account' })
     visit_account_transactions 'Import Account'
     import_test_ofx
   end

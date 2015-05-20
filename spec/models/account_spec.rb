@@ -16,25 +16,48 @@ RSpec.describe Account, type: :model do
     expect(a).to be_a(Account)
   end
 
+  describe 'defaults' do
+    it 'to zero starting balance' do
+      expect(Account.new.starting_balance).to eq(0)
+    end
+  end
+
   describe 'validations' do
     it 'is invalid without a name' do
       expect(FactoryGirl.build(:account, name: nil)).not_to be_valid
     end
 
-    it 'is invalid without a name' do
+    it 'is invalid without an account type' do
       expect(FactoryGirl.build(:account, account_type: nil)).not_to be_valid
     end
 
-    it 'is invalid without a starting balance' do
-      expect(FactoryGirl.build(:account, starting_balance: nil)).not_to be_valid
+    context 'savings' do
+      it 'is invalid without a starting balance' do
+        expect(FactoryGirl.build(:account, starting_balance: nil, account_type_id: 1)).not_to be_valid
+      end
+
+      it 'is invalid without a starting date' do
+        expect(FactoryGirl.build(:account, starting_date: nil, account_type_id: 1)).not_to be_valid
+      end
+
+      it 'is invalid if starting balance is not a number' do
+        expect(FactoryGirl.build(:account, starting_balance: 'a', account_type_id: 1)).not_to be_valid
+      end
+  
+      it 'is valid without a ticker' do
+        expect(FactoryGirl.build(:account, ticker: nil, account_type_id: 1)).to be_valid
+      end
     end
 
-    it 'is invalid without a starting date' do
-      expect(FactoryGirl.build(:account, starting_date: nil)).not_to be_valid
-    end
-
-    it 'is invalid if starting balance is not a number' do
-      expect(FactoryGirl.build(:account, starting_balance: 'a')).not_to be_valid
+    context 'shares' do
+      it 'is invalid without a ticker' do
+        expect(FactoryGirl.build(:account, ticker: nil, account_type_id: 2)).not_to be_valid
+      end
+  
+      it 'is valid without a starting_balance or starting_date' do
+        expect(FactoryGirl.build(:account, starting_balance: nil, account_type_id: 2)).to be_valid
+        expect(FactoryGirl.build(:account, starting_date: nil, account_type_id: 2)).to be_valid
+      end
     end
 
     it 'is valid without a bank' do

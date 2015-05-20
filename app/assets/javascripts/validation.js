@@ -17,6 +17,22 @@ _.extend(Backbone.Validation.callbacks, {
 });
 
 _.extend(Backbone.Validation.validators, {
+  isShare: function (value, attr, options, model) {
+    console.log('isShare');
+    if(_.isBlank(value)) {
+      return '';
+    }
+
+    var lockDate = model.lockDate();
+    if(_.isBlank(lockDate)) {
+      return '';
+    }
+
+    if (!moment(value).isAfter(lockDate)) {
+      var msg = options.msg || 'Date must be after lock date of ' + DateUtils.toFrontendDate(lockDate);
+      return msg;
+    }
+  },
   money: function(value, attr, customValue, model) {
     if(value !== customValue){
       return 'error';
