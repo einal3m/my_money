@@ -1,6 +1,5 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:edit, :update, :destroy]
-  before_action :get_account, only: [:index, :unreconciled, :ofx]
 
   # GET /transactions
   # GET /transactions.json
@@ -8,7 +7,7 @@ class TransactionsController < ApplicationController
     from_date = params[:from_date]
     to_date = params[:to_date]
 
-    transactions = @account.transactions.find_by_dates(from_date, to_date).reverse_date_order
+    transactions = account.transactions.find_by_dates(from_date, to_date).reverse_date_order
     render json: transactions
   end
 
@@ -63,7 +62,7 @@ class TransactionsController < ApplicationController
 
   # GET transactions/unreconciled?account_id=?
   def unreconciled
-    render json: Transaction.unreconciled(@account).reverse_date_order
+    render json: Transaction.unreconciled(account).reverse_date_order
   end
 
   def ofx
@@ -79,20 +78,24 @@ class TransactionsController < ApplicationController
   private
 
   def build_transaction(t)
-    t.account = @account
+    t.account = account
     t.duplicate = Transaction.exists?(date: t.date, memo: t.memo, amount: t.amount)
     t.import = !t.duplicate
-    allocate_categories(t)
+    apply_patterns(t)
   end
 
-  def allocate_categories(t)
-    Pattern.where(account_id: @account.id).each do |p|
-      next unless t.memo.downcase.include? p.match_text.downcase
-      t.category_id = p.category_id
-      t.subcategory_id = p.subcategory_id
-      t.notes = p.notes
+  def apply_patterns(transaction)
+    Pattern.where(account_id: account.id).each do |pattern|
+      next unless transaction.memo.downcase.include? pattern.match_text.downcase
+      allocate_transaction(transaction, pattern)
       break
     end
+  end
+
+  def allocate_transaction(transaction, pattern)
+    transaction.category_id = pattern.category_id
+    transaction.subcategory_id = pattern.subcategory_id
+    transaction.notes = pattern.notes
   end
 
   # Use callbacks to share common setup or constraints between actions.

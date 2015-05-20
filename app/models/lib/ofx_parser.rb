@@ -3,7 +3,7 @@ module Lib
     STMTTRN = '<STMTTRN>'
     END_STMTTRN = '</STMTTRN>'
     MAPPINGS = {
-      'TRNTYPE' => 'transaction_type',
+      # 'TRNTYPE' => 'transaction_type',
       'DTPOSTED' => 'date',
       'TRNAMT' => 'amount',
       'FITID' => 'fitid',

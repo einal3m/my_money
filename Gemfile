@@ -1,6 +1,5 @@
 source 'http://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.2'
 # Use sqlite3 as the database for Active Record
@@ -56,8 +55,7 @@ group :development, :test do
 end
 
 group :test do
-	gem 'capybara'
-	gem 'selenium-webdriver'
-	gem 'simplecov', '~> 0.9.0', :require => false
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'simplecov', '~> 0.9.0', require: false
 end
-

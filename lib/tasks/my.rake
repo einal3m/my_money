@@ -1,9 +1,13 @@
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
-task :myjs => [:jslint, :'jasmine:ci']
-task :myruby => [:'rubocop', :'spec:models', :'spec:controllers', :'spec:lib']
-task :mycapy => [:'spec:features']
+RSpec::Core::RakeTask.new(:myrspec) do |t|
+  t.pattern = FileList['./spec/**/*_spec.rb'].exclude('./spec/features/**/*_spec.rb')
+end
 
-Rake::Task["default"].clear if Rake::Task.tasks.collect(&:name).include?("default")
-task :default => [:myjs, :myruby, :mycapy]
+task myjs: [:jslint, :'jasmine:ci']
+task myruby: [:rubocop, :myrspec]
+task mycapy: [:'spec:features']
+
+Rake::Task['default'].clear if Rake::Task.tasks.collect(&:name).include?('default')
+task default: [:myjs, :myruby, :mycapy]

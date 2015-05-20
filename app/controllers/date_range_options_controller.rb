@@ -24,10 +24,10 @@ class DateRangeOptionsController < ApplicationController
     respond_to do |format|
       if @date_range_option.save
         format.html { redirect_to date_range_options_path, notice: 'Date range option was successfully created.' }
-        format.json { render :show, status: :created, location: @date_range_option }
+        # format.json { render :show, status: :created, location: @date_range_option }
       else
         format.html { redirect_to date_range_options_path, notice: 'Unable to create date range: ' + @date_range_option.errors.full_messages.first }
-        format.json { render json: @date_range_option.errors, status: :unprocessable_entity }
+        # format.json { render json: @date_range_option.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -10,7 +10,7 @@ paths:
   - app/assets/javascripts/**/*.js
 
 exclude_paths:
-
+  - app/assets/javascripts/report.js
 
 # ------------ jslint options ------------
 # see http://www.jslint.com/lint.html#options for more detailed explanations

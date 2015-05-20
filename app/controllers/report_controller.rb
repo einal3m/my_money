@@ -32,13 +32,10 @@ class ReportController < ApplicationController
   # balance
   # retrieves the end of day balance for the specified account for the date range
   def eod_balance
-    get_account
-
-    # if account has been selected, run search
-    if @account.nil?
+    if account.nil?
       @line_chart_data = []
     else
-      search = Lib::BalanceSearch.new(account: @account, date_range: @date_range)
+      search = Lib::BalanceSearch.new(account: account, date_range: @date_range)
       @line_chart_data = search.eod_balance
     end
 
@@ -84,14 +81,22 @@ class ReportController < ApplicationController
 
   def get_category_type_data(category_type, category_types)
     data = {}
-    search = Lib::CategoryTypeSearch.new(date_range: @date_range, category_type: category_types[category_type])
+    search = create_category_type_search(category_type, category_types)
     data[:subcategory_totals] = search.group_by(:category_id, :subcategory_id)
     data[:category_totals] = search.group_by(:category_id)
-    unassigned_search = Lib::CategorySearch.new(date_range: @date_range, category: nil, category_type: category_types[category_type])
+    unassigned_search = create_unassigned_search(category_type, category_types)
     unassigned_sum = unassigned_search.sum
     data[:category_totals] << { sum: unassigned_sum, category_id: nil } if unassigned_sum != 0
     data[:total] = search.sum + unassigned_sum
     data
+  end
+
+  def create_category_type_search(category_type, category_types)
+    Lib::CategoryTypeSearch.new(date_range: @date_range, category_type: category_types[category_type])
+  end
+
+  def create_unassigned_search(category_type, category_types)
+    Lib::CategorySearch.new(date_range: @date_range, category: nil, category_type: category_types[category_type])
   end
 
   def set_data_range
