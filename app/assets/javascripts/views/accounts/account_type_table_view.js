@@ -15,7 +15,7 @@ MyMoney.Views.AccountTypeTableView = MyMoney.Views.BaseTableView.extend({
   },
 
   createTableRow: function(model){
-    return new MyMoney.Views.AccountView({
+    return new MyMoney.Views.AccountRowView({
       model: model
     });
   }

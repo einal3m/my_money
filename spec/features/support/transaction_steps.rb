@@ -7,7 +7,7 @@ def visit_transactions
 end
 
 def visit_account_transactions(account_name)
-  click_on account_name
+  click_on_row_with_text account_name
   wait_for_ajax
   expect(page).to have_content('my transactions')
 end

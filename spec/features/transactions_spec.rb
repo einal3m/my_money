@@ -28,7 +28,7 @@ feature 'Transactions', type: :feature do
 
   scenario 'User views the transaction list for an account', js: true  do
     visit_accounts
-    click_on 'My New Account'
+    visit_account_transactions 'My New Account'
 
     expect(page).to have_text('my transactions')
     expect(page).to have_text('First Transaction')
@@ -42,7 +42,7 @@ feature 'Transactions', type: :feature do
     date_text = Date.today.strftime('%-d-%b-%Y')
 
     visit_accounts
-    click_on 'My New Account'
+    visit_account_transactions 'My New Account'
 
     expect(page).to have_text('my transactions')
     expect(page.all('tbody tr').count).to eq(3)
@@ -73,7 +73,7 @@ feature 'Transactions', type: :feature do
 
   scenario 'User edits a transaction', js: true  do
     visit_accounts
-    click_on('My New Account')
+    visit_account_transactions 'My New Account'
 
     expect(page).to have_text('my transactions')
 

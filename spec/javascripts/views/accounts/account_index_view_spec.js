@@ -9,7 +9,7 @@ describe("AccountsIndexView", function(){
     accounts = new MyMoney.Collections.Accounts([
       {id: 3, name: 'Account A', account_type_id: 1},
       {id: 4, name: 'Account B', account_type_id: 1},
-      {id: 5, name: 'Account C', account_type_id: 3},
+      {id: 5, name: 'Account C', account_type_id: 2},
       {id: 6, name: 'Account D', account_type_id: 1}
     ]);
 
@@ -51,7 +51,7 @@ describe("AccountsIndexView", function(){
 
     it("displays tables for each account type", function(){
       expect(view.$('.panel-heading')[0]).toContainText('Type 1');
-      expect(view.$('.panel-heading')[1]).toContainText('Type 3');
+      expect(view.$('.panel-heading')[1]).toContainText('Type 2');
     });
 
     it("creates an accountTypeTableView for each account type", function(){
