@@ -12,6 +12,16 @@ describe('AccountModel', function(){
     expect(account.url()).toEqual('accounts/10');
   });
 
+  it('#isShare', function(){
+    account.set({account_type_id: 2});
+    expect(account.isShare()).toBeTruthy();
+  });
+
+  it('#isSavings', function(){
+    account.set({account_type_id: 1});
+    expect(account.isSavings()).toBeTruthy();
+  });
+
   describe('validation', function(){
     it ('requires an account type ', function(){
       expect(account.preValidate('account_type_id', null)).toEqual('Account type is required');

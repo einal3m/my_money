@@ -25,7 +25,6 @@ MyMoney.Views.AccountsIndexView = MyMoney.Views.BaseView.extend({
   // },
 
   render: function () {
-    console.log('AccountsIndexView.render');
     this.$el.html(HandlebarsTemplates[this.template]());
     this.accountTypes.each(function(accountType) {
       var filteredAccounts = this.collection.findByAccountType(accountType);

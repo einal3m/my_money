@@ -24,12 +24,12 @@ describe("AccountFormView", function(){
 
   describe('#setTemplate', function(){
     it("for savings", function(){
-      view.accountType.set({name: 'Savings'});
+      view.model.set({account_type_id: 1});
       view.setTemplate();
       expect(view.template).toEqual('accounts/savings_form');
     });
     it("for shares", function(){
-      view.accountType.set({name: 'Shares'});
+      view.model.set({account_type_id: 2});
       view.setTemplate();
       expect(view.template).toEqual('accounts/shares_form');
     });
@@ -38,6 +38,7 @@ describe("AccountFormView", function(){
   describe('for shares', function(){
     beforeEach(function(){
       accountType.set({name: 'Shares'});
+      view.model.set({account_type_id: 2});
       view.setTemplate();
       view.render();
     });
@@ -60,6 +61,7 @@ describe("AccountFormView", function(){
   describe("for savings", function(){
     beforeEach(function(){
       accountType.set({name: 'Savings'});
+      view.model.set({account_type_id: 1});
       view.setTemplate();
       view.render();
     });

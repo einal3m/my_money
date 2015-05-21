@@ -9,6 +9,14 @@ MyMoney.Models.Account = MyMoney.Models.BaseModel.extend({
     return response.account || response;
   },
 
+  isSavings: function(){
+    return (this.get('account_type_id') === 1);
+  },
+
+  isShare: function(){
+    return (this.get('account_type_id') === 2);
+  },
+
   validation: {
     account_type_id: {
       required: true,
@@ -18,19 +26,19 @@ MyMoney.Models.Account = MyMoney.Models.BaseModel.extend({
       required: true
     },
     starting_balance: function (value) {
-      if (this.get('account_type_id') === 1 && !value) {
+      if (this.isSavings() && !value) {
         return 'Opening balance is required';
       } else if (value && !_.isNumber(value)) {
         return 'Opening balance must be a number';
       } else { return ''; }
     },
     starting_date: function (value) {
-      if (this.get('account_type_id') === 1 && !value) {
+      if (this.isSavings() && !value) {
         return 'Opening balance date is required';
       } else { return ''; }
     },
     ticker: function (value) {
-      if (this.get('account_type_id') === 2 && !value) {
+      if (this.isShare() && !value) {
         return 'Ticker is required';
       } else { return ''; }
     }

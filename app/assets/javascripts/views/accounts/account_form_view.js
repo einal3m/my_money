@@ -21,13 +21,13 @@ MyMoney.Views.AccountFormView = MyMoney.Views.BaseEditView.extend({
   },
 
   setModelAttributes: function(){
-    if (this._isSavings()) { this._setSavingsAttributes(); }
-    if (this._isShares()) { this._setSharesAttributes(); }
+    if (this.model.isSavings()) { this._setSavingsAttributes(); }
+    if (this.model.isShare()) { this._setSharesAttributes(); }
   },
 
   setTemplate: function(){
-    if (this._isSavings()) { this.template = 'accounts/savings_form'; }
-    if (this._isShares()) { this.template = 'accounts/shares_form'; }
+    if (this.model.isSavings()) { this.template = 'accounts/savings_form'; }
+    if (this.model.isShare()) { this.template = 'accounts/shares_form'; }
   },
 
   _setSavingsAttributes: function(){
@@ -44,15 +44,6 @@ MyMoney.Views.AccountFormView = MyMoney.Views.BaseEditView.extend({
       ticker: this.$('#ticker').val(),
       name: this.$('#name').val()
     });
-  },
-
-// TODO: put this in account
-  _isSavings: function(){
-    return (this.accountType.get('name') == 'Savings');
-  },
-
-  _isShares: function(){
-    return (this.accountType.get('name') == 'Shares');
   }
 
 });
