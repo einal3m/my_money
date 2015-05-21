@@ -3,8 +3,10 @@ describe("AccountShowView", function(){
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
+      account_type_id: 1,
       name: 'My Account',
       bank: 'My Bank',
+      ticker: 'TCK',
       starting_date: '12-May-2014',
       starting_balance: 100
     });
@@ -30,11 +32,24 @@ describe("AccountShowView", function(){
       view.render();
     });
 
-    it("displays account details", function(){
-      expect(view.el).toContainText('My Account');
-      expect(view.el).toContainText('My Bank');
-      expect(view.el).toContainText('12-May-2014');
-      expect(view.el).toContainText('$1');
+    describe('for savings', function(){
+      it("displays account details", function(){
+        expect(view.template).toEqual('accounts/savings_show');
+        expect(view.el).toContainText('My Account');
+        expect(view.el).toContainText('My Bank');
+        expect(view.el).toContainText('12-May-2014');
+        expect(view.el).toContainText('$1');
+      });
+    });
+
+    describe('for savings', function(){
+      it("displays account details", function(){
+        view.model.set({account_type_id: 2});
+        view.render();
+        expect(view.template).toEqual('accounts/shares_show')
+        expect(view.el).toContainText('My Account');
+        expect(view.el).toContainText('TCK');
+      });
     });
 
     it("has an edit button", function(){

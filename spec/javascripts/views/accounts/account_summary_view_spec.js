@@ -3,6 +3,7 @@ describe("AccountSummaryView", function(){
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
+      account_type_id: 1,
       name: 'My Account',
       bank: 'My Bank',
       starting_date: '12-May-2014',

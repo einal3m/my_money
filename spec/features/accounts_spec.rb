@@ -38,9 +38,10 @@ feature 'Accounts', type: :feature do
       ticker: 'TCK'
     })
     expect(page).to have_content('my accounts')
+    verify_account(['New Account Name', '$ --'])
 
     show_account('New Account Name')
-    verify_account(['New Account Name', '$ --'])
+    verify_account(['New Account Name', 'TCK'])
   end
 
   scenario 'User edits an account', js: true do
