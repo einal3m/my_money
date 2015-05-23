@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :account do |f|
-    account_type
+    f.account_type_id 1
     f.name 'New Account'
     f.bank 'New Bank'
     f.ticker 'TCK'

@@ -3,6 +3,7 @@ describe("TransactionIndexView", function(){
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
+      account_type_id: 1,
       name: 'My Account'
     });
 

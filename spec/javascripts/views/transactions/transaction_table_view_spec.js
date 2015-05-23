@@ -1,7 +1,7 @@
 describe("TransactionTableView", function(){
   var view, account, transaction, transactions, categories, subcategories, categoryTypes;
   beforeEach(function(){
-    account = new MyMoney.Models.Account({id: 2, name: 'My Account', bank: 'My Bank'});
+    account = new MyMoney.Models.Account({id: 2, account_type_id: 1, name: 'My Account', bank: 'My Bank'});
     categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
     ]);    
@@ -85,6 +85,7 @@ describe("TransactionTableView", function(){
       expect(view.editView).toBeDefined();
       expect(view.editView.model.isNew()).toBeTruthy();
       expect(view.editView.model.get('account_id')).toEqual(2);
+      expect(view.editView.account).toEqual(account);
       expect(view.editView.collection).toEqual(transactions);
       expect(view.editView.categoryTypes).toEqual(categoryTypes);
       expect(view.editView.categories).toEqual(categories);

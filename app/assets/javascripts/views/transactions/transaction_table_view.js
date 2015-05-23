@@ -39,6 +39,7 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseTableView.extend({
     this.editView = new MyMoney.Views.TransactionEditView({
       model: newModel,
       collection: this.collection,
+      account: this.account,
       categoryTypes: this.categoryTypes,
       categories: this.categories,
       subcategories: this.subcategories

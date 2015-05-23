@@ -1,6 +1,10 @@
 describe("TransactionEditView", function(){
   var view, account, categories, subcategories, categoryTypes, transaction, transactions;
   beforeEach(function(){
+    account = new MyMoney.Models.Account({
+      id: 13,
+      account_type_id: 1
+    });
     categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
     ]);    
@@ -14,6 +18,7 @@ describe("TransactionEditView", function(){
     ]);
     transaction = new MyMoney.Models.Transaction({
       id: 7, 
+      account_id: 1,
       date: formatDate((new Date()).toDateString()),
       amount: 500,
       memo: 'This is a memo',
@@ -27,6 +32,7 @@ describe("TransactionEditView", function(){
 
     view = new MyMoney.Views.TransactionEditView({
       model: transaction,
+      account: account,
       categoryTypes: categoryTypes,
       categories: categories,
       subcategories: subcategories
@@ -49,16 +55,31 @@ describe("TransactionEditView", function(){
       view.render();
     });
 
-    it("displays a table row with pattern form", function(){
-      expect(view.el).toEqual('tr');
-      expect(view.el).toContainElement('.form-horizontal');
-      expect(view.el).toContainElement('input#amount');
-      expect(view.el).toContainElement('input#date');
-      expect(view.el).toContainElement('input#notes');
-      expect(view.el).toContainElement('select#category_id');
-      expect(view.el).toContainElement('select#subcategory_id');
-      expect(view.el).toContainElement('button#cancel');
-      expect(view.el).toContainElement('button#save');
+    describe('savings', function(){
+      it("displays a table row with transaction form", function(){
+        expect(view.el).toEqual('tr');
+        expect(view.el).toContainElement('.form-horizontal');
+        expect(view.el).toContainElement('input#amount');
+        expect(view.el).toContainElement('input#date');
+        expect(view.el).toContainElement('input#notes');
+        expect(view.el).toContainElement('select#category_id');
+        expect(view.el).toContainElement('select#subcategory_id');
+        expect(view.el).toContainElement('button#cancel');
+        expect(view.el).toContainElement('button#save');
+      });
+    });
+
+    describe('shares', function(){
+      it('displays a table row with share form', function(){
+        view.account.set({account_type_id: 2});
+        view.setTemplate();
+        view.render();
+        expect(view.el).toEqual('tr');
+        expect(view.el).toContainElement('.form-horizontal');
+        expect(view.el).toContainElement('select#transaction_type_id');
+        expect(view.el).toContainElement('button#cancel');
+        expect(view.el).toContainElement('button#save');
+      });
     });
 
     it("displays a delete button if model is not new", function(){

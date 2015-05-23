@@ -1,6 +1,10 @@
-describe("CategoryRowView", function(){
+describe("TransactionRowView", function(){
   var view, account, transaction, transactions, categories, subcategories, categoryTypes;
   beforeEach(function(){
+    account = new MyMoney.Models.Account({
+      id: 13,
+      account_type_id: 1
+    });
     categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
     ]);    
@@ -26,6 +30,7 @@ describe("CategoryRowView", function(){
 
     view = new MyMoney.Views.TransactionRowView({
       model: transaction,
+      account: account,
       categoryTypes: categoryTypes,
       categories: categories,
       subcategories: subcategories
@@ -38,6 +43,7 @@ describe("CategoryRowView", function(){
 
   it("initializes data", function(){
     expect(view.model).toEqual(transaction);
+    expect(view.account).toEqual(account);
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
@@ -48,17 +54,55 @@ describe("CategoryRowView", function(){
       view.render();
     });
 
-    it("displays a table row with details", function(){
-      expect(view.el).toEqual('tr');
+    describe('savings', function(){
+      it("displays a table row with transaction details", function(){
+        expect(view.el).toEqual('tr');
 
-      var columns = view.$('td');
-      expect(columns.length).toEqual(7);
-      expect(columns[0]).toContainText(transaction.get('date'));
-      expect(columns[1]).toContainText('This is a memo/This is a note');
-      expect(columns[1]).toContainText('Category1/Subcategory1');
-      expect(columns[2]).toContainText('R');
-      expect(columns[3]).toContainText('5.00');
-      expect(columns[5]).toContainText('$40.00');
+        var columns = view.$('td');
+        expect(columns.length).toEqual(7);
+        expect(columns[0]).toContainText(transaction.get('date'));
+        expect(columns[1]).toContainText('This is a memo/This is a note');
+        expect(columns[1]).toContainText('Category1/Subcategory1');
+        expect(columns[2]).toContainText('R');
+        expect(columns[3]).toContainText('5.00');
+        expect(columns[5]).toContainText('$40.00');
+      });
+    });
+
+    describe('shares', function(){
+      it("displays a table row with transaction details", function(){
+        view.account.set({account_type_id: 2});
+        view.setTemplate();
+        view.render();
+        expect(view.el).toEqual('tr');
+
+        var columns = view.$('td');
+        expect(columns.length).toEqual(7);
+        expect(columns[0]).toContainText(transaction.get('date'));
+        expect(columns[1]).toContainText('Share Transaction');
+        expect(columns[1]).toContainText('Category1/Subcategory1');
+        expect(columns[2]).toContainText('R');
+        expect(columns[3]).toContainText('5.00');
+        expect(columns[5]).toContainText('$40.00');
+      });
+    });
+    
+    describe('reports', function(){
+      it("displays a table row with transaction details", function(){
+        view.account = undefined;
+        view.setTemplate();
+        view.render();
+        expect(view.el).toEqual('tr');
+
+        var columns = view.$('td');
+        expect(columns.length).toEqual(7);
+        expect(columns[0]).toContainText(transaction.get('date'));
+        expect(columns[1]).toContainText('This is a memo/This is a note');
+        expect(columns[1]).toContainText('Category1/Subcategory1');
+        expect(columns[2]).toContainText('R');
+        expect(columns[3]).toContainText('5.00');
+        expect(columns[5]).not.toContainText('$40.00');
+      });
     });
 
     it("row is clickable", function(){
@@ -70,6 +114,7 @@ describe("CategoryRowView", function(){
       view.$el.click();
       expect(view.editView).toBeDefined();
       expect(view.editView.model).toEqual(transaction);
+      expect(view.editView.account).toEqual(account);
       expect(view.editView.categoryTypes).toEqual(categoryTypes);
       expect(view.editView.categories).toEqual(categories);
       expect(view.editView.subcategories).toEqual(subcategories);

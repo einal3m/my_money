@@ -1,6 +1,5 @@
 MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
 
-  template: "transactions/transaction_edit",
   tagName: "tr",
   className: 'edit',
 
@@ -12,10 +11,17 @@ MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
   },
 
   initialize: function() {
+    this.account = this.options.account;
     this.categoryTypes = this.options.categoryTypes;
     this.categories = this.options.categories;
     this.subcategories = this.options.subcategories;
     this.filteredSubcategories = this.subcategoriesForCategory(this.model.get('category_id'));
+    this.setTemplate();
+  },
+
+  setTemplate: function(){
+    if (this.account.isSavings()) { this.template = 'transactions/savings_form'; }
+    if (this.account.isShare()) { this.template = 'transactions/shares_form'; }
   },
 
   templateData: function(){

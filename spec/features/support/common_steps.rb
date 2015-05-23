@@ -4,7 +4,7 @@ def start_my_money
 end
 
 def visit_categories
-  visit '/my_money'
+  start_my_money
   within('nav') do
     click_on 'categories'
   end

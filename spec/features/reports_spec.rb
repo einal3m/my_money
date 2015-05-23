@@ -4,6 +4,8 @@ feature 'Reports', type: :feature do
   before :each do
     FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
+    FactoryGirl.create(:account_type, name: 'Savings')
+    FactoryGirl.create(:account_type, name: 'Shares')
 
     c1 = FactoryGirl.create(:category, name: 'First Category')
     sc = FactoryGirl.create(:subcategory, name: 'First Subcategory', category: c1)
