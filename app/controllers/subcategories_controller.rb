@@ -13,7 +13,9 @@ class SubcategoriesController < ApplicationController
   end
 
   def update
+    category_changed = (subcategory_params.key? :category_id) && (subcategory.category_id.to_s != subcategory_params[:category_id])
     if subcategory.update(subcategory_params)
+      update_transactions if category_changed
       render json: subcategory, status: :ok
     else
       render json: subcategory.errors, status: :unprocessable_entity
@@ -29,6 +31,10 @@ class SubcategoriesController < ApplicationController
   end
 
   private
+
+  def update_transactions
+    subcategory.transactions.update_all(category_id: subcategory.category_id)
+  end
 
   def subcategory
     @subcategory ||= Subcategory.find(params[:id])

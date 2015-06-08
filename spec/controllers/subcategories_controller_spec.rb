@@ -55,6 +55,20 @@ RSpec.describe SubcategoriesController, type: :controller do
         json = JSON.parse(response.body)
         expect(json['subcategory']).to eq('id' => subcategory.id, 'category_id' => subcategory.category_id, 'name' => 'Update Name')
       end
+
+      it 'updates transactions if category has changed' do
+        c1 = FactoryGirl.create(:category)
+        c2 = FactoryGirl.create(:category)
+        subcategory = FactoryGirl.create(:subcategory, category: c1)
+        t1 = FactoryGirl.create(:transaction, category: c1, subcategory: subcategory)
+        put :update, { id: subcategory.id, subcategory: { category_id: c2.id } }, valid_session
+
+        expect(response).to be_success
+        json = JSON.parse(response.body)
+        expect(json['subcategory']).to eq('id' => subcategory.id, 'category_id' => c2.id, 'name' => subcategory.name)
+        t1.reload
+        expect(t1.category).to eq(c2)
+      end
     end
 
     describe 'with invalid params' do
