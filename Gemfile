@@ -46,15 +46,12 @@ gem 'therubyracer', platforms: :ruby
 
 # testing
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'jasmine'
   gem 'jslint_on_rails'
   gem 'rubocop'
-end
-
-group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'simplecov', '~> 0.9.0', require: false

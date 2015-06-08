@@ -1,5 +1,5 @@
 describe("TransactionIndexView", function(){
-  var view, account, accounts, categories, subcategories, categoryTypes, transactions;
+  var view, account, accounts, categories, subcategories, categoryTypes, transactions, transactionTypes;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
@@ -11,6 +11,7 @@ describe("TransactionIndexView", function(){
     categoryTypes = new MyMoney.Collections.CategoryTypes([]);
     categories = new MyMoney.Collections.Categories([]);
     subcategories = new MyMoney.Collections.Subcategories([]);
+    transactionTypes = new MyMoney.Collections.TransactionTypes([]);
     currentDateRange = new MyMoney.Models.DateRangeOption({
       id: 1,
       name: 'Test Date Range',
@@ -40,7 +41,8 @@ describe("TransactionIndexView", function(){
       categories: categories,
       subcategories: subcategories,
       dateRangeOptions: dateRangeOptions,
-      currentDateRange: currentDateRange
+      currentDateRange: currentDateRange,
+      transactionTypes: transactionTypes
     })
   });
 
@@ -56,6 +58,7 @@ describe("TransactionIndexView", function(){
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.dateRangeOptions).toEqual(dateRangeOptions);
     expect(view.currentDateRange).toEqual(currentDateRange);
+    expect(view.transactionTypes).toEqual(transactionTypes);
     expect(view.collection).not.toBeDefined();
   });
 
@@ -77,7 +80,7 @@ describe("TransactionIndexView", function(){
       view.render();
     });
 
-    it("displays the pattern index page", function(){
+    it("displays the transaction index page", function(){
       expect(view.$('h1')).toContainText('my transactions');
     });
 

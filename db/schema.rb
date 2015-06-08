@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150514114500) do
+ActiveRecord::Schema.define(version: 20150523124211) do
 
   create_table "account_types", force: true do |t|
     t.string   "name"
@@ -132,6 +132,8 @@ ActiveRecord::Schema.define(version: 20150514114500) do
     t.integer  "category_id"
     t.integer  "subcategory_id"
     t.integer  "transaction_type_id"
+    t.integer  "unit_price"
+    t.integer  "quantity"
   end
 
 end

@@ -17,6 +17,7 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
     this.subcategories = this.options.subcategories;
     this.dateRangeOptions = this.options.dateRangeOptions;
     this.currentDateRange = this.options.currentDateRange;
+    this.transactionTypes = this.options.transactionTypes;
   },
 
   fetchData: function(){
@@ -43,7 +44,8 @@ MyMoney.Views.TransactionsIndexView = MyMoney.Views.BaseView.extend({
       account: this.account,
       categoryTypes: this.categoryTypes,
       categories: this.categories,
-      subcategories: this.subcategories
+      subcategories: this.subcategories,
+      transactionTypes: this.transactionTypes
     }));
 
     this.renderSubViews();

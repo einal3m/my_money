@@ -14,6 +14,7 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseTableView.extend({
     this.categoryTypes = this.options.categoryTypes;
     this.categories = this.options.categories;
     this.subcategories = this.options.subcategories;
+    this.transactionTypes = this.options.transactionTypes;
   },
 
   templateData: function(){
@@ -30,7 +31,8 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseTableView.extend({
       account: this.account,
       categoryTypes: this.categoryTypes,
       categories: this.categories,
-      subcategories: this.subcategories
+      subcategories: this.subcategories,
+      transactionTypes: this.transactionTypes
     });
   },
 
@@ -42,7 +44,8 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseTableView.extend({
       account: this.account,
       categoryTypes: this.categoryTypes,
       categories: this.categories,
-      subcategories: this.subcategories
+      subcategories: this.subcategories,
+      transactionTypes: this.transactionTypes
     });
   }
 

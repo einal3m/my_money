@@ -1,5 +1,5 @@
 describe("TransactionTableView", function(){
-  var view, account, transaction, transactions, categories, subcategories, categoryTypes;
+  var view, account, transaction, transactions, categories, subcategories, categoryTypes, transactionTypes;
   beforeEach(function(){
     account = new MyMoney.Models.Account({id: 2, account_type_id: 1, name: 'My Account', bank: 'My Bank'});
     categoryTypes = new MyMoney.Collections.CategoryTypes([
@@ -26,13 +26,15 @@ describe("TransactionTableView", function(){
       reconciliation_id: 4
     });
     transactions = new MyMoney.Collections.Transactions([transaction]);
+    transactionTypes = new MyMoney.Collections.TransactionTypes([]);
 
     view = new MyMoney.Views.TransactionTableView({
       collection: transactions,
       account: account,
       categoryTypes: categoryTypes,
       categories: categories,
-      subcategories: subcategories
+      subcategories: subcategories,
+      transactionTypes: transactionTypes
     });
   });
 
@@ -46,6 +48,7 @@ describe("TransactionTableView", function(){
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
+    expect(view.transactionTypes).toEqual(transactionTypes);
   });
 
   describe("render", function(){
@@ -90,6 +93,7 @@ describe("TransactionTableView", function(){
       expect(view.editView.categoryTypes).toEqual(categoryTypes);
       expect(view.editView.categories).toEqual(categories);
       expect(view.editView.subcategories).toEqual(subcategories);
+      expect(view.editView.transactionTypes).toEqual(transactionTypes);
     });
 
     it("disables the new button", function(){

@@ -1,5 +1,5 @@
 describe("TransactionRowView", function(){
-  var view, account, transaction, transactions, categories, subcategories, categoryTypes;
+  var view, account, transaction, transactions, categories, subcategories, categoryTypes, transactionTypes;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
@@ -27,13 +27,15 @@ describe("TransactionRowView", function(){
       balance: 4000,
       reconciliation_id: 4
     });
+    transactionTypes = new MyMoney.Collections.TransactionTypes([]);
 
     view = new MyMoney.Views.TransactionRowView({
       model: transaction,
       account: account,
       categoryTypes: categoryTypes,
       categories: categories,
-      subcategories: subcategories
+      subcategories: subcategories,
+      transactionTypes: transactionTypes
     });
   });
 
@@ -47,6 +49,7 @@ describe("TransactionRowView", function(){
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
+    expect(view.transactionTypes).toEqual(transactionTypes);
   });
 
   describe("render", function(){
@@ -70,23 +73,96 @@ describe("TransactionRowView", function(){
     });
 
     describe('shares', function(){
-      it("displays a table row with transaction details", function(){
-        view.account.set({account_type_id: 2});
-        view.setTemplate();
-        view.render();
-        expect(view.el).toEqual('tr');
+      beforeEach(function(){
+        view.account.set({
+          account_type_id: 2
+        });
+      });
 
-        var columns = view.$('td');
-        expect(columns.length).toEqual(7);
-        expect(columns[0]).toContainText(transaction.get('date'));
-        expect(columns[1]).toContainText('Share Transaction');
-        expect(columns[1]).toContainText('Category1/Subcategory1');
-        expect(columns[2]).toContainText('R');
-        expect(columns[3]).toContainText('5.00');
-        expect(columns[5]).toContainText('$40.00');
+      describe('purchase', function(){
+        it("displays a table row with transaction details", function(){
+          view.model.set({
+            transaction_type_id: 1,
+            unit_price: 50,
+            quantity: 10
+          });
+          view.setTemplate();
+          view.render();
+
+          expect(view.el).toEqual('tr');
+          var columns = view.$('td');
+          expect(columns.length).toEqual(7);
+          expect(columns[0]).toContainText(transaction.get('date'));
+          expect(columns[1]).toContainText('Purchase 10 @ $0.50');
+          expect(columns[1]).toContainText('This is a note');
+          expect(columns[2]).toContainText('R');
+          expect(columns[3]).toContainText('5.00');
+          expect(columns[5]).toContainText('$40.00');
+        });
+      });
+
+      describe('sales', function(){
+        it("displays a table row with transaction details", function(){
+          view.model.set({
+            transaction_type_id: 4,
+            unit_price: 50,
+            quantity: 10
+          });
+          view.setTemplate();
+          view.render();
+
+          expect(view.el).toEqual('tr');
+          var columns = view.$('td');
+          expect(columns.length).toEqual(7);
+          expect(columns[0]).toContainText(transaction.get('date'));
+          expect(columns[1]).toContainText('Sale 10 @ $0.50');
+          expect(columns[1]).toContainText('This is a note');
+          expect(columns[2]).toContainText('R');
+          expect(columns[3]).toContainText('5.00');
+          expect(columns[5]).toContainText('$40.00');
+        });
+      });
+      describe('dividend', function(){
+        it("displays a table row with transaction details", function(){
+          view.model.set({
+            transaction_type_id: 2
+          });
+          view.setTemplate();
+          view.render();
+
+          expect(view.el).toEqual('tr');
+          var columns = view.$('td');
+          expect(columns.length).toEqual(7);
+          expect(columns[0]).toContainText(transaction.get('date'));
+          expect(columns[1]).toContainText('Dividend of $5.00');
+          expect(columns[1]).toContainText('This is a note');
+          expect(columns[2]).toContainText('R');
+          expect(columns[3]).toContainText('5.00');
+          expect(columns[5]).toContainText('$40.00');
+        });
+      });
+      describe('price update', function(){
+        it("displays a table row with transaction details", function(){
+          view.model.set({
+            transaction_type_id: 3,
+            unit_price: 50
+          });
+          view.setTemplate();
+          view.render();
+
+          expect(view.el).toEqual('tr');
+          var columns = view.$('td');
+          expect(columns.length).toEqual(7);
+          expect(columns[0]).toContainText(transaction.get('date'));
+          expect(columns[1]).toContainText('Unit price update');
+          expect(columns[1]).toContainText('This is a note');
+          expect(columns[2]).toContainText('R');
+          expect(columns[3]).toContainText('5.00');
+          expect(columns[5]).toContainText('$40.00');
+        });
       });
     });
-    
+
     describe('reports', function(){
       it("displays a table row with transaction details", function(){
         view.account = undefined;
@@ -118,6 +194,7 @@ describe("TransactionRowView", function(){
       expect(view.editView.categoryTypes).toEqual(categoryTypes);
       expect(view.editView.categories).toEqual(categories);
       expect(view.editView.subcategories).toEqual(subcategories);
+      expect(view.editView.transactionTypes).toEqual(transactionTypes);
       expect(view.el).not.toHaveClass('clickable');
     });
   });
@@ -138,11 +215,4 @@ describe("TransactionRowView", function(){
       expect(view.el).not.toHaveClass('editing');
     });
   });
-
-  // function today() {
-  //   var yyyy = this.getFullYear().toString();
-  //   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-  //   var dd  = this.getDate().toString();
-  //   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
-  // }
 });

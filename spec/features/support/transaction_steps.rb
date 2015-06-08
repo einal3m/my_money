@@ -12,6 +12,31 @@ def visit_account_transactions(account_name)
   expect(page).to have_content('my transactions')
 end
 
+def create_transaction(params)
+  txn_params = {
+    date: '1-Jan-2015',
+    amount: '10.00'
+  }.merge(params)
+
+  click_on 'new'
+  fill_in_savings_transaction_form(txn_params)
+end
+
+def fill_in_savings_transaction_form(params)
+  fill_in 'date', with: params[:date]
+  fill_in 'notes', with: params[:notes]
+  fill_in 'amount', with: params[:amount]
+
+  click_on 'save'
+  wait_for_ajax
+end
+
+def delete_transaction(text)
+  click_on_row_with_text text
+  click_on 'delete'
+  confirm_alert
+end
+
 def import_test_ofx
   click_on 'import'
   expect(page).to have_content('import transactions')

@@ -21,6 +21,10 @@ MyMoney.Models.Transaction = MyMoney.Models.BaseModel.extend({
       required: true,
       msg: 'Account is required'
     }
+  },
+
+  defaults: {
+    "amount": 0
   }
 
 });

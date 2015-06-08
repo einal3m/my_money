@@ -4,8 +4,17 @@ feature 'Reconciliations', type: :feature do
   before :all do
     FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
+    FactoryGirl.create(:date_range_option, description: 'Last 90 Days', klass: 'Lib::Last90DaysDateRange')
+
     FactoryGirl.create(:category_type, name: 'Expense')
-    FactoryGirl.create(:category_type, name: 'Income')
+    @ct_i = FactoryGirl.create(:category_type, name: 'Income')
+    c1 = FactoryGirl.create(:category, name: 'First Category', category_type: @ct_i)
+    c2 = FactoryGirl.create(:category, name: 'Second Category', category_type: @ct_i)
+    FactoryGirl.create(:subcategory, name: 'First Subcategory', category: c1)
+    FactoryGirl.create(:subcategory, name: 'Second Subcategory', category: c2)
+
+    FactoryGirl.create(:account_type, id: 1, name: 'Savings')
+    FactoryGirl.create(:account_type, id: 2, name: 'Shares')
   end
 
   after :all do
@@ -13,14 +22,28 @@ feature 'Reconciliations', type: :feature do
   end
 
   scenario 'User performs bank reconciliation', js: true do
-    account = FactoryGirl.create(:account, name: 'My Account', starting_balance: 1000, starting_date: '2014-07-01')
-    FactoryGirl.create(:transaction, account: account, date: '2014-07-02', amount: 2500, reconciliation: nil)
-    FactoryGirl.create(:transaction, account: account, date: '2014-07-03', amount: 1500, reconciliation: nil)
-    FactoryGirl.create(:transaction, account: account, date: '2014-07-04', amount: 200, reconciliation: nil)
-    FactoryGirl.create(:transaction, account: account, date: '2014-07-05', amount: 10_000, reconciliation: nil)
+    start_my_money
+    visit_accounts
+    create_account('Savings', {
+      name: 'My Rec Account',
+      starting_date: '1-Jul-2014',
+      starting_balance: '10.00'
+    })
+    visit_account_transactions 'My Rec Account'
+
+    create_transaction(date: '2-Jul-2014', amount: '25.00')
+    create_transaction(date: '3-Jul-2014', amount: '15.00')
+    create_transaction(date: '4-Jul-2014', amount: '2.00')
+    create_transaction(date: '5-Jul-2014', amount: '100.00')
 
     visit_accounts
-    click_on 'show'
+    show_account('My Rec Account')
+
+    # FactoryGirl.create(:transaction, account: account, date: '2014-07-02', amount: 2500, reconciliation: nil)
+    # FactoryGirl.create(:transaction, account: account, date: '2014-07-03', amount: 1500, reconciliation: nil)
+    # FactoryGirl.create(:transaction, account: account, date: '2014-07-04', amount: 200, reconciliation: nil)
+    # FactoryGirl.create(:transaction, account: account, date: '2014-07-05', amount: 10_000, reconciliation: nil)
+
     click_on 'reconcile'
 
     expect(page).to have_text('account reconciliation')

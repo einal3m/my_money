@@ -7,7 +7,7 @@ var addUnassignedOrPleaseSelect = function(model_id, hasUnassigned) {
 		}
 		html += '>Un-assigned</option>';
 
-	} else if ((model_id === null) || (model_id === "")) {
+	} else if (!model_id || (model_id === "")) {
 		html += '<option value="" disabled selected>Please select...</option>';
 	}
 	return html;

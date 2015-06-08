@@ -21,7 +21,8 @@ end
 
 def serialize_transaction(transaction)
   attrs = JSON.parse(transaction.to_json)
-  attrs.extract!('id', 'account_id', 'date', 'amount', 'memo', 'notes', 'category_id', 'subcategory_id', 'balance', 'reconciliation_id')
+  attrs.extract!('id', 'account_id', 'transaction_type_id', 'date', 'amount', 'memo', 'notes', 'category_id',
+                 'subcategory_id', 'balance', 'reconciliation_id', 'quantity', 'unit_price')
 end
 
 def serialize_category_type(category_type)

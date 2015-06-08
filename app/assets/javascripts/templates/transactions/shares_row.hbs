@@ -1,5 +1,28 @@
 <td class="date">{{dateFormatter date}}</td>
-<td>Share Transaction {{categoryFormatter category subcategory}}</td>
+{{#isPurchase}}
+  <td>
+    Purchase {{quantity}} @ {{accountingFormat unit_price}}<br>
+    <em>{{notes}}</em>
+  </td>
+{{/isPurchase}}
+{{#isSale}}
+  <td>
+    Sale {{quantity}} @ {{accountingFormat unit_price}}<br>
+    <em>{{notes}}</em>
+  </td>
+{{/isSale}}
+{{#isPriceUpdate}}
+  <td>
+    Unit price update {{accountingFormat unit_price}}<br>
+    <em>{{notes}}</em>
+  </td>
+{{/isPriceUpdate}}
+{{#isDividend}}
+  <td>
+    Dividend of {{accountingFormat amount}}<br>
+    <em>{{notes}}</em>
+  </td>
+{{/isDividend}}
 <td>{{reconciledFormatter reconciliation_id}}</td>
 <td class="money">{{moneyIn amount}}</td>
 <td class="money">{{moneyOut amount}}</td>

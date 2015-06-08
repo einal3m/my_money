@@ -119,6 +119,7 @@ describe('RouterSpec', function() {
       router.categoryTypes = 'categoryTypes';
       router.categories = new MyMoney.Collections.Categories([]);
       router.subcategories = new MyMoney.Collections.Subcategories([]);
+      router.transactionTypes = new MyMoney.Collections.TransactionTypes([]);
     });
 
     it('accountIndex', function(){
@@ -177,7 +178,8 @@ describe('RouterSpec', function() {
         categories: router.categories,
         subcategories: router.subcategories,
         dateRangeOptions: router.dateRangeOptions,
-        currentDateRange: router.currentDateRange
+        currentDateRange: router.currentDateRange,
+        transactionTypes: router.transactionTypes
       });
     });
 

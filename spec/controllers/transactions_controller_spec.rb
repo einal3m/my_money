@@ -37,16 +37,32 @@ RSpec.describe TransactionsController, type: :controller do
 
       it 'sends the transaction, with status success' do
         a = FactoryGirl.create(:account)
-        post :create, { account_id: a.id, transaction: build_attributes(:transaction) }, valid_session
+        post :create, { account_id: a.id, transaction: {
+          account_id: a.id,
+          transaction_type_id: 2,
+          date: '1-Jan-2015',
+          notes: 'This is a note',
+          memo: 'This is a memo',
+          unit_price: 50,
+          quantity: 20,
+          amount: 1000
+        } }, valid_session
         expect(response.status).to eq(201)
 
         transaction = Transaction.first
+        expect(transaction.transaction_type_id).to eq(2)
+        expect(transaction.unit_price).to eq(50)
+        expect(transaction.quantity).to eq(20)
+        expect(transaction.amount).to eq(1000)
+        expect(transaction.notes).to eq('This is a note')
+        expect(transaction.memo).to eq('This is a memo')
+        expect(transaction.date).to eq(Date.parse('1-Jan-2015'))
 
         json = JSON.parse(response.body)
         expect(json['transaction']).to eq(serialize_transaction(transaction))
       end
     end
-
+# 7003 3708 65
     context 'with invalid params' do
       it 'does not create a new transaction' do
         a = FactoryGirl.create(:account)

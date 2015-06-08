@@ -27,16 +27,23 @@ describe("TransactionEditView", function(){
       subcategory_id: 5,
       balance: 4000,
       reconciliation_id: 4
-    })
+    });
     transactions = new MyMoney.Collections.Transactions([transaction]);
+    transactionTypes = new MyMoney.Collections.TransactionTypes([
+      {id: 1, account_type_id: 2, name: 'Purchase'},
+      {id: 2, account_type_id: 2, name: 'Dividend'},
+      {id: 3, account_type_id: 2, name: 'Unit Price Update'},
+      {id: 4, account_type_id: 2, name: 'Sale'},
+    ]);
 
     view = new MyMoney.Views.TransactionEditView({
       model: transaction,
       account: account,
       categoryTypes: categoryTypes,
       categories: categories,
-      subcategories: subcategories
-    })
+      subcategories: subcategories,
+      transactionTypes: transactionTypes
+    });
   });
 
   afterEach(function(){
@@ -48,6 +55,7 @@ describe("TransactionEditView", function(){
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
+    expect(view.transactionTypes).toEqual(transactionTypes);
   });
 
   describe("render", function(){
@@ -67,18 +75,144 @@ describe("TransactionEditView", function(){
         expect(view.el).toContainElement('button#cancel');
         expect(view.el).toContainElement('button#save');
       });
+      it('#setModelAttributes', function(){
+        view.$('#amount').val('60.00');
+        view.$('#date').val('1-Jan-2014');
+        view.$('#notes').val('New Note');
+        view.$('#category_id').val(4).change();
+        view.$('#subcategory_id').val(6);
+
+        view.setModelAttributes();
+
+        expect(view.model.get('amount')).toEqual(6000);
+        expect(view.model.get('date')).toEqual('1-Jan-2014');
+        expect(view.model.get('notes')).toEqual('New Note');
+        expect(view.model.get('category_id')).toEqual(4);
+        expect(view.model.get('subcategory_id')).toEqual(6);
+      });
     });
 
     describe('shares', function(){
-      it('displays a table row with share form', function(){
+      beforeEach(function(){
         view.account.set({account_type_id: 2});
         view.setTemplate();
         view.render();
+      });
+      it('re-renders when transaction type changed', function(){
+        spyOn(view, 'render');
+        view.$('#transaction_type_id').val('4').change();
+        expect(view.render).toHaveBeenCalled();
+        expect(view.model.get('transaction_type_id')).toEqual(4);
+      });
+
+      it('displays a table row with share form', function(){
         expect(view.el).toEqual('tr');
         expect(view.el).toContainElement('.form-horizontal');
         expect(view.el).toContainElement('select#transaction_type_id');
         expect(view.el).toContainElement('button#cancel');
         expect(view.el).toContainElement('button#save');
+      });
+
+      describe('purchase', function(){
+        beforeEach(function(){
+          view.$('#transaction_type_id').val('1').change();
+        })
+
+        it('displays form data', function(){
+          expect(view.el).toContainElement('input#date');
+          expect(view.el).toContainElement('input#quantity');
+          expect(view.el).toContainElement('input#unit_price');
+          expect(view.el).toContainElement('input#notes');
+        });
+
+        it('#setModelAttributes', function(){
+          view.$('#date').val('1-Jan-2014');
+          view.$('#notes').val('New Note');
+          view.$('#unit_price').val('1.20');
+          view.$('#quantity').val('100');
+
+          view.setModelAttributes();
+
+          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('notes')).toEqual('New Note');
+          expect(view.model.get('unit_price')).toEqual(120);
+          expect(view.model.get('quantity')).toEqual(100);
+          expect(view.model.get('amount')).toEqual(12000);
+        });
+      });
+      describe('dividend', function(){
+        beforeEach(function(){
+          view.$('#transaction_type_id').val('2').change();
+        })
+
+        it('displays form data', function(){
+          expect(view.el).toContainElement('input#date');
+          expect(view.el).toContainElement('input#amount');
+          expect(view.el).toContainElement('input#notes');
+        });
+
+        it('#setModelAttributes', function(){
+          view.$('#date').val('1-Jan-2014');
+          view.$('#notes').val('New Note');
+          view.$('#amount').val('$50.00');
+
+          view.setModelAttributes();
+
+          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('notes')).toEqual('New Note');
+          expect(view.model.get('amount')).toEqual(5000);
+        });
+      });
+      describe('price update', function(){
+        beforeEach(function(){
+        view.$('#transaction_type_id').val('3').change();
+        })
+
+        it('displays form data', function(){
+          expect(view.el).toContainElement('input#date');
+          expect(view.el).toContainElement('input#unit_price');
+          expect(view.el).toContainElement('input#notes');
+        });
+
+        it('#setModelAttributes', function(){
+          view.$('#date').val('1-Jan-2014');
+          view.$('#notes').val('New Note');
+          view.$('#unit_price').val('1.20');
+
+          view.setModelAttributes();
+
+          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('notes')).toEqual('New Note');
+          expect(view.model.get('unit_price')).toEqual(120);
+          expect(view.model.get('amount')).toEqual(0);
+        });
+      });
+      describe('sale', function(){
+        beforeEach(function(){
+        view.$('#transaction_type_id').val('4').change();
+        })
+
+        it('displays form data', function(){
+          expect(view.el).toContainElement('input#date');
+          expect(view.el).toContainElement('input#quantity');
+          expect(view.el).toContainElement('input#unit_price');
+          expect(view.el).toContainElement('input#notes');
+        });
+
+        it('#setModelAttributes', function(){
+          view.$('#date').val('1-Jan-2014');
+          view.$('#notes').val('New Note');
+          view.$('#unit_price').val('1.20');
+          view.$('#quantity').val('100');
+
+          view.setModelAttributes();
+
+          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('notes')).toEqual('New Note');
+          expect(view.model.get('unit_price')).toEqual(120);
+          expect(view.model.get('quantity')).toEqual(-100);
+          expect(view.model.get('amount')).toEqual(-12000);
+        });
       });
     });
 

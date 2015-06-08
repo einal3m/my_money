@@ -62,7 +62,7 @@ RSpec.describe CategoriesController, type: :controller do
         expect(response).to be_success
         category.reload
         json = JSON.parse(response.body)
-        expect(json['category']).to eq('id' => 1, 'name' => 'New Name', 'category_type_id' => new_category_type.id)
+        expect(json['category']).to eq('id' => category.id, 'name' => 'New Name', 'category_type_id' => new_category_type.id)
       end
     end
 

@@ -21,3 +21,7 @@ end
 def confirm_alert
   page.driver.browser.switch_to.alert.accept
 end
+
+def format_date(date)
+  date.strftime('%-d-%b-%Y')
+end

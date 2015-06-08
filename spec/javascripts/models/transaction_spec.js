@@ -12,6 +12,9 @@ describe('Transaction', function(){
     expect(transaction.url()).toEqual('accounts/14/transactions/10');
   });
 
+  it('amount defaults to zero', function(){
+    expect(transaction.get('amount')).toEqual(0);
+  });
   describe('validation', function(){
     it ('requires a date', function(){
       expect(transaction.preValidate('date', '   ')).toEqual('Date is required');
