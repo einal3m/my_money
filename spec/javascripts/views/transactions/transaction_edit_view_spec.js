@@ -58,6 +58,12 @@ describe("TransactionEditView", function(){
     expect(view.transactionTypes).toEqual(transactionTypes);
   });
 
+  it('defaults to savings if no account defined', function(){
+    view.account = undefined;
+    view.setTemplate();
+    expect(view.template).toEqual('transactions/savings_form');
+  });
+
   describe("render", function(){
     beforeEach(function(){
       view.render();

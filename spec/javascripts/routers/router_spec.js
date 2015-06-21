@@ -226,7 +226,8 @@ describe('RouterSpec', function() {
         categories: router.categories,
         subcategories: router.subcategories,
         dateRangeOptions: router.dateRangeOptions,
-        currentDateRange: router.currentDateRange
+        currentDateRange: router.currentDateRange,
+        transactionTypes: router.transactionTypes
       });
     });
   });

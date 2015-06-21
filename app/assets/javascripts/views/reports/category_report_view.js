@@ -16,7 +16,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
     this.categoryTypes = this.options.categoryTypes;
     this.dateRangeOptions = this.options.dateRangeOptions;
     this.currentDateRange = this.options.currentDateRange;
-
+    this.transactionTypes = this.options.transactionTypes;
   },
 
   fetchData: function(){
@@ -30,7 +30,7 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
       })
     });
   },
-  
+
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template]());
     this.addSubView('filter', new MyMoney.Views.FilterView({
@@ -46,7 +46,8 @@ MyMoney.Views.CategoryReportView = MyMoney.Views.BaseView.extend({
       collection: this.transactions,
       categories: this.categories,
       subcategories: this.subcategories,
-      categoryTypes: this.categoryTypes
+      categoryTypes: this.categoryTypes,
+      transactionTypes: this.transactionTypes
     }));
     this.transactions.on('destroy change', this.dataChanged, this);
     this.renderSubViews();

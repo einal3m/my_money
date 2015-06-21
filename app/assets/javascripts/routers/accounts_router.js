@@ -186,7 +186,8 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
       categories: this.categories,
       subcategories: this.subcategories,
       dateRangeOptions: this.dateRangeOptions,
-      currentDateRange: this.currentDateRange
+      currentDateRange: this.currentDateRange,
+      transactionTypes: this.transactionTypes
     }));
   },
 

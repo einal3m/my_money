@@ -2,7 +2,6 @@ require 'rails_helper'
 
 feature 'Transactions', type: :feature do
   before :each do
-    # create a few date ranges
     FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     FactoryGirl.create(:date_range_option, description: 'Last 90 Days', klass: 'Lib::Last90DaysDateRange')
@@ -22,7 +21,35 @@ feature 'Transactions', type: :feature do
     DatabaseCleaner.clean
   end
 
-  scenario 'User creates transactions for an account', js: true  do
+  scenario 'User creates, edits and deletes transactions for a savings account', js: true  do
+    start_my_money
+    visit_accounts
+    create_account 'Savings', name: 'My New Account', starting_balance: '10'
+    visit_account_transactions 'My New Account'
+
+    create_transaction(
+      date: format_date(Date.today),
+      notes: 'First Transaction',
+      amount: '25',
+      category: 'First Category',
+      subcategory: 'First Subcategory'
+    )
+    verify_transaction('First Transaction', ['25.00', 'First Category/First Subcategory', '$35.00'])
+
+    edit_transaction('First Transaction', 
+      date: format_date(Date.today + 1),
+      notes: 'Edit Transaction',
+      amount: '50',
+      category: 'Second Category',
+      subcategory: 'Second Subcategory'
+    )
+    verify_transaction('Edit Transaction', ['50.00', 'Second Category/Second Subcategory', '$60.00'])
+
+    delete_transaction 'Edit Transaction'
+    expect(page).not_to have_text('Edit Transaction')    
+  end
+
+  scenario 'User filters transactions for an account', js: true  do
     start_my_money
     visit_accounts
     create_account 'Savings', name: 'My New Account'
@@ -39,73 +66,5 @@ feature 'Transactions', type: :feature do
     expect(page).to have_text('Third Transaction')
     expect(page).not_to have_text('Fourth Transaction')
     expect(page).not_to have_text('Fifth Transaction')
-
-    delete_transaction 'Second Transaction'
-    expect(page).not_to have_text('Second Transaction')    
-  end
-
-  xscenario 'User creates a new transaction', js: true  do
-    date_text = Date.today.strftime('%-d-%b-%Y')
-
-    visit_accounts
-    visit_account_transactions 'My New Account'
-
-    expect(page).to have_text('my transactions')
-    expect(page.all('tbody tr').count).to eq(3)
-    click_on 'new'
-
-    expect(page).to have_button('save')
-    expect(page).to have_button('cancel')
-
-    click_on 'cancel'
-    expect(page).not_to have_button('save')
-    expect(page).not_to have_button('cancel')
-
-    click_on 'new'
-    fill_in 'date', with: date_text
-    fill_in 'notes', with: 'Sixth Transaction'
-    fill_in 'amount', with: 50.00
-    select 'First Category', from: 'category_id'
-    select 'First Subcategory', from: 'subcategory_id'
-    click_on 'save'
-
-    expect(page.all('tbody tr').count).to eq(4)
-    within 'tr', text: 'Sixth Transaction' do
-      expect(page).to have_text('50.00')
-      expect(page).to have_text(date_text)
-      expect(page).to have_text('First Category/First Subcategory')
-    end
-  end
-
-  xscenario 'User edits a transaction', js: true  do
-    visit_accounts
-    visit_account_transactions 'My New Account'
-
-    expect(page).to have_text('my transactions')
-
-    click_on_row_with_text 'First Transaction'
-    within 'tbody' do
-      expect(page).to have_selector('.form-horizontal')
-    end
-
-    click_on('cancel')
-    within 'tbody' do
-      expect(page).not_to have_selector('.form-horizontal')
-    end
-
-    click_on_row_with_text 'First Transaction'
-    edit_date_text = (Date.today - 1.day).strftime('%-d-%b-%Y')
-    fill_in 'notes', with: 'Edit Transaction'
-    fill_in 'date', with: edit_date_text
-    fill_in 'amount', with: 50.00
-    select 'Second Category', from: 'category_id'
-    select 'Second Subcategory', from: 'subcategory_id'
-    click_on 'save'
-
-    within 'tr', text: 'Edit Transaction' do
-      expect(page).to have_text('50.00')
-      expect(page).to have_text(edit_date_text)
-      expect(page).to have_text('Second Category/Second Subcategory')
-    end
   end
 end

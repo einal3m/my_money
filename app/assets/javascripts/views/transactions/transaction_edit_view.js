@@ -22,8 +22,11 @@ MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
   },
 
   setTemplate: function(){
-    if (this.account.isSavings()) { this.template = 'transactions/savings_form'; }
-    if (this.account.isShare()) { this.template = 'transactions/shares_form'; }
+    if (this.account && this.account.isShare()) {
+      this.template = 'transactions/shares_form';
+    } else {
+      this.template = 'transactions/savings_form';
+    }
   },
 
   templateData: function(){

@@ -1,5 +1,5 @@
 describe("CategoryReportView", function(){
-  var view, account, accounts, category, categories, subcategories, categoryTypes, transactions;
+  var view, account, accounts, category, categories, subcategories, categoryTypes, transactions, transactionTypes;
   beforeEach(function(){
     categoryType = new MyMoney.Models.CategoryType({id: 1, name: 'CategoryType 1'});
     categoryTypes = new MyMoney.Collections.CategoryTypes([categoryType]);
@@ -37,6 +37,7 @@ describe("CategoryReportView", function(){
       reconciliation_id: 4
     });
     transactions = new MyMoney.Collections.Transactions([transaction]);
+    transactionTypes = new MyMoney.Collections.TransactionTypes([]);
 
     view = new MyMoney.Views.CategoryReportView({
       category: category,
@@ -44,7 +45,8 @@ describe("CategoryReportView", function(){
       categories: categories,
       subcategories: subcategories,
       dateRangeOptions: dateRangeOptions,
-      currentDateRange: currentDateRange
+      currentDateRange: currentDateRange,
+      transactionTypes: transactionTypes
     })
   });
 
@@ -59,6 +61,7 @@ describe("CategoryReportView", function(){
     expect(view.subcategories).toEqual(subcategories);
     expect(view.dateRangeOptions).toEqual(dateRangeOptions);
     expect(view.currentDateRange).toEqual(currentDateRange);
+    expect(view.transactionTypes).toEqual(transactionTypes);
 
     expect(view.collection).not.toBeDefined();
     expect(view.model).not.toBeDefined();

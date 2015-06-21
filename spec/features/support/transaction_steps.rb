@@ -22,12 +22,20 @@ def create_transaction(params)
   fill_in_savings_transaction_form(txn_params)
 end
 
-def fill_in_savings_transaction_form(params)
-  fill_in 'date', with: params[:date]
-  fill_in 'notes', with: params[:notes]
-  fill_in 'amount', with: params[:amount]
+def edit_transaction(notes, params)
+  click_on_row_with_text notes
+  fill_in_savings_transaction_form(params)
+end
 
-  click_on 'save'
+def fill_in_savings_transaction_form(params)
+  within 'tr.edit' do
+    fill_in 'date', with: params[:date] if params[:date]
+    fill_in 'notes', with: params[:notes] if params[:notes]
+    fill_in 'amount', with: params[:amount] if params[:amount]
+    select params[:category], from: 'category_id' if params[:category]
+    select params[:subcategory], from: 'subcategory_id' if params[:subcategory]
+    click_on 'save'
+  end
   wait_for_ajax
 end
 
@@ -57,4 +65,12 @@ def import_test_ofx
   wait_for_ajax
 
   expect(page).to have_content('my transactions')
+end
+
+def verify_transaction(notes, content)
+  within 'tr', text: notes do
+    content.each do |text|
+      expect(page).to have_text(text)
+    end
+  end
 end
