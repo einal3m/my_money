@@ -18,7 +18,7 @@ module Lib
     end
 
     def base_query
-      Transaction.joins(:account).where(accounts: {account_type_id: 1}).where(category: @category).find_by_date(@date_range).reverse_date_order
+      Transaction.for_account_type_id(1).where(category: @category).find_by_date(@date_range).reverse_date_order
     end
 
     def set_factor

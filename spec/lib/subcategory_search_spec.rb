@@ -3,6 +3,7 @@ require 'lib/date_range'
 
 RSpec.describe Lib::SubcategorySearch, type: :class do
   before :each do
+    @share_account = FactoryGirl.create(:account, account_type_id: 2)
     @sc = FactoryGirl.create(:subcategory)
     @c = @sc.category
     @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', category: @c, amount: 4, subcategory: @sc)
@@ -12,6 +13,7 @@ RSpec.describe Lib::SubcategorySearch, type: :class do
     @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: @c, subcategory: @sc, amount: 5)
     @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @c, subcategory: nil)
     @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: @c, subcategory: @sc)
+    @t8 = FactoryGirl.create(:transaction, account: @share_account, date: '2014-01-13', category: @c, subcategory: @sc)
 
     @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
   end

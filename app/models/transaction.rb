@@ -37,6 +37,9 @@ class Transaction < ActiveRecord::Base
   scope :find_by_dates, ->(from_date, to_date) {
     where('date >= ? and date <= ?', from_date, to_date)
   }
+  scope :for_account_type_id, ->(account_type_id) {
+    joins(:account).where(accounts: { account_type_id: account_type_id })
+  }
 
   # non-persistant attributes
   attr_accessor :add_to_reconciliation

@@ -106,7 +106,7 @@ RSpec.describe Transaction, type: :model do
       expect(Transaction.find_by_date(dr)).to eq([t2, t4, t5])
     end
 
-    it 'finds transactions given a date range object' do
+    it 'finds transactions given two dates' do
       FactoryGirl.create(:transaction, date: '2014-01-01')
       t2 = FactoryGirl.create(:transaction, date: '2014-01-03')
       FactoryGirl.create(:transaction, date: '2014-01-05')
@@ -114,6 +114,14 @@ RSpec.describe Transaction, type: :model do
       t5 = FactoryGirl.create(:transaction, date: '2014-01-04')
 
       expect(Transaction.find_by_dates('2014-01-02', '2014-01-04')).to eq([t2, t4, t5])
+    end
+
+    it 'finds transactions given an account type' do
+      @share_account = FactoryGirl.create(:account, account_type_id: 2)
+      FactoryGirl.create(:transaction)
+      t1 = FactoryGirl.create(:transaction, account: @share_account)
+
+      expect(Transaction.for_account_type_id(2)).to eq([t1])
     end
   end
 
