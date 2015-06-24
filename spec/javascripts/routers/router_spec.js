@@ -1,4 +1,4 @@
-describe('RouterSpec', function() {
+describe('MyMoney.Router', function() {
   var trigger = {trigger: true};
   var router;
 
@@ -222,6 +222,42 @@ describe('RouterSpec', function() {
       expect(MyMoney.Views.CategoryReportView.prototype.initialize).toHaveBeenCalled();
       expect(MyMoney.Views.CategoryReportView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
         category: category,
+        categoryTypes: 'categoryTypes',
+        categories: router.categories,
+        subcategories: router.subcategories,
+        dateRangeOptions: router.dateRangeOptions,
+        currentDateRange: router.currentDateRange,
+        transactionTypes: router.transactionTypes
+      });
+    });
+
+    it('subcategoryReportNoParams', function(){
+      spyOn(router, 'subcategoryReport');
+      router.subcategoryReportNoParams();
+      expect(router.subcategoryReport).toHaveBeenCalledWith(null, null);
+    });
+
+    it('subcategoryReportNoSubcategory', function(){
+      spyOn(router, 'subcategoryReport');
+      router.subcategoryReportNoSubcategory('4');
+      expect(router.subcategoryReport).toHaveBeenCalledWith('4', null);
+    });
+
+    it('subcategoryReport', function(){
+      var category = 'category';
+      var subcategory = 'subcategory';
+      spyOn(MyMoney.Views.SubcategoryReportView.prototype, 'initialize').and.callThrough();
+      spyOn(router.categories, 'get').and.returnValue(category);
+      spyOn(router.subcategories, 'get').and.returnValue(subcategory);
+      spyOn(router, 'loadView');
+      router.subcategoryReport(13, 12);
+      expect(router.categories.get).toHaveBeenCalledWith(13);
+      expect(router.subcategories.get).toHaveBeenCalledWith(12);
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.SubcategoryReportView));
+      expect(MyMoney.Views.SubcategoryReportView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.SubcategoryReportView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        category: category,
+        subcategory: subcategory,
         categoryTypes: 'categoryTypes',
         categories: router.categories,
         subcategories: router.subcategories,

@@ -40,9 +40,9 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     "reports/eod_balance"  : "reportEodBalance",
     "reports/category/:id"  : "reportCategory",
     "reports/category/"  : "reportUnassignedCategory",
-    "reports/subcategory/:category_id/:subcategory_id"  : "reportSubcategory",
-    "reports/subcategory/:category_id/"  : "reportUnassignedSubcategory",
-    "reports/subcategory"  : "reportSubcategoryNoData",    
+    "reports/subcategory/:category_id/:subcategory_id"  : "subcategoryReport",
+    "reports/subcategory/:category_id/"  : "subcategoryReportNoSubcategory",
+    "reports/subcategory"  : "subcategoryReportNoParams",
     "reports/income_vs_expense"  : "reportIncomeVsExpense",
     "reports/income_expense_bar"  : "reportIncomeExpenseBar",
     ".*"                   : "accountIndex",
@@ -148,7 +148,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     }));
   },
 
-// reports
+// REPORTS
   reportIndex: function() {
     this.showView(new MyMoney.Views.ReportView());
   },
@@ -191,30 +191,28 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     }));
   },
 
-  reportSubcategoryNoData: function() {
-    this.showSubcategoryReport();
-  },
+  subcategoryReport: function(category_id, subcategory_id) {
+    var category = this.categories.get(category_id);
+    var subcategory = this.subcategories.get(subcategory_id);
 
-  reportUnassignedSubcategory: function(category_id) {
-    this.reportSubcategory(category_id, null);
-  },
-
-  reportSubcategory: function(category_id, subcategory_id) {
-    this.showSubcategoryReport(category_id, subcategory_id);
-    this.currentView.updateReport();
-  },
-
-  showSubcategoryReport: function(category_id, subcategory_id){
-    this.showView(new MyMoney.Views.SubcategoryReportView({
-      subcategory_id: subcategory_id,
-      category_id: category_id,
-      accounts: this.accounts,
+    this.loadView(new MyMoney.Views.SubcategoryReportView({
+      category: category,
+      subcategory: subcategory,
+      categoryTypes: this.categoryTypes,
+      categories: this.categories,
+      subcategories: this.subcategories,
       dateRangeOptions: this.dateRangeOptions,
       currentDateRange: this.currentDateRange,
-      categoryTypes: router.categoryTypes,
-      categories: this.categories,
-      subcategories: this.subcategories
+      transactionTypes: this.transactionTypes
     }));
+  },
+
+  subcategoryReportNoParams: function(){
+    this.subcategoryReport(null, null);
+  },
+
+  subcategoryReportNoSubcategory: function(category_id){
+    this.subcategoryReport(category_id, null);
   },
 
   reportIncomeExpenseBar: function() {

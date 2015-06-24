@@ -56,7 +56,7 @@ feature 'Subcategory Report', type: :feature do
     click_on 'Search'
 
     click_on 'Data'
-    verify_transaction('First Transaction', ['First Category/Second Subategory'])
-    verify_transaction('Second Transaction', ['First Category/Second Subategory'])
+    verify_transaction('First Transaction', ['First Category/Second Subcategory'])
+    verify_transaction('Second Transaction', ['First Category/Second Subcategory'])
   end
 end
