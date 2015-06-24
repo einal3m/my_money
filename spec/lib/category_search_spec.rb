@@ -3,6 +3,7 @@ require 'lib/date_range'
 
 RSpec.describe Lib::CategorySearch, type: :class do
   before :each do
+    @share_account = FactoryGirl.create(:account, account_type_id: 2)
     @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 400, subcategory: nil)
     @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @t1.category, subcategory: nil, amount: 1000)
     @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
@@ -10,6 +11,7 @@ RSpec.describe Lib::CategorySearch, type: :class do
     @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
     @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @t1.category, subcategory: nil)
     @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
+    @t8 = FactoryGirl.create(:transaction, account: @share_account, date: '2014-01-13', category: @t1.category, subcategory: nil)
 
     @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
   end
@@ -19,7 +21,7 @@ RSpec.describe Lib::CategorySearch, type: :class do
     expect(search.category).to be_nil
   end
 
-  it 'returns transactions for the given category' do
+  it 'returns transactions for savings accounts for the given category' do
     search = Lib::CategorySearch.new(date_range: @dr, category: @t1.category)
     expect(search.transactions).to eq([@t4, @t2, @t1])
   end
