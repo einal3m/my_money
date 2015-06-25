@@ -26,9 +26,9 @@ MyMoney.Models.Account = MyMoney.Models.BaseModel.extend({
       required: true
     },
     starting_balance: function (value) {
-      if (this.isSavings() && !value) {
+      if (this.isSavings() && _.isNull(value)) {
         return 'Opening balance is required';
-      } else if (value && !_.isNumber(value)) {
+      } else if (this.isSavings() && !_.isNumber(value)) {
         return 'Opening balance must be a number';
       } else { return ''; }
     },

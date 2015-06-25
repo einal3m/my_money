@@ -41,6 +41,7 @@ describe('MyMoney.Models.Account', function(){
         expect(account.preValidate('starting_balance', null)).toEqual('Opening balance is required');
         expect(account.preValidate('starting_balance', 'hello')).toEqual('Opening balance must be a number');
         expect(account.preValidate('starting_balance', 20)).toEqual('');
+        expect(account.preValidate('starting_balance', 0)).toEqual('');
       });
 
       it ('requires a starting date', function(){
