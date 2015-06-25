@@ -1,7 +1,7 @@
-describe("TransactionTableView", function(){
+describe("MyMoney.Views.TransactionTableView", function(){
   var view, account, transaction, transactions, categories, subcategories, categoryTypes, transactionTypes;
   beforeEach(function(){
-    account = new MyMoney.Models.Account({id: 2, account_type_id: 1, name: 'My Account', bank: 'My Bank'});
+    account = new MyMoney.Models.Account({id: 2, account_type: 'savings', name: 'My Account', bank: 'My Bank'});
     categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
     ]);    

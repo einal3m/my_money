@@ -1,10 +1,10 @@
-describe("AccountTypeFilterView", function(){
+describe("MyMoney.Views.AccountTypeFilterView", function(){
   var view, accountTypes;
   beforeEach(function(){
     accountTypes = new MyMoney.Collections.AccountTypes([
-      {id: 1, name: 'Account Type 1'},
-      {id: 2, name: 'Account Type 2'},
-      {id: 3, name: 'Account Type 3'}
+      {id: 1, code: 'type1', name: 'Account Type 1'},
+      {id: 2, code: 'type2', name: 'Account Type 2'},
+      {id: 3, code: 'type3', name: 'Account Type 3'}
     ]);
     filter = new MyMoney.Models.Filter();
 
@@ -53,7 +53,7 @@ describe("AccountTypeFilterView", function(){
 
     it('select account type updates model', function(){
       view.$('#account_type_id').val('3').change();
-      expect(view.model.get('account_type_id')).toEqual(3);
+      expect(view.model.get('account_type')).toEqual('type3');
     });
   });
 

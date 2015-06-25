@@ -9,7 +9,6 @@ feature 'Accounts', type: :feature do
     FactoryGirl.create(:category_type, name: 'Income')
     c = FactoryGirl.create(:category, name: 'Category1', category_type: cte)
     FactoryGirl.create(:subcategory, name: 'Subcategory1', category: c)
-    FactoryGirl.create(:account_type, name: 'Savings')
   end
 
   after :all  do

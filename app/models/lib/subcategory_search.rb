@@ -9,7 +9,10 @@ module Lib
     end
 
     def transaction_query
-      Transaction.for_account_type_id(1).where(category: @category, subcategory: @subcategory).find_by_date(@date_range).reverse_date_order
+      Transaction.for_account_type(AccountType::Savings)
+        .where(category: @category, subcategory: @subcategory)
+        .find_by_date(@date_range)
+        .reverse_date_order
     end
   end
 end

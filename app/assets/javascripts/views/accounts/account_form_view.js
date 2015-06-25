@@ -12,7 +12,6 @@ MyMoney.Views.AccountFormView = MyMoney.Views.BaseEditView.extend({
   },
 
   initialize: function(){
-    this.accountType = this.options.accountType;
     this.setTemplate();
   },
 

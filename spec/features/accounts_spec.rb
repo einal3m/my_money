@@ -7,8 +7,6 @@ feature 'Accounts', type: :feature do
     FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     FactoryGirl.create(:category_type, name: 'Expense')
     FactoryGirl.create(:category_type, name: 'Income')
-    FactoryGirl.create(:account_type, name: 'Savings')
-    FactoryGirl.create(:account_type, name: 'Shares')
   end
 
   after :all  do
@@ -33,7 +31,7 @@ feature 'Accounts', type: :feature do
   scenario 'User creates a new Share account', js: true do
     start_my_money
 
-    create_account('Shares', {
+    create_account('Share', {
       name: 'New Account Name',
       ticker: 'TCK'
     })

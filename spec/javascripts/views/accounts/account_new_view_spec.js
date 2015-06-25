@@ -1,11 +1,11 @@
-describe("AccountNewView", function(){
+describe("MyMoney.Views.AccountNewView", function(){
   var view, accounts, accountTypes;
   beforeEach(function(){
     accounts = new MyMoney.Collections.Accounts([]);
     accountTypes = new MyMoney.Collections.AccountTypes([
-      {id: 1, name: 'Savings'},
-      {id: 2, name: 'Shares'},
-      {id: 3, name: 'Account Type 3'}
+      {id: 1, code: 'savings', name: 'Savings'},
+      {id: 2, code: 'share', name: 'Shares'},
+      {id: 3, code: 'other', name: 'Account Type 3'}
     ]);
 
     view = new MyMoney.Views.AccountNewView({
@@ -57,15 +57,14 @@ describe("AccountNewView", function(){
 
     it('#addFormView', function(){
       spyOn(MyMoney.Views.AccountFormView.prototype, 'initialize').and.callThrough();
-      view.filterModel.set({account_type_id: 1});
+      view.filterModel.set({account_type: 'savings'});
       view.addFormView();
 
-      expect(view.model.get('account_type_id')).toEqual(1);
+      expect(view.model.get('account_type')).toEqual('savings');
       expect(MyMoney.Views.AccountFormView.prototype.initialize).toHaveBeenCalled();
       expect(MyMoney.Views.AccountFormView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
         model: view.model,
-        collection: view.collection,
-        accountType: accountTypes.at(0)
+        collection: view.collection
       });
     });
 
@@ -80,7 +79,7 @@ describe("AccountNewView", function(){
       });
 
       it('routes to index page when canceled', function(){
-        view.filterModel.set({account_type_id: 1});
+        view.filterModel.set({account_type: 'savings'});
         view.addFormView();
         view.subViews['new_form'].trigger('cancelEdit');
         expect(window.router.navigate).toHaveBeenCalledWith('accounts', {trigger: true});

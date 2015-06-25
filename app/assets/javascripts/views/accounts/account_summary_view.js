@@ -8,10 +8,6 @@ MyMoney.Views.AccountSummaryView = MyMoney.Views.BaseView.extend({
     "click #reconcile": "reconcileAccount"
   },
 
-  initialize: function(){
-    this.accountType = this.options.accountType;
-  },
-
   render: function() {
     this.$el.html(HandlebarsTemplates[this.template](this.model.toJSON()));
     this.loadShowView();
@@ -20,8 +16,7 @@ MyMoney.Views.AccountSummaryView = MyMoney.Views.BaseView.extend({
 
   loadEditView: function() {
     this.addSubView('account', new MyMoney.Views.AccountFormView({
-      model: this.model,
-      accountType: this.accountType
+      model: this.model
     }));
     this.listenTo(this.model, 'sync', this.loadShowView);
     this.listenTo(this.subViews.account, 'cancel', this.loadShowView);
@@ -30,8 +25,7 @@ MyMoney.Views.AccountSummaryView = MyMoney.Views.BaseView.extend({
 
   loadShowView: function() {
     this.addSubView('account', new MyMoney.Views.AccountShowView({
-      model: this.model,
-      accountType: this.accountType
+      model: this.model
     }));
     this.listenTo(this.subViews.account, 'edit', this.loadEditView);
     this.renderSubViews();

@@ -1,19 +1,17 @@
-describe("AccountSummaryView", function(){
-  var view, account, accountType;
+describe("MyMoney.Views.AccountSummaryView", function(){
+  var view, account;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
-      account_type_id: 1,
+      account_type: 'savings',
       name: 'My Account',
       bank: 'My Bank',
       starting_date: '12-May-2014',
       starting_balance: 100
     });
-    accountType = new MyMoney.Models.AccountType({id: 1, name: 'Savings'});
 
     view = new MyMoney.Views.AccountSummaryView({
-      model: account,
-      accountType: accountType
+      model: account
     })
   });
 
@@ -23,7 +21,6 @@ describe("AccountSummaryView", function(){
 
   it("initializes data", function(){
     expect(view.model).toEqual(account);
-    expect(view.accountType).toEqual(accountType);
   });
 
   describe("render", function(){
@@ -46,8 +43,7 @@ describe("AccountSummaryView", function(){
       expect(view.el).toContainElement('#account');
       expect(MyMoney.Views.AccountShowView.prototype.initialize).toHaveBeenCalled();
       expect(MyMoney.Views.AccountShowView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
-        model: view.model,
-        accountType: accountType
+        model: view.model
       });
     });
 
@@ -63,8 +59,7 @@ describe("AccountSummaryView", function(){
         view.subViews.account.trigger('edit');
         expect(MyMoney.Views.AccountFormView.prototype.initialize).toHaveBeenCalled();
         expect(MyMoney.Views.AccountFormView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
-          model: view.model,
-          accountType: accountType
+          model: view.model
         });
       });
       it('save', function(){
@@ -73,8 +68,7 @@ describe("AccountSummaryView", function(){
         view.model.trigger('sync');
         expect(MyMoney.Views.AccountShowView.prototype.initialize).toHaveBeenCalled();
         expect(MyMoney.Views.AccountShowView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
-          model: view.model,
-          accountType: accountType
+          model: view.model
         });
       });
       it('cancel', function(){
@@ -83,8 +77,7 @@ describe("AccountSummaryView", function(){
         view.subViews.account.trigger('cancel');
         expect(MyMoney.Views.AccountShowView.prototype.initialize).toHaveBeenCalled();
         expect(MyMoney.Views.AccountShowView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
-          model: view.model,
-          accountType: accountType
+          model: view.model
         });
       });
     });

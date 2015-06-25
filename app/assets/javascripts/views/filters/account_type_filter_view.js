@@ -21,6 +21,7 @@ MyMoney.Views.AccountTypeFilterView = MyMoney.Views.BaseView .extend({
   accountTypeChanged: function(e){
     e.preventDefault();
     e.stopPropagation();
-    this.model.set('account_type_id', parseInt(this.$('#account_type_id').val(), 10));
+    var accountType = this.accountTypes.get(parseInt(this.$('#account_type_id').val(), 10));
+    this.model.set('account_type', accountType.get('code'));
   }
 });

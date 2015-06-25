@@ -45,12 +45,12 @@ RSpec.describe AccountsController, type: :controller do
       context 'Share account' do
         it 'creates a new Share Account' do
           expect {
-            post :create, { account: { account_type_id: 2, name: 'Name', ticker: 'TCK' } }, valid_session
+            post :create, { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }, valid_session
           }.to change(Account, :count).by(1)
         end
 
         it 'sends the account' do
-          post :create, { account: { account_type_id: 2, name: 'Name', ticker: 'TCK' } }, valid_session
+          post :create, { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }, valid_session
           account = Account.first
 
           expect(account.name).to eq('Name')

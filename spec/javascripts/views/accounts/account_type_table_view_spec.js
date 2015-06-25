@@ -1,15 +1,15 @@
-describe("AccountTypeTableView", function(){
+describe("MyMoney.Views.AccountTypeTableView", function(){
   var view, accounts, filteredAccounts, accountType;
   beforeEach(function(){
-    accountType = new MyMoney.Models.AccountType({id: 2, name: 'Account Type 2'});
+    accountType = new MyMoney.Models.AccountType({id: 2, code: 'share', name: 'Account Type 2'});
     filteredAccounts = new MyMoney.Collections.Accounts([
-      {id: 5, name: 'Account C', account_type_id: 2}
+      {id: 5, name: 'Account C', account_type: 'share'}
     ]);
     accounts = new MyMoney.Collections.Accounts([
-      {id: 3, name: 'Account A', account_type_id: 1},
-      {id: 4, name: 'Account B', account_type_id: 1},
-      {id: 5, name: 'Account C', account_type_id: 2},
-      {id: 6, name: 'Account D', account_type_id: 1}
+      {id: 3, name: 'Account A', account_type: 'savings'},
+      {id: 4, name: 'Account B', account_type: 'savings'},
+      {id: 5, name: 'Account C', account_type: 'share'},
+      {id: 6, name: 'Account D', account_type: 'savings'}
     ]);
 
     view = new MyMoney.Views.AccountTypeTableView({

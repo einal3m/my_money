@@ -29,12 +29,11 @@ MyMoney.Views.AccountNewView = MyMoney.Views.BaseView.extend({
   },
 
   addFormView: function(){
-    var account_type_id = this.filterModel.get('account_type_id');
-    this.model.set({account_type_id: account_type_id});
+    var account_type = this.filterModel.get('account_type');
+    this.model.set({account_type: account_type});
     this.addSubView('new_form', new MyMoney.Views.AccountFormView({
       model: this.model,
-      collection: this.collection,
-      accountType: this.accountTypes.get(account_type_id)
+      collection: this.collection
     }));
     this.listenTo(this.subViews.new_form, 'cancelEdit', this.goBack);
     this.renderSubView('new_form');

@@ -10,6 +10,6 @@ MyMoney.Collections.Accounts = Backbone.Collection.extend({
   },
 
   findByAccountType: function(accountType){
-    return new MyMoney.Collections.Accounts(this.where({account_type_id: accountType.id}));
+    return new MyMoney.Collections.Accounts(this.where({account_type: accountType.get('code')}));
   }
 });

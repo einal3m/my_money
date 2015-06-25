@@ -1,9 +1,9 @@
-describe("TransactionRowView", function(){
+describe("MyMoney.Views.TransactionRowView", function(){
   var view, account, transaction, transactions, categories, subcategories, categoryTypes, transactionTypes;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
-      account_type_id: 1
+      account_type: 'savings'
     });
     categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
@@ -75,7 +75,7 @@ describe("TransactionRowView", function(){
     describe('shares', function(){
       beforeEach(function(){
         view.account.set({
-          account_type_id: 2
+          account_type: 'share'
         });
       });
 

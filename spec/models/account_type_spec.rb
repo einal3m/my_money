@@ -6,26 +6,14 @@ require 'rails_helper'
 #  name: string
 #
 RSpec.describe AccountType, type: :model do
-  it 'has a valid factory' do
-    ct = FactoryGirl.create(:account_type)
-
-    expect(ct).to be_valid
-    expect(ct).to be_a(AccountType)
+  it 'Savings' do
+    account_type = AccountType::Savings.new
+    expect(account_type.id).to eq(1)
+    expect(account_type.name).to eq('Savings')
   end
-
-  describe 'validations' do
-    it 'is invalid without a name' do
-      expect(FactoryGirl.build(:account_type, name: nil)).not_to be_valid
-    end
-  end
-
-  describe 'relationships' do
-    it 'has many accounts' do
-      account_type = FactoryGirl.create(:account_type)
-      FactoryGirl.create(:account, account_type: account_type)
-      FactoryGirl.create(:account, account_type: account_type)
-
-      expect(account_type.accounts.length).to eq(2)
-    end
+  it 'Share' do
+    account_type = AccountType::Share.new
+    expect(account_type.id).to eq(2)
+    expect(account_type.name).to eq('Share')
   end
 end

@@ -1,9 +1,9 @@
-describe("AccountRowView", function(){
+describe("MyMoney.Views.AccountRowView", function(){
   var view, account;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
-      account_type_id: 1,
+      account_type: 'savings',
       name: 'My Account',
       bank: 'My Bank',
       ticker: 'TCK',
@@ -44,7 +44,7 @@ describe("AccountRowView", function(){
 
     describe('share', function(){
       it("displays a table row with account data", function(){
-        view.model.set({account_type_id: 2});
+        view.model.set({account_type: 'share'});
         view.render();
         expect(view.el).toEqual('tr');
         expect(view.template).toEqual('accounts/shares_row');

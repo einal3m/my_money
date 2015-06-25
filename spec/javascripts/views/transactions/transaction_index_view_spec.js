@@ -1,9 +1,9 @@
-describe("TransactionIndexView", function(){
+describe("MyMoney.Views.TransactionIndexView", function(){
   var view, account, accounts, categories, subcategories, categoryTypes, transactions, transactionTypes;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
-      account_type_id: 1,
+      account_type: 'savings',
       name: 'My Account'
     });
 

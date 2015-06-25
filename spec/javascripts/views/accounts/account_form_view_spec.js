@@ -1,14 +1,12 @@
-describe("AccountFormView", function(){
-  var view, account, accounts, accountType;
+describe("MyMoney.Views.AccountFormView", function(){
+  var view, account, accounts;
   beforeEach(function(){
-    account = new MyMoney.Models.Account({account_type_id: 1});
+    account = new MyMoney.Models.Account({account_type: 'savings'});
     accounts = new MyMoney.Collections.Accounts([]);
-    accountType = new MyMoney.Models.AccountType({id: 1, name: 'Savings'});
 
     view = new MyMoney.Views.AccountFormView({
       model: account,
-      collection: accounts,
-      accountType: accountType
+      collection: accounts
     });
   });
 
@@ -19,17 +17,16 @@ describe("AccountFormView", function(){
   it("initializes data", function(){
     expect(view.model).toEqual(account);
     expect(view.collection).toEqual(accounts);
-    expect(view.accountType).toEqual(accountType);
   });
 
   describe('#setTemplate', function(){
     it("for savings", function(){
-      view.model.set({account_type_id: 1});
+      view.model.set({account_type: 'savings'});
       view.setTemplate();
       expect(view.template).toEqual('accounts/savings_form');
     });
     it("for shares", function(){
-      view.model.set({account_type_id: 2});
+      view.model.set({account_type: 'share'});
       view.setTemplate();
       expect(view.template).toEqual('accounts/shares_form');
     });
@@ -37,8 +34,7 @@ describe("AccountFormView", function(){
 
   describe('for shares', function(){
     beforeEach(function(){
-      accountType.set({name: 'Shares'});
-      view.model.set({account_type_id: 2});
+      view.model.set({account_type: 'share'});
       view.setTemplate();
       view.render();
     });
@@ -60,8 +56,7 @@ describe("AccountFormView", function(){
 
   describe("for savings", function(){
     beforeEach(function(){
-      accountType.set({name: 'Savings'});
-      view.model.set({account_type_id: 1});
+      view.model.set({account_type: 'savings'});
       view.setTemplate();
       view.render();
     });

@@ -117,11 +117,11 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'finds transactions given an account type' do
-      @share_account = FactoryGirl.create(:account, account_type_id: 2)
+      @share_account = FactoryGirl.create(:account, account_type: AccountType::Share)
       FactoryGirl.create(:transaction)
       t1 = FactoryGirl.create(:transaction, account: @share_account)
 
-      expect(Transaction.for_account_type_id(2)).to eq([t1])
+      expect(Transaction.for_account_type(AccountType::Share)).to eq([t1])
     end
   end
 

@@ -10,15 +10,15 @@ MyMoney.Models.Account = MyMoney.Models.BaseModel.extend({
   },
 
   isSavings: function(){
-    return (this.get('account_type_id') === 1);
+    return (this.get('account_type') === 'savings');
   },
 
   isShare: function(){
-    return (this.get('account_type_id') === 2);
+    return (this.get('account_type') === 'share');
   },
 
   validation: {
-    account_type_id: {
+    account_type: {
       required: true,
       msg: 'Account type is required'
     },

@@ -1,3 +1,3 @@
 class AccountTypeSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :code, :name
 end

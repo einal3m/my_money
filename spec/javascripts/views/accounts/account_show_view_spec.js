@@ -1,20 +1,18 @@
-describe("AccountShowView", function(){
-  var view, account, accountType;
+describe("MyMoney.Views.AccountShowView", function(){
+  var view, account;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
-      account_type_id: 1,
+      account_type: 'savings',
       name: 'My Account',
       bank: 'My Bank',
       ticker: 'TCK',
       starting_date: '12-May-2014',
       starting_balance: 100
     });
-    accountType = new MyMoney.Models.AccountType({id: 1, name: 'Savings'});
 
     view = new MyMoney.Views.AccountShowView({
-      model: account,
-      accountType: accountType
+      model: account
     })
   });
 
@@ -24,7 +22,6 @@ describe("AccountShowView", function(){
 
   it("initializes data", function(){
     expect(view.model).toEqual(account);
-    expect(view.accountType).toEqual(accountType);
   });
 
   describe("render", function(){
@@ -44,7 +41,7 @@ describe("AccountShowView", function(){
 
     describe('for savings', function(){
       it("displays account details", function(){
-        view.model.set({account_type_id: 2});
+        view.model.set({account_type: 'share'});
         view.render();
         expect(view.template).toEqual('accounts/shares_show')
         expect(view.el).toContainText('My Account');

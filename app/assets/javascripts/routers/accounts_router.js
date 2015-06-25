@@ -74,8 +74,7 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
     var account = this.accounts.get(id);
     var accountType = this.accountTypes.get(account.get('account_type_id'));
     this.loadView(new MyMoney.Views.AccountSummaryView({
-      model: account,
-      accountType: accountType
+      model: account
     }));
   },
 

@@ -3,7 +3,7 @@ require 'lib/date_range'
 
 RSpec.describe Lib::CategorySearch, type: :class do
   before :each do
-    @share_account = FactoryGirl.create(:account, account_type_id: 2)
+    @share_account = FactoryGirl.create(:account, account_type: AccountType::Share.new)
     @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 400, subcategory: nil)
     @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @t1.category, subcategory: nil, amount: 1000)
     @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)

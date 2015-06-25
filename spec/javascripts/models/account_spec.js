@@ -1,4 +1,4 @@
-describe('AccountModel', function(){
+describe('MyMoney.Models.Account', function(){
   var account;
   beforeEach(function(){
     account = new MyMoney.Models.Account({id: 10});
@@ -13,19 +13,19 @@ describe('AccountModel', function(){
   });
 
   it('#isShare', function(){
-    account.set({account_type_id: 2});
+    account.set({account_type: 'share'});
     expect(account.isShare()).toBeTruthy();
   });
 
   it('#isSavings', function(){
-    account.set({account_type_id: 1});
+    account.set({account_type: 'savings'});
     expect(account.isSavings()).toBeTruthy();
   });
 
   describe('validation', function(){
     it ('requires an account type ', function(){
-      expect(account.preValidate('account_type_id', null)).toEqual('Account type is required');
-      expect(account.preValidate('account_type_id',  6)).toEqual('');
+      expect(account.preValidate('account_type', null)).toEqual('Account type is required');
+      expect(account.preValidate('account_type',  6)).toEqual('');
     });
 
     it ('requires a name', function(){
@@ -35,7 +35,7 @@ describe('AccountModel', function(){
 
     describe('savings account', function(){
       beforeEach(function(){
-        account.set({account_type_id: 1});
+        account.set({account_type: 'savings'});
       });
       it ('requires a starting balance', function(){
         expect(account.preValidate('starting_balance', null)).toEqual('Opening balance is required');
@@ -54,7 +54,7 @@ describe('AccountModel', function(){
     });
     describe('share account', function(){
       beforeEach(function(){
-        account.set({account_type_id: 2});
+        account.set({account_type: 'share'});
       });
       it ('requires a ticker', function(){
         expect(account.preValidate('ticker', null)).toEqual('Ticker is required');

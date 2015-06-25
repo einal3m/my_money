@@ -28,6 +28,10 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 
+# static models
+gem 'classy_enum'
+
+# graphics for reports
 gem 'd3-rails'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -11,9 +11,6 @@ feature 'Subcategory Report', type: :feature do
     c1 = FactoryGirl.create(:category, name: 'First Category', category_type: @ct_i)
     FactoryGirl.create(:subcategory, name: 'First Subcategory', category: c1)
     FactoryGirl.create(:subcategory, name: 'Second Subcategory', category: c1)
-
-    FactoryGirl.create(:account_type, id: 1, name: 'Savings')
-    FactoryGirl.create(:account_type, id: 2, name: 'Shares')
   end
 
   after :all  do

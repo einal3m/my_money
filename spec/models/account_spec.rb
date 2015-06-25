@@ -33,30 +33,30 @@ RSpec.describe Account, type: :model do
 
     context 'savings' do
       it 'is invalid without a starting balance' do
-        expect(FactoryGirl.build(:account, starting_balance: nil, account_type_id: 1)).not_to be_valid
+        expect(FactoryGirl.build(:account, starting_balance: nil, account_type: 'savings')).not_to be_valid
       end
 
       it 'is invalid without a starting date' do
-        expect(FactoryGirl.build(:account, starting_date: nil, account_type_id: 1)).not_to be_valid
+        expect(FactoryGirl.build(:account, starting_date: nil, account_type: 'savings')).not_to be_valid
       end
 
       it 'is invalid if starting balance is not a number' do
-        expect(FactoryGirl.build(:account, starting_balance: 'a', account_type_id: 1)).not_to be_valid
+        expect(FactoryGirl.build(:account, starting_balance: 'a', account_type: 'savings')).not_to be_valid
       end
   
       it 'is valid without a ticker' do
-        expect(FactoryGirl.build(:account, ticker: nil, account_type_id: 1)).to be_valid
+        expect(FactoryGirl.build(:account, ticker: nil, account_type: 'savings')).to be_valid
       end
     end
 
     context 'shares' do
       it 'is invalid without a ticker' do
-        expect(FactoryGirl.build(:account, ticker: nil, account_type_id: 2)).not_to be_valid
+        expect(FactoryGirl.build(:account, ticker: nil, account_type: 'share')).not_to be_valid
       end
   
       it 'is valid without a starting_balance or starting_date' do
-        expect(FactoryGirl.build(:account, starting_balance: nil, account_type_id: 2)).to be_valid
-        expect(FactoryGirl.build(:account, starting_date: nil, account_type_id: 2)).to be_valid
+        expect(FactoryGirl.build(:account, starting_balance: nil, account_type: 'share')).to be_valid
+        expect(FactoryGirl.build(:account, starting_date: nil, account_type: 'share')).to be_valid
       end
     end
 
@@ -66,13 +66,6 @@ RSpec.describe Account, type: :model do
   end
 
   describe 'relationships' do
-    it 'belongs to account_type' do
-      account_type = FactoryGirl.create(:account_type)
-      account = FactoryGirl.create(:account, account_type: account_type)
-
-      expect(account.account_type).to eq(account_type)
-    end
-
     it 'has many transactions' do
       a = FactoryGirl.create(:account)
       FactoryGirl.create(:transaction, account: a)

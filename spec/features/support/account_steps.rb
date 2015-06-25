@@ -33,7 +33,7 @@ end
 
 def fill_in_account_form(account_type, params)
   case account_type
-  when 'Shares'
+  when 'Share'
     fill_in_share_account_form(params)
   when 'Savings'
     fill_in_savings_account_form(params)

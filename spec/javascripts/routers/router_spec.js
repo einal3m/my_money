@@ -157,8 +157,7 @@ describe('MyMoney.Router', function() {
       expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.AccountSummaryView));
       expect(MyMoney.Views.AccountSummaryView.prototype.initialize).toHaveBeenCalled();
       expect(MyMoney.Views.AccountSummaryView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
-        model: account,
-        accountType: accountType
+        model: account
       });
     });
 

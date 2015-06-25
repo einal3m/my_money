@@ -1,9 +1,9 @@
-describe("TransactionEditView", function(){
+describe("MyMoney.Views.TransactionEditView", function(){
   var view, account, categories, subcategories, categoryTypes, transaction, transactions;
   beforeEach(function(){
     account = new MyMoney.Models.Account({
       id: 13,
-      account_type_id: 1
+      account_type: 'savings'
     });
     categoryTypes = new MyMoney.Collections.CategoryTypes([
       {id: 1, name: 'Category Type'}
@@ -30,10 +30,10 @@ describe("TransactionEditView", function(){
     });
     transactions = new MyMoney.Collections.Transactions([transaction]);
     transactionTypes = new MyMoney.Collections.TransactionTypes([
-      {id: 1, account_type_id: 2, name: 'Purchase'},
-      {id: 2, account_type_id: 2, name: 'Dividend'},
-      {id: 3, account_type_id: 2, name: 'Unit Price Update'},
-      {id: 4, account_type_id: 2, name: 'Sale'},
+      {id: 1, account_type: 'share', name: 'Purchase'},
+      {id: 2, account_type: 'share', name: 'Dividend'},
+      {id: 3, account_type: 'share', name: 'Unit Price Update'},
+      {id: 4, account_type: 'share', name: 'Sale'},
     ]);
 
     view = new MyMoney.Views.TransactionEditView({
@@ -100,7 +100,7 @@ describe("TransactionEditView", function(){
 
     describe('shares', function(){
       beforeEach(function(){
-        view.account.set({account_type_id: 2});
+        view.account.set({account_type: 'share'});
         view.setTemplate();
         view.render();
       });
