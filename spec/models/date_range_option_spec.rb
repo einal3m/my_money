@@ -3,7 +3,7 @@ require 'lib/date_range'
 
 RSpec.describe DateRangeOption, type: :model do
   before :each do
-    @date_range_option = DateRangeOption::CurrentMonthDateRange.new
+    @date_range_option = DateRangeOption::CurrentMonth.new
   end
 
   it 'has an id' do
@@ -25,4 +25,12 @@ RSpec.describe DateRangeOption, type: :model do
   it 'has a name' do
     expect(@date_range_option.name).to eq('Current Month')
   end
+
+  it 'has custom? method' do
+    expect(@date_range_option.custom?).to be_falsey
+    custom_date_range = DateRangeOption::Custom.new
+    expect(custom_date_range.custom?).to be_truthy
+  end
+
+
 end

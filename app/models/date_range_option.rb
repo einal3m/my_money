@@ -2,7 +2,7 @@ class DateRangeOption < ClassyEnum::Base
   include ActiveModel::Serialization
 
   def klass
-    'Lib::' + option.to_s.camelize
+    'Lib::' + option.to_s.camelize + 'DateRange'
   end
 
   def default
@@ -13,7 +13,19 @@ class DateRangeOption < ClassyEnum::Base
     @date_range ||= klass.constantize.new
   end
 
-  class CurrentMonthDateRange < DateRangeOption
+  def from_date
+    date_range.from_date
+  end
+
+  def to_date
+    date_range.to_date
+  end
+
+  def custom?
+    false
+  end
+
+  class CurrentMonth < DateRangeOption
     def id
       1
     end
@@ -31,7 +43,7 @@ class DateRangeOption < ClassyEnum::Base
     end
   end
 
-  class CustomDateRange < DateRangeOption
+  class Custom < DateRangeOption
     def id
       2
     end
@@ -43,9 +55,13 @@ class DateRangeOption < ClassyEnum::Base
     def name
       'Custom Dates'
     end
+
+    def custom?
+      true
+    end
   end
 
-  class CurrentFinancialYearDateRange < DateRangeOption
+  class CurrentFinancialYear < DateRangeOption
     def id
       3
     end
@@ -59,7 +75,7 @@ class DateRangeOption < ClassyEnum::Base
     end
   end
 
-  class PreviousFinancialYearDateRange < DateRangeOption
+  class PreviousFinancialYear < DateRangeOption
     def id
       4
     end
@@ -73,7 +89,7 @@ class DateRangeOption < ClassyEnum::Base
     end
   end
 
-  class Last90DaysDateRange < DateRangeOption
+  class Last90Days < DateRangeOption
     def id
       5
     end
@@ -87,7 +103,7 @@ class DateRangeOption < ClassyEnum::Base
     end
   end
 
-  class Last12MonthsDateRange < DateRangeOption
+  class Last12Months < DateRangeOption
     def id
       6
     end
