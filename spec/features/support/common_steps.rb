@@ -10,10 +10,6 @@ def visit_categories
   end
 end
 
-def visit_date_range_options
-  visit '/date_range_options'
-end
-
 def click_on_row_with_text(text)
   page.find('tr', text: text).click
 end

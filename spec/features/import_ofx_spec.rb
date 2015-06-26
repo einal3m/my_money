@@ -3,8 +3,6 @@ require 'rails_helper'
 feature 'Accounts', type: :feature do
   before :each do
     # create a few date ranges
-    FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
-    FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
     cte = FactoryGirl.create(:category_type, name: 'Expense')
     FactoryGirl.create(:category_type, name: 'Income')
     c = FactoryGirl.create(:category, name: 'Category1', category_type: cte)

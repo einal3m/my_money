@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe TransactionsController, type: :controller do
   let(:valid_session) { {} }
 
-  before :all do
-    @dr_option = FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
-  end
-
   describe 'GET index' do
     it 'returns all transactions for specified account for specified date' do
       t1 = FactoryGirl.create(:transaction, date: '2014-07-03')

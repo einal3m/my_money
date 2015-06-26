@@ -1,10 +1,6 @@
 class DateRangeOptionSerializer < ActiveModel::Serializer
   attributes :id, :name, :default, :from_date, :to_date
 
-  def name
-    object.description
-  end
-
   def from_date
     object.date_range.from_date
   end

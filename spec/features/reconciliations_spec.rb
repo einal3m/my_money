@@ -2,10 +2,6 @@ require 'rails_helper'
 
 feature 'Reconciliations', type: :feature do
   before :all do
-    FactoryGirl.create(:date_range_option, description: 'Current Month', klass: 'Lib::CurrentMonthDateRange', default: true)
-    FactoryGirl.create(:date_range_option, description: 'Custom Dates', klass: 'Lib::CustomDateRange')
-    FactoryGirl.create(:date_range_option, description: 'Last 90 Days', klass: 'Lib::Last90DaysDateRange')
-
     FactoryGirl.create(:category_type, name: 'Expense')
     @ct_i = FactoryGirl.create(:category_type, name: 'Income')
     c1 = FactoryGirl.create(:category, name: 'First Category', category_type: @ct_i)
@@ -46,7 +42,7 @@ feature 'Reconciliations', type: :feature do
     expect(page).to have_text('account reconciliation')
 
     fill_in 'statement_balance', with: 50.00
-    fill_in 'statement_date', with: '02-Jul-2014'
+    fill_in 'statement_date', with: '2-Jul-2014'
     click_on 'Start'
 
     expect(page).to have_text('2-Jul-2014')
