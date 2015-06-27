@@ -28,15 +28,6 @@ class CategoriesController < ApplicationController
     end
   end
 
-  # called when user changes category on transaction forms
-  def subcategories_by_category
-    if params[:category_id].present?
-      @subcategories = Category.find(params[:category_id]).subcategories
-    else
-      @subcategories = []
-    end
-  end
-
   private
 
   def category
