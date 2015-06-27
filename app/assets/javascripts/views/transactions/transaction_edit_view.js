@@ -44,7 +44,7 @@ MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
 
   setModelAttributes: function(){
     this.model.set({
-        date: this.$('#date').val(),
+        date: backEndDateFormat(this.$('#date').datepicker('getDate')),
         notes: this.$('#notes').val()
     });
 

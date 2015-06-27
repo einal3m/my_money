@@ -34,7 +34,7 @@ MyMoney.Views.AccountFormView = MyMoney.Views.BaseEditView.extend({
       name: this.$('#name').val(),
       bank: this.$('#bank').val(),
       starting_balance: dollarsToCents(this.$('#starting_balance').val()),
-      starting_date: this.$('#starting_date').val()
+      starting_date: backEndDateFormat(this.$('#starting_date').datepicker('getDate'))
     });
   },
 

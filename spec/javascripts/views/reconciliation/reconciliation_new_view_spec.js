@@ -72,7 +72,7 @@ describe("ReconciliationNewView", function(){
         view.$('button#reconcile').click();
 
         expect(view.model.isValid).toHaveBeenCalled();
-        expect(view.model.get('statement_date')).toEqual('4-Jul-2014');
+        expect(view.model.get('statement_date')).toEqual('2014-07-04');
         expect(view.model.get('statement_balance')).toEqual(4085513);
         expect(view.model.save).toHaveBeenCalled();
         expect(view.trigger).toHaveBeenCalledWith('startReconcile');

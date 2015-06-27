@@ -77,7 +77,7 @@ describe("MyMoney.Views.AccountFormView", function(){
       view.setModelAttributes();
       expect(view.model.get('name')).toEqual('My Account Name');
       expect(view.model.get('bank')).toEqual('My Bank');
-      expect(view.model.get('starting_date')).toEqual('1-Jan-2015');
+      expect(view.model.get('starting_date')).toEqual('2015-01-01');
       expect(view.model.get('starting_balance')).toEqual(5000);
     });
   });

@@ -91,7 +91,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
         view.setModelAttributes();
 
         expect(view.model.get('amount')).toEqual(6000);
-        expect(view.model.get('date')).toEqual('1-Jan-2014');
+        expect(view.model.get('date')).toEqual('2014-01-01');
         expect(view.model.get('notes')).toEqual('New Note');
         expect(view.model.get('category_id')).toEqual(4);
         expect(view.model.get('subcategory_id')).toEqual(6);
@@ -139,7 +139,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
-          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('unit_price')).toEqual(120);
           expect(view.model.get('quantity')).toEqual(100);
@@ -164,7 +164,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
-          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('amount')).toEqual(5000);
         });
@@ -187,7 +187,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
-          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('unit_price')).toEqual(120);
           expect(view.model.get('amount')).toEqual(0);
@@ -213,7 +213,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
-          expect(view.model.get('date')).toEqual('1-Jan-2014');
+          expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('unit_price')).toEqual(120);
           expect(view.model.get('quantity')).toEqual(-100);
@@ -244,7 +244,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
         view.$('#save').click();
         expect(view.model.isValid).toHaveBeenCalled();
         expect(view.model.save).toHaveBeenCalled();
-        expect(view.model.get('date')).toEqual('1-Jan-2015');
+        expect(view.model.get('date')).toEqual('2015-01-01');
         expect(view.model.get('amount')).toEqual(5214);
         expect(view.model.get('category_id')).toEqual(4);
         expect(view.model.get('subcategory_id')).toEqual(6);

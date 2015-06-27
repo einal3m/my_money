@@ -24,7 +24,7 @@ MyMoney.Views.ReconciliationNewView = Backbone.View.extend({
     e.stopPropagation();
 
     var new_statement_balance = dollarsToCents(this.$('#statement_balance').val());
-    this.model.set({statement_date: this.$('#statement_date').val()});
+    this.model.set({statement_date: backEndDateFormat(this.$('#statement_date').datepicker('getDate'))});
     this.model.set({statement_balance: new_statement_balance});
 
     if(this.model.isValid(true)){
