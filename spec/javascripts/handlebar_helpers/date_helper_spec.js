@@ -17,5 +17,8 @@ describe("DateHelpers", function() {
     it("#formatDate", function(){
       expect(formatDate('2014-07-19')).toEqual('19-Jul-2014');
     });
+    it("#backEndDateFormat", function(){
+      expect(backEndDateFormat('19-Jul-2014')).toEqual('2014-07-19');
+    });
   });
 });

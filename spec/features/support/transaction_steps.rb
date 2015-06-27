@@ -74,3 +74,20 @@ def verify_transaction(notes, content)
     end
   end
 end
+
+def filter_transactions(date_range_option, from_date, to_date)
+  # blah = "$('#from_date').val('" + from_date + "')"
+  # p blah
+  select date_range_option, from: 'date_range_option_id'
+  page.execute_script("$('#from_date').datepicker('setDate', '1-Jan-2010')")
+  # page.execute_script("$('#from_date').val('" + from_date + "')")
+  # blah = '$("#to_date").val("' + to_date + '")'
+  # page.execute_script('confirm($("#from_date").val())')
+  # p blah
+  # page.execute_script(blah)
+  # fill_in 'to_date', with: to_date
+  # page.execute_script("$('#from_date').val('" + from_date + "')")
+  page.execute_script("$('#to_date').datepicker('setDate', '1-Jan-2016')")
+  click_on 'Search'
+  wait_for_ajax
+end 

@@ -59,5 +59,14 @@ feature 'Transactions', type: :feature do
     expect(page).to have_text('Third Transaction')
     expect(page).not_to have_text('Fourth Transaction')
     expect(page).not_to have_text('Fifth Transaction')
+
+    filter_transactions('Custom Dates', format_date(Date.today << 1), format_date(Date.today >> 1))
+
+    expect(page).to have_text('First Transaction')
+    expect(page).to have_text('Second Transaction')
+    expect(page).to have_text('Third Transaction')
+    expect(page).to have_text('Fourth Transaction')
+    expect(page).to have_text('Fifth Transaction')
+
   end
 end

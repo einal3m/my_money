@@ -16,6 +16,22 @@ var formatDate = function(dateString) {
 	return (curr_date + "-" + m_names[curr_month] + "-" + curr_year);
 };
 
+var zeroPad = function(number) {
+	if (number < 10) {
+		return '0' + number;
+	}
+	return number;
+};
+
+var backEndDateFormat = function(dateString) {
+	var d = new Date(dateString);
+	var day = d.getDate();
+	var month = d.getMonth() + 1;
+	var year = d.getFullYear();
+
+	return (year + '-' + zeroPad(month) + '-' + zeroPad(day));
+};
+
 Handlebars.registerHelper('datePickerInput', function(dateString, id) {
 	value = formatDate(dateString);
 
