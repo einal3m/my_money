@@ -21,7 +21,7 @@ class ReportController < ApplicationController
     income_type = CategoryType.income
     expense_type = CategoryType.expense
 
-    date_range = Lib::Last12MonthsDateRange.new
+    date_range = Lib::Last13MonthsDateRange.new
     income_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: income_type)
     expense_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: expense_type)
 

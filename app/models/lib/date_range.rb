@@ -69,11 +69,20 @@ module Lib
   end
 
   # Last12MonthsDateRange
-  # sets from and to dates to represent the last 12 months
+  # sets from and to dates to represent the last 12 months (including current month)
   class Last12MonthsDateRange < DateRange
     def initialize(_args = {})
       @to_date = Date.new(Date.today.year, Date.today.month, -1)
       @from_date = (to_date << 12) + 1
+    end
+  end
+
+  # Last13MonthsDateRange
+  # sets from and to dates to represent the last 13 months (including current month)
+  class Last13MonthsDateRange < DateRange
+    def initialize(_args = {})
+      @to_date = Date.new(Date.today.year, Date.today.month, -1)
+      @from_date = (to_date << 13) + 1
     end
   end
 end

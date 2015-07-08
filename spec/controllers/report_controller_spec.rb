@@ -46,7 +46,7 @@ RSpec.describe ReportController, type: :controller do
       expect(CategoryType).to receive(:income).and_return(income_category_type)
       expect(CategoryType).to receive(:expense).and_return(expense_category_type)
 
-      expect(Lib::Last12MonthsDateRange).to receive(:new).and_return(date_range)
+      expect(Lib::Last13MonthsDateRange).to receive(:new).and_return(date_range)
       expect(Lib::CategoryTypeSearch).to receive(:new).with(category_type: income_category_type, date_range: date_range).and_return(income_search)
       expect(Lib::CategoryTypeSearch).to receive(:new).with(category_type: expense_category_type, date_range: date_range).and_return(expense_search)
 

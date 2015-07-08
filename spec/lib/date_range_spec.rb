@@ -86,4 +86,16 @@ RSpec.describe Lib::DateRange, type: :class do
       expect(dr.to_date).to eq(Date.new(Date.today.year, Date.today.month, -1))
     end
   end
+
+  describe 'Last13MonthsDateRange' do
+    it 'sets from date to 13 months ago' do
+      dr = Lib::Last13MonthsDateRange.new
+      expect(dr.from_date).to eq(Date.new(Date.today.year, Date.today.month, 1) << 12)
+    end
+
+    it 'sets to date end of current month' do
+      dr = Lib::Last13MonthsDateRange.new
+      expect(dr.to_date).to eq(Date.new(Date.today.year, Date.today.month, -1))
+    end
+  end
 end

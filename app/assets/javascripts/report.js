@@ -141,7 +141,7 @@ function bar_chart(data, class_name) {
       bar_gap = 8,
       bar_x_margin = 50,
       bar_y_margin = 50;
-  var bar_width = 60.0;
+  var bar_width = 55.0; // 912
   var hasLineData = (data[0].length == 3); 
       
   // create scale for y 
