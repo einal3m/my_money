@@ -5,18 +5,17 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
   events: {
     'click #open_file': 'openFileChooser',
     'change #file_name' : 'updateFileName',
-    'click #uploadOFX' : 'uploadOFX'
+    'click #uploadOFX' : 'uploadOFX',
+    'click #cancel' : 'cancel'
   },
 
   initialize: function(options){
     this.account = this.options.account;
-    this.accounts = this.options.accounts;
+    _.bindAll(this); 
   },
 
   render: function(){
-    this.$el.html(HandlebarsTemplates[this.template]({
-          account: this.account.toJSON(), 
-          accounts: this.accounts.models}));
+    this.$el.html(HandlebarsTemplates[this.template]({account: this.account.toJSON()}));
     return this;
   },
 
@@ -29,13 +28,7 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
     this.$('#show_file').html(this.$('#file_name').val());
   },
 
-  uploadOFX: function() {
-    if (this.file_selected()) {
-      this.trigger('uploadOFX');
-    }
-  },
-
-  file_selected: function() {
+  fileSelected: function() {
     if (this.$('#file_name').val()) {
       return true;
     }
@@ -43,5 +36,29 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
     $group.addClass('has-error');
     $group.find('.help-block').html('Please provide a file name.').removeClass('hidden');
     return false;
+  },
+
+  formData: function(){
+    var data = new FormData();
+    data.append('data_file', this.$('input[id="file_name"]')[0].files[0]);
+    return data;
+  },
+
+  uploadOFX: function() {
+    if (this.fileSelected()) {
+      this.collection.uploadOFX(this.formData(), this.success);
+    }
+  },
+
+  success: function(data){
+    this.collection.reset(data.transactions);
+  },
+
+  cancel: function(){
+    this.navigateToTransactions();
+  },
+
+  navigateToTransactions: function(){
+    window.router.navigate('accounts/' + this.account.id + '/transactions', {trigger: true});
   }
 });

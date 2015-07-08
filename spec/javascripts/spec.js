@@ -1,6 +1,6 @@
-
+var ajaxSpy;
 beforeEach(function(){
-  spyOn( $, 'ajax' ).and.callFake( function (params) { 
+  ajaxSpy = spyOn( $, 'ajax' ).and.callFake( function (params) { 
     throw "Error: " + params.type + " " + params.url + " not allowed in tests.";
   });
 });

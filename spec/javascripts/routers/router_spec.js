@@ -173,13 +173,31 @@ describe('MyMoney.Router', function() {
       expect(MyMoney.Views.TransactionsIndexView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
         account: account,
         accounts: router.accounts,
-        categoryTypes: 'categoryTypes',
+        categoryTypes: router.categoryTypes,
         categories: router.categories,
         subcategories: router.subcategories,
         dateRangeOptions: router.dateRangeOptions,
         currentDateRange: router.currentDateRange,
         transactionTypes: router.transactionTypes
       });
+    });
+
+    it('importTransactions', function(){
+      var account = 'account';
+      spyOn(MyMoney.Views.ImportView.prototype, 'initialize').and.callThrough();
+      spyOn(router, 'loadView');
+      spyOn(router.accounts, 'get').and.returnValue(account);
+
+      router.importTransactions('4');
+      expect(router.loadView).toHaveBeenCalledWith(jasmine.any(MyMoney.Views.ImportView));
+      expect(MyMoney.Views.ImportView.prototype.initialize).toHaveBeenCalled();
+      expect(MyMoney.Views.ImportView.prototype.initialize.calls.argsFor(0)[0]).toEqual({
+        account: account,
+        categoryTypes: router.categoryTypes,
+        categories: router.categories,
+        subcategories: router.subcategories
+      });
+      expect(router.accounts.get).toHaveBeenCalledWith('4');
     });
 
     it('patternIndex', function(){

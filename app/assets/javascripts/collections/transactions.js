@@ -4,7 +4,6 @@ MyMoney.Collections.Transactions = Backbone.Collection.extend({
 
   initialize: function(models, options) {
     this.account_id = _.result(options, 'account_id');
-    this.date_range = _.result(options, 'date_range');
     this.action = _.result(options, 'action');
   },
 
@@ -16,7 +15,18 @@ MyMoney.Collections.Transactions = Backbone.Collection.extend({
     }
   },
 
-  parse : function(resp, xhr) {
+  parse: function(resp, xhr) {
     return resp.transactions;
+  },
+
+  uploadOFX: function(data, success) {
+    $.ajax({
+      url: this.url() + '/ofx',
+      type: 'POST',
+      data: data,
+      processData: false,
+      contentType: false,
+      success: success
+    });
   }
 });

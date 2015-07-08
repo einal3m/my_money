@@ -4,47 +4,24 @@ MyMoney.Views.ImportTransactionRowView = Backbone.View.extend({
   tagName: "tr",
 
   events: {
-    "change #category_id": "updateSubcategorySelect",
+    "change #category_id": "categorySelected",
     "change #subcategory_id": "updateSubcategory",
-    "change #notes": "updateNotes"
+    "change #notes": "updateNotes",
+    "click #import": "updateImport"
   },
 
   initialize: function() {
     this.categories = this.options.categories;
     this.subcategories = this.options.subcategories;
     this.categoryTypes = this.options.categoryTypes;
-    this.set_current_subcategories();
-  },
-  
-  set_current_subcategories: function() {
-    if (this.model.get('category_id')) {
-      this.current_subcategories = this.subcategories.where({category_id: this.model.get('category_id')});
-    } else {
-      this.current_subcategories = null;
-    }
-  },
-
-  updateNotes: function() {
-    this.model.set({notes: this.$('#notes').val()});
-  },
-
-  updateSubcategorySelect: function() {
-    this.model.set('category_id', parseInt(this.$('#category_id').val(), 10));
-    this.set_current_subcategories();
-    var html = selectContent(this.current_subcategories, null);
-    this.$el.find('#subcategory_id').html(html);
-  },
-
-  updateSubcategory: function() {
-    this.model.set('subcategory_id', parseInt(this.$('#subcategory_id').val(), 10));
+    this.updateSubcategoryFilter(this.model.get('category_id'));
   },
 
   render: function(){
-    this.model.set('cid', this.model.cid);
     this.$el.html(HandlebarsTemplates[this.template]({
       transaction: this.model.toJSON(),
       categories: this.categories,
-      subcategories: this.current_subcategories,
+      subcategories: this.filteredSubcategories,
       categoryTypes: this.categoryTypes
     }));
 
@@ -52,5 +29,44 @@ MyMoney.Views.ImportTransactionRowView = Backbone.View.extend({
       this.$el.addClass('danger');
     }
     return this;
+  },
+  
+  updateSubcategoryFilter: function(category_id){
+    this.filteredSubcategories = this.subcategoriesForCategory(category_id);
+  },
+
+  // TODO move this to subcategory collection
+  subcategoriesForCategory: function(category_id) {
+    if (category_id) {
+      return this.subcategories.where({category_id: category_id});
+    }
+    return null;
+  },
+
+  categorySelected: function(){
+    var category_id = parseInt(this.$('#category_id').val(), 10);
+    this.model.set({category_id: category_id});
+    this.model.set({subcategory_id: null});
+    
+    this.updateSubcategoryFilter(category_id);
+    this.renderSubcategories();
+  },
+
+  updateNotes: function() {
+    this.model.set({notes: this.$('#notes').val()});
+  },
+
+  updateSubcategory: function() {
+    this.model.set('subcategory_id', parseInt(this.$('#subcategory_id').val(), 10));
+  },
+
+  updateImport: function(e){
+    this.model.set('import', e.currentTarget.checked);
+  },
+
+  renderSubcategories: function(){
+    var html = selectContent(this.filteredSubcategories, null, true);
+    this.$el.find('#subcategory_id').html(html);
   }
+
 });

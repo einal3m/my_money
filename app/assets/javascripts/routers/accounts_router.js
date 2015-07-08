@@ -101,12 +101,11 @@ MyMoney.Routers.AccountsRouter = Backbone.Router.extend({
 
   importTransactions: function(id) {
     var account = this.accounts.get(id);
-    this.showView(new MyMoney.Views.ImportView({
+    this.loadView(new MyMoney.Views.ImportView({
       account: account,
-      accounts: this.accounts,
+      categoryTypes: this.categoryTypes,
       categories: this.categories,
-      subcategories: this.subcategories,
-      categoryTypes: this.categoryTypes
+      subcategories: this.subcategories
     }));
   },
 
