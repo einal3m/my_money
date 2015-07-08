@@ -5,7 +5,7 @@ RSpec.describe Lib::SubcategorySearch, type: :class do
   before :each do
     @share_account = FactoryGirl.create(:account, account_type: AccountType::Share.new)
     @sc = FactoryGirl.create(:subcategory)
-    p @share_account
+
     @c = @sc.category
     @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', category: @c, amount: 4, subcategory: @sc)
     @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: nil, amount: 10)
