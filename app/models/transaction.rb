@@ -19,6 +19,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :subcategory
   belongs_to :reconciliation
   belongs_to :transaction_type
+  belongs_to :bank_statement
 
   # validations
   validates :date, presence: true

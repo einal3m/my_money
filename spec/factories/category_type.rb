@@ -7,7 +7,7 @@ FactoryGirl.define do
 		factory :category_type_with_categories do
 			name "Category Type with Categories"
 
-			ignore do
+			transient do
 				category_count 1
 			end
 

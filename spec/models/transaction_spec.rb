@@ -63,6 +63,11 @@ RSpec.describe Transaction, type: :model do
       r = FactoryGirl.create(:reconciliation)
       expect(FactoryGirl.create(:transaction, reconciliation: r).reconciliation).to eq(r)
     end
+
+    it 'belongs to bank statement' do
+      bs = FactoryGirl.create(:bank_statement)
+      expect(FactoryGirl.create(:transaction, bank_statement: bs).bank_statement).to eq(bs)
+    end
   end
 
   describe 'scopes' do
