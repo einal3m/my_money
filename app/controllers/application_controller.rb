@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
   def account
     @account ||=  params.key?(:account_id) ? Account.find(params[:account_id].to_i) : nil
   end
+
+  rescue_from ActiveRecord::RecordInvalid do |exception|
+    render json: { message: exception.message }, status: :unprocessable_entity
+  end
 end

@@ -21,7 +21,7 @@ RSpec.describe BankStatementsController, type: :controller do
     let (:file_name) { 'sample.qif' }
     let (:transaction_attrs) do 
       [
-        {date: '2015-01-01', amount: 500, account_id: account.id },
+        {date: '2015-01-01', amount: 500, account_id: account.id, import: true },
         {date: '2015-02-01', amount: 520, account_id: account.id }
       ]
     end
@@ -52,7 +52,7 @@ RSpec.describe BankStatementsController, type: :controller do
       make_create_request
       expect(response).to have_http_status(:unprocessable_entity)
       json = JSON.parse(response.body)
-      expect(json['message']).to eq('Validation error')
+      expect(json['message']).to eq('Validation failed: Transactions is invalid')
     end
   end
 
