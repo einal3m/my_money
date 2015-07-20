@@ -2,6 +2,7 @@ describe("MyMoney.Views.ImportTransactionSelectView", function(){
   var view, account, transactions, categories, subcategories, categoryTypes;
   beforeEach(function(){
     account = new MyMoney.Models.Account({id: 17, name: 'My Account'});
+    bankStatement = new MyMoney.Models.BankStatement({file_name: 'file.ofx'});
     categoryTypes = new MyMoney.Collections.CategoryTypes([]);
     categories = new MyMoney.Collections.Categories([]);
     subcategories = new MyMoney.Collections.Subcategories([]);
@@ -11,6 +12,7 @@ describe("MyMoney.Views.ImportTransactionSelectView", function(){
     ], {account_id: 17});
 
     view = new MyMoney.Views.ImportTransactionSelectView({
+      model: bankStatement,
       collection: transactions,
       account: account,
       categoryTypes: categoryTypes,
@@ -25,6 +27,7 @@ describe("MyMoney.Views.ImportTransactionSelectView", function(){
 
   it("initializes data", function(){
     expect(view.account).toEqual(account);
+    expect(view.model).toEqual(bankStatement);
     expect(view.collection).toEqual(transactions);
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
@@ -46,10 +49,12 @@ describe("MyMoney.Views.ImportTransactionSelectView", function(){
 
     describe('on click', function(){
       it('import, saves the selected transactions', function(){
-        var transactions = jasmine.createSpyObj('transactions', ['save']);
+        var transactions = jasmine.createSpyObj('bankStatement', ['save']);
+        spyOn(view.model, 'save')
         spyOn(view, 'filteredTransactions').and.returnValue(transactions);
         view.$('#upload').click();
-        expect(transactions.save).toHaveBeenCalledWith({success: view.success});
+        expect(view.model.get('transactions')).toEqual(transactions);
+        expect(view.model.save).toHaveBeenCalledWith({}, {success: view.success});
       });
 
       it('alert when no transactions selected', function(){

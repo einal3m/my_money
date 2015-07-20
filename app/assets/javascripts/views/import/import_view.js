@@ -9,6 +9,7 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
     this.categories = this.options.categories;
     this.subcategories = this.options.subcategories;
     this.categoryTypes = this.options.categoryTypes;
+    this.model = new MyMoney.Models.BankStatement({account_id: this.account.id});
     this.collection = new MyMoney.Collections.Transactions([], {account_id: this.account.id});
     this.listenTo(this.collection, 'reset', this.transactionsLoaded);
   },
@@ -17,6 +18,7 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
     this.$el.html(HandlebarsTemplates[this.template]());
     this.addSubView('import', new MyMoney.Views.ImportFileChooserView({
       account: this.account,
+      model: this.model,
       collection: this.collection
     }));
     this.renderSubViews();
@@ -25,6 +27,7 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
 
   transactionsLoaded: function(){
     this.addSubView('import', new MyMoney.Views.ImportTransactionSelectView({
+      model: this.model,
       collection: this.collection,
       account: this.account,
       categories: this.categories,

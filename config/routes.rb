@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   # backbones routes
   resources :accounts, only: [:create, :index, :destroy, :update] do
     resources :reconciliations
+    resources :bank_statements, only: [:create, :index, :destroy]
     resources :transactions do
       collection do
         get 'unreconciled'

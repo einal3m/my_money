@@ -12,7 +12,6 @@ MyMoney.Views.ImportTransactionSelectView = MyMoney.Views.BaseTableView.extend({
     this.categories = this.options.categories;
     this.subcategories = this.options.subcategories;
     this.categoryTypes = this.options.categoryTypes;
-    // _.bind(this.success, this);
     _.bindAll(this);
   },
 
@@ -37,7 +36,8 @@ MyMoney.Views.ImportTransactionSelectView = MyMoney.Views.BaseTableView.extend({
     if (filteredTransactions.length === 0) {
       alert('Please select some transactions to import');
     } else {
-      filteredTransactions.save({success: this.success});
+      this.model.set('transactions', filteredTransactions);
+      this.model.save({}, {success: this.success});
     }
   },
 

@@ -25,11 +25,13 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
   },
 
   updateFileName: function(e) {
-    this.$('#show_file').html(this.$('#file_name').val());
+    var fileName = this.$('#file_name').val();
+    this.$('#show_file').html(fileName);
+    this.model.set('file_name', fileName);
   },
 
-  fileSelected: function() {
-    if (this.$('#file_name').val()) {
+  fileIsSelected: function() {
+    if (this.model.get('file_name')) {
       return true;
     }
     var $group = this.$('#file_name').closest('.form-group');
@@ -45,7 +47,7 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
   },
 
   uploadOFX: function() {
-    if (this.fileSelected()) {
+    if (this.fileIsSelected()) {
       this.collection.uploadOFX(this.formData(), this.success);
     }
   },

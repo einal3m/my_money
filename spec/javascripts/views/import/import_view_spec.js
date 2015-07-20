@@ -23,6 +23,8 @@ describe("MyMoney.Views.ImportView", function(){
     expect(view.categoryTypes).toEqual(categoryTypes);
     expect(view.categories).toEqual(categories);
     expect(view.subcategories).toEqual(subcategories);
+    expect(view.model).toEqual(jasmine.any(MyMoney.Models.BankStatement));
+    expect(view.model.get('account_id')).toEqual(account.id);
     expect(view.collection).toEqual(jasmine.any(MyMoney.Collections.Transactions));
     expect(view.collection.length).toEqual(0);
     expect(view.collection.account_id).toEqual(account.id);
@@ -41,6 +43,7 @@ describe("MyMoney.Views.ImportView", function(){
       expect(view.$('#import')).toContainText('Step 1 of 2');
       expect(view.subViews['import']).toEqual(jasmine.any(MyMoney.Views.ImportFileChooserView));      
       expect(view.subViews['import'].collection).toEqual(view.collection);
+      expect(view.subViews['import'].model).toEqual(view.model);
     });
 
     it('renders the step 2 sub view when collection loaded', function(){
@@ -48,6 +51,7 @@ describe("MyMoney.Views.ImportView", function(){
       expect(view.$('#import')).toContainText('Step 2 of 2');
       expect(view.subViews['import']).toEqual(jasmine.any(MyMoney.Views.ImportTransactionSelectView));      
       expect(view.subViews['import'].collection).toEqual(view.collection);
+      expect(view.subViews['import'].model).toEqual(view.model);
     });
   });
 });
