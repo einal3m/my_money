@@ -30,15 +30,19 @@ MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
   },
 
   templateData: function(){
+    var transaction_type = this.model.get('transaction_type');
+    var transactionTypeId =  transaction_type ? this.transactionTypes.where({code: transaction_type})[0].id : null;
+
     return _.extend(this.model.toJSON(), {
       allowDelete: !this.model.isNew(),
       categories: this.categories,
       subcategories: this.filteredSubcategories,
       categoryTypes: this.categoryTypes,
+      transactionTypeId: transactionTypeId,
       transactionTypes: this.transactionTypes.models,
-      isPurchaseOrSale: (this.isPurchase() || this.isSale()),
-      isPriceUpdate: this.isPriceUpdate(),
-      isDividend: this.isDividend()
+      isPurchaseOrSale: (this.model.isSharePurchase() || this.model.isShareSale()),
+      isPriceUpdate: this.model.isUnitPriceUpdate(),
+      isDividend: this.model.isDividend()
     });
   },
 
@@ -48,24 +52,24 @@ MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
         notes: this.$('#notes').val()
     });
 
-    if (this.isPurchase()) {
+    if (this.model.isSharePurchase()) {
       this.model.set({ quantity: parseInt(this.$('#quantity').val(), 10) });
     }
-    if (this.isSale()) {
+    if (this.model.isShareSale()) {
       this.model.set({ quantity: -parseInt(this.$('#quantity').val(), 10) });
     }
 
-    if (this.isPurchase() || this.isSale()) {
+    if (this.model.isSharePurchase() || this.model.isShareSale()) {
       this.model.set({
         unit_price: dollarsToCents(this.$('#unit_price').val())
       });
       this.model.set({ amount: this.model.get('unit_price') * this.model.get('quantity') });
-    } else if (this.isPriceUpdate()) {
+    } else if (this.model.isUnitPriceUpdate()) {
       this.model.set({
         amount: 0,
         unit_price: dollarsToCents(this.$('#unit_price').val())
       });
-    } else if (this.isDividend()) {
+    } else if (this.model.isDividend()) {
       this.model.set({
         amount: dollarsToCents(this.$('#amount').val())
       });
@@ -78,22 +82,10 @@ MyMoney.Views.TransactionEditView = MyMoney.Views.BaseEditView.extend({
     }
   },
 
-// TODO: move to transaction model
-  isPurchase: function(){
-    return (this.model.get('transaction_type_id') === 1);
-  },
-  isDividend: function(){
-    return (this.model.get('transaction_type_id') === 2);
-  },
-  isPriceUpdate: function(){
-    return (this.model.get('transaction_type_id') === 3);
-  },
-  isSale: function(){
-    return (this.model.get('transaction_type_id') === 4);
-  },
-
   transactionTypeChanged: function(){
-    this.model.set({transaction_type_id: parseInt(this.$('#transaction_type_id').val(), 10)});
+    var transaction_type_id = parseInt(this.$('#transaction_type_id').val(), 10);
+    var transaction_type = this.transactionTypes.get(transaction_type_id);
+    this.model.set({transaction_type: transaction_type.get('code')});
     this.render();
   }
 

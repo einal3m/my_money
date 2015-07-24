@@ -19,6 +19,7 @@ describe("MyMoney.Views.TransactionRowView", function(){
     transaction = new MyMoney.Models.Transaction({
       id: 7, 
       date: formatDate((new Date()).toDateString()),
+      transaction_type: 'bank_transaction',
       amount: 500,
       memo: 'This is a memo',
       notes: 'This is a note',
@@ -27,7 +28,13 @@ describe("MyMoney.Views.TransactionRowView", function(){
       balance: 4000,
       reconciliation_id: 4
     });
-    transactionTypes = new MyMoney.Collections.TransactionTypes([]);
+    transactionTypes = new MyMoney.Collections.TransactionTypes([
+      {id: 1, code: 'share_purchase', name: 'Purchase'},
+      {id: 2, code: 'dividend', name: 'Dividend'},
+      {id: 3, code: 'unit_price_update', name: 'Unit Price Update'},
+      {id: 4, code: 'share_sale', name: 'Sale'},
+      {id: 5, code: 'bank_transaction', name: 'Bank Transaction'}
+    ]);
 
     view = new MyMoney.Views.TransactionRowView({
       model: transaction,
@@ -82,7 +89,7 @@ describe("MyMoney.Views.TransactionRowView", function(){
       describe('purchase', function(){
         it("displays a table row with transaction details", function(){
           view.model.set({
-            transaction_type_id: 1,
+            transaction_type: 'share_purchase',
             unit_price: 50,
             quantity: 10
           });
@@ -104,7 +111,7 @@ describe("MyMoney.Views.TransactionRowView", function(){
       describe('sales', function(){
         it("displays a table row with transaction details", function(){
           view.model.set({
-            transaction_type_id: 4,
+            transaction_type: 'share_sale',
             unit_price: 50,
             quantity: 10
           });
@@ -125,7 +132,7 @@ describe("MyMoney.Views.TransactionRowView", function(){
       describe('dividend', function(){
         it("displays a table row with transaction details", function(){
           view.model.set({
-            transaction_type_id: 2
+            transaction_type: 'dividend'
           });
           view.setTemplate();
           view.render();
@@ -144,7 +151,7 @@ describe("MyMoney.Views.TransactionRowView", function(){
       describe('price update', function(){
         it("displays a table row with transaction details", function(){
           view.model.set({
-            transaction_type_id: 3,
+            transaction_type: 'unit_price_update',
             unit_price: 50
           });
           view.setTemplate();

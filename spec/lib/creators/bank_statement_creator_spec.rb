@@ -21,8 +21,15 @@ describe 'BankStatementCreator' do
     expect(bank_statement.transactions.length).to eq(2)
     expect(bank_statement.transaction_count).to eq(2)
 
+    expect(bank_statement.transactions.first.account).to eq(account)
     expect(bank_statement.transactions.first.date).to eq(Date.parse('2015-01-01'))
+    expect(bank_statement.transactions.first.amount).to eq(500)
+    expect(bank_statement.transactions.first.transaction_type).to be_a(TransactionType::BankTransaction)
+
+    expect(bank_statement.transactions.second.account).to eq(account)
     expect(bank_statement.transactions.second.date).to eq(Date.parse('2015-02-01'))
+    expect(bank_statement.transactions.second.amount).to eq(520)
+    expect(bank_statement.transactions.second.transaction_type).to be_a(TransactionType::BankTransaction)
   end
 
   describe 'valid params' do

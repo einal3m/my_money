@@ -1,10 +1,5 @@
 require 'rails_helper'
-#
-#  AccountType
-#
-#  id: int, primary key
-#  name: string
-#
+
 RSpec.describe AccountType, type: :model do
   it 'Savings' do
     account_type = AccountType::Savings.new

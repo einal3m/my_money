@@ -1,26 +1,33 @@
 require 'rails_helper'
 
 RSpec.describe TransactionType, type: :model do
-  it 'has a valid factory' do
-    ct = FactoryGirl.create(:transaction_type)
-
-    expect(ct).to be_valid
-    expect(ct).to be_a(TransactionType)
+  it 'Share Purchase' do
+    transaction_type = TransactionType::SharePurchase.new
+    expect(transaction_type.id).to eq(1)
+    expect(transaction_type.name).to eq('Purchase')
   end
 
-  describe 'validations' do
-    it 'is invalid without a name' do
-      expect(FactoryGirl.build(:transaction_type, name: nil)).not_to be_valid
-    end
+  it 'Share Dividend' do
+    transaction_type = TransactionType::Dividend.new
+    expect(transaction_type.id).to eq(2)
+    expect(transaction_type.name).to eq('Dividend')
   end
 
-  describe 'relationships' do
-    it 'has many transactions' do
-      transaction_type = FactoryGirl.create(:transaction_type)
-      FactoryGirl.create(:transaction, transaction_type: transaction_type)
-      FactoryGirl.create(:transaction, transaction_type: transaction_type)
+  it 'Unit Price Update' do
+    transaction_type = TransactionType::UnitPriceUpdate.new
+    expect(transaction_type.id).to eq(3)
+    expect(transaction_type.name).to eq('Unit Price Update')
+  end
 
-      expect(transaction_type.transactions.length).to eq(2)
-    end
+  it 'Share Sale' do
+    transaction_type = TransactionType::ShareSale.new
+    expect(transaction_type.id).to eq(4)
+    expect(transaction_type.name).to eq('Sale')
+  end
+
+  it 'Bank Transaction' do
+    transaction_type = TransactionType::BankTransaction.new
+    expect(transaction_type.id).to eq(5)
+    expect(transaction_type.name).to eq('Bank Transaction')
   end
 end

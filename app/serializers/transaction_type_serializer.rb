@@ -1,3 +1,3 @@
 class TransactionTypeSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :code, :name
 end

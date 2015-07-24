@@ -1,10 +1,5 @@
 require 'rails_helper'
-#
-#  CategoryType
-#
-#  id: int, primary key
-#  name: string
-#
+
 RSpec.describe CategoryType, type: :model do
   it 'has a valid factory' do
     ct = FactoryGirl.create(:category_type)

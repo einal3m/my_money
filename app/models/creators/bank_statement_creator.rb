@@ -24,7 +24,8 @@ class BankStatementCreator
 
   def build_transactions
     @transaction_params.map do |transaction_attrs|
-      Transaction.new transaction_attrs.symbolize_keys.assert_valid_keys(CREATE_TRANSACTIONS_VALID_PARAMS)
+      attrs = transaction_attrs.symbolize_keys.assert_valid_keys(CREATE_TRANSACTIONS_VALID_PARAMS)
+      Transaction.new attrs.merge(transaction_type: TransactionType::BankTransaction.new)
     end
   end
 end

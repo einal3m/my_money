@@ -10,21 +10,24 @@
 #  account_id: int, foreign key
 #  category_id: int, foreign key
 #  subcategory_id: int foreign key
-#  transaction_type_id: int foreign key
+#  transaction_type: string
 #
 class Transaction < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+  classy_enum_attr :transaction_type
+
   # model relationships
   belongs_to :account
   belongs_to :category
   belongs_to :subcategory
   belongs_to :reconciliation
-  belongs_to :transaction_type
   belongs_to :bank_statement
 
   # validations
   validates :date, presence: true
   validates :account_id, presence: true
   validates :amount, presence: true, numericality: true
+  validates :transaction_type, presence: true
 
   # common lookups
   scope :unreconciled, ->(account) {

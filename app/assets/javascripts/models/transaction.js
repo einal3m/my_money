@@ -25,6 +25,22 @@ MyMoney.Models.Transaction = MyMoney.Models.BaseModel.extend({
 
   defaults: {
     "amount": 0
+  },
+
+  isBankTransaction: function(){
+    return (this.get('transaction_type') === 'bank_transaction');
+  },
+  isSharePurchase: function(){
+    return (this.get('transaction_type') === 'share_purchase');
+  },
+  isDividend: function(){
+    return (this.get('transaction_type') === 'dividend');
+  },
+  isUnitPriceUpdate: function(){
+    return (this.get('transaction_type') === 'unit_price_update');
+  },
+  isShareSale: function(){
+    return (this.get('transaction_type') === 'share_sale');
   }
 
 });

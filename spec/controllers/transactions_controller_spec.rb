@@ -35,7 +35,7 @@ RSpec.describe TransactionsController, type: :controller do
         a = FactoryGirl.create(:account)
         post :create, { account_id: a.id, transaction: {
           account_id: a.id,
-          transaction_type_id: 2,
+          transaction_type: 'bank_transaction',
           date: '1-Jan-2015',
           notes: 'This is a note',
           memo: 'This is a memo',
@@ -46,7 +46,7 @@ RSpec.describe TransactionsController, type: :controller do
         expect(response.status).to eq(201)
 
         transaction = Transaction.first
-        expect(transaction.transaction_type_id).to eq(2)
+        expect(transaction.transaction_type).to be_a(TransactionType::BankTransaction)
         expect(transaction.unit_price).to eq(50)
         expect(transaction.quantity).to eq(20)
         expect(transaction.amount).to eq(1000)
@@ -58,7 +58,7 @@ RSpec.describe TransactionsController, type: :controller do
         expect(json['transaction']).to eq(serialize_transaction(transaction))
       end
     end
-# 7003 3708 65
+
     context 'with invalid params' do
       it 'does not create a new transaction' do
         a = FactoryGirl.create(:account)

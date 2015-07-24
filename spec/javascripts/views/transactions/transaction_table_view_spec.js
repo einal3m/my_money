@@ -26,7 +26,13 @@ describe("MyMoney.Views.TransactionTableView", function(){
       reconciliation_id: 4
     });
     transactions = new MyMoney.Collections.Transactions([transaction]);
-    transactionTypes = new MyMoney.Collections.TransactionTypes([]);
+    transactionTypes = new MyMoney.Collections.TransactionTypes([
+      {id: 1, code: 'share_purchase', name: 'Purchase'},
+      {id: 2, code: 'dividend', name: 'Dividend'},
+      {id: 3, code: 'unit_price_update', name: 'Unit Price Update'},
+      {id: 4, code: 'share_sale', name: 'Sale'},
+      {id: 5, code: 'bank_transaction', name: 'Bank Transaction'}
+    ]);
 
     view = new MyMoney.Views.TransactionTableView({
       collection: transactions,
@@ -77,9 +83,21 @@ describe("MyMoney.Views.TransactionTableView", function(){
     });
   });
 
-  describe('new model', function(){
+  describe('click on new', function(){
     beforeEach(function(){
       view.render();
+    });
+
+    describe('creates a new transaction model', function(){
+      it('for savings', function(){
+        view.$('#new').click();
+        expect(view.editView.model.isBankTransaction()).toBeTruthy();
+      });
+      it('for shares', function(){
+        view.account.set('account_type', 'share');
+        view.$('#new').click();
+        expect(view.editView.model.get('transaction_type')).toBeUndefined();
+      });
     });
 
     it("displays a new edit view", function(){

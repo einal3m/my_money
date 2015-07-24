@@ -33,25 +33,11 @@ MyMoney.Views.TransactionRowView = MyMoney.Views.BaseTableRowView.extend({
     return _.extend(this.model.toJSON(), {
       category: this.category,
       subcategory: this.subcategory,
-      isPurchase: this.isPurchase(),
-      isSale: this.isSale(),
-      isPriceUpdate: this.isPriceUpdate(),
-      isDividend: this.isDividend()
+      isPurchase: this.model.isSharePurchase(),
+      isSale: this.model.isShareSale(),
+      isPriceUpdate: this.model.isUnitPriceUpdate(),
+      isDividend: this.model.isDividend()
     });
-  },
-
-// TODO: move to model
-  isPurchase: function(){
-    return (this.model.get('transaction_type_id') === 1);
-  },
-  isDividend: function(){
-    return (this.model.get('transaction_type_id') === 2);
-  },
-  isPriceUpdate: function(){
-    return (this.model.get('transaction_type_id') === 3);
-  },
-  isSale: function(){
-    return (this.model.get('transaction_type_id') === 4);
   },
 
   createEditView: function(){

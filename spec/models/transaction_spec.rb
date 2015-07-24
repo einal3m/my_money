@@ -36,14 +36,13 @@ RSpec.describe Transaction, type: :model do
     it 'is invalid when amount is not a number' do
       expect(FactoryGirl.build(:transaction, amount: 'Amount')).not_to be_valid
     end
+
+    it 'is invalid without a transaction type' do
+      expect(FactoryGirl.build(:transaction, transaction_type: nil)).not_to be_valid
+    end
   end
 
   describe 'relationships' do
-    it 'belongs to transaction type' do
-      tt = FactoryGirl.create(:transaction_type)
-      expect(FactoryGirl.create(:transaction, transaction_type: tt).transaction_type).to eq(tt)
-    end
-
     it 'belongs to account' do
       a = FactoryGirl.create(:account)
       expect(FactoryGirl.create(:transaction, account: a).account).to eq(a)

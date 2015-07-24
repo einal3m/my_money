@@ -30,10 +30,11 @@ describe("MyMoney.Views.TransactionEditView", function(){
     });
     transactions = new MyMoney.Collections.Transactions([transaction]);
     transactionTypes = new MyMoney.Collections.TransactionTypes([
-      {id: 1, account_type: 'share', name: 'Purchase'},
-      {id: 2, account_type: 'share', name: 'Dividend'},
-      {id: 3, account_type: 'share', name: 'Unit Price Update'},
-      {id: 4, account_type: 'share', name: 'Sale'},
+      {id: 1, code: 'share_purchase', name: 'Purchase'},
+      {id: 2, code: 'dividend', name: 'Dividend'},
+      {id: 3, code: 'unit_price_update', name: 'Unit Price Update'},
+      {id: 4, code: 'share_sale', name: 'Sale'},
+      {id: 5, code: 'bank_transaction', name: 'Bank Transaction'}
     ]);
 
     view = new MyMoney.Views.TransactionEditView({
@@ -105,10 +106,11 @@ describe("MyMoney.Views.TransactionEditView", function(){
         view.render();
       });
       it('re-renders when transaction type changed', function(){
-        spyOn(view, 'render');
+        spyOn(view, 'render').and.callThrough();
         view.$('#transaction_type_id').val('4').change();
         expect(view.render).toHaveBeenCalled();
-        expect(view.model.get('transaction_type_id')).toEqual(4);
+        expect(view.model.get('transaction_type')).toEqual('share_sale');
+        expect(view.$('#transaction_type_id').val()).toEqual('4');
       });
 
       it('displays a table row with share form', function(){
@@ -139,6 +141,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
+          expect(view.model.get('transaction_type')).toEqual('share_purchase');
           expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('unit_price')).toEqual(120);
@@ -164,6 +167,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
+          expect(view.model.get('transaction_type')).toEqual('dividend');
           expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('amount')).toEqual(5000);
@@ -187,6 +191,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
+          expect(view.model.get('transaction_type')).toEqual('unit_price_update');
           expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('unit_price')).toEqual(120);
@@ -213,6 +218,7 @@ describe("MyMoney.Views.TransactionEditView", function(){
 
           view.setModelAttributes();
 
+          expect(view.model.get('transaction_type')).toEqual('share_sale');
           expect(view.model.get('date')).toEqual('2014-01-01');
           expect(view.model.get('notes')).toEqual('New Note');
           expect(view.model.get('unit_price')).toEqual(120);

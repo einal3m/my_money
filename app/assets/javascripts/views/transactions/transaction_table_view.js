@@ -38,6 +38,9 @@ MyMoney.Views.TransactionTableView = MyMoney.Views.BaseTableView.extend({
 
   createNewView: function(){
     var newModel = new MyMoney.Models.Transaction({account_id: this.account.id});
+    if (this.account.isSavings()) {
+      newModel.set('transaction_type', 'bank_transaction');
+    }
     this.editView = new MyMoney.Views.TransactionEditView({
       model: newModel,
       collection: this.collection,

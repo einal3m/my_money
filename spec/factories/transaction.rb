@@ -6,6 +6,7 @@ FactoryGirl.define do
     f.notes "This is a Note"
     f.amount 555
     f.fitid "This is a fitid"
+    f.transaction_type 'bank_transaction'
     account
     category
     subcategory
