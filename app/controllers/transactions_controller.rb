@@ -1,8 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:edit, :update, :destroy]
 
-  # GET /transactions
-  # GET /transactions.json
   def index
     from_date = params[:from_date]
     to_date = params[:to_date]
@@ -11,8 +9,6 @@ class TransactionsController < ApplicationController
     render json: transactions
   end
 
-  # POST /transactions
-  # POST /transactions.json
   def create
     if params.key?(:_json)
       create_many
@@ -43,8 +39,6 @@ class TransactionsController < ApplicationController
     render json: transactions
   end
 
-  # PATCH/PUT /transactions/1
-  # PATCH/PUT /transactions/1.json
   def update
     if @transaction.update(transaction_params)
       render json: @transaction, status: :ok
@@ -53,14 +47,15 @@ class TransactionsController < ApplicationController
     end
   end
 
-  # DELETE /transactions/1
-  # DELETE /transactions/1.json
   def destroy
-    @transaction.destroy
-    head :no_content
+    if @transaction.reconciliation
+      render json: { message: 'Cannot delete a transaction which has been reconciled' }, status: :unprocessable_entity
+    else
+      @transaction.destroy
+      head :no_content
+    end
   end
 
-  # GET transactions/unreconciled?account_id=?
   def unreconciled
     render json: Transaction.unreconciled(account).reverse_date_order
   end
@@ -98,12 +93,10 @@ class TransactionsController < ApplicationController
     transaction.notes = pattern.notes
   end
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_transaction
     @transaction = Transaction.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def transaction_params
     params.require(:transaction).permit(
       :transaction_type, :date, :amount, :fitid, :memo,

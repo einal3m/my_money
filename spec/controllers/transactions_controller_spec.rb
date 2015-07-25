@@ -122,6 +122,18 @@ RSpec.describe TransactionsController, type: :controller do
       expect(response).to be_success
       expect(response.body).to eq('')
     end
+    it 'doesnt destroy the transaction if it has been reconciled' do
+      a = FactoryGirl.create(:account)
+      r = FactoryGirl.create(:reconciliation, account: a)
+      t = FactoryGirl.create(:transaction, reconciliation: r)
+      expect {
+        delete :destroy, { id: t.id, account_id: t.account_id }, valid_session
+      }.not_to change(Transaction, :count)
+
+      expect(response.status).to eq(422)
+      json = JSON.parse(response.body)
+      expect(json['message']).to eq('Cannot delete a transaction which has been reconciled')
+    end
   end
 
   describe 'unreconciled' do
