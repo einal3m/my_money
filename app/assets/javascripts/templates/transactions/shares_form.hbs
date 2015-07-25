@@ -100,14 +100,12 @@
     </div>
 {{/isDividend}}
   </div>
+  {{> error_alert }}
   <div class='form-footer'>
     {{saveButton}}
     {{cancelButton}}
     <div class='pull-right'>
       {{#allowDelete}}{{deleteButton}}{{/allowDelete}}
-    </div>
-    <div class='pull-right'>
-      <span class="help-block hidden"></span>
     </div>
   </div>
 </td>

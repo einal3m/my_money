@@ -5,6 +5,7 @@ MyMoney.Views.BaseEditView = MyMoney.Views.BaseView.extend({
   render: function () {
     this.$el.html(HandlebarsTemplates[this.template](this.templateData()));
     Backbone.Validation.bind(this);
+    _.bindAll(this, 'saveError', 'deleteError');
     return this;
   },
 
@@ -28,9 +29,9 @@ MyMoney.Views.BaseEditView = MyMoney.Views.BaseView.extend({
     
     if(this.model.isValid(true)){
       if (this.model.isNew()){
-        this.collection.create(this.model, { wait: true });
+        this.collection.create(this.model, { wait: true, error: this.saveError });
       } else {
-        this.model.save({ }, { wait: true });
+        this.model.save({ }, { wait: true, error: this.saveError });
       }
     }
   },
@@ -44,10 +45,12 @@ MyMoney.Views.BaseEditView = MyMoney.Views.BaseView.extend({
     }
   },
 
+  saveError: function(model, response, options) {
+    this.showError(response);
+  },
+
   deleteError: function(model, response){
-    this.$('.form-footer').addClass('has-error');
-    this.$('.form-footer .help-block').text('Delete Error: ' + response.responseText);
-    this.$('.form-footer .help-block').removeClass('hidden');
+    this.showError(response);
   },
 
   confirmDelete: function(){
@@ -60,6 +63,20 @@ MyMoney.Views.BaseEditView = MyMoney.Views.BaseView.extend({
     this.model.restoreSavedState();
     this.remove();
     this.trigger('cancel');
+  },
+
+  showError: function(response){
+    this.errorEl().removeClass('hidden');
+    var json = JSON.parse(response.responseText);
+    this.errorMessageEl().html(json.message);
+  },
+
+  errorEl: function(){
+    return this.$('.errors');
+  },
+
+  errorMessageEl: function(){
+    return this.$('.errors .alert-message');
   }
 
 });
