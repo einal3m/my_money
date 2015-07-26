@@ -93,7 +93,7 @@ RSpec.describe CategoriesController, type: :controller do
       }.not_to change(Category, :count)
       expect(response.status).to eq(422)
       json = JSON.parse(response.body)
-      expect(json['subcategories'][0]).to eq('Category has subcategories')
+      expect(json['message']).to eq('Cannot delete a category that has subcategories')
     end
   end
 end

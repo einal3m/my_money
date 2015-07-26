@@ -50,67 +50,14 @@ describe("CategoryEditView", function(){
       expect(view.el).not.toContainElement('button#delete');
     });
 
-    describe("events", function(){
-      it("save with valid attributes", function(){
-        spyOn(view.model, 'isValid').and.returnValue(true);
-        spyOn(view.model, "save");
+    describe('setModelAttributes', function(){
+      it('updates model with view values', function(){
         view.$('#category_type_id').val('2');
         view.$('#name').val('New Name');
-        view.$('#save').click();
-        expect(view.model.isValid).toHaveBeenCalled();
-        expect(view.model.save).toHaveBeenCalled();
+        view.setModelAttributes();
         expect(view.model.get('category_type_id')).toEqual(2);
         expect(view.model.get('name')).toEqual('New Name');
-      });
-
-      it("save with invalid attributes", function(){
-        spyOn(view.model, 'isValid').and.returnValue(false);
-        spyOn(view.model, 'save');
-        view.$('#save').click();
-        expect(view.model.isValid).toHaveBeenCalled();
-        expect(view.model.save).not.toHaveBeenCalled();
-      });
-
-      it('save with new model', function(){
-        view.model = new MyMoney.Models.Category({
-          category_type_id: 1,
-          name: 'Bob'
-        });
-        view.collection = categories;
-
-        spyOn(view.model, 'isValid').and.returnValue(true);
-        spyOn(view.collection, 'create');
-        view.$('#save').click();
-        expect(view.model.isValid).toHaveBeenCalled();
-        expect(view.collection.create).toHaveBeenCalled();
-      });
-
-      it("delete confirmed", function(){
-        spyOn(view.model, "destroy");
-        spyOn(view, 'confirmDelete').and.returnValue(true);
-        view.$('#delete').click();
-        expect(view.model.destroy).toHaveBeenCalled();
-        expect(view.confirmDelete).toHaveBeenCalled();
-      });
-
-      it("delete not confirmed", function(){
-        spyOn(view.model, 'destroy');
-        spyOn(view, 'confirmDelete').and.returnValue(false);
-        view.$('#delete').click();
-        expect(view.model.destroy).not.toHaveBeenCalled();
-        expect(view.confirmDelete).toHaveBeenCalled();
-      });
-
-      it("cancel", function(){
-        spyOn(view, 'remove');
-        spyOn(view.model, 'restoreSavedState');
-        spyOn(view, 'trigger');
-        view.$('#cancel').click();
-        expect(view.remove).toHaveBeenCalled();
-        expect(view.model.restoreSavedState).toHaveBeenCalled();
-        expect(view.trigger).toHaveBeenCalledWith('cancel');
       });
     });
   });
 });
-

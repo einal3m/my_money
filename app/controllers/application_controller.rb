@@ -1,8 +1,7 @@
 require 'lib/date_range'
+require 'exceptions/my_money_error'
 
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   def account
@@ -10,6 +9,10 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
+    render json: { message: exception.message }, status: :unprocessable_entity
+  end
+
+  rescue_from MyMoneyError do |exception|
     render json: { message: exception.message }, status: :unprocessable_entity
   end
 end
