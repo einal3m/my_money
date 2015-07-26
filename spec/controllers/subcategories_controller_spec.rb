@@ -97,7 +97,7 @@ RSpec.describe SubcategoriesController, type: :controller do
       }.not_to change(Subcategory, :count)
       expect(response.status).to eq(422)
       json = JSON.parse(response.body)
-      expect(json['transactions'][0]).to eq('Subcategory has transactions')
+      expect(json['message']).to eq('Cannot delete a subcategory that has been allocated to transactions')
     end
   end
 end

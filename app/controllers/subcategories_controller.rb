@@ -1,3 +1,5 @@
+require 'destroyers/subcategory_destroyer'
+
 class SubcategoriesController < ApplicationController
   def index
     render json: Subcategory.all
@@ -23,11 +25,9 @@ class SubcategoriesController < ApplicationController
   end
 
   def destroy
-    if subcategory.destroy
-      head :no_content
-    else
-      render json: subcategory.errors, status: :unprocessable_entity
-    end
+    destroyer = SubcategoryDestroyer.new subcategory
+    destroyer.execute
+    head :no_content
   end
 
   private

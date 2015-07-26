@@ -1,3 +1,5 @@
+require 'exceptions/my_money_error'
+
 class CategoryDestroyer
   def initialize(category)
     @category = category
