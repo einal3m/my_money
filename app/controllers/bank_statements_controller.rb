@@ -2,6 +2,7 @@ require 'creators/bank_statement_creator'
 
 class BankStatementsController < ApplicationController
   def index
+    render json: account.bank_statements
   end
 
   def destroy

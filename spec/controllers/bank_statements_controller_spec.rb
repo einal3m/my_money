@@ -2,10 +2,18 @@ require 'rails_helper'
 
 RSpec.describe BankStatementsController, type: :controller do
 
-  xdescribe "GET #index" do
+  describe "GET #index" do
     it "returns http success" do
-      get :index
+      bank_statement = FactoryGirl.create(:bank_statement)
+      get :index, { account_id: bank_statement.account_id }
       expect(response).to have_http_status(:success)
+      json = JSON.parse(response.body)
+      expect(json['bank_statements'].length).to eq(1)
+      expect(json['bank_statements'][0]['id']).to eq(bank_statement.id)
+      expect(json['bank_statements'][0]['account_id']).to eq(bank_statement.account.id)
+      expect(Date.parse(json['bank_statements'][0]['date'])).to eq(bank_statement.date)
+      expect(json['bank_statements'][0]['file_name']).to eq(bank_statement.file_name)
+      expect(json['bank_statements'][0]['transaction_count']).to eq(bank_statement.transaction_count)
     end
   end
 
