@@ -17,10 +17,30 @@ RSpec.describe BankStatementsController, type: :controller do
     end
   end
 
-  xdescribe "GET #destroy" do
-    it "returns http success" do
-      get :destroy
+  describe "GET #destroy" do
+    it "successfully deletes bank statement and its transactions" do
+      bank_statement = FactoryGirl.create(:bank_statement)
+      transaction = FactoryGirl.create(:transaction, bank_statement: bank_statement)
+
+      get :destroy, { account_id: bank_statement.account_id, id: bank_statement.id }
+      
       expect(response).to have_http_status(:success)
+      expect(BankStatement.exists?(bank_statement.id)).to be_falsy
+      expect(Transaction.exists?(transaction.id)).to be_falsy
+    end
+
+    it 'returns error when bank statement contains reconciled transactions' do
+      bank_statement = FactoryGirl.create(:bank_statement)
+      reconciliation = FactoryGirl.create(:reconciliation, account: bank_statement.account)
+      transaction = FactoryGirl.create(:transaction, bank_statement: bank_statement, reconciliation: reconciliation)
+      expect(bank_statement.transactions).not_to receive(:destroy)
+      expect(bank_statement).not_to receive(:destroy)
+
+      get :destroy, { account_id: bank_statement.account_id, id: bank_statement.id }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = JSON.parse(response.body)
+      expect(json['message']).to eq('Cannot delete a bank statement with reconciled transactions')
     end
   end
 
