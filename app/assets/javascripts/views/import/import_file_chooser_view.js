@@ -1,4 +1,4 @@
-MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
+MyMoney.Views.ImportFileChooserView = MyMoney.Views.BaseView.extend({
 
   template: 'import/import_file_chooser',
 
@@ -11,11 +11,17 @@ MyMoney.Views.ImportFileChooserView = Backbone.View.extend({
 
   initialize: function(options){
     this.account = this.options.account;
+    this.bankStatements = this.options.bankStatements;
     _.bindAll(this); 
   },
 
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]({account: this.account.toJSON()}));
+    this.addSubView('import-history', new MyMoney.Views.BankStatementsTableView({
+      account: this.account,
+      collection: this.bankStatements
+    }));
+    this.renderSubViews();
     return this;
   },
 

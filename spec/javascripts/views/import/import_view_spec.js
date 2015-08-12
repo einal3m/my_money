@@ -32,6 +32,7 @@ describe("MyMoney.Views.ImportView", function(){
 
   describe("render", function(){
     beforeEach(function(){
+      view.bankStatements = new MyMoney.Collections.BankStatements([], {account_id: account.id});
       view.render();
     });
 
@@ -44,6 +45,7 @@ describe("MyMoney.Views.ImportView", function(){
       expect(view.subViews['import']).toEqual(jasmine.any(MyMoney.Views.ImportFileChooserView));      
       expect(view.subViews['import'].collection).toEqual(view.collection);
       expect(view.subViews['import'].model).toEqual(view.model);
+      expect(view.subViews['import'].bankStatements).toEqual(view.bankStatements);
     });
 
     it('renders the step 2 sub view when collection loaded', function(){
@@ -52,6 +54,13 @@ describe("MyMoney.Views.ImportView", function(){
       expect(view.subViews['import']).toEqual(jasmine.any(MyMoney.Views.ImportTransactionSelectView));      
       expect(view.subViews['import'].collection).toEqual(view.collection);
       expect(view.subViews['import'].model).toEqual(view.model);
+    });
+
+    it('reloads the page if bankStatement has been deleted', function(){
+      router = jasmine.createSpyObj('router', ['navigate']);
+      window.router = router;
+      view.bankStatements.trigger('remove');
+      expect(window.router.navigate).toHaveBeenCalledWith('accounts/22/transactions', {trigger: true});
     });
   });
 });

@@ -14,13 +14,20 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
     this.listenTo(this.collection, 'reset', this.transactionsLoaded);
   },
 
+  fetchData: function(){
+    this.bankStatements = new MyMoney.Collections.BankStatements([], {account_id: this.account.id});
+    return this.bankStatements.fetch();
+  },
+
   render: function(){
     this.$el.html(HandlebarsTemplates[this.template]());
     this.addSubView('import', new MyMoney.Views.ImportFileChooserView({
       account: this.account,
       model: this.model,
-      collection: this.collection
+      collection: this.collection,
+      bankStatements: this.bankStatements
     }));
+    this.listenTo(this.bankStatements, 'remove', this.reloadPage);
     this.renderSubViews();
     return this;
   },
@@ -35,5 +42,9 @@ MyMoney.Views.ImportView = MyMoney.Views.BaseView.extend({
       categoryTypes: this.categoryTypes
     }));
     this.renderSubViews();
+  },
+
+  reloadPage: function(){
+    window.router.navigate('accounts/' + this.account.id + '/transactions', {trigger: true});
   }
 });

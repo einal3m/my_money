@@ -1,13 +1,15 @@
 describe("MyMoney.Views.ImportFileChooserView", function(){
-  var view, account, bankStatement, transactions;
+  var view, account, bankStatement, bankStatements, transactions;
   beforeEach(function(){
     account = new MyMoney.Models.Account({id: 15, name: 'My Account'});
     bankStatement = new MyMoney.Models.BankStatement({account_id: account.id});
+    bankStatements = new MyMoney.Collections.BankStatements([], {account_id: account.id});
     transactions = new MyMoney.Collections.Transactions([], {account_id: account.id});
 
     view = new MyMoney.Views.ImportFileChooserView({
       account: account,
       model: bankStatement,
+      bankStatements: bankStatements,
       collection: transactions
     });
   });
@@ -20,6 +22,7 @@ describe("MyMoney.Views.ImportFileChooserView", function(){
     expect(view.account).toEqual(account);
     expect(view.model).toEqual(bankStatement);
     expect(view.collection).toEqual(transactions);
+    expect(view.bankStatements).toEqual(bankStatements);
   });
 
   describe("render", function(){
@@ -29,6 +32,10 @@ describe("MyMoney.Views.ImportFileChooserView", function(){
 
     it("displays step 1 of the import view", function(){
       expect(view.el).toContainText('Step 1 of 2');
+    });
+
+    it('displays a list of bank statements', function(){
+      expect(view.el).toContainText('import history');
     });
 
     it("displays the account name", function(){
