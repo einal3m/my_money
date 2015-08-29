@@ -3,7 +3,7 @@ require 'destroyers/bank_statement_destroyer'
 
 class BankStatementsController < ApplicationController
   def index
-    render json: account.bank_statements
+    render json: account.bank_statements.order(id: :desc)
   end
 
   def destroy
