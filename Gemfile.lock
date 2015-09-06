@@ -74,6 +74,7 @@ GEM
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     ffi (1.9.8)
+    ffi (1.9.8-x64-mingw32)
     ffi (1.9.8-x86-mingw32)
     font-awesome-rails (4.0.3.2)
       railties (>= 3.2, < 5.0)
@@ -109,6 +110,8 @@ GEM
     minitest (5.7.0)
     multi_json (1.11.0)
     nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
+    nokogiri (1.6.6.2-x64-mingw32)
       mini_portile (~> 0.6.0)
     nokogiri (1.6.6.2-x86-mingw32)
       mini_portile (~> 0.6.0)
@@ -200,6 +203,7 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.10)
+    sqlite3 (1.3.10-x64-mingw32)
     sqlite3 (1.3.10-x86-mingw32)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
@@ -214,7 +218,7 @@ GEM
       coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    tzinfo-data (1.2015.1)
+    tzinfo-data (1.2015.6)
       tzinfo (>= 1.0.0)
     uglifier (2.7.0)
       execjs (>= 0.3.0)
@@ -226,6 +230,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
   x86-mingw32
 
 DEPENDENCIES
@@ -261,3 +266,6 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   webrick (= 1.3.1)
+
+BUNDLED WITH
+   1.10.6
