@@ -11,13 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720114502) do
-
-  create_table "account_types", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 20150907104007) do
 
   create_table "accounts", force: true do |t|
     t.string   "name"
@@ -31,16 +25,6 @@ ActiveRecord::Schema.define(version: 20150720114502) do
     t.string   "account_type"
   end
 
-  create_table "allocations", force: true do |t|
-    t.integer  "transaction_id"
-    t.integer  "category_id"
-    t.integer  "subcategory_id"
-    t.string   "note"
-    t.integer  "amount"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "bank_statements", force: true do |t|
     t.integer  "account_id"
     t.date     "date"
@@ -48,7 +32,6 @@ ActiveRecord::Schema.define(version: 20150720114502) do
     t.string   "file_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "bank_statement_id"
   end
 
   create_table "categories", force: true do |t|
@@ -60,27 +43,6 @@ ActiveRecord::Schema.define(version: 20150720114502) do
 
   create_table "category_types", force: true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "data_files", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "date_range_options", force: true do |t|
-    t.string   "description"
-    t.string   "klass"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "order"
-    t.boolean  "default"
-  end
-
-  create_table "date_ranges", force: true do |t|
-    t.string   "description"
-    t.string   "klass"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -106,13 +68,6 @@ ActiveRecord::Schema.define(version: 20150720114502) do
     t.decimal  "last_reconciled_balance"
   end
 
-  create_table "searches", force: true do |t|
-    t.string   "description"
-    t.string   "klass"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "subcategories", force: true do |t|
     t.string   "name"
     t.integer  "category_id"
@@ -120,28 +75,20 @@ ActiveRecord::Schema.define(version: 20150720114502) do
     t.datetime "updated_at"
   end
 
-  create_table "transaction_types", force: true do |t|
-    t.integer  "account_type_id"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "transactions", force: true do |t|
     t.string   "transaction_type"
     t.date     "date"
+    t.integer  "amount"
     t.string   "fitid"
     t.string   "memo"
     t.integer  "account_id"
+    t.integer  "category_id"
+    t.integer  "subcategory_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "notes"
     t.integer  "reconciliation_id"
     t.integer  "balance"
-    t.integer  "amount"
-    t.integer  "category_id"
-    t.integer  "subcategory_id"
-    t.integer  "transaction_type_id"
     t.integer  "unit_price"
     t.integer  "quantity"
     t.integer  "bank_statement_id"
