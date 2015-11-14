@@ -20,3 +20,7 @@
 
 # Ignore code coverage fils
 coverage
+
+# Ignore npm modules
+web/node_modules
+web/public/bundle.js

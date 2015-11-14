@@ -1,0 +1,32 @@
+{
+  "name": "my_money_frontend",
+  "version": "1.0.0",
+  "description": "my_money front end",
+  "main": "webpack.config.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/melm73/my_money.git"
+  },
+  "author": "Melanie Matthews",
+  "dependencies": {
+    "babel": "^6.1.18",
+    "react": "^0.14.2",
+    "react-bootstrap": "^0.27.3",
+    "react-router-bootstrap": "^0.19.3"
+  },
+  "devDependencies": {
+    "babel-core": "^5.6.4",
+    "babel-loader": "^5.1.4",
+    "history": "^1.13.0",
+    "node-sass": "^3.4.2",
+    "react-dom": "^0.14.2",
+    "react-router": "^1.0.0",
+    "sass-loader": "^3.1.1",
+    "webpack": "^1.12.4",
+    "webpack-dev-server": "^1.12.1"
+  }
+}
