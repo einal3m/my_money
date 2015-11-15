@@ -1,3 +1,5 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
   entry: "./src/js/my-money.js",
   output: {
@@ -5,7 +7,8 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel"}
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel"},
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader") }
     ]
   },
   devServer: {
@@ -13,4 +16,10 @@ module.exports = {
     port: 8090,
     hot: true
   },
-};
+  plugins: [
+    new ExtractTextPlugin("public/bundle.css")
+  ],
+  resolve: {
+    modulesDirectories: ['./node_modules']
+  }
+}

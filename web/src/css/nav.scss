@@ -1,33 +1,40 @@
+$main-color: #4E9258;
+$menu-color: #777;
 
-.header {
-	ul.nav li.dropdown:hover ul.dropdown-menu{ display: block; }
-	
-	.navbar {
-		border-top: solid 12px $main-color;
-		border-bottom: solid 3px $main-color;
-		background-color: white;
-		font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-		padding-bottom: 15px;
+.navbar {
+	border-top: solid 12px $main-color;
+	border-bottom: solid 3px $main-color;
+	background-color: white;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+	padding-bottom: 5px;
 
-	 	.navbar-brand {
-			font-size:32px;
-
-			strong {
-				color: $main-color;
-			}
-		}
-
-		.nav li {
-			font-size: 16px;
-			padding-top: 2px;
+	.navbar-brand {
+		font-size:32px;
+		strong {
+		color: $main-color;
 		}
 	}
+
+	li {
+		font-size: 16px;
+		padding-top: 3px;
+	}
+
+	.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus {
+		color: $menu-color;
+	}
+
+	&.navbar-default .navbar-nav.navbar-right li a{
+		background-color: white;
+	}
 }
+
 
 .footer {
 	background-color: #f1f1f1;
 	padding: 20px 20px 50px 50px;
-
-	.strong { color: #8dbf41 }
-
+	
+	a {
+		color: $main-color;
+	}
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Header from './header';
+import Header from './layout/header';
+import Footer from './layout/footer';
 import AccountList from './account-list';
 import CategoryList from './category-list';
 import { Router, Route, Link, IndexRoute } from 'react-router';
@@ -11,14 +12,12 @@ const App = React.createClass({
       <div>
         <Header />
         {this.props.children}
-        
+        <Footer />
       </div>
     )
   }
 });
 
-// Finally, we render a <Router> with some <Route>s.
-// It does all the fancy routing stuff for us.
 render((
   <Router>
     <Route path="/" component={App}>
