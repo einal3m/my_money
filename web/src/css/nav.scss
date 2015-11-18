@@ -1,5 +1,4 @@
-$main-color: #4E9258;
-$menu-color: #777;
+@import 'colours';
 
 .navbar {
 	border-top: solid 12px $main-color;
@@ -31,7 +30,7 @@ $menu-color: #777;
 
 
 .footer {
-	background-color: #f1f1f1;
+	background-color: $grey-background-color;
 	padding: 20px 20px 50px 50px;
 	
 	a {

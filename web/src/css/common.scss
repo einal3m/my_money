@@ -1,0 +1,51 @@
+@import 'colours';
+
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.button-group {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  /*padding-right: 0px;*/
+}
+
+.page-title {
+  /*color: white;*/
+  background-color: $grey-background-color;
+  min-height: 75px;
+  vertical-align: middle;
+}
+
+h3 {
+  color: $main-color;
+}
+
+.currency {
+  text-align: right;
+}
+
+ul.slats {
+  padding-left: 0px;
+  li.slat-item {
+    list-style-type: none;
+    min-height: 60px;
+
+    .slat-icon {
+      line-height: 60px;
+      vertical-align: middle;
+      text-align: right;
+    }
+
+    .slat-detail {
+      padding-bottom: 10px;
+      border-bottom: 1px solid silver;
+    }
+
+    padding-bottom: 10px;
+  }
+}
