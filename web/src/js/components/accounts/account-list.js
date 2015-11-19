@@ -1,17 +1,30 @@
 'use strict';
+
+import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
+import AccountStore from '../../stores/account-store';
+import accountActions from '../../actions/account-actions';
 import PageHeader from '../common/page-header';
 import AccountSlat from './account-slat';
 import { Button } from 'react-bootstrap';
 require("../../../css/common.scss");
 
-export default class AccountList extends React.Component {
+export class AccountList extends React.Component {
+
+  static getStores(props) {
+    return [AccountStore]
+  }
+
+  static getPropsFromStores(props) {
+    return AccountStore.getState()
+  }
+
+  static componentDidConnect(props) {
+    accountActions.fetchAccounts();
+  }
+
   renderAccounts() {
-    let accounts = [
-      {id: 1, name: 'Savings Maximizer', bank: 'ING', current_balance: '50.44'},
-      {id: 2, name: 'Everyday Savings', bank: 'CBA', current_balance: '2,456.09'}
-    ]
-    return accounts.map((account) => {
+    return this.props.accounts.map((account) => {
       return <AccountSlat key={account.id} account={account} />;
     });
   }
@@ -35,3 +48,5 @@ export default class AccountList extends React.Component {
     );
   }
 }
+
+export default connectToStores(AccountList);

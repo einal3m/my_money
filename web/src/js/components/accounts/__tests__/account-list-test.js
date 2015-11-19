@@ -1,6 +1,6 @@
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
-import AccountList from '../account-list';
+import { AccountList } from '../account-list';
 import AccountSlat from '../account-slat';
 import PageHeader from '../../common/page-header';
 import { Button } from 'react-bootstrap';
@@ -13,7 +13,7 @@ describe('AccountList', () => {
       {id: 2, name: 'Everyday Savings', bank: 'CBA', current_balance: '2,456.09'}
     ]
 
-    accountList = shallowRenderer(<AccountList />);
+    accountList = shallowRenderer(<AccountList loading={false} accounts={accounts}/>);
   });
 
   it('has a header and a table of accounts', () => {

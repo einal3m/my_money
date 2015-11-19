@@ -9,7 +9,7 @@ module.exports = function(config) {
       'src/test-index.js'
     ],
 
-    frameworks: ['jasmine', 'phantomjs-shim'],
+    frameworks: ['jasmine-ajax', 'jasmine', 'phantomjs-shim'],
 
     preprocessors: {
         'src/test-index.js': ['webpack', 'sourcemap']
@@ -42,6 +42,7 @@ module.exports = function(config) {
       'karma-phantomjs-launcher',
       'karma-webpack',
       'karma-sourcemap-loader',
+      'karma-jasmine-ajax'
     ]
   })
 }
