@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-require("../../css/common.scss");
+require("../../../css/common.scss");
 
 export default class AccountSlat extends React.Component {
   render() {

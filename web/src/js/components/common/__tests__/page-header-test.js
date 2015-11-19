@@ -1,4 +1,4 @@
-import shallowRenderer from '../../util/__tests__/shallow-renderer';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
 import PageHeader from '../page-header';
 

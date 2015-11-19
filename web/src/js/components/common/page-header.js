@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-require("../../css/common.scss");
+require("../../../css/common.scss");
 
 export default class PageTitle extends React.Component {
   render() {

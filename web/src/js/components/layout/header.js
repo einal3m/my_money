@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, NavBrand, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
-require("../../css/nav.scss");
+require("../../../css/nav.scss");
 
 export default class Header extends React.Component {
   render() {

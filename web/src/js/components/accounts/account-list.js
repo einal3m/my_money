@@ -3,7 +3,7 @@ import React from 'react';
 import PageHeader from '../common/page-header';
 import AccountSlat from './account-slat';
 import { Button } from 'react-bootstrap';
-require("../../css/common.scss");
+require("../../../css/common.scss");
 
 export default class AccountList extends React.Component {
   renderAccounts() {

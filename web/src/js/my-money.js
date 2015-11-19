@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Header from './layout/header';
-import Footer from './layout/footer';
-import AccountList from './accounts/account-list';
+import Header from './components/layout/header';
+import Footer from './components/layout/footer';
+import AccountList from './components/accounts/account-list';
 import CategoryList from './category-list';
 import { Router, Route, Link, IndexRoute } from 'react-router';
 
