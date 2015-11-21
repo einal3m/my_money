@@ -5,7 +5,7 @@ import React from 'react';
 import AccountStore from '../../stores/account-store';
 import accountActions from '../../actions/account-actions';
 import PageHeader from '../common/page-header';
-import AccountSlat from './account-slat';
+import AccountGroup from './account-group';
 import { Button } from 'react-bootstrap';
 require("../../../css/common.scss");
 
@@ -23,9 +23,11 @@ export class AccountList extends React.Component {
     accountActions.fetchAccounts();
   }
 
-  renderAccounts() {
-    return this.props.accounts.map((account) => {
-      return <AccountSlat key={account.id} account={account} />;
+  renderAccountGroups() {
+    return this.props.accountGroups.filter((accountGroup) => {
+      return accountGroup.accounts.length > 0;
+    }).map((accountGroup) => {
+      return <AccountGroup key={accountGroup.code} accountGroup={accountGroup} accounts={accountGroup.accounts} />;
     });
   }
 
@@ -39,10 +41,7 @@ export class AccountList extends React.Component {
         </PageHeader>
 
         <div className="container">
-          <h3>Savings Accounts</h3>
-          <ul className='slats'>
-            {this.renderAccounts()}
-          </ul>
+          {this.renderAccountGroups()}
         </div>
       </div>
     );

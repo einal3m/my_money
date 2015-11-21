@@ -1,35 +1,35 @@
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
 import { AccountList } from '../account-list';
-import AccountSlat from '../account-slat';
+import AccountGroup from '../account-group';
 import PageHeader from '../../common/page-header';
 import { Button } from 'react-bootstrap';
 
 describe('AccountList', () => {
-  let accounts, accountList;
+  let accountGroups, accountList;
   beforeEach(() => {
-    accounts = [
-      {id: 1, name: 'Savings Maximizer', bank: 'ING', current_balance: '50.44'},
-      {id: 2, name: 'Everyday Savings', bank: 'CBA', current_balance: '2,456.09'}
-    ]
+    accountGroups = [
+      {code: 'savings', accounts: ['savings accounts']},
+      {code: 'other', accounts: []},
+      {code: 'shares', accounts: ['share accounts']},
+    ];
 
-    accountList = shallowRenderer(<AccountList loading={false} accounts={accounts}/>);
+    accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups}/>);
   });
 
   it('has a header and a table of accounts', () => {
-    let [header, table] = accountList.props.children;
+    let [header, listGroup] = accountList.props.children;
 
     expect(header.type).toEqual(PageHeader);
     expect(header.props.children.type).toEqual(Button);
   });
 
-  it('has a list of accounts', () => {
-    let [header, listGroup] = accountList.props.children;
-    let [title, list] = listGroup.props.children;
+  it('has a list of accountGroups', () => {
+    let [header, list] = accountList.props.children;
 
-    expect(title.props.children).toEqual('Savings Accounts');
     expect(list.props.children.length).toEqual(2);
-    expect(list.props.children[0].type).toEqual(AccountSlat);
-    expect(list.props.children[0].props.account).toEqual(accounts[0]);
+    expect(list.props.children[0].type).toEqual(AccountGroup);
+    expect(list.props.children[0].props.accountGroup).toEqual(accountGroups[0]);
+    expect(list.props.children[1].props.accountGroup).toEqual(accountGroups[2]);
   });
 });

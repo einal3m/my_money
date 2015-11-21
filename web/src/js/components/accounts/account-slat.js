@@ -29,3 +29,11 @@ export default class AccountSlat extends React.Component {
     );
   }
 }
+
+AccountSlat.propTypes = {
+  account: React.PropTypes.shape({
+    name: React.PropTypes.string.isRequired,
+    bank: React.PropTypes.string,
+    current_balance: React.PropTypes.number.isRequired
+  })
+};

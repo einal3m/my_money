@@ -5,7 +5,7 @@ import AccountSlat from '../account-slat';
 describe('AccountSlat', () => {
   let account, accountSlat;
   beforeEach(() => {
-    account = { name: 'myAccount', bank: 'myBank', current_balance: '60.78' };
+    account = { name: 'myAccount', bank: 'myBank', current_balance: 60.78 };
     accountSlat = shallowRenderer(<AccountSlat account={account} />);
   });
 
