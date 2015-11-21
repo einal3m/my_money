@@ -7,6 +7,7 @@ import accountActions from '../../actions/account-actions';
 import PageHeader from '../common/page-header';
 import AccountGroup from './account-group';
 import { Button } from 'react-bootstrap';
+import NewAccountModal from './new-account-modal';
 require("../../../css/common.scss");
 
 export class AccountList extends React.Component {
@@ -23,6 +24,21 @@ export class AccountList extends React.Component {
     accountActions.fetchAccounts();
   }
 
+  constructor() {
+    super();
+    this.state = {
+      showNewAccountModal: false
+    }
+  }
+
+  showNewAccountModal() {
+    this.setState({showNewAccountModal: true});
+  }
+
+  closeNewAccountModal() {
+    this.setState({showNewAccountModal: false});
+  }
+
   renderAccountGroups() {
     return this.props.accountGroups.filter((accountGroup) => {
       return accountGroup.accounts.length > 0;
@@ -31,11 +47,21 @@ export class AccountList extends React.Component {
     });
   }
 
+  renderNewAccountModal() {
+    if (this.state.showNewAccountModal) {
+      return (
+        <NewAccountModal show={this.state.showNewAccountModal} 
+                         onClose={this.closeNewAccountModal.bind(this)} 
+                         ref={'newAccountModal'} />
+      );
+    }
+  }
+
   render() {
     return (
       <div>
         <PageHeader title="my accounts">
-          <Button bsStyle="default">
+          <Button ref='newAccountButton' bsStyle="default" onClick={this.showNewAccountModal.bind(this)}>
             <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> New Account
           </Button>
         </PageHeader>
@@ -43,6 +69,8 @@ export class AccountList extends React.Component {
         <div className="container">
           {this.renderAccountGroups()}
         </div>
+        
+        {this.renderNewAccountModal()}
       </div>
     );
   }
