@@ -7,8 +7,8 @@ describe('AccountGroup', () => {
   let accounts, accountGroup, accountGroupComponent;
   beforeEach(() => {
     accounts = [
-      {id: 1, name: 'Savings Maximizer', bank: 'ING', current_balance: 50.44},
-      {id: 2, name: 'Everyday Savings', bank: 'CBA', current_balance: 2456.09}
+      {id: 1, name: 'Savings Maximizer', bank: 'ING', currentBalance: 50.44},
+      {id: 2, name: 'Everyday Savings', bank: 'CBA', currentBalance: 2456.09}
     ]
 
     accountGroup = {name: 'Savings', accounts: accounts};

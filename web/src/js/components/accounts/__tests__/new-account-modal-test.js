@@ -3,6 +3,7 @@ import NewAccountModal from '../new-account-modal';
 import { Modal } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
+import SavingsAccountForm from '../savings-account-form';
 
 describe('NewAccountModal', () => {
   let modal, onCloseSpy;
@@ -18,19 +19,22 @@ describe('NewAccountModal', () => {
     });
 
     it('has a form', () => {
-
+      let [header, body, footer] = modal.props.children.props.children;
+      expect(body.props.children.type).toEqual(SavingsAccountForm);
     });
   });
 
   describe('buttons', () => {
+    let onSaveSpy;
     beforeEach(() => {
       onCloseSpy = jasmine.createSpy('onClose');
-      modal = TestUtils.renderIntoDocument(<NewAccountModal show onClose={onCloseSpy}/>)
+      onSaveSpy = jasmine.createSpy('onSave');
+      modal = TestUtils.renderIntoDocument(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy}/>)
     });
 
     describe('cancel', () => {
       it('closes the modal', () => {
-        var cancelButton = modal.refs.cancelButton;
+        let cancelButton = modal.refs.cancelButton;
         cancelButton.props.onClick();
 
         expect(onCloseSpy).toHaveBeenCalled();
@@ -39,18 +43,25 @@ describe('NewAccountModal', () => {
 
     describe('save', () => {
       it('validates the form and saves the account', () => {
-        var saveButton = modal.refs.saveButton;
+        let saveButton = modal.refs.saveButton;
+        let newAccountForm = modal.refs.newAccountForm
+        spyOn(newAccountForm, 'validateAll').and.returnValue(true);
+        spyOn(newAccountForm, 'getAccount').and.returnValue('account');
         saveButton.props.onClick();
 
         expect(onCloseSpy).toHaveBeenCalled();
+        expect(onSaveSpy).toHaveBeenCalledWith('account');
       });
 
-      // it('doesnt save if the form is invalid', () => {
-      //   var saveButton = modal.refs.saveButton;
-      //   saveButton.props.onClick();
+      it('doesnt save if the form is invalid', () => {
+        let saveButton = modal.refs.saveButton;
+        let newAccountForm = modal.refs.newAccountForm
+        spyOn(newAccountForm, 'validateAll').and.returnValue(false);
+        saveButton.props.onClick();
 
-      //   expect(onCloseSpy).not.toHaveBeenCalled();
-      // });
+        expect(onCloseSpy).not.toHaveBeenCalled();
+        expect(onSaveSpy).not.toHaveBeenCalled();
+      });
     });
   });
 });

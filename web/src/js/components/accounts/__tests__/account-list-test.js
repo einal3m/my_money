@@ -5,14 +5,15 @@ import { AccountList } from '../account-list';
 import AccountGroup from '../account-group';
 import PageHeader from '../../common/page-header';
 import { Button } from 'react-bootstrap';
+import accountActions from '../../../actions/account-actions';
 
 describe('AccountList', () => {
   let accountGroups, accountList;
   beforeEach(() => {
     accountGroups = [
-      {code: 'savings', accounts: [{id: 1, name: 'Account 2', current_balance: 678}]},
+      {code: 'savings', accounts: [{id: 1, name: 'Account 2', currentBalance: 678}]},
       {code: 'other', accounts: []},
-      {code: 'shares', accounts: [{id: 2, name: 'Account 1', current_balance: 0}]},
+      {code: 'shares', accounts: [{id: 2, name: 'Account 1', currentBalance: 0}]},
     ];
 
     accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups}/>);
@@ -53,6 +54,15 @@ describe('AccountList', () => {
       accountList.refs.newAccountButton.props.onClick();
       accountList.refs.newAccountModal.props.onClose();
       expect(accountList.refs.newAccountModal).toBeUndefined();
+    });
+
+    it('modals onSave function calls the create account action', () =>{
+      spyOn(accountActions, 'createAccount');
+      accountList.refs.newAccountButton.props.onClick();
+      let modal = accountList.refs.newAccountModal
+
+      modal.props.onSave('account');
+      expect(accountActions.createAccount).toHaveBeenCalledWith('account');
     });
   });
 });

@@ -39,6 +39,10 @@ export class AccountList extends React.Component {
     this.setState({showNewAccountModal: false});
   }
 
+  createAccount(account) {
+    accountActions.createAccount(account);
+  }
+
   renderAccountGroups() {
     return this.props.accountGroups.filter((accountGroup) => {
       return accountGroup.accounts.length > 0;
@@ -52,7 +56,8 @@ export class AccountList extends React.Component {
       return (
         <NewAccountModal show={this.state.showNewAccountModal} 
                          onClose={this.closeNewAccountModal.bind(this)} 
-                         ref={'newAccountModal'} />
+                         onSave={this.createAccount.bind(this)}
+                         ref='newAccountModal' />
       );
     }
   }

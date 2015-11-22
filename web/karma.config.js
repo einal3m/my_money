@@ -20,7 +20,8 @@ module.exports = function(config) {
       module: {
         loaders: [
           { test: /\.js$/, exclude: /node_modules/, loader: "babel" },
-          { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass'  }
+          { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass'  },
+          { test: /\.gif$/, loader: 'url-loader?limit=8192'}
         ]
       },
       watch: true

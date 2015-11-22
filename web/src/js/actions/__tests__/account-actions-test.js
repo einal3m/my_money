@@ -24,4 +24,21 @@ describe('AccountActions', () => {
       expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('accounts');
     })
   });
+
+  describe('createAccount', () => {
+    it('calls the account service to create the account', () => {
+      spyOn(accountService, 'create');
+      accountActions.createAccount('account');
+      expect(accountService.create).toHaveBeenCalledWith('account');
+      expect(dispatcherSpy).toHaveBeenCalled();
+    })
+  });
+
+  describe('createAccountSuccess', () => {
+    it('just dispatches with account', () => {
+      accountActions.createAccountSuccess('accounts');
+      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('accounts');
+    })
+  });
 });

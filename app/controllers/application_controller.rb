@@ -2,7 +2,8 @@ require 'lib/date_range'
 require 'exceptions/my_money_error'
 
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session
 
   def account
     @account ||=  params.key?(:account_id) ? Account.find(params[:account_id].to_i) : nil

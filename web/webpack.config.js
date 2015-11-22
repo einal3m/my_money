@@ -8,7 +8,8 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: "babel"},
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader") }
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader") },
+      { test: /\.gif$/, loader: 'url-loader?limit=8192'}
     ]
   },
   devServer: {

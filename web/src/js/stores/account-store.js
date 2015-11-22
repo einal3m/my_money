@@ -25,17 +25,39 @@ class AccountStore {
   }
 
   onListAccounts(response) {
+    let accounts = response.accounts.map(account => this._transformAccount(account));
     this.setState({
-      accounts: response.accounts,
-      accountGroups: this._groupedAccounts(response.accounts),
+      accounts: accounts,
+      accountGroups: this._groupedAccounts(accounts),
       loading: false
     });
+  }
+
+  onCreateAccountSuccess(response) {
+    let accounts = this.state.accounts;
+    accounts.push(this._transformAccount(response.account));
+    this.setState({
+      accounts: accounts,
+      accountGroups: this._groupedAccounts(accounts)
+    });
+  }
+
+  _transformAccount(account) {
+    return {
+      id: account.id,
+      accountType: account.account_type,
+      name: account.name,
+      bank: account.bank,
+      openingBalance: account.starting_balance,
+      openingBalanceDate: account.starting_date,
+      currentBalance: account.current_balance
+    };
   }
 
   _groupedAccounts(accounts) {
     return this.state.accountTypes.map((accountType) => {
       let accountGroupAccounts = accounts.filter((account) => {
-        return account.account_type === accountType.code;
+        return account.accountType === accountType.code;
       });
       return { code: accountType.code, name: accountType.name, accounts: accountGroupAccounts };
     });

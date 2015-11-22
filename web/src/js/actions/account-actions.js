@@ -10,6 +10,15 @@ class AccountActions {
   listAccounts(response) {
     this.dispatch(response);
   }
+
+  createAccount(account) {
+    accountService.create(account);
+    this.dispatch();
+  }
+
+  createAccountSuccess(response) {
+    this.dispatch(response)
+  }
 }
 
 export default alt.createActions(AccountActions);
