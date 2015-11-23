@@ -16,8 +16,8 @@ class AccountActions {
     this.dispatch();
   }
 
-  createAccountSuccess(response) {
-    this.dispatch(response)
+  createAccountSuccess(account) {
+    this.dispatch(account)
   }
 }
 

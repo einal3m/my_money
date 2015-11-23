@@ -69,11 +69,11 @@ describe('AccountStore', () => {
 
   describe('onCreateAccountSuccess', () => {
     it('adds the account to the accounts array and the accountGroups', () => {
-      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: {account: account1}});
+      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: transformedAccount1});
       expect(accountStore.getState().accounts).toEqual([transformedAccount1]);
       expect(accountStore.getState().accountGroups[1].accounts).toEqual([transformedAccount1]);
 
-      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: {account: account2}});
+      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: transformedAccount2});
       expect(accountStore.getState().accounts).toEqual([transformedAccount1, transformedAccount2]);
       expect(accountStore.getState().accountGroups[1].accounts).toEqual([transformedAccount1]);
       expect(accountStore.getState().accountGroups[0].accounts).toEqual([transformedAccount2]);

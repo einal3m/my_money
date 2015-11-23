@@ -33,9 +33,9 @@ class AccountStore {
     });
   }
 
-  onCreateAccountSuccess(response) {
+  onCreateAccountSuccess(account) {
     let accounts = this.state.accounts;
-    accounts.push(this._transformAccount(response.account));
+    accounts.push(account);
     this.setState({
       accounts: accounts,
       accountGroups: this._groupedAccounts(accounts)
