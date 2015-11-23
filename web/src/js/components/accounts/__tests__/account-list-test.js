@@ -4,7 +4,7 @@ import React from 'react';
 import { AccountList } from '../account-list';
 import AccountGroup from '../account-group';
 import PageHeader from '../../common/page-header';
-import { Button } from 'react-bootstrap';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 import accountActions from '../../../actions/account-actions';
 
 describe('AccountList', () => {
@@ -19,11 +19,18 @@ describe('AccountList', () => {
     accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups}/>);
   });
 
-  it('has a header and a table of accounts', () => {
+  it('has a header with new account dropdown button', () => {
     let [header, listGroup] = accountList.props.children;
+    let [dropdown, buttons] = header.props.children.props.children;
 
     expect(header.type).toEqual(PageHeader);
-    expect(header.props.children.type).toEqual(Button);
+    expect(header.props.children.type).toEqual(Dropdown);
+    expect(dropdown.props.children[1]).toMatch(/New Account/);
+    expect(buttons.props.children[0].type).toEqual(MenuItem);
+    expect(buttons.props.children[0].props.children).toEqual('New Savings Account');
+
+    expect(buttons.props.children[1].type).toEqual(MenuItem);
+    expect(buttons.props.children[1].props.children).toEqual('New Share Account');
   });
 
   it('has a list of accountGroups', () => {
@@ -44,21 +51,29 @@ describe('AccountList', () => {
       expect(accountList.refs.newAccountModal).toBeUndefined();
     });
 
-    it('shows modal when you click on the new account button', () => {
-      accountList.refs.newAccountButton.props.onClick();
+    it('shows savings modal when you click on the new savings account button', () => {
+      accountList.refs.newAccountButton.props.onSelect(null, '1');
       let modal = accountList.refs.newAccountModal
       expect(modal).toBeDefined();
+      expect(modal.props.accountType).toEqual('savings');
+    });
+
+    it('shows share modal when you click on the new share account button', () => {
+      accountList.refs.newAccountButton.props.onSelect(null, '2');
+      let modal = accountList.refs.newAccountModal
+      expect(modal).toBeDefined();
+      expect(modal.props.accountType).toEqual('share');
     });
 
     it('closes modal when modals onClose function called', () => {
-      accountList.refs.newAccountButton.props.onClick();
+      accountList.refs.newAccountButton.props.onSelect(null, '1');
       accountList.refs.newAccountModal.props.onClose();
       expect(accountList.refs.newAccountModal).toBeUndefined();
     });
 
     it('modals onSave function calls the create account action', () =>{
       spyOn(accountActions, 'createAccount');
-      accountList.refs.newAccountButton.props.onClick();
+      accountList.refs.newAccountButton.props.onSelect(null, '1');
       let modal = accountList.refs.newAccountModal
 
       modal.props.onSave('account');

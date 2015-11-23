@@ -4,32 +4,39 @@ import { Modal } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import SavingsAccountForm from '../savings-account-form';
+import ShareAccountForm from '../share-account-form';
 
 describe('NewAccountModal', () => {
-  let modal, onCloseSpy;
+  let modal, onCloseSpy, onSaveSpy;
+  beforeEach(() => {
+    onCloseSpy = jasmine.createSpy('onClose');
+    onSaveSpy = jasmine.createSpy('onSave');
+  });
   describe('render', () => {
     beforeEach(() => {
-      onCloseSpy = jasmine.createSpy('onClose');
-      modal = shallowRenderer(<NewAccountModal onClose={onCloseSpy}/>);
+      modal = shallowRenderer(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType='savings'/>);
     });
 
     it('has a title', () => {
       let [header, body, footer] = modal.props.children.props.children;
-      expect(header.props.children.props.children).toEqual('New Account');
+      expect(header.props.children.props.children).toEqual('New Savings Account');
     });
 
-    it('has a form', () => {
+    it('has a savings form', () => {
       let [header, body, footer] = modal.props.children.props.children;
       expect(body.props.children.type).toEqual(SavingsAccountForm);
+    });
+
+    it('has a share form', () => {
+      modal = shallowRenderer(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType='share'/>);
+      let [header, body, footer] = modal.props.children.props.children;
+      expect(body.props.children.type).toEqual(ShareAccountForm);
     });
   });
 
   describe('buttons', () => {
-    let onSaveSpy;
     beforeEach(() => {
-      onCloseSpy = jasmine.createSpy('onClose');
-      onSaveSpy = jasmine.createSpy('onSave');
-      modal = TestUtils.renderIntoDocument(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy}/>)
+      modal = TestUtils.renderIntoDocument(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType='savings'/>)
     });
 
     describe('cancel', () => {

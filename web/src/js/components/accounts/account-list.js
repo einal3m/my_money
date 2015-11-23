@@ -6,7 +6,7 @@ import AccountStore from '../../stores/account-store';
 import accountActions from '../../actions/account-actions';
 import PageHeader from '../common/page-header';
 import AccountGroup from './account-group';
-import { Button } from 'react-bootstrap';
+import { Button, DropdownButton, MenuItem, Dropdown, Glyphicon } from 'react-bootstrap';
 import NewAccountModal from './new-account-modal';
 require("../../../css/common.scss");
 
@@ -31,8 +31,15 @@ export class AccountList extends React.Component {
     }
   }
 
-  showNewAccountModal() {
-    this.setState({showNewAccountModal: true});
+  newAccountType(eventKey) {
+    if (eventKey === '2') {
+      return 'share'
+    }
+    return 'savings';
+  }
+
+  showNewAccountModal(event, eventKey) {
+    this.setState({showNewAccountModal: this.newAccountType(eventKey)});
   }
 
   closeNewAccountModal() {
@@ -54,7 +61,8 @@ export class AccountList extends React.Component {
   renderNewAccountModal() {
     if (this.state.showNewAccountModal) {
       return (
-        <NewAccountModal show={this.state.showNewAccountModal} 
+        <NewAccountModal show={!!this.state.showNewAccountModal} 
+                         accountType={this.state.showNewAccountModal}
                          onClose={this.closeNewAccountModal.bind(this)} 
                          onSave={this.createAccount.bind(this)}
                          ref='newAccountModal' />
@@ -62,13 +70,26 @@ export class AccountList extends React.Component {
     }
   }
 
+  renderNewAccountButtons() {
+    return (
+      <Dropdown id='new-account' pullRight onSelect={this.showNewAccountModal.bind(this)} ref='newAccountButton'>
+        <Dropdown.Toggle>
+          <Glyphicon glyph='plus' />&nbsp;
+          New Account
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <MenuItem eventKey='1' ref='newSavingsAccountButton'>New Savings Account</MenuItem>
+          <MenuItem eventKey='2' ref='newShareAccountButton'>New Share Account</MenuItem>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  }
+
   render() {
     return (
       <div>
         <PageHeader title="my accounts">
-          <Button ref='newAccountButton' bsStyle="default" onClick={this.showNewAccountModal.bind(this)}>
-            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> New Account
-          </Button>
+          {this.renderNewAccountButtons()}
         </PageHeader>
 
         <div className="container">

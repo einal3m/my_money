@@ -39,6 +39,17 @@ describe('SavingsAccountForm', () => {
   });
 
   describe('updating state and validation', () => {
+    it('has default values for savings account', () => {
+      let form = TestUtils.renderIntoDocument(<SavingsAccountForm />);
+      let account = form.state.account;
+
+      expect(account.accountType).toEqual('savings');
+      expect(account.name).toEqual(null);
+      expect(account.bank).toEqual(null);
+      expect(account.openingBalance).toEqual(0);
+      expect(account.openingBalanceDate).toEqual(moment().format('YYYY-MM-DD'));
+    });
+
     it('updates state and validates name is required', () => {
       let form = TestUtils.renderIntoDocument(<SavingsAccountForm />);
       let name = form.refs.nameField;

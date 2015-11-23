@@ -22,16 +22,14 @@ validator.extend(validator.validators.datetime, {
 
 validator.validators.presence.options = {message: "is required"};
 
-export default class SavingsAccountForm extends React.Component {
+export default class ShareAccountForm extends React.Component {
   constructor() {
     super();
     this.state = {
       account: {
-        accountType: 'savings',
+        accountType: 'share',
         name: null,
-        bank: null,
-        openingBalance: 0,
-        openingBalanceDate: moment().format('YYYY-MM-DD')
+        ticker: null
       },
       errors: []
     }
@@ -39,9 +37,8 @@ export default class SavingsAccountForm extends React.Component {
 
   validationSchema(field) {
     let schema = {
-      name: { presence: true},
-      openingBalance: {presence: true, numericality: true},
-      openingBalanceDate: {presence: true, datetime: {dateOnly: true}}
+      ticker: { presence: true},
+      name: { presence: true}
     };
 
     if (field) {
@@ -50,10 +47,6 @@ export default class SavingsAccountForm extends React.Component {
       return singleValidation;
     }
     return schema; 
-  }
-
-  handleDateChange(date) {
-    this.handleChange({target: {name: 'openingBalanceDate', value: date}});
   }
 
   handleChange(event) {
@@ -101,33 +94,17 @@ export default class SavingsAccountForm extends React.Component {
   render() {
     return (
       <div>
+        <div className={`form-group ${this.validState('ticker')}`}>
+          <label className='control-label'>Ticker</label>
+          <input className='form-control' name='ticker' type='text' value={this.state.account.ticker} 
+            onChange={this.handleChange.bind(this)} ref='tickerField' />
+          <div className='help-block'>{this.errorFor('ticker')}</div>
+        </div>
         <div className={`form-group ${this.validState('name')}`}>
           <label className='control-label'>Name</label>
           <input className='form-control' name='name' type='text' value={this.state.account.name} 
             onChange={this.handleChange.bind(this)} ref='nameField' />
           <div className='help-block'>{this.errorFor('name')}</div>
-        </div>
-        <div className={`form-group ${this.validState('bank')}`}>
-          <label className='control-label'>Bank</label>
-          <input className='form-control' name='bank' type='text' value={this.state.account.bank} 
-            onChange={this.handleChange.bind(this)} ref='bankField' />
-          <div className='help-block'>{this.errorFor('bank')}</div>
-        </div>
-        <div className={`form-group ${this.validState('openingBalance')}`}>
-          <label className='control-label'>Opening Balance</label>
-          <div className="input-group">
-            <div className="input-group-addon">$</div>
-            <input className='form-control' name='openingBalance' type='text' value={this.state.account.openingBalance} 
-              onChange={this.handleChange.bind(this)} ref='openingBalanceField' />
-          </div>
-          <div className='help-block'>{this.errorFor('openingBalance')}</div>
-        </div>
-        <div className={`form-group ${this.validState('openingBalanceDate')}`}>
-          <label className='control-label'>Opening Balance Date</label>
-          <DatePicker name='openingBalanceDate' dateTime={this.state.account.openingBalanceDate}
-            format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday mode='date'
-            onChange={this.handleDateChange.bind(this)} ref='openingBalanceDateField' />
-          <div className='help-block'>{this.errorFor('openingBalanceDate')}</div>
         </div>
       </div>
     );

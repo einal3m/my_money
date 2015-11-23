@@ -17,23 +17,33 @@ class AccountService {
   }
 
   create(account) {
-    let data = {
-      name: account.name,
-      bank: account.bank,
-      account_type: 'savings',
-      starting_date: account.openingBalanceDate,
-      starting_balance: account.openingBalance
-    };
-
     this._send({
         url: 'http://localhost:3000/accounts',
         crossOrigin: true,
         method: 'POST',
-        data: {account: data},
+        data: {account: this._transformAccount(account)},
         success: function (response) {
           AccountActions.createAccountSuccess(response)
         }
     });
+  }
+
+  _transformAccount(account) {
+    if (account.accountType === 'savings') {
+      return {
+        account_type: account.accountType,
+        name: account.name,
+        bank: account.bank,
+        starting_date: account.openingBalanceDate,
+        starting_balance: account.openingBalance
+      };
+    } else if (account.accountType === 'share') {
+      return {
+        account_type: account.accountType,
+        name: account.name,
+        ticker: account.ticker
+      };
+    }
   }
 
   _send(params) {
