@@ -37,18 +37,17 @@ describe('AccountTransformer', () => {
 
   describe('transformFromApi', () => {
     it('converts savings account from API format', () => {
-      let response = { account: {
-          id: 11,
-          account_type: 'savings',
-          name: 'myAccount',
-          bank: 'myBank',
-          starting_balance: 300,
-          starting_date: '2015-04-01',
-          current_balance: 5000
-        }
+      let account = {
+        id: 11,
+        account_type: 'savings',
+        name: 'myAccount',
+        bank: 'myBank',
+        starting_balance: 300,
+        starting_date: '2015-04-01',
+        current_balance: 5000
       }
 
-      let transformedAccount = accountTransformer.transformFromApi(response);
+      let transformedAccount = accountTransformer.transformFromApi(account);
 
       expect(transformedAccount.id).toEqual(11);
       expect(transformedAccount.accountType).toEqual('savings');
@@ -60,16 +59,15 @@ describe('AccountTransformer', () => {
     });
 
     it('converts share account from API format', () => {
-      let response = { account: { 
-          id: 11,
-          account_type: 'share', 
-          name: 'myAccount', 
-          ticker: 'myTicker',
-          current_balance: 5000
-        } 
-      }
+      let account = { 
+        id: 11,
+        account_type: 'share', 
+        name: 'myAccount', 
+        ticker: 'myTicker',
+        current_balance: 5000
+      } 
 
-      let transformedAccount = accountTransformer.transformFromApi(response);
+      let transformedAccount = accountTransformer.transformFromApi(account);
 
       expect(transformedAccount.id).toEqual(11);
       expect(transformedAccount.accountType).toEqual('share');

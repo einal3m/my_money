@@ -24,8 +24,7 @@ class AccountStore {
     });
   }
 
-  onListAccounts(response) {
-    let accounts = response.accounts.map(account => this._transformAccount(account));
+  onListAccounts(accounts) {
     this.setState({
       accounts: accounts,
       accountGroups: this._groupedAccounts(accounts),
@@ -40,18 +39,6 @@ class AccountStore {
       accounts: accounts,
       accountGroups: this._groupedAccounts(accounts)
     });
-  }
-
-  _transformAccount(account) {
-    return {
-      id: account.id,
-      accountType: account.account_type,
-      name: account.name,
-      bank: account.bank,
-      openingBalance: account.starting_balance,
-      openingBalanceDate: account.starting_date,
-      currentBalance: account.current_balance
-    };
   }
 
   _groupedAccounts(accounts) {

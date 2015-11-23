@@ -18,8 +18,7 @@ let accountTransformer = {
     }
   },
 
-  transformFromApi(response) {
-    let account = response.account;
+  transformFromApi(account) {
     if (account.account_type === 'savings') {
       return {
         id: account.id,

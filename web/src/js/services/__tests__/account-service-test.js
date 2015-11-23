@@ -14,6 +14,12 @@ describe('AccountService', () => {
       let requestParams = accountService._send.calls.argsFor(0)[0];
       expect(requestParams.url).toEqual('http://localhost:3000/accounts');
       expect(requestParams.method).toEqual('GET');
+
+      spyOn(accountActions, 'listAccounts');
+      spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
+      requestParams.success({accounts: ['account']});
+      expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
+      expect(accountActions.listAccounts).toHaveBeenCalledWith(['transformedFromApi']);
     });
   });
 
@@ -34,8 +40,8 @@ describe('AccountService', () => {
 
       spyOn(accountActions, 'createAccountSuccess');
       spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
-      requestParams.success('response');
-      expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('response');
+      requestParams.success({account: 'account'});
+      expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(accountActions.createAccountSuccess).toHaveBeenCalledWith('transformedFromApi');
     });
   });

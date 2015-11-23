@@ -11,7 +11,11 @@ class AccountService {
         crossOrigin: true,
         method: 'GET',
         success: function (response) {
-          AccountActions.listAccounts(response)
+          AccountActions.listAccounts(
+            response.accounts.map((account) => {
+              return accountTransformer.transformFromApi(account);
+            })
+          )
         }
     });
   }
@@ -23,7 +27,7 @@ class AccountService {
         method: 'POST',
         data: {account: accountTransformer.transformToApi(account)},
         success: function (response) {
-          AccountActions.createAccountSuccess(accountTransformer.transformFromApi(response))
+          AccountActions.createAccountSuccess(accountTransformer.transformFromApi(response.account))
         }
     });
   }
