@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import moneyUtil from '../../util/money-util';
 require("../../../css/common.scss");
 require('../../../images/piggy-bank.gif');
 
@@ -19,6 +20,11 @@ export default class AccountSlat extends React.Component {
     }
   }
 
+  renderCurrentBalance() {
+    let currentBalanceDollars = moneyUtil.centsToDollars(this.props.account.currentBalance);
+    return moneyUtil.moneyFormat(currentBalanceDollars);
+  }
+
   render() {
     return (
       <li className='slat-item'>
@@ -33,7 +39,7 @@ export default class AccountSlat extends React.Component {
                 <span className="text-muted">{this.props.account.bank}</span>
               </div>
               <div className="currency col-xs-6">
-                <h3>{`$${this.props.account.currentBalance}`}</h3>
+                <h3>{this.renderCurrentBalance()}</h3>
               </div>
             </div>
           </div>

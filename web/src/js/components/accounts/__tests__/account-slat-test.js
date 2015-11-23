@@ -5,7 +5,7 @@ import AccountSlat from '../account-slat';
 describe('AccountSlat', () => {
   let account, accountSlat;
   beforeEach(() => {
-    account = { name: 'myAccount', bank: 'myBank', currentBalance: 60.78 };
+    account = { name: 'myAccount', bank: 'myBank', currentBalance: 6070 };
     accountSlat = shallowRenderer(<AccountSlat account={account} />);
   });
 
@@ -16,6 +16,6 @@ describe('AccountSlat', () => {
 
     expect(name.props.children).toEqual('myAccount');
     expect(bank.props.children).toEqual('myBank');
-    expect(currentBalance.props.children).toEqual('$60.78');
+    expect(currentBalance.props.children).toEqual('$ 60.70');
   });
 });
