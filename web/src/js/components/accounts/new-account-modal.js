@@ -6,7 +6,7 @@ import ShareAccountForm from './share-account-form';
 export default class NewAccountModal extends React.Component {
   onSave() {
     var newAccountForm = this.refs.newAccountForm;
-    var isValid = newAccountForm.validateAll();
+    var isValid = newAccountForm.isValid();
     if (isValid) {
       this.props.onSave(newAccountForm.getAccount());
       this.props.onClose();

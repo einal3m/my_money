@@ -24,6 +24,20 @@ describe('ShareAccountForm', () => {
     });
   });
 
+  describe('isValid', () => {
+    it('returns true if all fields are valid', () => {
+      let form = TestUtils.renderIntoDocument(<ShareAccountForm />);
+      form.state.account = {name: 'myName', ticker: 'myTicker'};
+      expect(form.isValid()).toEqual(true);
+    });
+
+    it('returns false if any fields are invalid', () => {
+      let form = TestUtils.renderIntoDocument(<ShareAccountForm />);
+      form.state.account = {name: '', ticker: 'myTicker'};
+      expect(form.isValid()).toEqual(false);
+    });
+  });
+
   describe('updating state and validation', () => {
     it('has default values for share account', () => {
       let form = TestUtils.renderIntoDocument(<ShareAccountForm />);

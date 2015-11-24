@@ -52,7 +52,7 @@ describe('NewAccountModal', () => {
       it('validates the form and saves the account', () => {
         let saveButton = modal.refs.saveButton;
         let newAccountForm = modal.refs.newAccountForm
-        spyOn(newAccountForm, 'validateAll').and.returnValue(true);
+        spyOn(newAccountForm, 'isValid').and.returnValue(true);
         spyOn(newAccountForm, 'getAccount').and.returnValue('account');
         saveButton.props.onClick();
 
@@ -63,7 +63,7 @@ describe('NewAccountModal', () => {
       it('doesnt save if the form is invalid', () => {
         let saveButton = modal.refs.saveButton;
         let newAccountForm = modal.refs.newAccountForm
-        spyOn(newAccountForm, 'validateAll').and.returnValue(false);
+        spyOn(newAccountForm, 'isValid').and.returnValue(false);
         saveButton.props.onClick();
 
         expect(onCloseSpy).not.toHaveBeenCalled();

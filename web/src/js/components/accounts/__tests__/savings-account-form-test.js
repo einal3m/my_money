@@ -37,6 +37,20 @@ describe('SavingsAccountForm', () => {
       expect(openingBalanceDate.props.children[1].props.dateTime).toEqual(moment().format('YYYY-MM-DD'));
     });
   });
+  
+  describe('isValid', () => {
+    it('returns true if all fields are valid', () => {
+      let form = TestUtils.renderIntoDocument(<SavingsAccountForm />);
+      form.state.account = {name: 'myName', bank: 'myBank', openingBalance: 600, openingBalanceDate: '2014-06-02'};
+      expect(form.isValid()).toEqual(true);
+    });
+
+    it('returns false if any fields are invalid', () => {
+      let form = TestUtils.renderIntoDocument(<SavingsAccountForm />);
+      form.state.account = {name: 'myName', bank: 'myBank', openingBalance: 'hello', openingBalanceDate: '2014-06-02'};
+      expect(form.isValid()).toEqual(false);
+    });
+  });
 
   describe('updating state and validation', () => {
     it('has default values for savings account', () => {
@@ -120,9 +134,9 @@ describe('SavingsAccountForm', () => {
 
       dateInput.value = 'dd';
       TestUtils.Simulate.change(dateInput);
-      expect(form.state.account.openingBalanceDate).toEqual('Invalid date');
+      expect(form.state.account.openingBalanceDate).toEqual('');
       expect(formGroup.className).toMatch(/has-error/);
-      expect(helpBlock.textContent).toEqual('Opening balance date must be a valid date');
+      expect(helpBlock.textContent).toEqual('Opening balance date is required');
 
       dateInput.value = '19-Dec-2015';
       TestUtils.Simulate.change(dateInput);
