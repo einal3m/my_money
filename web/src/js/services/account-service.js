@@ -32,6 +32,19 @@ class AccountService {
     });
   }
 
+  destroy(accountId) {
+    this._send({
+        url: 'http://localhost:3000/accounts/' + accountId,
+        crossOrigin: true,
+        method: 'DELETE',
+        success: function (response) {
+          let splitResponse = response.responseURL.split( '/' );
+          let accountId = splitResponse[splitResponse.length-1];
+          AccountActions.deleteAccountSuccess(Number(accountId));
+        }
+    });
+  }
+
   _send(params) {
     reqwest(params);
   }

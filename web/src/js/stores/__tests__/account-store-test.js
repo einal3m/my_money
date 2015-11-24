@@ -3,10 +3,10 @@ import accountStore from '../account-store';
 import accountActions from '../../actions/account-actions';
 
 describe('AccountStore', () => {
-  let account1, account2, account1, account2;
+  let account1, account2;
   beforeEach(() => {    
-    account1 = {name: 'account1', accountType: 'share'};
-    account2 = {name: 'account2', accountType: 'savings'};
+    account1 = {id: 11, name: 'account1', accountType: 'share'};
+    account2 = {id: 12, name: 'account2', accountType: 'savings'};
   });
 
   afterEach(() => {
@@ -72,6 +72,18 @@ describe('AccountStore', () => {
       expect(accountStore.getState().accounts).toEqual([account1, account2]);
       expect(accountStore.getState().accountGroups[1].accounts).toEqual([account1]);
       expect(accountStore.getState().accountGroups[0].accounts).toEqual([account2]);
+    });
+  });
+
+  describe('onDeleteAccountSuccess', () => {
+    it('removes the account from the accounts array and the accountGroups', () => {
+      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: account1});
+      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: account2});
+
+      alt.dispatcher.dispatch({action: accountActions.DELETE_ACCOUNT_SUCCESS, data: 12});
+      expect(accountStore.getState().accounts).toEqual([account1]);
+      expect(accountStore.getState().accountGroups[0].accounts).toEqual([]);
+      expect(accountStore.getState().accountGroups[1].accounts).toEqual([account1]);
     });
   });
 });

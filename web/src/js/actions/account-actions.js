@@ -19,6 +19,15 @@ class AccountActions {
   createAccountSuccess(account) {
     this.dispatch(account)
   }
+
+  deleteAccount(accountId) {
+    accountService.destroy(accountId);
+    this.dispatch();
+  }
+
+  deleteAccountSuccess(accountId) {
+    this.dispatch(accountId);
+  }
 }
 
 export default alt.createActions(AccountActions);

@@ -22,7 +22,7 @@ describe('AccountActions', () => {
       accountActions.listAccounts('accounts');
       expect(dispatcherSpy).toHaveBeenCalled();
       expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('accounts');
-    })
+    });
   });
 
   describe('createAccount', () => {
@@ -31,7 +31,7 @@ describe('AccountActions', () => {
       accountActions.createAccount('account');
       expect(accountService.create).toHaveBeenCalledWith('account');
       expect(dispatcherSpy).toHaveBeenCalled();
-    })
+    });
   });
 
   describe('createAccountSuccess', () => {
@@ -39,6 +39,23 @@ describe('AccountActions', () => {
       accountActions.createAccountSuccess('accounts');
       expect(dispatcherSpy).toHaveBeenCalled();
       expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('accounts');
-    })
+    });
+  });
+
+  describe('deleteAccount', () => {
+    it('calls the account service to delete the account', () => {
+      spyOn(accountService, 'destroy');
+      accountActions.deleteAccount(34);
+      expect(accountService.destroy).toHaveBeenCalledWith(34);
+      expect(dispatcherSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteAccountSuccess', () => {
+    it('just dispatches with account id', () => {
+      accountActions.deleteAccountSuccess(34);
+      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(34);
+    });
   });
 });

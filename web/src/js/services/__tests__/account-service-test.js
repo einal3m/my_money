@@ -24,7 +24,7 @@ describe('AccountService', () => {
   });
 
   describe('create', () => {
-    it('makes and ajax request to POST/accounts', () => {
+    it('makes an ajax request to POST/accounts', () => {
       spyOn(accountTransformer, 'transformToApi').and.returnValue('transformedToApi');
       accountService.create('account');
 
@@ -43,6 +43,22 @@ describe('AccountService', () => {
       requestParams.success({account: 'account'});
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(accountActions.createAccountSuccess).toHaveBeenCalledWith('transformedFromApi');
+    });
+  });
+
+  describe('destroy', () => {
+    it('makes an ajax request to DELETE/accounts and tells store its succeeded', () => {
+      accountService.destroy(45);
+
+      expect(accountService._send).toHaveBeenCalled();
+
+      let requestParams = accountService._send.calls.argsFor(0)[0];
+      expect(requestParams.url).toEqual('http://localhost:3000/accounts/45');
+      expect(requestParams.method).toEqual('DELETE');
+
+      spyOn(accountActions, 'deleteAccountSuccess');
+      requestParams.success({responseURL: 'blah/45'});
+      expect(accountActions.deleteAccountSuccess).toHaveBeenCalledWith(45);
     });
   });
 });

@@ -41,6 +41,16 @@ class AccountStore {
     });
   }
 
+  onDeleteAccountSuccess(accountId) {
+    let accounts = this.state.accounts.filter((account) => {
+      return account.id !== accountId;
+    });
+    this.setState({
+      accounts: accounts,
+      accountGroups: this._groupedAccounts(accounts)
+    });
+  }
+
   _groupedAccounts(accounts) {
     return this.state.accountTypes.map((accountType) => {
       let accountGroupAccounts = accounts.filter((account) => {
