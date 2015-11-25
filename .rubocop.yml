@@ -4,6 +4,7 @@ AllCops:
     - 'config/**/*'
     - 'db/**/*'
     - 'bin/**/*'
+    - 'web/**/*'
 
 MethodLength:
   Max: 25 # reek performs these checks anyway

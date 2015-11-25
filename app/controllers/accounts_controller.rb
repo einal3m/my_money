@@ -1,3 +1,5 @@
+require 'destroyers/account_destroyer'
+
 class AccountsController < ApplicationController
   def my_money
   end
@@ -25,7 +27,8 @@ class AccountsController < ApplicationController
   end
 
   def destroy
-    account.destroy
+    destroyer = AccountDestroyer.new account
+    destroyer.execute
     head :no_content
   end
 

@@ -121,5 +121,17 @@ RSpec.describe AccountsController, type: :controller do
       }.to change(Account, :count).by(-1)
       expect(response).to be_success
     end
+
+    it 'destroys the requested account' do
+      account = FactoryGirl.create(:account)
+      FactoryGirl.create(:transaction, account: account)
+
+      expect {
+        delete :destroy, { id: account.id }, valid_session
+      }.not_to change(Account, :count)
+      expect(response.status).to eq(422)
+      json = JSON.parse(response.body)
+      expect(json['message']).to eq('Cannot delete an account that has transactions')
+    end
   end
 end
