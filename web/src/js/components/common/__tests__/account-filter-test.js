@@ -12,10 +12,11 @@ describe('AccountFilter', () => {
         { code: 'share', name: 'Share', accounts: [ { id: 1, name: 'Account 1' }, { id: 3, name: 'Account 3' } ] }
       ];
 
-      let dropdown = shallowRenderer(<AccountFilter accountGroups={accountGroups}/>);
+      let accountFilter = shallowRenderer(<AccountFilter accountGroups={accountGroups}/>);
+      let dropdown = accountFilter.props.children.props.children;
 
-      expect(dropdown.props.children.type).toEqual(Input);
-      let [accountGroup1, accountGroup2] = dropdown.props.children.props.children;
+      expect(dropdown.type).toEqual(Input);
+      let [accountGroup1, accountGroup2] = dropdown.props.children;
 
       expect(accountGroup1.props.label).toEqual('Savings Accounts');
       expect(accountGroup1.type).toEqual('optgroup');

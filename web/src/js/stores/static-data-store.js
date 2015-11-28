@@ -6,7 +6,7 @@ class StaticDataStore {
     this.state = {
       dateRanges: [],
       currentDateRange: null,
-      loading: false
+      loaded: false
     };
 
     this.bindActions(staticDataActions);
@@ -16,7 +16,7 @@ class StaticDataStore {
     this.setState({
       dateRanges: [],
       currentDateRange: null,
-      loading: true
+      loaded: false
     });
   }
 
@@ -24,7 +24,7 @@ class StaticDataStore {
     this.setState({
       dateRanges: dateRanges,
       currentDateRange: this._getDefaultDateRange(dateRanges),
-      loading: false
+      loaded: true
     });
   }
 

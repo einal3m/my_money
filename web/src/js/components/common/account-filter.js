@@ -30,11 +30,13 @@ export default class AccountFilter extends React.Component {
 
   render() {
     return (
-      <form className="form-horizontal">
-        <Input type="select" label="Account" labelClassName="col-xs-4" wrapperClassName="col-xs-8">
-          {this.renderAccountGroups()}
-        </Input>
-      </form>
+      <div className="row">
+        <div className="form-horizontal col-xs-4">
+          <Input type="select" label="Account" labelClassName="col-xs-4" wrapperClassName="col-xs-8">
+            {this.renderAccountGroups()}
+          </Input>
+        </div>
+      </div>      
     );
   }
 }

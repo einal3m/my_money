@@ -18,25 +18,25 @@ describe('StaticDataStore', () => {
   it('has a default state', () => {
     expect(staticDataStore.getState().dateRanges).toEqual([]);
     expect(staticDataStore.getState().currentDateRange).toEqual(null);
-    expect(staticDataStore.getState().loading).toEqual(false);
+    expect(staticDataStore.getState().loaded).toEqual(false);
   });
 
   describe('onFetchDateRanges', () => {
-    it('sets loading to true and resets date range array', () => {
+    it('resets date range array', () => {
       alt.dispatcher.dispatch({action: staticDataActions.FETCH_DATE_RANGES});
 
       expect(staticDataStore.getState().dateRanges).toEqual([]);
       expect(staticDataStore.getState().currentDateRange).toEqual(null);
-      expect(staticDataStore.getState().loading).toEqual(true);    
+      expect(staticDataStore.getState().loaded).toEqual(false);    
     });
   });
 
   describe('onReceiveDateRanges', () => {
-    it('sets loading to true and resets date range array', () => {
+    it('sets loaded to true and sets date range array', () => {
       alt.dispatcher.dispatch({action: staticDataActions.RECEIVE_DATE_RANGES, data: dateRanges});
 
       expect(staticDataStore.getState().dateRanges).toEqual(dateRanges);
-      expect(staticDataStore.getState().loading).toEqual(false);    
+      expect(staticDataStore.getState().loaded).toEqual(true);    
     });
 
     it('sets the current date range to the default date range', () => {

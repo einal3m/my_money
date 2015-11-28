@@ -10,7 +10,8 @@ class AccountStore {
       ],
       accounts: [],
       accountGroups: [],
-      loading: false
+      loading: false,
+      loaded: false
     };
 
     this.bindActions(accountActions);
@@ -20,7 +21,8 @@ class AccountStore {
     this.setState({
       accounts: [],
       accountGroups: [],
-      loading: true
+      loading: true,
+      loaded: false
     });
   }
 
@@ -28,7 +30,8 @@ class AccountStore {
     this.setState({
       accounts: accounts,
       accountGroups: this._groupedAccounts(accounts),
-      loading: false
+      loading: false,
+      loaded: true
     });
   }
 

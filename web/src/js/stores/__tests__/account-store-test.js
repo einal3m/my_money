@@ -24,6 +24,18 @@ describe('AccountStore', () => {
     expect(accountStore.getState().accountTypes[1].code).toEqual('share');
   });
 
+  describe('loaded', () => {
+    it('is true if accountGroups are not empty and store is not loading', () => {
+      expect(accountStore.getState().loaded).toEqual(false);
+
+      alt.dispatcher.dispatch({action: accountActions.FETCH_ACCOUNTS});
+      expect(accountStore.getState().loaded).toEqual(false);
+
+      alt.dispatcher.dispatch({action: accountActions.LIST_ACCOUNTS, data: [account1, account2]});
+      expect(accountStore.getState().loaded).toEqual(true);
+    });
+  });
+
   describe('onFetchAccounts', () => {
     it('sets loading to true and resets accounts array', () => {
       alt.dispatcher.dispatch({action: accountActions.FETCH_ACCOUNTS});
