@@ -5,6 +5,7 @@ class StaticDataStore {
   constructor() {
     this.state = {
       dateRanges: [],
+      currentDateRange: null,
       loading: false
     };
 
@@ -14,6 +15,7 @@ class StaticDataStore {
   onFetchDateRanges() {
     this.setState({
       dateRanges: [],
+      currentDateRange: null,
       loading: true
     });
   }
@@ -21,8 +23,38 @@ class StaticDataStore {
   onReceiveDateRanges(dateRanges) {
     this.setState({
       dateRanges: dateRanges,
+      currentDateRange: this._getDefaultDateRange(dateRanges),
       loading: false
     });
+  }
+
+  onSetCurrentDateRange(id) {
+    this.setState({
+      currentDateRange: this._findDateRangeById(id)
+    });
+  }
+
+  onUpdateCurrentDateRange(data) {
+    let dateRange = this.state.currentDateRange;
+    if (data.fromDate) {
+      dateRange.fromDate = data.fromDate;
+    }
+    if (data.toDate) {
+      dateRange.toDate = data.toDate;
+    }
+    this.setState({ currentDateRange: dateRange });
+  }
+
+  _findDateRangeById(id){
+    return this.state.dateRanges.filter((dateRange) => {
+      return dateRange.id === id;
+    })[0];
+  }
+
+  _getDefaultDateRange(dateRanges){
+    return dateRanges.filter((dateRange) => {
+      return dateRange.default;
+    })[0];
   }
 }
 

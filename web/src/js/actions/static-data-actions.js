@@ -10,6 +10,14 @@ class StaticDataActions {
   receiveDateRanges(dateRanges) {
     this.dispatch(dateRanges);
   }
+
+  setCurrentDateRange(id) {
+    this.dispatch(id);
+  }
+
+  updateCurrentDateRange(data) {
+    this.dispatch(data);
+  }
 }
 
 export default alt.createActions(StaticDataActions);

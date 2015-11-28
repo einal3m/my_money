@@ -8,20 +8,30 @@ describe('StaticDataActions', () => {
     dispatcherSpy = spyOn(alt.dispatcher, 'dispatch');
   });
 
-  describe('fetchDateRanges', () => {
-    it('gets a list of date range options', () => {
+  describe('date range options', () => {
+    it('fetchDateRanges gets a list of date range options', () => {
       spyOn(staticDataService, 'getDateRanges');
       staticDataActions.fetchDateRanges();
       expect(staticDataService.getDateRanges).toHaveBeenCalled();
       expect(dispatcherSpy).toHaveBeenCalled();
     });
-  }); 
 
-  describe('receiveDateRanges', () => {
-    it('dispatches the data to the store', () => {
+    it('receiveDateRanges dispatches the data to the store', () => {
       staticDataActions.receiveDateRanges('dateRanges');
       expect(dispatcherSpy).toHaveBeenCalled();
       expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('dateRanges');
+    });
+
+    it('setCurrentDateRange dispatches the id to the store', () => {
+      staticDataActions.setCurrentDateRange(45);
+      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(45);
+    });
+
+    it('updateCurrentDateRange dispatches the data to the store', () => {
+      staticDataActions.updateCurrentDateRange({fromDate: '2015-12-19'});
+      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual({fromDate: '2015-12-19'});
     });
   });
 });
