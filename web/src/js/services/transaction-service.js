@@ -3,16 +3,15 @@ import reqwest from 'reqwest';
 // import accountTransformer from '../transformers/account-transformer';
 
 class TransactionService {
-  list(accountId) {
-    console.log(accountId);
+  list(accountId, fromDate, toDate) {
     this._send({
-        url: 'http://localhost:3000/accounts/' + accountId + '/transactions',
+        url: 'http://localhost:3000/accounts/' + accountId + '/transactions?fromDate=' + fromDate + '&toDate=' + toDate,
         type: 'json',
         contentType: 'application/json',
         crossOrigin: true,
         method: 'GET',
         success: function (response) {
-          TransactionActions.listTransactions(
+          TransactionActions.receiveTransactions(
             response.transactions
             // response.accounts.map((account) => {
             //   return accountTransformer.transformFromApi(account);

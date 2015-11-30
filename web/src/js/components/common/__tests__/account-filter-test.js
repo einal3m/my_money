@@ -6,16 +6,18 @@ import { Input } from 'react-bootstrap';
 describe('AccountFilter', () => {
   describe('render', () => {
     it('has a select with account groups', () => {
+      let account = { id: 1, name: 'Account 1' };
       let accountGroups = [
         { code: 'savings', name: 'Savings', accounts: [{ id: 2, name: 'Account 2' }] },
         { code: 'other', name: 'Other', accounts: [] },
-        { code: 'share', name: 'Share', accounts: [ { id: 1, name: 'Account 1' }, { id: 3, name: 'Account 3' } ] }
+        { code: 'share', name: 'Share', accounts: [ account, { id: 3, name: 'Account 3' } ] }
       ];
 
-      let accountFilter = shallowRenderer(<AccountFilter accountGroups={accountGroups}/>);
+      let accountFilter = shallowRenderer(<AccountFilter accountGroups={accountGroups} currentAccount={account}/>);
       let dropdown = accountFilter.props.children.props.children;
 
       expect(dropdown.type).toEqual(Input);
+      expect(dropdown.props.defaultValue).toEqual(account.id);
       let [accountGroup1, accountGroup2] = dropdown.props.children;
 
       expect(accountGroup1.props.label).toEqual('Savings Accounts');

@@ -58,4 +58,12 @@ describe('AccountActions', () => {
       expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(34);
     });
   });
+
+  describe('setCurrentAccount', () => {
+    it('dispatches the id to the store', () => {
+      accountActions.setCurrentAccount(45);
+      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(45);
+    });
+  });
 });

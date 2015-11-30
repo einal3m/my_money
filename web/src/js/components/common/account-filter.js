@@ -4,6 +4,10 @@ import React from 'react';
 import { Input } from 'react-bootstrap';
 
 export default class AccountFilter extends React.Component {
+  onChange(event) {
+    this.props.onChange(Number(event.target.value));
+  }
+
   renderAccountGroups() {
     let options = [];
     this.props.accountGroups.forEach((accountGroup) => {
@@ -32,7 +36,8 @@ export default class AccountFilter extends React.Component {
     return (
       <div className="row">
         <div className="form-horizontal col-xs-4">
-          <Input type="select" label="Account" labelClassName="col-xs-4" wrapperClassName="col-xs-8">
+          <Input type="select" label="Account" defaultValue={this.props.currentAccount.id} labelClassName="col-xs-4" 
+                 wrapperClassName="col-xs-8" onChange={this.onChange.bind(this)}>
             {this.renderAccountGroups()}
           </Input>
         </div>
@@ -41,14 +46,17 @@ export default class AccountFilter extends React.Component {
   }
 }
 
+let accountProps = React.PropTypes.shape({
+  id: React.PropTypes.number.isRequired,
+  name: React.PropTypes.string.isRequired
+});
+
 AccountFilter.propTypes = {
+  currentAccount: accountProps.isRequired,
   accountGroups: React.PropTypes.arrayOf(React.PropTypes.shape({
     code: React.PropTypes.string.isRequired,
     name: React.PropTypes.string.isRequired,
-    accounts: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.number.isRequired,
-      name: React.PropTypes.string.isRequired
-    })).isRequired
+    accounts: React.PropTypes.arrayOf(accountProps).isRequired
   })).isRequired
 };
 

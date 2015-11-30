@@ -18,8 +18,7 @@ class TransactionStore {
     });
   }
 
-  onListTransactions(transactions) {
-    console.log(transactions);
+  onReceiveTransactions(transactions) {
     this.setState({
       transactions: transactions,
       loading: false

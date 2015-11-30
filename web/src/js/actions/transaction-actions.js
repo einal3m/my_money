@@ -7,7 +7,7 @@ class TransactionActions {
     this.dispatch();
   }
 
-  listTransactions(transactions) {
+  receiveTransactions(transactions) {
     this.dispatch(transactions);
   }
 }

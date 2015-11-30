@@ -17,9 +17,9 @@ describe('TransactionActions', () => {
     });
   });
 
-  describe('listTransactions', () => {
+  describe('receiveTransactions', () => {
     it('dispatches the transactions to the store', () => {
-      transactionActions.listTransactions(['transactions']);
+      transactionActions.receiveTransactions(['transactions']);
       expect(dispatcherSpy).toHaveBeenCalled();
       expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(['transactions']);
     });

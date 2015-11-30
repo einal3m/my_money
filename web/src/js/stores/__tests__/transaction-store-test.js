@@ -27,14 +27,14 @@ describe('TransactionStore', () => {
     });
   });
 
-  describe('onListTransactions', () => {
+  describe('onReceiveTransactions', () => {
     let transactions;
     beforeEach(() => {
       transactions = [transaction1, transaction2];
     });
 
     it('sets loading to false and fills transactions array with transactions', () => {
-      alt.dispatcher.dispatch({action: transactionActions.LIST_TRANSACTIONS, data: transactions});
+      alt.dispatcher.dispatch({action: transactionActions.RECEIVE_TRANSACTIONS, data: transactions});
 
       expect(transactionStore.getState().transactions[0]).toEqual(transaction1);
       expect(transactionStore.getState().transactions[1]).toEqual(transaction2);

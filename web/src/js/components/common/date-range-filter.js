@@ -3,20 +3,19 @@
 import React from 'react';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import DatePicker from 'react-bootstrap-datetimepicker';
-import staticDataActions from '../../actions/static-data-actions';
-
+require("../../../css/bootstrap-datetimepicker.scss");
 
 export default class DateRangeFilter extends React.Component {
   onSelectDateRange(event) {
-    staticDataActions.setCurrentDateRange(Number(event.target.value));
+    this.props.onChange({id: Number(event.target.value)});
   }
 
   onFromDateChange(date) {
-    staticDataActions.updateCurrentDateRange({fromDate: date});
+    this.props.onChange({ fromDate: date });
   }
 
   onToDateChange(date) {
-    staticDataActions.updateCurrentDateRange({toDate: date});
+    this.props.onChange({ toDate: date });
   }
 
   renderDateRanges() {
@@ -31,7 +30,7 @@ export default class DateRangeFilter extends React.Component {
         <div className="col-xs-4">
           <div className="form-horizontal">
             <Input type="select" label="Date Range" defaultValue={this.props.currentDateRange.id} labelClassName="col-xs-4" wrapperClassName="col-xs-8"
-                onChange={this.onSelectDateRange} ref='dateRangeSelect'>
+                onChange={this.onSelectDateRange.bind(this)} ref='dateRangeSelect'>
               {this.renderDateRanges()}
             </Input>
           </div>
@@ -41,7 +40,7 @@ export default class DateRangeFilter extends React.Component {
           <div className="col-sm-9">
             <DatePicker name='fromDate' dateTime={this.props.currentDateRange.fromDate}
               format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday mode='date'
-              onChange={this.onFromDateChange}
+              onChange={this.onFromDateChange.bind(this)}
               disabled={!this.props.currentDateRange.custom} ref='fromDate' />
             <span className="help-block hidden"></span>
           </div>
@@ -51,7 +50,7 @@ export default class DateRangeFilter extends React.Component {
           <div className="col-sm-9">
             <DatePicker name='toDate' dateTime={this.props.currentDateRange.toDate}
               format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday 
-              onChange={this.onToDateChange}
+              onChange={this.onToDateChange.bind(this)}
               disabled={!this.props.currentDateRange.custom} ref='toDate' />
             <span className="help-block hidden"></span>
           </div>
@@ -70,6 +69,7 @@ let dateRangeProps = React.PropTypes.shape({
 });
 
 DateRangeFilter.propTypes = {
+  onChange: React.PropTypes.func.isRequired,
   currentDateRange: dateRangeProps.isRequired,
   dateRanges: React.PropTypes.arrayOf(dateRangeProps).isRequired
 };

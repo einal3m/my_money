@@ -10,6 +10,7 @@ class AccountStore {
       ],
       accounts: [],
       accountGroups: [],
+      currentAccount: null,
       loading: false,
       loaded: false
     };
@@ -21,6 +22,7 @@ class AccountStore {
     this.setState({
       accounts: [],
       accountGroups: [],
+      currentAccount: null,
       loading: true,
       loaded: false
     });
@@ -30,6 +32,7 @@ class AccountStore {
     this.setState({
       accounts: accounts,
       accountGroups: this._groupedAccounts(accounts),
+      currentAccount: accounts[0],
       loading: false,
       loaded: true
     });
@@ -40,8 +43,11 @@ class AccountStore {
     accounts.push(account);
     this.setState({
       accounts: accounts,
-      accountGroups: this._groupedAccounts(accounts)
+      accountGroups: this._groupedAccounts(accounts),
     });
+    if (!this.state.currentAccount) {
+      this.setState({ currentAccount: account });
+    }
   }
 
   onDeleteAccountSuccess(accountId) {
@@ -52,6 +58,21 @@ class AccountStore {
       accounts: accounts,
       accountGroups: this._groupedAccounts(accounts)
     });
+
+    if (this.state.currentAccount.id === accountId) {
+      this.setState({ currentAccount: this.state.accounts[0] });
+    }
+  }
+
+  onSetCurrentAccount(accountId) {
+    let account = this._findAccountById(accountId);
+    this.setState({ currentAccount: account });
+  }
+
+  _findAccountById(id){
+    return this.state.accounts.filter((account) => {
+      return account.id === id;
+    })[0];
   }
 
   _groupedAccounts(accounts) {

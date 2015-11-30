@@ -57,7 +57,8 @@ describe('AccountStore', () => {
 
       expect(accountStore.getState().accounts[0]).toEqual(account1);
       expect(accountStore.getState().accounts[1]).toEqual(account2);
-      expect(accountStore.getState().loading).toEqual(false);    
+      expect(accountStore.getState().currentAccount).toEqual(account1);
+      expect(accountStore.getState().loading).toEqual(false);
     });
 
     it('sets groups the accounts by account type', () => {
@@ -96,6 +97,24 @@ describe('AccountStore', () => {
       expect(accountStore.getState().accounts).toEqual([account1]);
       expect(accountStore.getState().accountGroups[0].accounts).toEqual([]);
       expect(accountStore.getState().accountGroups[1].accounts).toEqual([account1]);
+    });
+  });
+
+  describe('onSetCurrentAccount', () => {
+    it('sets the currentAccount based on id', () => {
+      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: account1});
+      alt.dispatcher.dispatch({action: accountActions.CREATE_ACCOUNT_SUCCESS, data: account2});
+      expect(accountStore.getState().currentAccount).toEqual(account1);
+
+      alt.dispatcher.dispatch({action: accountActions.SET_CURRENT_ACCOUNT, data: 12});
+      expect(accountStore.getState().currentAccount).toEqual(account2);
+
+      alt.dispatcher.dispatch({action: accountActions.DELETE_ACCOUNT_SUCCESS, data: 12});
+      expect(accountStore.getState().currentAccount).toEqual(account1);
+
+      alt.dispatcher.dispatch({action: accountActions.DELETE_ACCOUNT_SUCCESS, data: 11});
+      expect(accountStore.getState().currentAccount).toBeUndefined();
+
     });
   });
 });

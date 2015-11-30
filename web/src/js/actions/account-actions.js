@@ -28,6 +28,10 @@ class AccountActions {
   deleteAccountSuccess(accountId) {
     this.dispatch(accountId);
   }
+
+  setCurrentAccount(accountId) {
+    this.dispatch(accountId);
+  }
 }
 
 export default alt.createActions(AccountActions);
