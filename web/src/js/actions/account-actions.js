@@ -1,37 +1,46 @@
-import alt from '../alt';
-import accountService from '../services/account-service';
+import accountApi from '../services/account-api';
+import store from '../stores/store';
 
-class AccountActions {
+export class AccountActions {
   fetchAccounts() {
-    accountService.list();
-    this.dispatch();
+    accountApi.index();
   }
 
-  listAccounts(response) {
-    this.dispatch(response);
+  storeAccounts(accounts) {
+    store.dispatch({
+      type: 'SET_ACCOUNTS',
+      accounts: accounts
+    });
   }
 
   createAccount(account) {
-    accountService.create(account);
-    this.dispatch();
+    accountApi.create(account);
   }
 
-  createAccountSuccess(account) {
-    this.dispatch(account)
+  storeAccount(account) {
+    store.dispatch({
+      type: 'ADD_ACCOUNT',
+      account: account
+    });
   }
 
-  deleteAccount(accountId) {
-    accountService.destroy(accountId);
-    this.dispatch();
+  removeAccount(id) {
+    store.dispatch({
+      type: 'REMOVE_ACCOUNT',
+      id: id
+    });
   }
 
-  deleteAccountSuccess(accountId) {
-    this.dispatch(accountId);
+  deleteAccount(id) {
+    accountApi.destroy(id);
   }
 
-  setCurrentAccount(accountId) {
-    this.dispatch(accountId);
+  setCurrentAccount(id) {
+    store.dispatch({
+      type: 'SET_CURRENT_ACCOUNT',
+      id: id
+    });
   }
 }
 
-export default alt.createActions(AccountActions);
+export default new AccountActions();

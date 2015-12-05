@@ -41,6 +41,9 @@ Rails.application.routes.draw do
     resources :patterns
   end
 
+  # react bundle
+  get 'react' => 'react#index'
+
   # post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

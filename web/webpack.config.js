@@ -3,7 +3,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
   entry: "./src/js/my-money.js",
   output: {
-    filename: "public/bundle.js"
+    filename: "../public/bundle.js"
   },
   module: {
     loaders: [
@@ -18,7 +18,7 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new ExtractTextPlugin("public/bundle.css")
+    new ExtractTextPlugin("../public/bundle.css")
   ],
   resolve: {
     modulesDirectories: ['./node_modules']

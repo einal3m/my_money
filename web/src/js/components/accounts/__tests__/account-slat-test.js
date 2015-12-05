@@ -1,5 +1,6 @@
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
+import { fromJS } from 'immutable';
 import React from 'react';
 import AccountSlat from '../account-slat';
 import accountActions from '../../../actions/account-actions';
@@ -7,7 +8,7 @@ import accountActions from '../../../actions/account-actions';
 describe('AccountSlat', () => {
   let account, accountSlat;
   beforeEach(() => {
-    account = { id: 22, name: 'myAccount', bank: 'myBank', currentBalance: 6070 };
+    account = fromJS({ id: 22, name: 'myAccount', bank: 'myBank', currentBalance: 6070 });
   });
 
   describe('render', () => {
@@ -32,7 +33,7 @@ describe('AccountSlat', () => {
       it('calls the delete account service', () => {
         spyOn(accountActions, 'deleteAccount');
         accountSlat.refs.accountActionsButton.props.onSelect(null, '3');
-        expect(accountActions.deleteAccount).toHaveBeenCalledWith(account.id);
+        expect(accountActions.deleteAccount).toHaveBeenCalledWith(22);
       });
     });
   });

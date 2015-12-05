@@ -1,69 +1,74 @@
-import alt from '../../alt';
 import accountActions from '../account-actions';
-import accountService from '../../services/account-service';
+import accountApi from '../../services/account-api';
+import store from '../../stores/store';
 
 describe('AccountActions', () => {
   let dispatcherSpy;
   beforeEach(() => {
-    dispatcherSpy = spyOn(alt.dispatcher, 'dispatch');
+    dispatcherSpy = spyOn(store, 'dispatch');
   });
 
   describe('fetchAccounts', () => {
     it('retrieves a list of accounts', () => {
-      spyOn(accountService, 'list');
+      spyOn(accountApi, 'index');
       accountActions.fetchAccounts();
-      expect(accountService.list).toHaveBeenCalled();
-      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(accountApi.index).toHaveBeenCalled();
     });
   });
 
-  describe('listAccounts', () => {
-    it('just dispatches', () => {
-      accountActions.listAccounts('accounts');
-      expect(dispatcherSpy).toHaveBeenCalled();
-      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('accounts');
+  describe('storeAccounts', () => {
+    it('it dispatches accounts to the store', () => {
+      accountActions.storeAccounts(['account']);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_ACCOUNTS',
+        accounts: ['account']
+      });
     });
   });
 
   describe('createAccount', () => {
     it('calls the account service to create the account', () => {
-      spyOn(accountService, 'create');
+      spyOn(accountApi, 'create');
       accountActions.createAccount('account');
-      expect(accountService.create).toHaveBeenCalledWith('account');
-      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(accountApi.create).toHaveBeenCalledWith('account');
     });
   });
 
-  describe('createAccountSuccess', () => {
-    it('just dispatches with account', () => {
-      accountActions.createAccountSuccess('accounts');
-      expect(dispatcherSpy).toHaveBeenCalled();
-      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual('accounts');
+  describe('storeAccount', () => {
+    it('dispatches the account to the store', () => {
+      accountActions.storeAccount('account');
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'ADD_ACCOUNT',
+        account: 'account'
+      });
     });
   });
 
   describe('deleteAccount', () => {
     it('calls the account service to delete the account', () => {
-      spyOn(accountService, 'destroy');
+      spyOn(accountApi, 'destroy');
       accountActions.deleteAccount(34);
-      expect(accountService.destroy).toHaveBeenCalledWith(34);
-      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(accountApi.destroy).toHaveBeenCalledWith(34);
     });
   });
 
-  describe('deleteAccountSuccess', () => {
-    it('just dispatches with account id', () => {
-      accountActions.deleteAccountSuccess(34);
-      expect(dispatcherSpy).toHaveBeenCalled();
-      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(34);
+  describe('removeAccount', () => {
+    it('dispatches store with account id', () => {
+      accountActions.removeAccount(34);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'REMOVE_ACCOUNT',
+        id: 34
+      });
     });
   });
 
   describe('setCurrentAccount', () => {
     it('dispatches the id to the store', () => {
       accountActions.setCurrentAccount(45);
-      expect(dispatcherSpy).toHaveBeenCalled();
-      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(45);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_CURRENT_ACCOUNT',
+        id: 45
+      });
     });
   });
 });

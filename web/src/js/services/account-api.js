@@ -1,9 +1,11 @@
-import AccountActions from '../actions/account-actions';
+import accountActions from '../actions/account-actions';
 import reqwest from 'reqwest';
 import accountTransformer from '../transformers/account-transformer';
+import store from '../stores/store';
+
 
 class AccountService {
-  list() {
+  index() {
     this._send({
         url: 'http://localhost:3000/accounts',
         type: 'json',
@@ -11,11 +13,7 @@ class AccountService {
         crossOrigin: true,
         method: 'GET',
         success: function (response) {
-          AccountActions.listAccounts(
-            response.accounts.map((account) => {
-              return accountTransformer.transformFromApi(account);
-            })
-          )
+          accountActions.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)));
         }
     });
   }
@@ -27,7 +25,7 @@ class AccountService {
         method: 'POST',
         data: {account: accountTransformer.transformToApi(account)},
         success: function (response) {
-          AccountActions.createAccountSuccess(accountTransformer.transformFromApi(response.account))
+          accountActions.storeAccount(accountTransformer.transformFromApi(response.account))
         }
     });
   }
@@ -40,7 +38,7 @@ class AccountService {
         success: function (response) {
           let splitResponse = response.responseURL.split( '/' );
           let accountId = splitResponse[splitResponse.length-1];
-          AccountActions.deleteAccountSuccess(Number(accountId));
+          accountActions.removeAccount(Number(accountId));
         }
     });
   }

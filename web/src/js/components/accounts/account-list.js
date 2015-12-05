@@ -1,8 +1,8 @@
 'use strict';
 
-import connectToStores from 'alt/utils/connectToStores';
+import {connect} from 'react-redux';
 import React from 'react';
-import AccountStore from '../../stores/account-store';
+import { toJS } from 'immutable';
 import accountActions from '../../actions/account-actions';
 import PageHeader from '../common/page-header';
 import AccountGroup from './account-group';
@@ -11,21 +11,9 @@ import NewAccountModal from './new-account-modal';
 require("../../../css/common.scss");
 
 export class AccountList extends React.Component {
-
-  static getStores(props) {
-    return [AccountStore]
-  }
-
-  static getPropsFromStores(props) {
-    return AccountStore.getState()
-  }
-
-  static componentDidConnect(props) {
-    accountActions.fetchAccounts();
-  }
-
   constructor() {
     super();
+    accountActions.fetchAccounts();
     this.state = {
       showNewAccountModal: false
     }
@@ -51,11 +39,12 @@ export class AccountList extends React.Component {
   }
 
   renderAccountGroups() {
-    return this.props.accountGroups.filter((accountGroup) => {
-      return accountGroup.accounts.length > 0;
-    }).map((accountGroup) => {
-      return <AccountGroup key={accountGroup.code} accountGroup={accountGroup} accounts={accountGroup.accounts} />;
-    });
+    return this.props.accountTypes.filter(
+      accountType => this.props.accountGroups.get(accountType.get('code'))
+    ).map(accountType => {
+      let accounts = this.props.accountGroups.get(accountType.get('code'));
+      return <AccountGroup key={accountType.get('code')} accountType={accountType} accounts={accounts} />;
+    }).toJS();
   }
 
   renderNewAccountModal() {
@@ -102,4 +91,11 @@ export class AccountList extends React.Component {
   }
 }
 
-export default connectToStores(AccountList);
+function mapStateToProps(state) {
+  return {
+    accountGroups: state.get('accountGroups'),
+    accountTypes: state.get('accountTypes')
+  };
+}
+
+export default connect(mapStateToProps)(AccountList);

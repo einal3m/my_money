@@ -1,6 +1,7 @@
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import React from 'react';
+import { fromJS } from 'immutable';
 import { AccountList } from '../account-list';
 import AccountGroup from '../account-group';
 import PageHeader from '../../common/page-header';
@@ -8,15 +9,20 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import accountActions from '../../../actions/account-actions';
 
 describe('AccountList', () => {
-  let accountGroups, accountList;
+  let accountGroups, accountTypes, accountList;
   beforeEach(() => {
-    accountGroups = [
-      {code: 'savings', accounts: [{id: 1, name: 'Account 2', currentBalance: 678}]},
-      {code: 'other', accounts: []},
-      {code: 'shares', accounts: [{id: 2, name: 'Account 1', currentBalance: 0}]},
-    ];
+    accountTypes = fromJS([
+      { id: 1, code: 'savings', name: 'Savings' },
+      { id: 3, code: 'other', name: 'Other' },
+      { id: 2, code: 'share', name: 'Share' }
+    ]);
 
-    accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups}/>);
+    accountGroups = fromJS({
+      'savings': [{id: 1, name: 'Account 2', currentBalance: 678}],
+      'share': [{id: 2, name: 'Account 1', currentBalance: 0}]
+    });
+
+    accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups} accountTypes={accountTypes}/>);
   });
 
   it('has a header with new account dropdown button', () => {
@@ -38,13 +44,15 @@ describe('AccountList', () => {
 
     expect(list.props.children.length).toEqual(2);
     expect(list.props.children[0].type).toEqual(AccountGroup);
-    expect(list.props.children[0].props.accountGroup).toEqual(accountGroups[0]);
-    expect(list.props.children[1].props.accountGroup).toEqual(accountGroups[2]);
+    expect(list.props.children[0].props.accountType).toEqual(accountTypes.get(0));
+    expect(list.props.children[0].props.accounts).toEqual(accountGroups.get('savings'));
+    expect(list.props.children[1].props.accountType).toEqual(accountTypes.get(2));
+    expect(list.props.children[1].props.accounts).toEqual(accountGroups.get('share'));
   });
 
   describe('new account modal', () => {
     beforeEach(() => {
-      accountList = TestUtils.renderIntoDocument(<AccountList loading={false} accountGroups={accountGroups}/>);
+      accountList = TestUtils.renderIntoDocument(<AccountList loading={false} accountGroups={accountGroups} accountTypes={accountTypes}/>);
     });
 
     it('does not show modal by default', () => {

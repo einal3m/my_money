@@ -27,6 +27,8 @@ module.exports = function(config) {
       watch: true
     },
 
+    autoWatch: true,
+
     reporters: ['progress'],
 
     webpackMiddlewareServer: {

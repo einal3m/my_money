@@ -1,15 +1,20 @@
 'use strict';
 import React from 'react';
 import { MenuItem, DropdownButton, Menu, Glyphicon } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import moneyUtil from '../../util/money-util';
 import accountActions from '../../actions/account-actions';
+import transactionActions from '../../actions/transaction-actions';
 require("../../../css/common.scss");
 require('../../../images/piggy-bank.gif');
 
 export default class AccountSlat extends React.Component {
   accountActions(event, eventKey) {
+    if (eventKey === '1') {
+      transactionActions.fetchTransactions(this.props.account.get('id'));
+    }
     if (eventKey === '3') {
-      accountActions.deleteAccount(this.props.account.id);
+      accountActions.deleteAccount(this.props.account.get('id'));
     }
   } 
 
@@ -32,7 +37,7 @@ export default class AccountSlat extends React.Component {
     return (
       <DropdownButton title="..." pullRight noCaret id={'action-button-' + this.props.account.id} 
                       ref='accountActionsButton' onSelect={this.accountActions.bind(this)}>
-        <MenuItem eventKey="1">View Transactions</MenuItem>
+        <LinkContainer to="/transactions"><MenuItem eventKey='1'>View Transactions</MenuItem></LinkContainer>
         <MenuItem eventKey="2">Edit Account Details</MenuItem>
         <MenuItem eventKey="3">Delete Account</MenuItem>
       </DropdownButton>
@@ -40,7 +45,7 @@ export default class AccountSlat extends React.Component {
   }
 
   renderCurrentBalance() {
-    let currentBalanceDollars = moneyUtil.centsToDollars(this.props.account.currentBalance);
+    let currentBalanceDollars = moneyUtil.centsToDollars(this.props.account.get('currentBalance'));
     return moneyUtil.moneyFormat(currentBalanceDollars);
   }
 
@@ -49,13 +54,13 @@ export default class AccountSlat extends React.Component {
       <li className='slat-item'>
         <div className="row">
           <div className="slat-icon col-sm-1 col-xs-2">
-            {this.renderSlatImage(this.props.account.accountType)}
+            {this.renderSlatImage(this.props.account.get('accountType'))}
           </div>
           <div className="slat-detail col-sm-11 col-xs-10">
             <div className="row">
               <div className="col-xs-4 col-sm-6">
-                <h4>{this.props.account.name}</h4>
-                <span className="text-muted">{this.props.account.bank}</span>
+                <h4>{this.props.account.get('name')}</h4>
+                <span className="text-muted">{this.props.account.get('bank')}</span>
               </div>
               <div className="currency col-xs-4 col-sm-5">
                 <h3>{this.renderCurrentBalance()}</h3>
@@ -71,12 +76,12 @@ export default class AccountSlat extends React.Component {
   }
 }
 
-AccountSlat.propTypes = {
-  account: React.PropTypes.shape({
-    id: React.PropTypes.number.isRequired,
-    name: React.PropTypes.string.isRequired,
-    bank: React.PropTypes.string,
-    currentBalance: React.PropTypes.number.isRequired
-  })
-};
+// AccountSlat.propTypes = {
+//   account: React.PropTypes.shape({
+//     id: React.PropTypes.number.isRequired,
+//     name: React.PropTypes.string.isRequired,
+//     bank: React.PropTypes.string,
+//     currentBalance: React.PropTypes.number.isRequired
+//   })
+// };
 
