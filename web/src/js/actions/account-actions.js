@@ -2,8 +2,8 @@ import accountApi from '../services/account-api';
 import store from '../stores/store';
 
 export class AccountActions {
-  fetchAccounts() {
-    accountApi.index();
+  fetchAccounts(callback) {
+    accountApi.index(callback);
   }
 
   storeAccounts(accounts) {

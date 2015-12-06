@@ -9,7 +9,8 @@ describe('accountApi', () => {
 
   describe('index', () => {
     it('makes an ajax request to GET/accounts', () => {
-      accountApi.index();
+      let callBackSpy = jasmine.createSpy('successCallBack');
+      accountApi.index(callBackSpy);
 
       let requestParams = accountApi._send.calls.argsFor(0)[0];
       expect(requestParams.url).toEqual('http://localhost:3000/accounts');
@@ -20,6 +21,7 @@ describe('accountApi', () => {
       requestParams.success({accounts: ['account']});
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
+      expect(callBackSpy).toHaveBeenCalled();
     });
   });
 

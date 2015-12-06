@@ -2,8 +2,8 @@ import dateRangeApi from '../services/date-range-api';
 import store from '../stores/store';
 
 class DateRangeActions {
-  fetchDateRanges() {
-    dateRangeApi.index();
+  fetchDateRanges(callBack) {
+    dateRangeApi.index(callBack);
   }
 
   storeDateRanges(dateRanges) {

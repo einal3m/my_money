@@ -69,7 +69,7 @@ describe('SearchCriteria', () => {
       spyOn(transactionActions, 'fetchTransactions');
       searchCriteria.onAccountChange(3);
       expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(3);
-      // expect(transactionActions.fetchTransactions).toHaveBeenCalledWith(3, '2014-06-23', '2014-09-03');
+      expect(transactionActions.fetchTransactions).toHaveBeenCalled();
     });
 
     describe('onDateRangeChange', () => {
@@ -78,7 +78,7 @@ describe('SearchCriteria', () => {
         spyOn(transactionActions, 'fetchTransactions');
         searchCriteria.onDateRangeChange({id: 11});
         expect(staticDataActions.setCurrentDateRange).toHaveBeenCalledWith(11);
-        // expect(transactionActions.fetchTransactions).toHaveBeenCalledWith(1, '2015-07-01', '2015-08-03');
+        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
       });
 
       it('from date change updates current date range and fetches transactions', () => {
@@ -86,7 +86,7 @@ describe('SearchCriteria', () => {
         spyOn(transactionActions, 'fetchTransactions');
         searchCriteria.onDateRangeChange({fromDate: '2001-09-08'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({fromDate: '2001-09-08'});
-        // expect(transactionActions.fetchTransactions).toHaveBeenCalledWith(1, '2001-09-08', '2014-09-03');
+        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
       });
 
       it('to date change updates current date range and fetches transactions', () => {
@@ -94,7 +94,7 @@ describe('SearchCriteria', () => {
         spyOn(transactionActions, 'fetchTransactions');
         searchCriteria.onDateRangeChange({toDate: '2001-09-24'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({toDate: '2001-09-24'});
-        // expect(transactionActions.fetchTransactions).toHaveBeenCalledWith(1, '2014-06-23', '2001-09-24');
+        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
       });
     });
   });

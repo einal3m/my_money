@@ -3,7 +3,7 @@ import dateRangeTransformer from '../transformers/date-range-transformer';
 import reqwest from 'reqwest';
 
 class DateRangeApi {
-  index() {
+  index(successCallback) {
     this._send({
         url: 'http://localhost:3000/date_range_options',
         type: 'json',
@@ -15,7 +15,10 @@ class DateRangeApi {
             response.date_range_options.map((dateRange) => {
               return dateRangeTransformer.transformDateRange(dateRange)
             })
-          )
+          );
+          if (successCallBack) {
+            successCallBack();
+          }
         }
     });
   }

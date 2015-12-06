@@ -5,7 +5,7 @@ import store from '../stores/store';
 
 
 class AccountService {
-  index() {
+  index(successCallBack) {
     this._send({
         url: 'http://localhost:3000/accounts',
         type: 'json',
@@ -14,6 +14,9 @@ class AccountService {
         method: 'GET',
         success: function (response) {
           accountActions.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)));
+          if (successCallBack) {
+            successCallBack();
+          }
         }
     });
   }

@@ -10,7 +10,7 @@ export class TransactionTable extends React.Component {
     return (
       <div>
         Transaction Table
-        {this.props.transactions.toJS()}
+        {this.props.transactions.size}
       </div>
     );
   }

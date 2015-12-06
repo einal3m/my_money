@@ -1,21 +1,17 @@
-import TransactionActions from '../actions/transaction-actions';
+import transactionActions from '../actions/transaction-actions';
 import reqwest from 'reqwest';
-// import accountTransformer from '../transformers/account-transformer';
 
-class TransactionService {
+class TransactionApi {
   index(accountId, fromDate, toDate) {
     this._send({
-        url: 'http://localhost:3000/accounts/' + accountId + '/transactions?fromDate=' + fromDate + '&toDate=' + toDate,
+        url: 'http://localhost:3000/accounts/' + accountId + '/transactions?from_date=' + fromDate + '&to_date=' + toDate,
         type: 'json',
         contentType: 'application/json',
         crossOrigin: true,
         method: 'GET',
         success: function (response) {
-          TransactionActions.storeTransactions(
+          transactionActions.storeTransactions(
             response.transactions
-            // response.accounts.map((account) => {
-            //   return accountTransformer.transformFromApi(account);
-            // })
           )
         }
     });
@@ -26,4 +22,4 @@ class TransactionService {
   }
 }
 
-export default new TransactionService();
+export default new TransactionApi();

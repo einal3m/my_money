@@ -9,7 +9,8 @@ describe('DateRangeApi', () => {
 
   describe('index', () => {
     it('makes an ajax request to GET/date_range_options', () => {
-      dateRangeApi.index();
+      let callBackSpy = jasmine.createSpy('successCallBack');
+      dateRangeApi.index(callBackSpy);
 
       let requestParams = dateRangeApi._send.calls.argsFor(0)[0];
       expect(requestParams.url).toEqual('http://localhost:3000/date_range_options');
@@ -19,6 +20,7 @@ describe('DateRangeApi', () => {
       spyOn(dateRangeTransfomer, 'transformDateRange').and.returnValue('transformedDateRange');
       requestParams.success({date_range_options: ['dateRanges']});
       expect(dateRangeActions.storeDateRanges).toHaveBeenCalledWith(['transformedDateRange']);
+      expect(callBackSpy).toHaveBeenCalled();
     });
   });
 });
