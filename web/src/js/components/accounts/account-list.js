@@ -93,8 +93,8 @@ export class AccountList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    accountGroups: state.get('accountGroups'),
-    accountTypes: state.get('accountTypes')
+    accountGroups: state.accountStore.get('accountGroups'),
+    accountTypes: state.accountStore.get('accountTypes')
   };
 }
 

@@ -1,4 +1,10 @@
-import { createStore } from 'redux';
-import reducer from './account-reducer';
+import { createStore, combineReducers } from 'redux';
+import accountReducer from './account-reducer';
+import dateRangeReducer from './date-range-reducer';
 
-export default createStore(reducer);
+export default createStore(
+  combineReducers({
+    accountStore: accountReducer,
+    dateRangeStore: dateRangeReducer
+  })
+);

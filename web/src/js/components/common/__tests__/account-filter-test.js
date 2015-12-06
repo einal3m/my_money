@@ -6,7 +6,7 @@ import { Input } from 'react-bootstrap';
 import { fromJS } from 'immutable';
 
 describe('AccountFilter', () => {
-  let accountTypes, accountGroup, currentAccount;
+  let accountTypes, accountGroups, currentAccount;
   beforeEach(() => {
     accountTypes = fromJS([
       { id: 1, code: 'savings', name: 'Savings' },

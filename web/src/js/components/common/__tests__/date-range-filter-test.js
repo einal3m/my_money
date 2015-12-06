@@ -3,15 +3,16 @@ import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import DateRangeFilter from '../date-range-filter';
 import { Input, Button } from 'react-bootstrap';
+import { fromJS } from 'immutable';
 import DatePicker from 'react-bootstrap-datetimepicker';
 
 describe('DateRangeFilter', () => {
   let dateRanges, onChangeSpy;
   beforeEach(() => {
-    dateRanges = [
+    dateRanges = fromJS([
       { id: 11, name: 'Name1', custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
       { id: 22, name: 'Name2', custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' }
-    ];
+    ]);
 
     onChangeSpy = jasmine.createSpy('onChangeSpy');
   });
@@ -19,7 +20,7 @@ describe('DateRangeFilter', () => {
   describe('render', () => {
     it('has a select with date range options', () => {
       let dateRangeFilter = shallowRenderer(
-        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges[1]} onChange={onChangeSpy} />
+        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} onChange={onChangeSpy} />
       );
 
       let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
@@ -35,7 +36,7 @@ describe('DateRangeFilter', () => {
 
     it('disables the from and to date if date range is not custom', () => {
       let dateRangeFilter = shallowRenderer(
-        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges[1]} onChange={onChangeSpy} />
+        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} onChange={onChangeSpy} />
       );
       let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
@@ -52,7 +53,7 @@ describe('DateRangeFilter', () => {
 
     it('enables the from and to date if date range is custom', () => {
       let dateRangeFilter = shallowRenderer(
-        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges[0]} onChange={onChangeSpy} />
+        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges.get(0)} onChange={onChangeSpy} />
       );
       let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
@@ -71,7 +72,7 @@ describe('DateRangeFilter', () => {
   describe('select date range', () => {
     it('calls an action', () => {
       let dateRangeFilter = TestUtils.renderIntoDocument(
-        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges[1]} onChange={onChangeSpy} />
+        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} onChange={onChangeSpy} />
       );
 
       dateRangeFilter.refs.dateRangeSelect.props.onChange({target: {value: '1'}});
@@ -82,7 +83,7 @@ describe('DateRangeFilter', () => {
   describe('change from date', () => {
     it('updates store date ranges', () => {
       let dateRangeFilter = TestUtils.renderIntoDocument(
-        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges[0]} onChange={onChangeSpy} />
+        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges.get(0)} onChange={onChangeSpy} />
       );
 
       dateRangeFilter.refs.fromDate.props.onChange('2000-07-14');
@@ -93,7 +94,7 @@ describe('DateRangeFilter', () => {
   describe('change to date', () => {
     it('updates store date ranges', () => {
       let dateRangeFilter = TestUtils.renderIntoDocument(
-        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges[0]} onChange={onChangeSpy} />
+        <DateRangeFilter dateRanges={dateRanges} currentDateRange={dateRanges.get(0)} onChange={onChangeSpy} />
       );
 
       dateRangeFilter.refs.toDate.props.onChange('2000-07-15');

@@ -1,6 +1,6 @@
-import staticDataTransformer from '../static-data-transformer';
+import dateRangeTransformer from '../date-range-transformer';
 
-describe('StaticDataTransformer', () => {
+describe('DateRangeTransformer', () => {
   describe('transformFromApi', () => {
     it('converts date ranges from API format', () => {
       let dateRange = {
@@ -12,7 +12,7 @@ describe('StaticDataTransformer', () => {
         to_date: '2015-11-30'
       }
 
-      let transformedDateRange = staticDataTransformer.transformDateRange(dateRange);
+      let transformedDateRange = dateRangeTransformer.transformDateRange(dateRange);
 
       expect(transformedDateRange.id).toEqual(11);
       expect(transformedDateRange.name).toEqual('Current Month');

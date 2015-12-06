@@ -1,5 +1,5 @@
 
-let staticDataTransformer = {
+let dateRangeTransformer = {
   transformDateRange(dateRange) {
     return {
       id: dateRange.id,
@@ -12,4 +12,4 @@ let staticDataTransformer = {
   }
 }
 
-export default staticDataTransformer;
+export default dateRangeTransformer;
