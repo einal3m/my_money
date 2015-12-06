@@ -1,27 +1,28 @@
-import alt from '../../alt';
 import transactionActions from '../transaction-actions';
-import transactionService from '../../services/transaction-service';
+import transactionApi from '../../services/transaction-api';
+import store from '../../stores/store';
 
 describe('TransactionActions', () => {
   let dispatcherSpy;
   beforeEach(() => {
-    dispatcherSpy = spyOn(alt.dispatcher, 'dispatch');
+    dispatcherSpy = spyOn(store, 'dispatch');
   });
 
   describe('fetchTransactions', () => {
     it('retrieves a list of transactions', () => {
-      spyOn(transactionService, 'list');
+      spyOn(transactionApi, 'index');
       transactionActions.fetchTransactions(56);
-      expect(transactionService.list).toHaveBeenCalledWith(56);
-      expect(dispatcherSpy).toHaveBeenCalled();
+      expect(transactionApi.index).toHaveBeenCalledWith(56);
     });
   });
 
-  describe('receiveTransactions', () => {
+  describe('storeTransactions', () => {
     it('dispatches the transactions to the store', () => {
-      transactionActions.receiveTransactions(['transactions']);
-      expect(dispatcherSpy).toHaveBeenCalled();
-      expect(dispatcherSpy.calls.mostRecent().args[0].data).toEqual(['transactions']);
+      transactionActions.storeTransactions(['transactions']);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_TRANSACTIONS',
+        transactions: ['transactions']
+      });
     });
   });
 });

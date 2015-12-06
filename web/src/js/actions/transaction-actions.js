@@ -1,15 +1,18 @@
 import alt from '../alt';
-import transactionService from '../services/transaction-service';
+import transactionApi from '../services/transaction-api';
+import store from '../stores/store';
 
 class TransactionActions {
   fetchTransactions(accountId) {
-    transactionService.list(accountId);
-    this.dispatch();
+    transactionApi.index(accountId);
   }
 
-  receiveTransactions(transactions) {
-    this.dispatch(transactions);
+  storeTransactions(transactions) {
+    store.dispatch({
+      type: 'SET_TRANSACTIONS',
+      transactions: transactions
+    });
   }
 }
 
-export default alt.createActions(TransactionActions);
+export default new TransactionActions();
