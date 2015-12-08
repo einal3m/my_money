@@ -16,8 +16,8 @@ class DateRangeApi {
               return dateRangeTransformer.transformDateRange(dateRange)
             })
           );
-          if (successCallBack) {
-            successCallBack();
+          if (successCallback) {
+            successCallback();
           }
         }
     });

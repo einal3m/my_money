@@ -8,6 +8,10 @@ let moneyUtil = {
   moneyFormat(dollars) {
     return accounting.formatMoney(dollars, 
       {precision: 2, format: { pos : "%s %v", neg : "%s (%v)", zero: "%s  --" }});
+  },
+
+  numberFormat(dollars) {
+    return accounting.formatNumber(Math.abs(dollars), 2, ',');
   }
 };
 
