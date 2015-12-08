@@ -3,7 +3,7 @@
 import React from 'react';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import { toJS } from 'immutable';
-import DatePicker from 'react-bootstrap-datetimepicker';
+import DatePicker from './date-picker/DateTimeField';
 require("../../../css/bootstrap-datetimepicker.scss");
 
 export default class DateRangeFilter extends React.Component {

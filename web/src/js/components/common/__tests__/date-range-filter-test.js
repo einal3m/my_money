@@ -4,7 +4,7 @@ import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import DateRangeFilter from '../date-range-filter';
 import { Input, Button } from 'react-bootstrap';
 import { fromJS } from 'immutable';
-import DatePicker from 'react-bootstrap-datetimepicker';
+import DatePicker from '../date-picker/DateTimeField';
 
 describe('DateRangeFilter', () => {
   let dateRanges, onChangeSpy;
