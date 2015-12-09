@@ -10,7 +10,7 @@ import dateRangeActions from '../../actions/date-range-actions';
 
 import AccountFilter from '../common/account-filter';
 import DateRangeFilter from '../common/date-range-filter';
-require("../../../css/common.scss");
+require("../../../css/transaction.scss");
 
 export class SearchCriteria extends React.Component {
 
@@ -55,7 +55,7 @@ export class SearchCriteria extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id='search-criteria'>
         {this.renderCriteria()}
       </div>
     );

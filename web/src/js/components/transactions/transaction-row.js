@@ -17,19 +17,33 @@ export default class TransactionRow extends React.Component {
   }
 
   renderBalance(balance) {
-    return moneyUtil.moneyFormat(moneyUtil.centsToDollars(balance));
+    let formattedAmount = moneyUtil.numberFormat(moneyUtil.centsToDollars(balance));
+
+    let cents = formattedAmount.substr(formattedAmount.length-2, 2);
+    let dollars = formattedAmount.substr(0, formattedAmount.length-3);
+
+    let rightBracket;
+    if (balance < 0) {
+      dollars = '(' + dollars;
+      rightBracket = <span className='dollars'>)</span>;   
+    }
+    dollars = '$' + dollars;
+    return <span><span className='dollars'>{dollars}</span>.<span className='cents'>{cents}</span>{rightBracket}</span>;
   }
 
-  renderMoneyIn(amount) {
+  renderAmount(amount) {
+    let sign;
+    let formattedAmount = moneyUtil.numberFormat(moneyUtil.centsToDollars(amount));
+
+    let cents = formattedAmount.substr(formattedAmount.length-2, 2);
+    let dollars = formattedAmount.substr(0, formattedAmount.length-3);
+
     if (amount > 0) {
-      return moneyUtil.numberFormat(moneyUtil.centsToDollars(amount));
+      sign = <span className='positive'>+</span>;
+    } else if (amount < 0) {
+      sign = <span className='negative'>-</span>;
     }
-  }
-
-  renderMoneyOut(amount) {
-    if (amount < 0) {
-      return moneyUtil.numberFormat(moneyUtil.centsToDollars(amount));
-    }
+    return <span>{sign} <span className='dollars'>{dollars}</span>.<span className='cents'>{cents}</span></span>;
   }
 
   render() {
@@ -37,9 +51,8 @@ export default class TransactionRow extends React.Component {
       <tr>
         <td>{this.renderDate(this.props.transaction.get('date'))}</td>
         <td>{this.renderMemoNotes(this.props.transaction.get('memo'), this.props.transaction.get('notes'))}</td>
-        <td>{this.renderMoneyIn(this.props.transaction.get('amount'))}</td>
-        <td>{this.renderMoneyOut(this.props.transaction.get('amount'))}</td>
-        <td>{this.renderBalance(this.props.transaction.get('balance'))}</td>
+        <td className='currency'>{this.renderAmount(this.props.transaction.get('amount'))}</td>
+        <td className='currency'>{this.renderBalance(this.props.transaction.get('balance'))}</td>
       </tr>
     );
   }

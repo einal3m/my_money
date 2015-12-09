@@ -40,12 +40,12 @@ describe('DateRangeFilter', () => {
       );
       let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
-      let fromDateInput = fromDate.props.children[1].props.children[0];
+      let fromDateInput = fromDate.props.children.props.children.props.children[1].props.children[0];
       expect(fromDateInput.type).toEqual(DatePicker);
       expect(fromDateInput.props.dateTime).toEqual('2014-06-23');
       expect(fromDateInput.props.disabled).toEqual(true);
 
-      let toDateInput = toDate.props.children[1].props.children[0];
+      let toDateInput = toDate.props.children.props.children.props.children[1].props.children[0];
       expect(toDateInput.type).toEqual(DatePicker);
       expect(toDateInput.props.dateTime).toEqual('2014-09-03');
       expect(fromDateInput.props.disabled).toEqual(true);
@@ -57,12 +57,12 @@ describe('DateRangeFilter', () => {
       );
       let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
-      let fromDateInput = fromDate.props.children[1].props.children[0];
+      let fromDateInput = fromDate.props.children.props.children.props.children[1].props.children[0];
       expect(fromDateInput.type).toEqual(DatePicker);
       expect(fromDateInput.props.dateTime).toEqual('2015-07-01');
       expect(fromDateInput.props.disabled).toEqual(false);
 
-      let toDateInput = toDate.props.children[1].props.children[0];
+      let toDateInput = toDate.props.children.props.children.props.children[1].props.children[0];
       expect(toDateInput.type).toEqual(DatePicker);
       expect(toDateInput.props.dateTime).toEqual('2015-08-03');
       expect(fromDateInput.props.disabled).toEqual(false);

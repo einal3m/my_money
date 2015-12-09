@@ -1,0 +1,51 @@
+@import 'colours';
+$panel-border-radius: 0;
+$panel-default-heading-bg: $main-color;
+
+#search-criteria {
+  padding-top: 15px;
+  select:focus, input:focus {
+    border-color: $main-color;
+  }
+}
+
+table#transaction-table {
+  thead {
+    border-top: 2px solid $main-color;
+    th {
+      font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      line-height: 22px;
+      vertical-align: middle;
+      border-bottom: 2px solid $main-color;
+    }
+  }
+  tbody {
+    tr:hover {
+      background-color: $main-color-very-light;
+    }
+  }
+
+  .currency {
+    width: 120px;
+  }
+
+  .date {
+    width: 120px;
+  }
+
+  .positive {
+    font-weight: bold;
+    color: $main-color;
+  }
+
+  .negative {
+    font-weight: bold;
+    font-size: 16px;
+    color: #C04750;
+  }
+
+  .dollars {
+    font-size: larger;
+  }
+}

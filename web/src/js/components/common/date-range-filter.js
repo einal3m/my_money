@@ -37,23 +37,31 @@ export default class DateRangeFilter extends React.Component {
           </div>
         </div>
         <div className="col-xs-4">
-          <label htmlFor="from_date" className="col-sm-3 control-label">From</label>
-          <div className="col-sm-9">
-            <DatePicker name='fromDate' dateTime={this.props.currentDateRange.get('fromDate')}
-              format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday mode='date'
-              onChange={this.onFromDateChange.bind(this)}
-              disabled={!this.props.currentDateRange.get('custom')} ref='fromDate' />
-            <span className="help-block hidden"></span>
+          <div className="form-horizontal">
+            <div className="form-group">
+              <label htmlFor="from_date" className="col-sm-3 control-label">From</label>
+              <div className="col-sm-9">
+                <DatePicker name='fromDate' dateTime={this.props.currentDateRange.get('fromDate')}
+                  format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday mode='date'
+                  onChange={this.onFromDateChange.bind(this)}
+                  disabled={!this.props.currentDateRange.get('custom')} ref='fromDate' />
+                <span className="help-block hidden"></span>
+              </div>
+            </div>
           </div>
         </div>
         <div className="col-xs-4">
-          <label htmlFor="to_date" className="col-sm-3 control-label">To</label>
-          <div className="col-sm-9">
-            <DatePicker name='toDate' dateTime={this.props.currentDateRange.get('toDate')}
-              format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday 
-              onChange={this.onToDateChange.bind(this)}
-              disabled={!this.props.currentDateRange.get('custom')} ref='toDate' />
-            <span className="help-block hidden"></span>
+          <div className="form-horizontal">
+            <div className="form-group">
+              <label htmlFor="to_date" className="col-sm-3 control-label">To</label>
+              <div className="col-sm-9">
+                <DatePicker name='toDate' dateTime={this.props.currentDateRange.get('toDate')}
+                  format='YYYY-MM-DD' inputFormat='DD-MMM-YYYY' showToday 
+                  onChange={this.onToDateChange.bind(this)}
+                  disabled={!this.props.currentDateRange.get('custom')} ref='toDate' />
+                <span className="help-block hidden"></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

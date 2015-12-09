@@ -19,25 +19,37 @@ describe('TransactionRow', () => {
   describe('render', () => {
     it('with positive amount', () => {
       transactionRow = shallowRenderer(<TransactionRow transaction={transaction} />);
-      let [date, description, moneyIn, moneyOut, balance] = transactionRow.props.children;
+      let [date, description, amountCell, balanceCell] = transactionRow.props.children;
+      let [sign, space, dollars, dot, cents] = amountCell.props.children.props.children;
 
       expect(transactionRow.type).toEqual('tr');
       expect(date.props.children).toEqual('19-Dec-2015');
       expect(description.props.children).toEqual('This is a memo/This is a note');
-      expect(moneyIn.props.children).toEqual('3.00');
-      expect(moneyOut.props.children).toBeUndefined();
-      expect(balance.props.children).toEqual('$ 60.70');
+
+      expect(sign.props.children).toEqual('+');
+      expect(dollars.props.children).toEqual('3');
+      expect(cents.props.children).toEqual('00');
+
+      [dollars, dot, cents] = balanceCell.props.children.props.children;
+      expect(dollars.props.children).toEqual('$60');
+      expect(cents.props.children).toEqual('70');
     });
 
     it('with negative amounts', () => {
       transaction = transaction.set('amount', -300);
       transaction = transaction.set('balance', -569);
       transactionRow = shallowRenderer(<TransactionRow transaction={transaction} />);
-      let [date, description, moneyIn, moneyOut, balance] = transactionRow.props.children;
+      let [date, description, amountCell, balanceCell] = transactionRow.props.children;
+      let [sign, space, dollars, dot, cents] = amountCell.props.children.props.children;
 
-      expect(moneyIn.props.children).toBeUndefined();
-      expect(moneyOut.props.children).toEqual('3.00');
-      expect(balance.props.children).toEqual('$ (5.69)');
+      expect(sign.props.children).toEqual('-');
+      expect(dollars.props.children).toEqual('3');
+      expect(cents.props.children).toEqual('00');
+
+      let [dollars, dot, cents, bracket] = balanceCell.props.children.props.children;
+      expect(dollars.props.children).toEqual('$(60');
+      expect(cents.props.children).toEqual('70');
+      expect(bracket.props.children).toEqual(')');
     });
   });
 });
