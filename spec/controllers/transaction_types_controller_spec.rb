@@ -10,7 +10,7 @@ RSpec.describe TransactionTypesController, type: :controller do
       expect(response).to be_success
 
       json = JSON.parse(response.body)
-p json
+
       expect(json['transaction_types'].length).to eq(5)
       expect(json['transaction_types'][0]['name']).to eq('Purchase')
       expect(json['transaction_types'][1]['name']).to eq('Dividend')

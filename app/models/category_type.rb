@@ -11,4 +11,12 @@ class CategoryType < ActiveRecord::Base
   scope :income, -> { find_by(name: 'Income') }
   scope :expense, -> { find_by(name: 'Expense') }
   scope :transfer, -> { find_by(name: 'Transfer') }
+
+  def code
+    name
+  end
+
+  def editable?
+    true
+  end
 end

@@ -12,7 +12,8 @@ RSpec.describe CategoryTypesController, type: :controller do
 
       json = JSON.parse(response.body)
       expect(json['category_types'].length).to eq(1)
-      expect(json['category_types'][0]).to eq(serialize_category_type(category_type))
+      expect(json['category_types'][0]['id']).to eq(category_type.id)
+      expect(json['category_types'][0]['name']).to eq(category_type.name)
     end
   end
 end
