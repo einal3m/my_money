@@ -23,5 +23,3 @@ coverage
 
 # Ignore npm modules
 web/node_modules
-bundle.js
-bundle.css
