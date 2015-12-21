@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './stores/store';
 import AccountList from './components/accounts/account-list';
 import TransactionList from './components/transactions/transaction-list';
-import CategoryList from './category-list';
+import CategoryList from './components/categories/category-list';
 import { Router, Route, Link, IndexRoute } from 'react-router';
 
 const App = React.createClass({
