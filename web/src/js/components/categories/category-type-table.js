@@ -33,8 +33,8 @@ export default class CategoryTypeTable extends React.Component {
   renderTitle() {
     return (
       <h3>
-        {this.props.categoryType.get('name')} &nbsp;
-        <Button onClick={this.newCategory.bind(this)}><Glyphicon glyph='plus' /> New</Button>
+        {this.props.categoryType.get('name')} <Button onClick={this.newCategory.bind(this)}>
+        <Glyphicon glyph='plus' /> New</Button>
       </h3>
     );
   }

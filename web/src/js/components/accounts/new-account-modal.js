@@ -32,7 +32,7 @@ export default class NewAccountModal extends React.Component {
     return (
       <div className='new-account-modal'>
         <Modal show={this.props.show} onHide={this.props.onClose} bsSize='small'>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>{this.renderTitle()}</Modal.Title>
           </Modal.Header>
           <Modal.Body>

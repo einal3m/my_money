@@ -7,6 +7,7 @@ import PageHeader from '../common/page-header';
 import CategoryTypeTable from './category-type-table';
 import categoryActions from '../../actions/category-actions';
 require("../../../css/common.scss");
+require("../../../css/categories.scss");
 
 export class CategoryList extends React.Component {
   constructor() {
@@ -32,7 +33,7 @@ export class CategoryList extends React.Component {
         <PageHeader title="my categories" />
 
         <div className="container">
-          <div className='row'>
+          <div className='row category-list'>
             {this.renderCategoryTypes()}
           </div>
         </div>

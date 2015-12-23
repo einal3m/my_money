@@ -63,8 +63,7 @@ export class AccountList extends React.Component {
     return (
       <Dropdown id='new-account' pullRight onSelect={this.showNewAccountModal.bind(this)} ref='newAccountButton'>
         <Dropdown.Toggle>
-          <Glyphicon glyph='plus' />&nbsp;
-          New Account
+          <Glyphicon glyph='plus' /> New Account
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <MenuItem eventKey='1' ref='newSavingsAccountButton'>New Savings Account</MenuItem>
