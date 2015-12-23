@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server",
+    "dist": "NODE_ENV=production webpack -p --progress --profile --colors",
     "test": "karma start karma.config.js"
   },
   "repository": {
