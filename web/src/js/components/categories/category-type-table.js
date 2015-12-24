@@ -10,7 +10,7 @@ export default class CategoryTypeTable extends React.Component {
 
   renderCategories() {
     return this.props.categories.map(category => {
-      return <tr><td>Hello</td></tr>;
+      return <tr><td>category.name</td></tr>;
     }).toJS();
   }
 

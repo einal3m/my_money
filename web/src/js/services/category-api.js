@@ -26,8 +26,7 @@ class CategoryApi {
       method: 'POST',
       data: {category: categoryTransformer.transformToApi(category)},
       success: function (response) {
-        console.log('save success', response);
-        categoryActions.storeCategory(response.category)
+        categoryActions.storeCategory(categoryTransformer.transformFromApi(response.category))
       }
     });
   }

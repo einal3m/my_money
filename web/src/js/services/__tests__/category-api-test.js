@@ -38,11 +38,11 @@ describe('categoryApi', () => {
       let requestData = requestParams.data;
       expect(requestData).toEqual({category: 'transformedToApi'});
 
-      // spyOn(categoryActions, 'storeCategory');
-      // spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
-      // requestParams.success({account: 'account'});
-      // expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
-      // expect(categoryActions.storeCategory).toHaveBeenCalledWith('transformedFromApi');
+      spyOn(categoryActions, 'storeCategory');
+      spyOn(categoryTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
+      requestParams.success({category: 'category'});
+      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('category');
+      expect(categoryActions.storeCategory).toHaveBeenCalledWith('transformedFromApi');
     });
   });
 });

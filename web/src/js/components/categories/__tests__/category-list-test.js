@@ -2,20 +2,28 @@ import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import React from 'react';
 import { CategoryList } from '../category-list';
+import CategoryTypeTable from '../category-type-table';
 import PageHeader from '../../common/page-header';
 import { fromJS } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import categoryActions from '../../../actions/category-actions';
 
 describe('CategoryList', () => {
-  let categoryList, categoryTypes;
+  let categoryList, categoryTypes, categoriesByType;
   beforeEach(() => {
     categoryTypes = fromJS([
       { code: 'income', name: 'Income' },
       { code: 'expense', name: 'Expense' }
     ]);
 
-    categoryList = shallowRenderer(<CategoryList loaded categoryTypes={categoryTypes} />);
+    categoriesByType = fromJS({
+      'income': ['incomeCategory1', 'incomeCategory2'],
+      'expense': ['expenseCategory']
+    });
+
+    categoryList = shallowRenderer(
+      <CategoryList loaded categoryTypes={categoryTypes} categoriesByType={categoriesByType}/>
+    );
   });
 
   describe('render', () => {
@@ -37,11 +45,23 @@ describe('CategoryList', () => {
       expect(buttons.props.children[1].type).toEqual(MenuItem);
       expect(buttons.props.children[1].props.children).toMatch('Expense');
     });
+
+    it('has a table for each category type', () => {
+      let tables = categoryList.props.children[1].props.children;
+      let [income, expense] = tables.props.children;
+
+      expect(income.props.children.type).toEqual(CategoryTypeTable);
+
+      expect(income.props.children.props.categoryType).toEqual(categoryTypes.get(0));
+      expect(income.props.children.props.categories.toJS()).toEqual(['incomeCategory1', 'incomeCategory2'])
+    });
   });
 
   describe('events', () => {
     beforeEach(() => {
-      categoryList = TestUtils.renderIntoDocument(<CategoryList loaded categoryTypes={categoryTypes} />);
+      categoryList = TestUtils.renderIntoDocument(
+        <CategoryList loaded categoryTypes={categoryTypes} categoriesByType={categoriesByType}/>
+      );
     });
 
     it('does not show modal by default', () => {

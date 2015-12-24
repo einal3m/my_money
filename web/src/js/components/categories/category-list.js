@@ -33,9 +33,10 @@ export class CategoryList extends React.Component {
   renderCategoryTypes() {
     if (this.props.loaded) {
       return this.props.categoryTypes.map(categoryType => {
+        let categoryTypeCode = categoryType.get('code');
         return (
-          <div key={categoryType.get('code')} className='col-sm-6'>
-            <CategoryTypeTable categoryType={categoryType} />
+          <div key={categoryTypeCode} className='col-sm-6'>
+            <CategoryTypeTable categoryType={categoryType} categories={this.props.categoriesByType.get(categoryTypeCode)}/>
           </div>
         );
       }).toJS();
@@ -97,7 +98,8 @@ export class CategoryList extends React.Component {
 function mapStateToProps(state) {
   return {
     loaded: state.categoryStore.get('loaded'),
-    categoryTypes: state.categoryStore.get('editableCategoryTypes')
+    categoryTypes: state.categoryStore.get('editableCategoryTypes'),
+    categoriesByType: state.categoryStore.get('categoriesByType')
   };
 }
 
