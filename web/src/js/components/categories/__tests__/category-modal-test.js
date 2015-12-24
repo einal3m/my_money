@@ -1,6 +1,5 @@
 import React from 'react';
 import CategoryModal from '../category-modal';
-import { fromJS } from 'immutable';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import CategoryForm from '../category-form';
@@ -8,7 +7,7 @@ import CategoryForm from '../category-form';
 describe('CategoryModal', () => {
   let modal, onCloseSpy, onSaveSpy, categoryType;
   beforeEach(() => {
-    categoryType = fromJS({id: 1, code: 'income', name: 'Income'});
+    categoryType = {id: 1, code: 'income', name: 'Income'};
     onCloseSpy = jasmine.createSpy('onClose');
     onSaveSpy = jasmine.createSpy('onSave');
   });

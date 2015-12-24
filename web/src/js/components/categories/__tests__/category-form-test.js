@@ -2,12 +2,11 @@ import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import CategoryForm from '../category-form';
-import { fromJS } from 'immutable';
 
 describe('CategoryForm', () => {
   let selectedCategoryType;
   beforeEach(() => {
-    selectedCategoryType = fromJS({code: 'income', name: 'Income'});
+    selectedCategoryType = { code: 'income', name: 'Income'};
   });
 
   describe('render', () => {

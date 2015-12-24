@@ -3,6 +3,7 @@ import { Map, List, fromJS } from 'immutable';
 const INITIAL_STATE = Map({
   loaded: false,
   categoryTypes: List(),
+  editableCategoryTypes: List(),
   categories: List(),
   categoriesByType: Map()
 });

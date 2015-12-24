@@ -44,7 +44,7 @@ export default class CategoryForm extends React.Component {
     return (
       <div>
         <div>
-          {this.state.category.categoryType.get('name')}
+          {this.state.category.categoryType.name}
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>
           <label className='control-label'>Name</label>

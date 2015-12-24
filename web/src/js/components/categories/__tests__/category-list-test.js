@@ -4,22 +4,21 @@ import React from 'react';
 import { CategoryList } from '../category-list';
 import CategoryTypeTable from '../category-type-table';
 import PageHeader from '../../common/page-header';
-import { fromJS } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import categoryActions from '../../../actions/category-actions';
 
 describe('CategoryList', () => {
   let categoryList, categoryTypes, categoriesByType;
   beforeEach(() => {
-    categoryTypes = fromJS([
+    categoryTypes = [
       { code: 'income', name: 'Income' },
       { code: 'expense', name: 'Expense' }
-    ]);
+    ];
 
-    categoriesByType = fromJS({
+    categoriesByType = {
       'income': ['incomeCategory1', 'incomeCategory2'],
       'expense': ['expenseCategory']
-    });
+    };
 
     categoryList = shallowRenderer(
       <CategoryList loaded categoryTypes={categoryTypes} categoriesByType={categoriesByType}/>
@@ -52,8 +51,8 @@ describe('CategoryList', () => {
 
       expect(income.props.children.type).toEqual(CategoryTypeTable);
 
-      expect(income.props.children.props.categoryType).toEqual(categoryTypes.get(0));
-      expect(income.props.children.props.categories.toJS()).toEqual(['incomeCategory1', 'incomeCategory2'])
+      expect(income.props.children.props.categoryType).toEqual(categoryTypes[0]);
+      expect(income.props.children.props.categories).toEqual(['incomeCategory1', 'incomeCategory2']);
     });
   });
 
@@ -70,9 +69,9 @@ describe('CategoryList', () => {
 
     it('shows modal when you click on the new category button', () => {
       categoryList.refs.newCategoryButton.props.onSelect(null, '1');
-      let modal = categoryList.refs.categoryModal
+      let modal = categoryList.refs.categoryModal;
       expect(modal).toBeDefined();
-      expect(modal.props.categoryType).toEqual(categoryTypes.get(1));
+      expect(modal.props.categoryType).toEqual(categoryTypes[1]);
     });
 
     it('closes modal when modals onClose function called', () => {
@@ -84,7 +83,7 @@ describe('CategoryList', () => {
     it('modals onSave function calls the create category action', () =>{
       spyOn(categoryActions, 'createCategory');
       categoryList.refs.newCategoryButton.props.onSelect(null, '1');
-      let modal = categoryList.refs.categoryModal
+      let modal = categoryList.refs.categoryModal;
 
       modal.props.onSave('category');
       expect(categoryActions.createCategory).toHaveBeenCalledWith('category');

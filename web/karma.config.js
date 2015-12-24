@@ -45,7 +45,8 @@ module.exports = function(config) {
       'karma-phantomjs-launcher',
       'karma-webpack',
       'karma-sourcemap-loader',
-      'karma-jasmine-ajax'
+      'karma-jasmine-ajax',
+      'karma-spec-reporter'
     ]
   })
 }

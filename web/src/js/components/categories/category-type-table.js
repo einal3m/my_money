@@ -1,6 +1,5 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { toJS } from 'immutable';
 import categoryActions from '../../actions/category-actions';
 
 export default class CategoryTypeTable extends React.Component {
@@ -11,11 +10,11 @@ export default class CategoryTypeTable extends React.Component {
   renderCategories() {
     return this.props.categories.map(category => {
       return <tr><td>category.name</td></tr>;
-    }).toJS();
+    });
   }
 
   renderTitle() {
-    return <h3>{this.props.categoryType.get('name')}</h3>;
+    return <h3>{this.props.categoryType.name}</h3>;
   }
 
   renderTable() {

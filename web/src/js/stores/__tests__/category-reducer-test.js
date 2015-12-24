@@ -1,7 +1,7 @@
 import { List, Map, toJS } from 'immutable';
 import categoryReducer from '../category-reducer';
 
-describe('CategoryReducer', () => {
+fdescribe('CategoryReducer', () => {
   let categoryTypes, categories;
   beforeEach(() => {
     categories = [
@@ -19,7 +19,9 @@ describe('CategoryReducer', () => {
     const state = categoryReducer();
     expect(state.get('loaded')).toEqual(false);
     expect(state.get('categoryTypes').toJS()).toEqual([]);
+    expect(state.get('editableCategoryTypes').toJS()).toEqual([]);
     expect(state.get('categories').toJS()).toEqual([]);
+    expect(state.get('categoriesByType').toJS()).toEqual({});
   });
 
   describe('SET_CATEGORY_TYPES', () => {
