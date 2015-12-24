@@ -10,9 +10,9 @@ describe('CategoryActions', () => {
 
   describe('category type actions', () => {
     it('fetchCategoryTypes gets a list of category types', () => {
-      spyOn(categoryApi, 'index');
+      spyOn(categoryApi, 'getCategoryTypes');
       categoryActions.fetchCategoryTypes();
-      expect(categoryApi.index).toHaveBeenCalled();
+      expect(categoryApi.getCategoryTypes).toHaveBeenCalled();
       expect(store.dispatch).not.toHaveBeenCalled();
     });
 

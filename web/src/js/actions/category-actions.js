@@ -3,7 +3,7 @@ import store from '../stores/store';
 
 class CategoryActions {
   fetchCategoryTypes(callBack) {
-    categoryApi.index(callBack);
+    categoryApi.getCategoryTypes(callBack);
   }
 
   storeCategoryTypes(categoryTypes) {

@@ -3,7 +3,7 @@ import categoryTransformer from '../transformers/category-transformer';
 import reqwest from 'reqwest';
 
 class CategoryApi {
-  index(successCallback) {
+  getCategoryTypes(successCallback) {
     this._send({
         url: 'http://localhost:3000/category_type2',
         type: 'json',

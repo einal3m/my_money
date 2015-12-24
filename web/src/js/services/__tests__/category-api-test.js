@@ -7,10 +7,10 @@ describe('categoryApi', () => {
     spyOn(categoryApi, '_send');
   });
 
-  describe('index', () => {
+  describe('getCategoryTypes', () => {
     it('makes an ajax request to GET/category_types', () => {
       let callBackSpy = jasmine.createSpy('successCallBack');
-      categoryApi.index(callBackSpy);
+      categoryApi.getCategoryTypes(callBackSpy);
 
       let requestParams = categoryApi._send.calls.argsFor(0)[0];
       expect(requestParams.url).toEqual('http://localhost:3000/category_type2');
