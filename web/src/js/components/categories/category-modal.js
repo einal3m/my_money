@@ -13,7 +13,7 @@ export default class CategoryModal extends React.Component {
   }
 
   renderTitle() {
-    return 'New Category';
+    return `New ${this.props.categoryType.get('name')} Category`;
   }
 
   render() {

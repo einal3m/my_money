@@ -20,7 +20,7 @@ describe('CategoryModal', () => {
 
     it('has a title', () => {
       let [header, body, footer] = modal.props.children.props.children;
-      expect(header.props.children.props.children).toEqual('New Category');
+      expect(header.props.children.props.children).toEqual('New Income Category');
     });
 
     it('has a form', () => {
