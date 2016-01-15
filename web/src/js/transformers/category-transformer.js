@@ -1,10 +1,15 @@
 
 let categoryTransformer = {
   transformToApi(category) {
-    return {
+    let apiCategory = {
       name: category.name,
       category_type_id: category.categoryType.id
     };
+
+    if (category.id) {
+      apiCategory.id = category.id;
+    }
+    return apiCategory;
   },
 
   transformFromApi(category) {

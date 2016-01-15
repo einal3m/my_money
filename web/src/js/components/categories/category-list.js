@@ -14,16 +14,26 @@ require("../../../css/categories.scss");
 export class CategoryList extends React.Component {
   constructor() {
     super();
-    categoryActions.fetchCategoryTypes();
+    categoryActions.fetchCategories();
     this.state = { showModal: false };
   }
 
   newCategory(event, eventKey) {
-    this.setState({ showModal: true, categoryType: Number(eventKey) });
+    let categoryType = this.props.categoryTypes[Number(eventKey)];
+    this.setState({ showModal: true, categoryType: categoryType, category: null });
+  }
+
+  editCategory(categoryType, category) {
+    this.setState({ showModal: true, categoryType: categoryType, category: category});
   }
 
   handleSave(category) {
-    categoryActions.createCategory(category);
+    if (category.id) {
+      console.log('saveCategory');
+    } else {
+      console.log('createCategory');
+      categoryActions.createCategory(category);
+    }
   }
 
   closeModal() {
@@ -36,7 +46,9 @@ export class CategoryList extends React.Component {
         let categoryTypeCode = categoryType.code;
         return (
           <div key={categoryTypeCode} className='col-sm-6'>
-            <CategoryTypeTable categoryType={categoryType} categories={this.props.categoriesByType[categoryTypeCode]}/>
+            <CategoryTypeTable categoryType={categoryType} 
+              categories={this.props.categoriesByType[categoryTypeCode]}
+              editCategory={this.editCategory.bind(this)} />
           </div>
         );
       });
@@ -68,9 +80,8 @@ export class CategoryList extends React.Component {
 
   renderModal() {
     if (this.state.showModal) {
-      let categoryType = this.props.categoryTypes[this.state.categoryType];
       return (
-        <CategoryModal ref='categoryModal' show categoryType={categoryType}
+        <CategoryModal ref='categoryModal' show categoryType={this.state.categoryType} category={this.state.category}
           onSave={this.handleSave.bind(this)} onClose={this.closeModal.bind(this)} />
       )
     }

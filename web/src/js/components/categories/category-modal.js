@@ -13,7 +13,7 @@ export default class CategoryModal extends React.Component {
   }
 
   renderTitle() {
-    return `New ${this.props.categoryType.name} Category`;
+    return this.props.category ? 'Edit Category' : 'New Category';
   }
 
   render() {
@@ -24,7 +24,7 @@ export default class CategoryModal extends React.Component {
             <Modal.Title>{this.renderTitle()}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <CategoryForm ref='categoryForm' categoryType={this.props.categoryType}/>
+            <CategoryForm ref='categoryForm' categoryType={this.props.categoryType} category={this.props.category}/>
           </Modal.Body>
           <Modal.Footer>
             <Button ref='cancelButton' onClick={this.props.onClose}>Cancel</Button>

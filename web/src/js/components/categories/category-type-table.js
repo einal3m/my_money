@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import CategoryRow from './category-row';
 import categoryActions from '../../actions/category-actions';
 
 export default class CategoryTypeTable extends React.Component {
@@ -8,9 +9,12 @@ export default class CategoryTypeTable extends React.Component {
   }
 
   renderCategories() {
-    return this.props.categories.map(category => {
-      return <tr><td>category.name</td></tr>;
-    });
+    if (this.props.categories) {
+      return this.props.categories.map(category => {
+        return <CategoryRow key={category.id}  editCategory={this.props.editCategory} 
+                  categoryType={this.props.categoryType} category={category} />;
+      });
+    }
   }
 
   renderTitle() {
@@ -21,6 +25,7 @@ export default class CategoryTypeTable extends React.Component {
     return (
       <Table hover id='category-table'>
         <tbody>
+          {this.renderCategories()}
         </tbody>
       </Table>
     );

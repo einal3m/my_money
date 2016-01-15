@@ -2,7 +2,7 @@ import categoryTransformer from '../category-transformer';
 
 describe('CategoryTransformer', () => {
   describe('transformToApi', () => {
-    it('converts category to API format', () => {
+    it('converts new category to API format', () => {
       let category = {
         name: 'myCategory',
         categoryType: {id: 2}
@@ -10,6 +10,20 @@ describe('CategoryTransformer', () => {
 
       let transformedCategory = categoryTransformer.transformToApi(category);
 
+      expect(transformedCategory.name).toEqual('myCategory');
+      expect(transformedCategory.category_type_id).toEqual(2);
+    });
+
+    it('converts existing category to API format', () => {
+      let category = {
+        id: 11,
+        name: 'myCategory',
+        categoryType: {id: 2}
+      }
+
+      let transformedCategory = categoryTransformer.transformToApi(category);
+
+      expect(transformedCategory.id).toEqual(11);
       expect(transformedCategory.name).toEqual('myCategory');
       expect(transformedCategory.category_type_id).toEqual(2);
     });

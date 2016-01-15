@@ -16,6 +16,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     return setCategories(state, action.categories);
   case 'ADD_CATEGORY':
     return addCategory(state, action.category);
+  case 'SET_CATEGORY':
+    return setCategory(state, action.category);
   }
   return state;
 }
@@ -53,4 +55,8 @@ function addCategory(state, category) {
   const categories = state.get('categories').push(fromJS(category));
   return state.set('categories', categories)
               .set('categoriesByType', categoriesByType(state.get('categoryTypes'), fromJS(categories)));
+}
+
+function setCategory(state, category) {
+  const categories = state.get('categories');
 }

@@ -5,27 +5,49 @@ import TestUtils from 'react-addons-test-utils';
 import CategoryForm from '../category-form';
 
 describe('CategoryModal', () => {
-  let modal, onCloseSpy, onSaveSpy, categoryType;
+  let modal, onCloseSpy, onSaveSpy, categoryType, category;
   beforeEach(() => {
     categoryType = {id: 1, code: 'income', name: 'Income'};
+    category = {id: 11, name: 'categoryName', categoryType: 1 }
     onCloseSpy = jasmine.createSpy('onClose');
     onSaveSpy = jasmine.createSpy('onSave');
   });
 
   describe('render', () => {
-    beforeEach(() => {
-      modal = shallowRenderer(<CategoryModal show onClose={onCloseSpy} onSave={onSaveSpy} categoryType={categoryType} />);
+    describe('without category', () => {
+      beforeEach(() => {
+        modal = shallowRenderer(<CategoryModal show onClose={onCloseSpy} onSave={onSaveSpy} categoryType={categoryType} />);
+      });
+
+      it('has a title', () => {
+        let [header, body, footer] = modal.props.children.props.children;
+        expect(header.props.children.props.children).toEqual('New Category');
+      });
+
+      it('has a form', () => {
+        let [header, body, footer] = modal.props.children.props.children;
+        expect(body.props.children.type).toEqual(CategoryForm);
+        expect(body.props.children.props.categoryType).toEqual(categoryType);
+        expect(body.props.children.props.category).not.toBeDefined();
+      });
     });
 
-    it('has a title', () => {
-      let [header, body, footer] = modal.props.children.props.children;
-      expect(header.props.children.props.children).toEqual('New Income Category');
-    });
+    describe('with category', () => {
+      beforeEach(() => {
+        modal = shallowRenderer(<CategoryModal show onClose={onCloseSpy} onSave={onSaveSpy} categoryType={categoryType} category={category}/>);
+      });
 
-    it('has a form', () => {
-      let [header, body, footer] = modal.props.children.props.children;
-      expect(body.props.children.type).toEqual(CategoryForm);
-      expect(body.props.children.props.categoryType).toEqual(categoryType);
+      it('has a title', () => {
+        let [header, body, footer] = modal.props.children.props.children;
+        expect(header.props.children.props.children).toEqual('Edit Category');
+      });
+
+      it('has a form', () => {
+        let [header, body, footer] = modal.props.children.props.children;
+        expect(body.props.children.type).toEqual(CategoryForm);
+        expect(body.props.children.props.categoryType).toEqual(categoryType);
+        expect(body.props.children.props.category).toEqual(category);
+      });
     });
   });
 

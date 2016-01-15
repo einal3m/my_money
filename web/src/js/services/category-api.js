@@ -19,6 +19,19 @@ class CategoryApi {
     });
   }
 
+  getCategories() {
+    this._send({
+        url: 'http://localhost:3000/categories',
+        type: 'json',
+        contentType: 'application/json',
+        crossOrigin: true,
+        method: 'GET',
+        success: function (response) {
+          categoryActions.storeCategories(response.categories.map(category => categoryTransformer.transformFromApi(category)));
+        }
+    });
+  }
+
   createCategory(category) {
     this._send({
       url: 'http://localhost:3000/categories',
@@ -26,7 +39,19 @@ class CategoryApi {
       method: 'POST',
       data: {category: categoryTransformer.transformToApi(category)},
       success: function (response) {
-        categoryActions.storeCategory(categoryTransformer.transformFromApi(response.category))
+        categoryActions.addCategory(categoryTransformer.transformFromApi(response.category))
+      }
+    });
+  }
+
+  updateCategory(category) {
+    this._send({
+      url: 'http://localhost:3000/categories/' + category.id,
+      crossOrigin: true,
+      method: 'PUT',
+      data: {category: categoryTransformer.transformToApi(category)},
+      success: function (response) {
+        categoryActions.setCategory(categoryTransformer.transformFromApi(response.category))
       }
     });
   }

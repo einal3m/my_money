@@ -7,13 +7,17 @@ import FormValidator from '../../util/form-validator';
 export default class CategoryForm extends React.Component {
   constructor(props) {
     super();
-    this.state = {
-      category: {
-        categoryType: props.categoryType,
-        name: null
-      }
-    }
+    let category = props.category;
 
+    if (!category) {
+      category = { name: null }
+    }
+    category.categoryType = props.categoryType;
+
+
+    this.state = { category: category }
+
+    console.log(this.state);
     this.validator = new FormValidator(this.validationSchema());
   }
 

@@ -1,7 +1,7 @@
 import { List, Map, toJS } from 'immutable';
 import categoryReducer from '../category-reducer';
 
-fdescribe('CategoryReducer', () => {
+describe('CategoryReducer', () => {
   let categoryTypes, categories;
   beforeEach(() => {
     categories = [
@@ -61,6 +61,24 @@ fdescribe('CategoryReducer', () => {
       expect(nextState.get('categories').size).toEqual(3);
       expect(nextState.get('categories').last().toJS()).toEqual(category);
       expect(nextState.get('categoriesByType').get('income').toJS()).toEqual([categories[1], category])
+    });
+  });
+
+  describe('SET_CATEGORY', () => {
+    it('updates the category in the store', () => {
+      let updatedCategory = {id: 11, name: 'Expense3', categoryTypeId: 3};
+
+      const initialState = categoryReducer();
+      let action = { type: 'SET_CATEGORY_TYPES', categoryTypes: categoryTypes }
+      let nextState = categoryReducer(initialState, action);
+      action = { type: 'SET_CATEGORIES', categories: categories }
+      nextState = categoryReducer(nextState, action);
+      action = {type: 'SET_CATEGORY', category: updatedCategory };
+      nextState = categoryReducer(nextState, action);
+
+      expect(nextState.get('categories').size).toEqual(2);
+      expect(nextState.get('categories').first().toJS()).toEqual(updatedCategory);
+      expect(nextState.get('categoriesByType').get('income').toJS()).toEqual([updatedCategory])
     });
   });
 });

@@ -4,9 +4,10 @@ import TestUtils from 'react-addons-test-utils';
 import CategoryForm from '../category-form';
 
 describe('CategoryForm', () => {
-  let selectedCategoryType;
+  let selectedCategoryType, category;
   beforeEach(() => {
     selectedCategoryType = { code: 'income', name: 'Income'};
+    category = {id: 11, name: 'categoryName'}
   });
 
   describe('render', () => {
@@ -24,6 +25,12 @@ describe('CategoryForm', () => {
       expect(name.props.children[0].props.children).toEqual('Name');
       expect(name.props.children[1].type).toEqual('input');
       expect(name.props.children[1].props.value).toEqual(null);
+    });
+
+    it('has a category name when provided', () => {
+      form = shallowRenderer(<CategoryForm categoryType={selectedCategoryType} category={category}/>);
+      [categoryType, name] = form.props.children;
+      expect(name.props.children[1].props.value).toEqual('categoryName');
     });
   });
   
