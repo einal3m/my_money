@@ -40,3 +40,14 @@ export default class CategoryTypeTable extends React.Component {
     );
   }
 }
+
+CategoryTypeTable.propTypes = {
+  categoryType: React.PropTypes.shape({
+    name: React.PropTypes.string.isRequired
+  }).isRequired,
+  categories: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.number.isRequired,
+    name: React.PropTypes.string.isRequired
+  })).isRequired,
+  editCategory: React.PropTypes.func.isRequired
+};
