@@ -11,7 +11,7 @@ export default class CategoryTypeTable extends React.Component {
   renderCategories() {
     if (this.props.categories) {
       return this.props.categories.map(category => {
-        return <CategoryRow key={category.id}  editCategory={this.props.editCategory} 
+        return <CategoryRow key={category.id}  onClickHandler={this.props.editCategory} 
                   categoryType={this.props.categoryType} category={category} />;
       });
     }

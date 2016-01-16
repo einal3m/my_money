@@ -7,6 +7,7 @@ import { MenuItem, Dropdown, Glyphicon } from 'react-bootstrap';
 import CategoryTypeTable from './category-type-table';
 import CategoryModal from './category-modal';
 import categoryActions from '../../actions/category-actions';
+import categorySelector from '../../selectors/category-selector';
 import { toJS } from 'immutable';
 require("../../../css/common.scss");
 require("../../../css/categories.scss");
@@ -109,6 +110,7 @@ export class CategoryList extends React.Component {
 function mapStateToProps(state) {
   return {
     loaded: state.categoryStore.get('loaded'),
+    groupedCategories: categorySelector(state).toJS(),
     categoryTypes: state.categoryStore.get('editableCategoryTypes').toJS(),
     categoriesByType: state.categoryStore.get('categoriesByType').toJS()
   };
