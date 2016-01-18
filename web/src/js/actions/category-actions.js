@@ -14,7 +14,7 @@ class CategoryActions {
   }
 
   fetchCategories() {
-    let categoryTypesLoaded = store.getState().categoryStore.get('loaded');
+    let categoryTypesLoaded = store.getState().categoryStore.get('categoryTypesLoaded');
     if (!categoryTypesLoaded) {
       this.fetchCategoryTypes(this.fetchCategories.bind(this));
     } else {

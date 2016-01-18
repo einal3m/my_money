@@ -17,7 +17,6 @@ export default class CategoryForm extends React.Component {
 
     this.state = { category: category }
 
-    console.log(this.state);
     this.validator = new FormValidator(this.validationSchema());
   }
 

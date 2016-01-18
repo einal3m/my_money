@@ -20,7 +20,7 @@ export class CategoryList extends React.Component {
   }
 
   newCategory(event, eventKey) {
-    let categoryType = this.props.categoryTypes[Number(eventKey)];
+    let categoryType = this.props.groupedCategories[Number(eventKey)].categoryType;
     this.setState({ showModal: true, categoryType: categoryType, category: null });
   }
 
@@ -30,9 +30,8 @@ export class CategoryList extends React.Component {
 
   handleSave(category) {
     if (category.id) {
-      console.log('saveCategory');
+      categoryActions.updateCategory(category);
     } else {
-      console.log('createCategory');
       categoryActions.createCategory(category);
     }
   }
@@ -43,12 +42,12 @@ export class CategoryList extends React.Component {
 
   renderCategoryTypes() {
     if (this.props.loaded) {
-      return this.props.categoryTypes.map(categoryType => {
-        let categoryTypeCode = categoryType.code;
+      return this.props.groupedCategories.map(group => {
+        let categoryTypeCode = group.categoryType.code;
         return (
           <div key={categoryTypeCode} className='col-sm-6'>
-            <CategoryTypeTable categoryType={categoryType} 
-              categories={this.props.categoriesByType[categoryTypeCode]}
+            <CategoryTypeTable categoryType={group.categoryType} 
+              categories={group.categories}
               editCategory={this.editCategory.bind(this)} />
           </div>
         );
@@ -58,9 +57,9 @@ export class CategoryList extends React.Component {
 
   renderMenuItems() {
     if (this.props.loaded) {
-      return this.props.categoryTypes.map((categoryType, index) => {
+      return this.props.groupedCategories.map((group, index) => {
         return (
-          <MenuItem key={index} eventKey={index}>{categoryType.name} Category</MenuItem>
+          <MenuItem key={index} eventKey={index}>{group.categoryType.name} Category</MenuItem>
         );
       });
     }
@@ -109,10 +108,8 @@ export class CategoryList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.categoryStore.get('loaded'),
-    groupedCategories: categorySelector(state).toJS(),
-    categoryTypes: state.categoryStore.get('editableCategoryTypes').toJS(),
-    categoriesByType: state.categoryStore.get('categoriesByType').toJS()
+    loaded: state.categoryStore.get('categoriesLoaded') && state.categoryStore.get('categoryTypesLoaded'),
+    groupedCategories: categorySelector(state).toJS()
   };
 }
 

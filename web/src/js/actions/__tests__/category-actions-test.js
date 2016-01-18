@@ -30,7 +30,7 @@ describe('CategoryActions', () => {
     describe('fetchCategories', () => {
       it('retrieves the categories if category types are loaded', () => {
         spyOn(store, 'getState').and.returnValue({
-          categoryStore: fromJS({loaded: true, categoryTypes: [{id: 45}]})
+          categoryStore: fromJS({categoryTypesLoaded: true, categoryTypes: [{id: 45}]})
         });
         spyOn(categoryApi, 'getCategories');
         categoryActions.fetchCategories();
@@ -39,7 +39,7 @@ describe('CategoryActions', () => {
 
       it('retrieves category types if they are not loaded', () => {
         spyOn(store, 'getState').and.returnValue({
-          categoryStore: fromJS({loaded: false})
+          categoryStore: fromJS({categoryTypesLoaded: false})
         });
         spyOn(categoryApi, 'getCategories');
         spyOn(categoryActions, 'fetchCategoryTypes');

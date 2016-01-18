@@ -8,20 +8,19 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import categoryActions from '../../../actions/category-actions';
 
 describe('CategoryList', () => {
-  let categoryList, categoryTypes, categoriesByType;
+  let categoryList, groupedCategories, category1, category2, category3;
   beforeEach(() => {
-    categoryTypes = [
-      { code: 'income', name: 'Income' },
-      { code: 'expense', name: 'Expense' }
-    ];
+    category1 = {id: 1, name: 'One'};
+    category2 = {id: 2, name: 'Two'};
+    category3 = {id: 3, name: 'Two'};
 
-    categoriesByType = {
-      'income': ['incomeCategory1', 'incomeCategory2'],
-      'expense': ['expenseCategory']
-    };
+    groupedCategories = [
+      {categoryType: { code: 'income', name: 'Income' }, categories: [category1, category2]},
+      {categoryType: { code: 'expense', name: 'Expense' }, categories: [category3]}      
+    ]
 
     categoryList = shallowRenderer(
-      <CategoryList loaded categoryTypes={categoryTypes} categoriesByType={categoriesByType}/>
+      <CategoryList loaded groupedCategories={groupedCategories} />
     );
   });
 
@@ -50,16 +49,19 @@ describe('CategoryList', () => {
       let [income, expense] = tables.props.children;
 
       expect(income.props.children.type).toEqual(CategoryTypeTable);
+      expect(income.props.children.props.categoryType.name).toEqual('Income');
+      expect(income.props.children.props.categories).toEqual([category1, category2]);
 
-      expect(income.props.children.props.categoryType).toEqual(categoryTypes[0]);
-      expect(income.props.children.props.categories).toEqual(['incomeCategory1', 'incomeCategory2']);
+      expect(expense.props.children.type).toEqual(CategoryTypeTable);
+      expect(expense.props.children.props.categoryType.name).toEqual('Expense');
+      expect(expense.props.children.props.categories).toEqual([category3]);
     });
   });
 
   describe('events', () => {
     beforeEach(() => {
       categoryList = TestUtils.renderIntoDocument(
-        <CategoryList loaded categoryTypes={categoryTypes} categoriesByType={categoriesByType}/>
+        <CategoryList loaded groupedCategories={groupedCategories}/>
       );
     });
 
@@ -71,7 +73,7 @@ describe('CategoryList', () => {
       categoryList.refs.newCategoryButton.props.onSelect(null, '1');
       let modal = categoryList.refs.categoryModal;
       expect(modal).toBeDefined();
-      expect(modal.props.categoryType).toEqual(categoryTypes[1]);
+      expect(modal.props.categoryType.name).toEqual('Expense');
     });
 
     it('closes modal when modals onClose function called', () => {

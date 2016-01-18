@@ -1,11 +1,10 @@
 import { Map, List, fromJS } from 'immutable';
 
 const INITIAL_STATE = Map({
-  loaded: false,
+  categoryTypesLoaded: false,
+  categoriesLoaded: false,
   categoryTypes: List(),
-  editableCategoryTypes: List(),
   categories: List(),
-  categoriesByType: Map()
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -24,39 +23,19 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 
 function setCategoryTypes(state, categoryTypes) {
   return state.set('categoryTypes', fromJS(categoryTypes))
-              .set('editableCategoryTypes', editableCategoryTypes(categoryTypes))
-              .set('loaded', true)
-              .set('categoriesByType', categoriesByType(fromJS(categoryTypes), state.get('categories')));
-}
-
-function editableCategoryTypes(categoryTypes) {
-  return fromJS(categoryTypes).filter(categoryType => categoryType.get('editable'));
-}
-
-function categoriesByType(categoryTypes, categories) {
-  let categoryGroups = categories.groupBy(category => category.get('categoryTypeId'));
-
-  let groups = {};
-  categoryTypes.forEach(categoryType => {
-    let categoriesForType = categoryGroups.get(categoryType.get('id'));
-    if (categoriesForType) {
-      groups[categoryType.get('code')] = categoriesForType;
-    }
-  });
-  return fromJS(groups);
+              .set('categoryTypesLoaded', true);
 }
 
 function setCategories(state, categories) {
   return state.set('categories', fromJS(categories))
-              .set('categoriesByType', categoriesByType(state.get('categoryTypes'), fromJS(categories)));
+              .set('categoriesLoaded', true);
 }
 
 function addCategory(state, category) {
-  const categories = state.get('categories').push(fromJS(category));
-  return state.set('categories', categories)
-              .set('categoriesByType', categoriesByType(state.get('categoryTypes'), fromJS(categories)));
+  return state.set('categories', state.get('categories').push(fromJS(category)));
 }
 
-function setCategory(state, category) {
-  const categories = state.get('categories');
+function setCategory(state, updatedCategory) {
+  const index = state.get('categories').findIndex(category => category.get('id') === updatedCategory.id);
+  return state.set('categories', state.get('categories').update(index, () => fromJS(updatedCategory)));
 }

@@ -3,7 +3,7 @@ import CategoryTypeTable from '../category-type-table';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 
-fdescribe('CategoryRow', () => {
+describe('CategoryTypeTable', () => {
   let categories, categoryType, clickHandlerSpy, categoryTypeTable;
   beforeEach(() => {
     categories = [{id: 11, name: 'Category One'}, {id: 22, name: 'Category Two'}];
