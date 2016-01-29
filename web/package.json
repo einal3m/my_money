@@ -16,7 +16,6 @@
   "author": "Melanie Matthews",
   "dependencies": {
     "accounting": "^0.4.1",
-    "alt": "^0.17.9",
     "immutable": "^3.7.5",
     "moment": "^2.10.6",
     "react": "^0.14.2",

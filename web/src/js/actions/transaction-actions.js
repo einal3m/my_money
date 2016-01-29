@@ -1,4 +1,3 @@
-import alt from '../alt';
 import transactionApi from '../services/transaction-api';
 import store from '../stores/store';
 
