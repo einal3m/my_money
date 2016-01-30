@@ -10,6 +10,8 @@ import categoryActions from '../../../actions/category-actions';
 describe('CategoryList', () => {
   let categoryList, groupedCategories, category1, category2, category3;
   beforeEach(() => {
+    spyOn(categoryActions, 'fetchCategories');
+
     category1 = {id: 1, name: 'One'};
     category2 = {id: 2, name: 'Two'};
     category3 = {id: 3, name: 'Two'};

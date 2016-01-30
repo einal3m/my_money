@@ -12,6 +12,8 @@ import staticDataActions from '../../../actions/date-range-actions';
 describe('SearchCriteria', () => {
   let dateRanges, account, accountGroups, accountTypes;
   beforeEach(() => {
+    spyOn(transactionActions, 'fetchTransactions');      
+
     dateRanges = fromJS([
       { id: 11, name: 'Name1', custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
       { id: 22, name: 'Name2', custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' }
@@ -66,7 +68,6 @@ describe('SearchCriteria', () => {
 
     it('onAccountChange change updates current account and fetches transactions', () => {
       spyOn(accountActions, 'setCurrentAccount')
-      spyOn(transactionActions, 'fetchTransactions');
       searchCriteria.onAccountChange(3);
       expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(3);
       expect(transactionActions.fetchTransactions).toHaveBeenCalled();
@@ -75,7 +76,6 @@ describe('SearchCriteria', () => {
     describe('onDateRangeChange', () => {
       it('id change sets current date range and fetches transactions', () => {
         spyOn(staticDataActions, 'setCurrentDateRange')
-        spyOn(transactionActions, 'fetchTransactions');
         searchCriteria.onDateRangeChange({id: 11});
         expect(staticDataActions.setCurrentDateRange).toHaveBeenCalledWith(11);
         expect(transactionActions.fetchTransactions).toHaveBeenCalled();
@@ -83,7 +83,6 @@ describe('SearchCriteria', () => {
 
       it('from date change updates current date range and fetches transactions', () => {
         spyOn(staticDataActions, 'updateCurrentDateRange')
-        spyOn(transactionActions, 'fetchTransactions');
         searchCriteria.onDateRangeChange({fromDate: '2001-09-08'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({fromDate: '2001-09-08'});
         expect(transactionActions.fetchTransactions).toHaveBeenCalled();
@@ -91,7 +90,6 @@ describe('SearchCriteria', () => {
 
       it('to date change updates current date range and fetches transactions', () => {
         spyOn(staticDataActions, 'updateCurrentDateRange')
-        spyOn(transactionActions, 'fetchTransactions');
         searchCriteria.onDateRangeChange({toDate: '2001-09-24'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({toDate: '2001-09-24'});
         expect(transactionActions.fetchTransactions).toHaveBeenCalled();
