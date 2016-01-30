@@ -127,6 +127,16 @@ RSpec.describe Transaction, type: :model do
 
       expect(Transaction.for_account_type(AccountType::Share)).to eq([t1])
     end
+
+    it 'finds transactions with given string in notes or memo' do
+      FactoryGirl.create(:transaction, notes: 'anything', memo: '')
+      t2 = FactoryGirl.create(:transaction, notes: 'for Mel', memo: 'melanie')
+      FactoryGirl.create(:transaction, notes: 'another thing', memo: '')
+      t4 = FactoryGirl.create(:transaction, notes: 'blah', memo: 'Mel')
+      t5 = FactoryGirl.create(:transaction, notes: 'melanie', memo: 'anything')
+
+      expect(Transaction.find_by_description('mel')).to eq([t2, t4, t5])
+    end
   end
 
   describe 'initialize' do

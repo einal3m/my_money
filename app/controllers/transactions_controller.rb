@@ -4,8 +4,14 @@ class TransactionsController < ApplicationController
   def index
     from_date = params[:from_date]
     to_date = params[:to_date]
+    description = params[:description]
+    
+    if description
+      transactions = account.transactions.find_by_dates(from_date, to_date).find_by_description(description).reverse_date_order
+    else
+      transactions = account.transactions.find_by_dates(from_date, to_date).reverse_date_order
+    end
 
-    transactions = account.transactions.find_by_dates(from_date, to_date).reverse_date_order
     render json: transactions
   end
 

@@ -20,6 +20,25 @@ RSpec.describe TransactionsController, type: :controller do
       expect(json['transactions'][0]).to eq(serialize_transaction(t2))
       expect(json['transactions'][1]).to eq(serialize_transaction(t1))
     end
+
+    it 'returns all transactions for specified account for specified date and description' do
+      t1 = FactoryGirl.create(:transaction, date: '2014-01-01')
+      t2 = FactoryGirl.create(:transaction, account: t1.account, date: '2014-01-01', memo: 'melanie')
+      t3 = FactoryGirl.create(:transaction, account: t1.account, date: '2014-01-01', notes: 'something')
+      t4 = FactoryGirl.create(:transaction, account: t1.account, date: '2014-01-01', notes: 'for Mel')
+      t5 = FactoryGirl.create(:transaction, account: t1.account, date: '2014-01-01', memo: 'melanie', notes: 'melanie')
+      get :index, { account_id: t1.account.id, from_date: '2014-01-01', to_date: '2014-01-01', description: 'mel' }, valid_session
+
+      expect(response).to be_success
+      t1.reload
+      t2.reload
+
+      json = JSON.parse(response.body)
+      expect(json['transactions'].length).to eq(3)
+      expect(json['transactions'][0]['id']).to eq(t5.id)
+      expect(json['transactions'][1]['id']).to eq(t4.id)
+      expect(json['transactions'][2]['id']).to eq(t2.id)
+    end
   end
 
   describe 'POST create one transaction' do

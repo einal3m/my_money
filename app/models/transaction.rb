@@ -44,6 +44,9 @@ class Transaction < ActiveRecord::Base
   scope :for_account_type, ->(account_type) {
     joins(:account).where(accounts: { account_type: account_type.new.to_s })
   }
+  scope :find_by_description, ->(description) {
+    where('memo like ? or notes like ?', '%' + description + '%', '%' + description + '%')
+  }
 
   # non-persistant attributes
   attr_accessor :add_to_reconciliation
