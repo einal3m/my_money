@@ -10,6 +10,8 @@ import dateRangeActions from '../../actions/date-range-actions';
 
 import AccountFilter from '../common/account-filter';
 import DateRangeFilter from '../common/date-range-filter';
+import DescriptionFilter from '../common/description-filter';
+import { Glyphicon } from 'react-bootstrap';
 require("../../../css/transaction.scss");
 
 export class SearchCriteria extends React.Component {
@@ -38,17 +40,62 @@ export class SearchCriteria extends React.Component {
     }
   }
 
+  onDescriptionChange(description) {
+    transactionActions.setSearchDescription(description);
+    this.fetch();
+  }
+
+  onToggleMoreOrLess() {
+    transactionActions.toggleMoreOrLess();
+    this.fetch();
+  }
+
   fetch() {
     transactionActions.fetchTransactions();
   }
 
-  renderCriteria(){
+  renderStaticCriteria(){
+    return [
+      <AccountFilter key='1' currentAccount={this.props.currentAccount} accountGroups={this.props.accountGroups} 
+        accountTypes={this.props.accountTypes} onChange={this.onAccountChange.bind(this)}/>,
+      <DateRangeFilter key='2' dateRanges={this.props.dateRanges} currentDateRange={this.props.currentDateRange} 
+        onChange={this.onDateRangeChange.bind(this)}/>
+    ];
+  }
+
+  renderOptionToggle() {
+    return (
+      <div key='3' className='row'>
+        <div ref='optionToggle' onClick={this.onToggleMoreOrLess.bind(this)} className='more-or-less pull-right'>
+          {this.renderMoreOrLess()}
+        </div>
+      </div>
+    );
+  }
+
+  renderMoreOrLess() {
+    if (this.props.moreOptions) {
+      return <span>less <Glyphicon glyph='triangle-top' /></span>;
+    } else {
+      return <span>more <Glyphicon glyph='triangle-bottom' /></span>;
+    }
+  }
+
+  renderMoreCriteria() {
+    if (this.props.moreOptions) {
+      return (
+        <DescriptionFilter key='4' description={this.props.searchDescription} 
+        onChange={this.onDescriptionChange.bind(this)}/>
+      );
+    }
+  }
+
+  renderCriteria() {
     if (this.props.loaded) {
       return [
-        <AccountFilter key='1' currentAccount={this.props.currentAccount} accountGroups={this.props.accountGroups} 
-          accountTypes={this.props.accountTypes} onChange={this.onAccountChange.bind(this)}/>,
-        <DateRangeFilter key='2' dateRanges={this.props.dateRanges} currentDateRange={this.props.currentDateRange} 
-          onChange={this.onDateRangeChange.bind(this)}/>
+        this.renderStaticCriteria(),
+        this.renderOptionToggle(),
+        this.renderMoreCriteria()
       ];
     }
   }
@@ -69,7 +116,9 @@ function mapStateToProps(state) {
     accountTypes: state.accountStore.get('accountTypes'),
     currentAccount: state.accountStore.get('currentAccount'),
     dateRanges: state.dateRangeStore.get('dateRanges'),
-    currentDateRange: state.dateRangeStore.get('currentDateRange')
+    currentDateRange: state.dateRangeStore.get('currentDateRange'),
+    searchDescription: state.transactionStore.get('searchDescription'),
+    moreOptions: state.transactionStore.get('moreOptions')
   };
 }
 

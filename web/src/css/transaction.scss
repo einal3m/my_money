@@ -7,6 +7,11 @@ $panel-default-heading-bg: $main-color;
   select:focus, input:focus {
     border-color: $main-color;
   }
+
+  .more-or-less {
+    padding-right: 15px;
+    color: $main-color;
+  }
 }
 
 table#transaction-table {

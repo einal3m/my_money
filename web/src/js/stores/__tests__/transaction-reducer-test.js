@@ -15,6 +15,7 @@ describe('TransactionReducer', () => {
 
     expect(state.get('loading')).toEqual(false);
     expect(state.get('transactions').toJS()).toEqual([]);
+    expect(state.get('moreOptions')).toEqual(false);
   });
 
   describe('FETCHING_TRANSACTIONS', () => {
@@ -39,6 +40,24 @@ describe('TransactionReducer', () => {
       expect(nextState.get('transactions').get(0).toJS()).toEqual(transactions[0]);
       expect(nextState.get('transactions').get(1).toJS()).toEqual(transactions[1]);
       expect(nextState.get('loading')).toEqual(false);    
+    });
+  });
+
+  describe('SET_SEARCH_DESCRIPTION', () => {
+    it('sets the search descriptin string', () => {
+      let action = {type: 'SET_SEARCH_DESCRIPTION', description: 'my String'};
+      let state = transactionReducer(undefined, action);
+
+      expect(state.get('searchDescription')).toEqual('my String');
+    });
+  });
+
+  describe('TOGGLE_MORE_OR_LESS', () => {
+    it('sets the search descriptin string', () => {
+      let action = {type: 'TOGGLE_MORE_OR_LESS'};
+      let state = transactionReducer(undefined, action);
+
+      expect(state.get('moreOptions')).toEqual(true);
     });
   });
 });

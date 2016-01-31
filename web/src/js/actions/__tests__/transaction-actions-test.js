@@ -15,11 +15,12 @@ describe('TransactionActions', () => {
     it('retrieves a list of transactions if accounts and dates are loaded', () => {
       spyOn(store, 'getState').and.returnValue({
         accountStore: fromJS({loaded: true, currentAccount: {id: 45}}),
-        dateRangeStore: fromJS({loaded: true, currentDateRange: {fromDate: '2015-01-01', toDate: '2015-02-02'}})
+        dateRangeStore: fromJS({loaded: true, currentDateRange: {fromDate: '2015-01-01', toDate: '2015-02-02'}}),
+        transactionStore: fromJS({moreOptions: true, searchDescription: 'my String'})
       });
       spyOn(transactionApi, 'index');
       transactionActions.fetchTransactions();
-      expect(transactionApi.index).toHaveBeenCalledWith(45, '2015-01-01', '2015-02-02');
+      expect(transactionApi.index).toHaveBeenCalledWith(45, '2015-01-01', '2015-02-02', 'my String');
     });
 
     it('retrieves accounts if accounts are not loaded', () => {
@@ -53,6 +54,25 @@ describe('TransactionActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_TRANSACTIONS',
         transactions: ['transactions']
+      });
+    });
+  });
+
+  describe('setSearchDescription', () => {
+    it('dispatches the description to the store', () => {
+      transactionActions.setSearchDescription('my String');
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_SEARCH_DESCRIPTION',
+        description: 'my String'
+      });
+    });
+  });
+
+  describe('toggleMoreOrLess', () => {
+    it('dispatches the toggle actions', () => {
+      transactionActions.toggleMoreOrLess();
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'TOGGLE_MORE_OR_LESS'
       });
     });
   });

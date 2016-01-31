@@ -4,6 +4,7 @@ import React from 'react';
 import { fromJS, toJS } from 'immutable';
 import { SearchCriteria } from '../search-criteria';
 import AccountFilter from '../../common/account-filter';
+import DescriptionFilter from '../../common/description-filter';
 import DateRangeFilter from '../../common/date-range-filter';
 import accountActions from '../../../actions/account-actions';
 import transactionActions from '../../../actions/transaction-actions';
@@ -43,10 +44,11 @@ describe('SearchCriteria', () => {
 
     it('does render filters if data has loaded', () => {
       let searchCriteria = shallowRenderer(
-        <SearchCriteria loaded={true} accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
-          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} />
+        <SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
+          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions={false}/>
       );
-      let [accountFilter, dateFilter] = searchCriteria.props.children;
+      let [staticFilters, showMore] = searchCriteria.props.children;
+      let [accountFilter, dateFilter] = staticFilters;
 
       expect(accountFilter.type).toEqual(AccountFilter);
       expect(accountFilter.props.accountGroups).toEqual(accountGroups);
@@ -56,6 +58,21 @@ describe('SearchCriteria', () => {
       expect(dateFilter.type).toEqual(DateRangeFilter);
       expect(dateFilter.props.dateRanges).toEqual(dateRanges);
       expect(dateFilter.props.currentDateRange).toEqual(dateRanges.get(1));
+
+      expect(showMore.props.children.props.children.props.children[0]).toEqual('more ');
+    });
+
+    it('renders extra filters if more options is true', () => {
+      let searchCriteria = shallowRenderer(
+        <SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
+          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions searchDescription={'Melanie'}/>
+      );
+      let [staticFilters, showLess, searchFilter] = searchCriteria.props.children;
+
+      expect(searchFilter.type).toEqual(DescriptionFilter);
+      expect(searchFilter.props.description).toEqual('Melanie');
+
+      expect(showLess.props.children.props.children.props.children[0]).toEqual('less ');
     });
   });
 
@@ -92,6 +109,24 @@ describe('SearchCriteria', () => {
         spyOn(staticDataActions, 'updateCurrentDateRange')
         searchCriteria.onDateRangeChange({toDate: '2001-09-24'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({toDate: '2001-09-24'});
+        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+      });
+    });
+
+    describe('onToggleMoreOrLess', () => {
+      it('calls the toggle action and fetches transactions', () => {
+        spyOn(transactionActions, 'toggleMoreOrLess');
+        TestUtils.Simulate.click(searchCriteria.refs.optionToggle);
+        expect(transactionActions.toggleMoreOrLess).toHaveBeenCalled();
+        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+      });
+    });
+
+    describe('onDescriptionChange', () => {
+      it('calls the description change action and fetches transactions', () => {
+        spyOn(transactionActions, 'setSearchDescription');
+        searchCriteria.onDescriptionChange('new String');
+        expect(transactionActions.setSearchDescription).toHaveBeenCalledWith('new String');
         expect(transactionActions.fetchTransactions).toHaveBeenCalled();
       });
     });
