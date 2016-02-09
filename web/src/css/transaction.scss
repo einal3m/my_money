@@ -54,3 +54,17 @@ table#transaction-table {
     font-size: larger;
   }
 }
+
+.file-name-display {
+  padding-left: 10px;
+  .fa {
+    padding-left: 5px;
+    color: #aaa;
+    font-size: 18px;
+    vertical-align: middle;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
