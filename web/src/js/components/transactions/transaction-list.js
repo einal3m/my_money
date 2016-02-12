@@ -6,7 +6,9 @@ import SearchCriteria from './search-criteria';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import TransactionTable from './transaction-table';
+import importActions from '../../actions/import-actions';
 import FileChooserModal from '../import/file-chooser-modal';
+
 require("../../../css/common.scss");
 
 export class TransactionList extends React.Component {
@@ -25,9 +27,15 @@ export class TransactionList extends React.Component {
     this.setState({showImportModal: true});
   }
 
-  importTransactions(fileName) {
+  formData(file){
+    var data = new FormData();
+    data.append('data_file', file);
+    return data;
+  }
+
+  importTransactions(file) {
     this.hideModal();
-    console.log('import', fileName.name);
+    importActions.uploadOFX(this.props.currentAccount.get('id'), file);
   }
 
   renderImportModal() {

@@ -7,16 +7,17 @@ import store from './stores/store';
 import AccountList from './components/accounts/account-list';
 import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
-import { Router, Route, Link, IndexRoute } from 'react-router';
+import ImportPage from './components/import/import-page';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 const App = React.createClass({
   render() {
     return (
       <div>
         <Header />
-          <Provider store={store}>
-            {this.props.children}
-          </Provider>
+        <Provider store={store}>
+          {this.props.children}
+        </Provider>
         <Footer />
       </div>
     )
@@ -24,11 +25,12 @@ const App = React.createClass({
 });
 
 render((
-  <Router>
+  <Router history={hashHistory}>
     <Route path="/" component={App}>
       <Route path="accounts" component={AccountList} />
       <Route path="transactions" component={TransactionList} />
       <Route path="categories" component={CategoryList} />
+      <Route path="import" component={ImportPage} />
       <IndexRoute component={AccountList}/>
     </Route>
   </Router>
