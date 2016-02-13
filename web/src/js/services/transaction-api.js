@@ -1,4 +1,5 @@
 import transactionActions from '../actions/transaction-actions';
+import transactionTransformer from '../transformers/transaction-transformer';
 import importActions from '../actions/import-actions';
 import reqwest from 'reqwest';
 
@@ -31,7 +32,10 @@ class TransactionApi {
 
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
-        importActions.storeOfxTransactions(xhr.responseText);
+        let response = JSON.parse(xhr.responseText).transactions.map(
+          transaction => transactionTransformer.transformFromOfxApi(transaction)
+        );
+        importActions.storeOfxTransactions(response);
       }
     }
     xhr.send(formData);

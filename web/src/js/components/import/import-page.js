@@ -12,7 +12,6 @@ export class ImportPage extends React.Component {
       <div>
         <PageHeader title="import transactions" />
         <div className="container import">
-          {this.props.ofxTransactions}
         </div>
       </div>
     );
@@ -22,7 +21,7 @@ export class ImportPage extends React.Component {
 function mapStateToProps(state) {
   return {
     account: state.accountStore.get('currentAccount').toJS(),
-    ofxTransactions: state.importStore.get('transactions')
+    ofxTransactions: state.importStore.get('transactions').toJS()
   };
 }
 
