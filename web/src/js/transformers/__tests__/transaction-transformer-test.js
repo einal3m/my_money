@@ -10,7 +10,8 @@ describe('transactionTransformer', () => {
         amount: 450,
         categoryId: 3,
         subcategoryId: 11,
-        notes: 'a note'
+        notes: 'a note',
+        memo: 'a memo'
       }
 
       let transformedTransaction = transactionTransformer.transformToApi(transaction);
@@ -20,8 +21,9 @@ describe('transactionTransformer', () => {
       expect(transformedTransaction.date).toEqual('2015-04-13');
       expect(transformedTransaction.amount).toEqual(450);
       expect(transformedTransaction.category_id).toEqual(3);
-      expect(transformedTransaction.subcategory_id).toEqual(11);      
-      expect(transformedTransaction.notes).toEqual('a note');      
+      expect(transformedTransaction.subcategory_id).toEqual(11);
+      expect(transformedTransaction.notes).toEqual('a note');
+      expect(transformedTransaction.memo).toEqual('a memo');
     });
   });
 
@@ -34,7 +36,8 @@ describe('transactionTransformer', () => {
         amount: 450,
         category_id: 3,
         subcategory_id: 11,
-        notes: 'a note'
+        notes: 'a note',
+        memo: 'a memo'
       }
 
       let transformedTransaction = transactionTransformer.transformFromApi(transaction);
@@ -44,8 +47,9 @@ describe('transactionTransformer', () => {
       expect(transformedTransaction.date).toEqual('2015-04-13');
       expect(transformedTransaction.amount).toEqual(450);
       expect(transformedTransaction.categoryId).toEqual(3);
-      expect(transformedTransaction.subcategoryId).toEqual(11);      
-      expect(transformedTransaction.notes).toEqual('a note');      
+      expect(transformedTransaction.subcategoryId).toEqual(11);
+      expect(transformedTransaction.notes).toEqual('a note');
+      expect(transformedTransaction.memo).toEqual('a memo');
     });
   });
 

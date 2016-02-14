@@ -8,7 +8,8 @@ let transactionTransformer = {
       amount: transaction.amount,
       category_id: transaction.categoryId,
       subcategory_id: transaction.subcategoryId,
-      notes: transaction.notes
+      notes: transaction.notes,
+      memo: transaction.memo
     };
   },
 
@@ -20,7 +21,8 @@ let transactionTransformer = {
       amount: transaction.amount,
       categoryId: transaction.category_id,
       subcategoryId: transaction.subcategory_id,
-      notes: transaction.notes
+      notes: transaction.notes,
+      memo: transaction.memo
     };
   },
 

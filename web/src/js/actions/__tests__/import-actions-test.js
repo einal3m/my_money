@@ -29,4 +29,17 @@ describe('ImportActions', () => {
       expect(hashHistory.push).toHaveBeenCalledWith('/import');
     });
   });
+
+  describe('importComplete', () => {
+    it('dispatches an empty array to the store, and changes route', () => {
+      spyOn(hashHistory, 'push');
+      importActions.importComplete();
+
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_OFX_TRANSACTIONS',
+        transactions: []
+      });
+      expect(hashHistory.push).toHaveBeenCalledWith('/transactions');
+    });
+  });
 });
