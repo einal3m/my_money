@@ -16,6 +16,7 @@ let accountTransformer = {
         ticker: account.ticker
       };
     }
+    throw('Unknown account type');
   },
 
   transformFromApi(account) {
@@ -38,6 +39,7 @@ let accountTransformer = {
         currentBalance: account.current_balance
       }
     }
+    throw('Unknown account type');
   }
 }
 

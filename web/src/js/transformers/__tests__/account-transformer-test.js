@@ -33,6 +33,10 @@ describe('AccountTransformer', () => {
       expect(transformedAccount.name).toEqual('myAccount');
       expect(transformedAccount.ticker).toEqual('myTicker');
     });
+
+    it('throws an error for unknown account type', () => {
+      expect(function() {accountTransformer.transformToApi({accountType: 'something'})}).toThrow();
+    });
   });
 
   describe('transformFromApi', () => {
@@ -74,6 +78,10 @@ describe('AccountTransformer', () => {
       expect(transformedAccount.name).toEqual('myAccount');
       expect(transformedAccount.ticker).toEqual('myTicker');
       expect(transformedAccount.currentBalance).toEqual(5000);
+    });
+
+    it('throws an error for unknown account type', () => {
+      expect(function() {accountTransformer.transformFromApi({account_type: 'something'});}).toThrow();
     });
   });
 });
