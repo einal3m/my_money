@@ -1,5 +1,5 @@
-import bankStatementApi from '../services/bank-statement-api';
-import transactionApi from '../services/transaction-api';
+import bankStatementApi from '../apis/bank-statement-api';
+import transactionApi from '../apis/transaction-api';
 import store from '../stores/store';
 import { hashHistory } from 'react-router';
 

@@ -1,4 +1,4 @@
-import accountApi from '../services/account-api';
+import accountApi from '../apis/account-api';
 import store from '../stores/store';
 
 export class AccountActions {

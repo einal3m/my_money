@@ -1,5 +1,5 @@
 import accountActions from '../account-actions';
-import accountApi from '../../services/account-api';
+import accountApi from '../../apis/account-api';
 import store from '../../stores/store';
 
 describe('AccountActions', () => {

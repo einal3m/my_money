@@ -1,5 +1,5 @@
 import importActions from '../import-actions';
-import transactionApi from '../../services/transaction-api';
+import transactionApi from '../../apis/transaction-api';
 import store from '../../stores/store';
 import { hashHistory } from 'react-router';
 

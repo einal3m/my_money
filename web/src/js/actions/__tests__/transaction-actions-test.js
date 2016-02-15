@@ -1,7 +1,7 @@
 import transactionActions from '../transaction-actions';
 import accountActions from '../account-actions';
 import dateRangeActions from '../date-range-actions';
-import transactionApi from '../../services/transaction-api';
+import transactionApi from '../../apis/transaction-api';
 import store from '../../stores/store';
 import { fromJS } from 'immutable';
 

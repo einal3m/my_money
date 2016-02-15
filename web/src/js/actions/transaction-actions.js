@@ -1,4 +1,4 @@
-import transactionApi from '../services/transaction-api';
+import transactionApi from '../apis/transaction-api';
 import store from '../stores/store';
 
 import accountActions from './account-actions';

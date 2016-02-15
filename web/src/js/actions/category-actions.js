@@ -1,4 +1,4 @@
-import categoryApi from '../services/category-api';
+import categoryApi from '../apis/category-api';
 import store from '../stores/store';
 
 class CategoryActions {

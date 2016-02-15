@@ -1,5 +1,5 @@
 import categoryActions from '../category-actions';
-import categoryApi from '../../services/category-api';
+import categoryApi from '../../apis/category-api';
 import store from '../../stores/store';
 import { fromJS } from 'immutable';
 

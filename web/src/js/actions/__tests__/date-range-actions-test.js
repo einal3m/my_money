@@ -1,5 +1,5 @@
 import dateRangeActions from '../date-range-actions';
-import dateRangeApi from '../../services/date-range-api';
+import dateRangeApi from '../../apis/date-range-api';
 import store from '../../stores/store';
 
 describe('DateRangeActions', () => {
