@@ -2,7 +2,7 @@ import { List, Map, toJS } from 'immutable';
 import categoryReducer from '../category-reducer';
 
 describe('CategoryReducer', () => {
-  let categoryTypes, categories;
+  let categoryTypes, categories, subcategories;
   beforeEach(() => {
     categories = [
       {id: 11, name: 'Expense1', categoryTypeId: 3},
@@ -13,14 +13,21 @@ describe('CategoryReducer', () => {
       { id: 1, name: 'Transfer', code: 'transfer', editable: false },
       { id: 3, name: 'Expense', code: 'expense', editable: true }
     ];
+
+    subcategories = [
+      {id: 22, name: 'Sub2', categoryId: 11},
+      {id: 21, name: 'Sub1', categoryId: 12}
+    ]
   });
 
   it('has a default state', () => {
     const state = categoryReducer();
     expect(state.get('categoryTypesLoaded')).toEqual(false);
     expect(state.get('categoriesLoaded')).toEqual(false);
+    expect(state.get('subcategoriesLoaded')).toEqual(false);
     expect(state.get('categoryTypes').toJS()).toEqual([]);
     expect(state.get('categories').toJS()).toEqual([]);
+    expect(state.get('subcategories').toJS()).toEqual([]);    
   });
 
   describe('SET_CATEGORY_TYPES', () => {
@@ -34,12 +41,22 @@ describe('CategoryReducer', () => {
   });
 
   describe('SET_CATEGORIES', () => {
-    it('stores the categories with the category types', () => {
+    it('stores the categories into the store', () => {
       let action = { type: 'SET_CATEGORIES', categories: categories }
       let nextState = categoryReducer(undefined, action);
 
       expect(nextState.get('categories').toJS()).toEqual(categories);
       expect(nextState.get('categoriesLoaded')).toEqual(true);
+    });
+  });
+
+  describe('SET_SUBCATEGORIES', () => {
+    it('stores the categories into the store', () => {
+      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories }
+      let nextState = categoryReducer(undefined, action);
+
+      expect(nextState.get('subcategories').toJS()).toEqual(subcategories);
+      expect(nextState.get('subcategoriesLoaded')).toEqual(true);
     });
   });
 

@@ -3,8 +3,10 @@ import { Map, List, fromJS } from 'immutable';
 const INITIAL_STATE = Map({
   categoryTypesLoaded: false,
   categoriesLoaded: false,
+  subcategoriesLoaded: false,
   categoryTypes: List(),
   categories: List(),
+  subcategories: List()
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -13,6 +15,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     return setCategoryTypes(state, action.categoryTypes);
   case 'SET_CATEGORIES':
     return setCategories(state, action.categories);
+  case 'SET_SUBCATEGORIES':
+    return setSubcategories(state, action.subcategories);
   case 'ADD_CATEGORY':
     return addCategory(state, action.category);
   case 'SET_CATEGORY':
@@ -29,6 +33,11 @@ function setCategoryTypes(state, categoryTypes) {
 function setCategories(state, categories) {
   return state.set('categories', fromJS(categories))
               .set('categoriesLoaded', true);
+}
+
+function setSubcategories(state, subcategories) {
+  return state.set('subcategories', fromJS(subcategories))
+              .set('subcategoriesLoaded', true);
 }
 
 function addCategory(state, category) {

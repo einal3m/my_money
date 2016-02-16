@@ -9,14 +9,14 @@ describe('CategoryActions', () => {
     dispatcherSpy = spyOn(store, 'dispatch');
   });
 
-  describe('category type actions', () => {
-    it('fetchCategoryTypes gets a list of category types', () => {
-      spyOn(categoryApi, 'getCategoryTypes');
-      categoryActions.fetchCategoryTypes();
-      expect(categoryApi.getCategoryTypes).toHaveBeenCalled();
-      expect(store.dispatch).not.toHaveBeenCalled();
-    });
+  describe('getCategories', () => {
+    //TODO: work out how to test promises
+    xit('calls the api util to get category types, categories and subcategories', () => {
 
+    });
+  });
+
+  describe('category type actions', () => {
     it('storeCategoryTypes dispatches the category type data to the store', () => {
       categoryActions.storeCategoryTypes('categoryTypes');
       expect(dispatcherSpy).toHaveBeenCalledWith({
@@ -27,28 +27,6 @@ describe('CategoryActions', () => {
   });
 
   describe('category actions', () => {
-    describe('fetchCategories', () => {
-      it('retrieves the categories if category types are loaded', () => {
-        spyOn(store, 'getState').and.returnValue({
-          categoryStore: fromJS({categoryTypesLoaded: true, categoryTypes: [{id: 45}]})
-        });
-        spyOn(categoryApi, 'getCategories');
-        categoryActions.fetchCategories();
-        expect(categoryApi.getCategories).toHaveBeenCalled();
-      });
-
-      it('retrieves category types if they are not loaded', () => {
-        spyOn(store, 'getState').and.returnValue({
-          categoryStore: fromJS({categoryTypesLoaded: false})
-        });
-        spyOn(categoryApi, 'getCategories');
-        spyOn(categoryActions, 'fetchCategoryTypes');
-        categoryActions.fetchCategories();
-        expect(categoryApi.getCategories).not.toHaveBeenCalled();
-        expect(categoryActions.fetchCategoryTypes).toHaveBeenCalled();
-      });
-    });
-
     it('storeCategories dispatches the categories to the store', () => {
       categoryActions.storeCategories(['categories']);
       expect(dispatcherSpy).toHaveBeenCalledWith({
@@ -82,6 +60,16 @@ describe('CategoryActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_CATEGORY',
         category: 'category'
+      });
+    });
+  });
+
+  describe('subcateory actions', () => {
+    it('storeSubcategories dispatches the subcategories to the store', () => {
+      categoryActions.storeSubcategories(['subcategories']);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_SUBCATEGORIES',
+        subcategories: ['subcategories']
       });
     });
   });

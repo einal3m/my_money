@@ -15,7 +15,7 @@ require("../../../css/categories.scss");
 export class CategoryList extends React.Component {
   constructor() {
     super();
-    categoryActions.fetchCategories();
+    categoryActions.getCategories();
     this.state = { showModal: false };
   }
 
@@ -108,7 +108,9 @@ export class CategoryList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.categoryStore.get('categoriesLoaded') && state.categoryStore.get('categoryTypesLoaded'),
+    loaded: state.categoryStore.get('categoriesLoaded') && 
+            state.categoryStore.get('categoryTypesLoaded') && 
+            state.categoryStore.get('subcategoriesLoaded'),
     groupedCategories: categorySelector(state).toJS()
   };
 }

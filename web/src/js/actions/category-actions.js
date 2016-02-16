@@ -1,9 +1,24 @@
 import categoryApi from '../apis/category-api';
 import store from '../stores/store';
+import apiUtil from '../util/api-util';
+import categoryTransformer from '../transformers/category-transformer';
+import subcategoryTransformer from '../transformers/subcategory-transformer';
 
 class CategoryActions {
-  fetchCategoryTypes(callback) {
-    categoryApi.getCategoryTypes(callback);
+
+  getCategories() {
+    let that = this;
+    return apiUtil.get('http://localhost:3000/category_type2').then(response => {
+      that.storeCategoryTypes(response.category_type2);
+    }).then(() => {
+      apiUtil.get('http://localhost:3000/categories').then(response => {
+      that.storeCategories(response.categories.map(category => categoryTransformer.transformFromApi(category)));
+    })}).then(() => {
+      apiUtil.get('http://localhost:3000/subcategories').then(response => {
+      that.storeSubcategories(response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory)));
+    })}).catch(function(e) {
+      console.log('ERROR: ', e);
+    });
   }
 
   storeCategoryTypes(categoryTypes) {
@@ -13,19 +28,17 @@ class CategoryActions {
     });
   }
 
-  fetchCategories() {
-    let categoryTypesLoaded = store.getState().categoryStore.get('categoryTypesLoaded');
-    if (!categoryTypesLoaded) {
-      this.fetchCategoryTypes(this.fetchCategories.bind(this));
-    } else {
-      categoryApi.getCategories();
-    }
-  }
-
   storeCategories(categories) {
     store.dispatch({
       type: 'SET_CATEGORIES',
       categories: categories
+    })
+  }
+
+  storeSubcategories(subcategories) {
+    store.dispatch({
+      type: 'SET_SUBCATEGORIES',
+      subcategories: subcategories
     })
   }
 
