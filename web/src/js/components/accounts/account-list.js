@@ -13,7 +13,7 @@ require("../../../css/common.scss");
 export class AccountList extends React.Component {
   constructor() {
     super();
-    accountActions.fetchAccounts();
+    accountActions.getAccounts();
     this.state = {
       showNewAccountModal: false
     }

@@ -11,7 +11,7 @@ import accountActions from '../../../actions/account-actions';
 describe('AccountList', () => {
   let accountGroups, accountTypes, accountList;
   beforeEach(() => {
-    spyOn(accountActions, 'fetchAccounts');
+    spyOn(accountActions, 'getAccounts');
 
     accountTypes = fromJS([
       { id: 1, code: 'savings', name: 'Savings' },

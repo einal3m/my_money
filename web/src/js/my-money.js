@@ -9,6 +9,7 @@ import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
 import ImportPage from './components/import/import-page';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+require('babel-polyfill');
 
 const App = React.createClass({
   render() {

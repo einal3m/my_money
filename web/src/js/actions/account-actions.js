@@ -1,5 +1,7 @@
 import accountApi from '../apis/account-api';
 import store from '../stores/store';
+import apiUtil from '../util/api-util';
+import accountTransformer from '../transformers/account-transformer';
 
 export class AccountActions {
   fetchAccounts(callback) {
@@ -10,6 +12,15 @@ export class AccountActions {
     store.dispatch({
       type: 'SET_ACCOUNTS',
       accounts: accounts
+    });
+  }
+
+  getAccounts() {
+    let that = this;
+    return apiUtil.get('http://localhost:3000/accounts').then(function(response) {
+      that.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)));
+    }).catch(function(e) {
+      console.log('ERROR: ', e);
     });
   }
 

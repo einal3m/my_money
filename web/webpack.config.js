@@ -7,7 +7,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel"},
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel", query: {presets: ['es2015', 'react']}},
       { test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader") },
       { test: /\.gif$/, loader: 'url-loader?limit=8192'}
     ]
