@@ -46,6 +46,10 @@ class CategoryActions {
     categoryApi.createCategory(category);
   }
 
+  saveSubcategory(subcategory) {
+    console.log(subcategory);
+  }
+
   updateCategory(category) {
     categoryApi.updateCategory(category);
   }

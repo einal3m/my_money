@@ -5,7 +5,9 @@ import React from 'react';
 import PageHeader from '../common/page-header';
 import { MenuItem, Dropdown, Glyphicon } from 'react-bootstrap';
 import CategoryTypeTable from './category-type-table';
-import CategoryModal from './category-modal';
+import FormModal from '../common/form-modal';
+import CategoryForm from './category-form';
+import SubcategoryForm from './subcategory-form';
 import categoryActions from '../../actions/category-actions';
 import categorySelector from '../../selectors/category-selector';
 import { toJS } from 'immutable';
@@ -20,19 +22,38 @@ export class CategoryList extends React.Component {
   }
 
   newCategory(event, eventKey) {
-    let categoryType = this.props.groupedCategories[Number(eventKey)].categoryType;
-    this.setState({ showModal: true, categoryType: categoryType, category: null });
+    if (eventKey === '1') {
+      this.setState({ showModal: true, modalType: 'Category', category: null });
+    } else {
+      this.setState({ showModal: true, modalType: 'Subcategory', subcategory: null });
+    }
   }
 
-  editCategory(categoryType, category) {
-    this.setState({ showModal: true, categoryType: categoryType, category: category});
+  editCategory(category) {
+    this.setState({ showModal: true, modalType: 'Category', category: category});
   }
 
-  handleSave(category) {
+  editSubcategory(subcategory) {
+    this.setState({ showModal: true, modalType: 'Subcategory', subcategory: subcategory});
+  }
+
+  handleSaveCategory(category) {
     if (category.id) {
       categoryActions.updateCategory(category);
     } else {
       categoryActions.createCategory(category);
+    }
+  }
+
+  handleSaveSubcategory(subcategory) {
+    categoryActions.handleSaveSubcategory(subcategory);
+  }
+
+  handleSave() {
+    if (this.state.modalType === 'Category') {
+      return this.handleSaveCategory;
+    } else {
+      return categoryActions.saveSubcategory;
     }
   }
 
@@ -48,18 +69,9 @@ export class CategoryList extends React.Component {
           <div key={categoryTypeCode} className='col-sm-6'>
             <CategoryTypeTable categoryType={group.categoryType} 
               categories={group.categories}
-              editCategory={this.editCategory.bind(this)} />
+              editCategory={this.editCategory.bind(this)} 
+              editSubcategory={this.editSubcategory.bind(this)} />
           </div>
-        );
-      });
-    }
-  }
-
-  renderMenuItems() {
-    if (this.props.loaded) {
-      return this.props.groupedCategories.map((group, index) => {
-        return (
-          <MenuItem key={index} eventKey={index}>{group.categoryType.name} Category</MenuItem>
         );
       });
     }
@@ -67,23 +79,33 @@ export class CategoryList extends React.Component {
 
   renderNewCategoryButtons() {
     return (
-      <Dropdown id='new-category' pullRight onSelect={this.newCategory.bind(this)} ref='newCategoryButton'>
+      <Dropdown id='new-category' pullRight onSelect={this.newCategory.bind(this)} ref='newButton'>
         <Dropdown.Toggle>
           <Glyphicon glyph='plus' /> New
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {this.renderMenuItems()}
+          <MenuItem key='1' eventKey='category'>New Category</MenuItem>
+          <MenuItem key='2' eventKey='subcategory'>New Subcategory</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
     );
   }
 
+  renderForm() {
+    if (this.state.modalType === 'Category') {
+      return <CategoryForm category={this.state.category}/>
+    } else {
+      return <SubcategoryForm groupedCategories={this.props.groupedCategories} subcategory={this.state.subcategory}/>
+    }
+  }
+
   renderModal() {
     if (this.state.showModal) {
       return (
-        <CategoryModal ref='categoryModal' show categoryType={this.state.categoryType} category={this.state.category}
-          onSave={this.handleSave.bind(this)} onClose={this.closeModal.bind(this)} />
-      )
+        <FormModal ref='modal' show onClose={this.closeModal.bind(this)} onSave={this.handleSave().bind(this)} modelName={this.state.modalType}>
+          {this.renderForm()}
+        </FormModal>
+      );
     }
   }
 

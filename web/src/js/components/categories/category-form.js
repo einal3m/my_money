@@ -12,16 +12,14 @@ export default class CategoryForm extends React.Component {
     if (!category) {
       category = { name: null }
     }
-    category.categoryType = props.categoryType;
-
 
     this.state = { category: category }
-
     this.validator = new FormValidator(this.validationSchema());
   }
 
   validationSchema() {
     return {
+      categoryTypeId: { presence: true },
       name: { presence: true }
     };
   }
@@ -30,7 +28,6 @@ export default class CategoryForm extends React.Component {
     let category = this.state.category;
     category[event.target.name] = event.target.value;
     this.setState({category: category});
-
     this.validator.validateField(event.target.name, event.target.value);
   }
 
@@ -39,15 +36,21 @@ export default class CategoryForm extends React.Component {
     return !this.validator.validateAll(this.state.category);
   }
 
-  getCategory() {
+  getModel() {
     return this.state.category;
   }
 
   render() {
     return (
       <div>
-        <div>
-          {this.state.category.categoryType.name}
+        <div className={`form-group ${this.validator.errorState('categoryTypeId')}`}>
+          <label className='control-label'>Category Type</label>
+          <select className="form-control" name="categoryTypeId" value={this.state.category.categoryTypeId}
+            ref='categoryTypeIdField' onChange={this.handleChange.bind(this)}>
+            <option value='2'>Income</option>
+            <option value='3'>Expense</option>
+          </select>         
+          <div className='help-block'>{this.validator.errorFor('categoryTypeId')}</div>
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>
           <label className='control-label'>Name</label>

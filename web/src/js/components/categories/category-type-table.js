@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import CategoryRow from './category-row';
+import SubcategoryRow from './subcategory-row';
 import categoryActions from '../../actions/category-actions';
 
 export default class CategoryTypeTable extends React.Component {
@@ -11,11 +12,22 @@ export default class CategoryTypeTable extends React.Component {
   renderCategories() {
     if (this.props.categories) {
       return this.props.categories.map(category => {
-        return <CategoryRow key={category.id}  onClickHandler={this.props.editCategory} 
-                  categoryType={this.props.categoryType} category={category} />;
+        return [
+          <CategoryRow key={category.id}  onClickHandler={this.props.editCategory} 
+                       categoryType={this.props.categoryType} category={category} />,
+          this.renderSubcategories(category)
+        ];
       });
     }
   }
+
+  renderSubcategories(category) {
+    return category.subcategories.map(subcategory =>
+      <SubcategoryRow key={subcategory.id} category={category}
+                      subcategory={subcategory} onClickHandler={this.props.editSubcategory} />
+    );
+  }
+
 
   renderTitle() {
     return <h3>{this.props.categoryType.name}</h3>;
@@ -49,5 +61,6 @@ CategoryTypeTable.propTypes = {
     id: React.PropTypes.number.isRequired,
     name: React.PropTypes.string.isRequired
   })).isRequired,
-  editCategory: React.PropTypes.func.isRequired
+  editCategory: React.PropTypes.func.isRequired,
+  editSubcategory: React.PropTypes.func.isRequired
 };

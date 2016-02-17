@@ -3,7 +3,7 @@ let categoryTransformer = {
   transformToApi(category) {
     let apiCategory = {
       name: category.name,
-      category_type_id: category.categoryType.id
+      category_type_id: category.categoryTypeId
     };
 
     if (category.id) {

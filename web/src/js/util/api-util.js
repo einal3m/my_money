@@ -3,7 +3,7 @@ class ApiUtil {
 
   get(url) {
     return new Promise(function(resolve, reject) {
-      console.log('ApiUtil.get');
+      console.log('ApiUtil.get', url);
       var request = new XMLHttpRequest();
       request.open('GET', url);
 

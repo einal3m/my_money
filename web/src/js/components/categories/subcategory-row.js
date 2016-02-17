@@ -1,22 +1,21 @@
 import React from 'react';
-import SubcategoryRow from './subcategory-row';
 
-export default class CategoryRow extends React.Component {
+export default class SubcategoryRow extends React.Component {
   handleClick() {
-    this.props.onClickHandler(this.props.category);
+    this.props.onClickHandler(this.props.subcategory);
   }
 
   render() {
     return (
       <tr onClick={this.handleClick.bind(this)} >
-        <td>{this.props.category.name}</td>
+        <td>{this.props.subcategory.name}</td>
       </tr>
     );
   }
 }
 
-CategoryRow.propTypes = {
-  category: React.PropTypes.shape({
+SubcategoryRow.propTypes = {
+  subcategory: React.PropTypes.shape({
     name: React.PropTypes.string.isRequired
   }).isRequired,
   onClickHandler: React.PropTypes.func.isRequired

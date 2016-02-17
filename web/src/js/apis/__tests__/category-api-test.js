@@ -64,7 +64,7 @@ describe('categoryApi', () => {
 
   describe('updateCategory', () => {
     it('makes an ajax request to PUT/categories/:id', () => {
-      let category = {id: 5, name: 'Hello', categoryType: {id: 2}};
+      let category = {id: 5, name: 'Hello', categoryTypeId: 2};
       categoryApi.updateCategory(category);
 
       expect(categoryApi._send).toHaveBeenCalled();
