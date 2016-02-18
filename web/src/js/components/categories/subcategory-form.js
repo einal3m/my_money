@@ -3,18 +3,13 @@
 import React from 'react';
 import { Input } from 'react-bootstrap';
 import FormValidator from '../../util/form-validator';
+import GroupedCategorySelect from '../common/grouped-category-select';
 
 export default class SubcategoryForm extends React.Component {
 
   constructor(props) {
     super();
-    let subcategory = props.subcategory;
-
-    if (!subcategory) {
-      subcategory = { name: null, categoryId: null}
-    }
-
-    this.state = { subcategory: subcategory }
+    this.state = { subcategory: props.subcategory }
     this.validator = new FormValidator(this.validationSchema());
   }
 
@@ -41,27 +36,13 @@ export default class SubcategoryForm extends React.Component {
     return this.state.subcategory;
   }
 
-  renderCategoryTypes() {
-    let options = [];
-    this.props.groupedCategories.forEach(categoryType => {
-      options.push(<optgroup key={`catType_${categoryType.categoryType.id}`} label={categoryType.categoryType.name} />);
-
-      categoryType.categories.forEach(category => {
-        options.push(<option key={`cat_${category.id}`} value={category.id}>{category.name}</option>)
-      });
-    });
-    return options;
-  }
-
   render() {
     return (
       <div>
         <div className={`form-group ${this.validator.errorState('categoryId')}`}>
           <label className='control-label'>Category</label>
-          <select className="form-control" name="categoryId" value={this.state.subcategory.categoryId}
-            ref='categoryIdField' onChange={this.handleChange.bind(this)}>
-            {this.renderCategoryTypes()}
-          </select>         
+          <GroupedCategorySelect name="categoryId" value={this.state.subcategory.categoryId}
+            ref='categoryIdField' groupedCategories={this.props.groupedCategories} onChange={this.handleChange.bind(this)} />
           <div className='help-block'>{this.validator.errorFor('categoryId')}</div>
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>

@@ -2,6 +2,7 @@ import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import SubcategoryForm from '../subcategory-form';
+import GroupedCategorySelect from '../../common/grouped-category-select';
 
 describe('SubcategoryForm', () => {
   let subcategory, groupedCategories;
@@ -21,7 +22,7 @@ describe('SubcategoryForm', () => {
 
     it('has a category select', () => {
       expect(category.props.children[0].props.children).toEqual('Category');
-      expect(category.props.children[1].type).toEqual('select');
+      expect(category.props.children[1].type).toEqual(GroupedCategorySelect);
       expect(category.props.children[1].props.value).toEqual(3);
     });
 
@@ -60,7 +61,7 @@ describe('SubcategoryForm', () => {
 
   describe('updating state and validation', () => {
     it('updates state and validates name is required', () => {
-      let form = TestUtils.renderIntoDocument(<SubcategoryForm groupedCategories={groupedCategories}/>);
+      let form = TestUtils.renderIntoDocument(<SubcategoryForm subcategory={{}} groupedCategories={groupedCategories}/>);
       let name = form.refs.nameField;
       let formGroup = name.parentNode;
       let helpBlock = formGroup.getElementsByClassName('help-block')[0];
