@@ -74,36 +74,36 @@ describe('CategoryList', () => {
     });
 
     it('shows category modal when you click on the new category button', () => {
-      categoryList.refs.newButton.props.onSelect(null, '1');
+      categoryList.refs.newButton.props.onSelect(null, 'category');
 
       let modal = categoryList.refs.modal;
       expect(modal).toBeDefined();
 
       let form = modal.props.children;
       expect(form.type).toEqual(CategoryForm);
-      expect(form.props.category).toEqual(null);
+      expect(form.props.category).toEqual({});
     });
 
     it('shows subcategory modal when you click on the new subcategory button', () => {
-      categoryList.refs.newButton.props.onSelect(null, '2');
+      categoryList.refs.newButton.props.onSelect(null, 'subcategory');
 
       let modal = categoryList.refs.modal;
       expect(modal).toBeDefined();
 
       let form = modal.props.children;
       expect(form.type).toEqual(SubcategoryForm);
-      expect(form.props.subcategory).toEqual(null);
+      expect(form.props.subcategory).toEqual({});
     });
 
     it('closes modal when modals onClose function called', () => {
-      categoryList.refs.newButton.props.onSelect(null, '1');
+      categoryList.refs.newButton.props.onSelect(null, 'category');
       categoryList.refs.modal.props.onClose();
       expect(categoryList.refs.modal).toBeUndefined();
     });
 
     it('modals onSave function calls the create category action', () =>{
       spyOn(categoryActions, 'createCategory');
-      categoryList.refs.newButton.props.onSelect(null, '1');
+      categoryList.refs.newButton.props.onSelect(null, 'category');
       let modal = categoryList.refs.modal;
 
       modal.props.onSave('category');
@@ -112,7 +112,7 @@ describe('CategoryList', () => {
 
     it('modals onSave function calls the create subcategory action', () =>{
       spyOn(categoryActions, 'saveSubcategory');
-      categoryList.refs.newButton.props.onSelect(null, '2');
+      categoryList.refs.newButton.props.onSelect(null, 'subcategory');
       let modal = categoryList.refs.modal;
 
       modal.props.onSave('subcategory');

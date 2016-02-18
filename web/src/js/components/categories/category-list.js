@@ -22,10 +22,10 @@ export class CategoryList extends React.Component {
   }
 
   newCategory(event, eventKey) {
-    if (eventKey === '1') {
-      this.setState({ showModal: true, modalType: 'Category', category: null });
+    if (eventKey === 'category') {
+      this.setState({ showModal: true, modalType: 'Category', category: {} });
     } else {
-      this.setState({ showModal: true, modalType: 'Subcategory', subcategory: null });
+      this.setState({ showModal: true, modalType: 'Subcategory', subcategory: {} });
     }
   }
 
@@ -92,8 +92,10 @@ export class CategoryList extends React.Component {
   }
 
   renderForm() {
+    let categoryTypes = this.props.groupedCategories.map(categoryType => categoryType.categoryType);
+    
     if (this.state.modalType === 'Category') {
-      return <CategoryForm category={this.state.category}/>
+      return <CategoryForm categoryTypes={categoryTypes} category={this.state.category}/>
     } else {
       return <SubcategoryForm groupedCategories={this.props.groupedCategories} subcategory={this.state.subcategory}/>
     }

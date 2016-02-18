@@ -3,17 +3,13 @@
 import React from 'react';
 import { Input } from 'react-bootstrap';
 import FormValidator from '../../util/form-validator';
+import CategoryTypeSelect from '../common/category-type-select';
 
 export default class CategoryForm extends React.Component {
   constructor(props) {
     super();
-    let category = props.category;
 
-    if (!category) {
-      category = { name: null }
-    }
-
-    this.state = { category: category }
+    this.state = { category: props.category }
     this.validator = new FormValidator(this.validationSchema());
   }
 
@@ -45,11 +41,9 @@ export default class CategoryForm extends React.Component {
       <div>
         <div className={`form-group ${this.validator.errorState('categoryTypeId')}`}>
           <label className='control-label'>Category Type</label>
-          <select className="form-control" name="categoryTypeId" value={this.state.category.categoryTypeId}
-            ref='categoryTypeIdField' onChange={this.handleChange.bind(this)}>
-            <option value='2'>Income</option>
-            <option value='3'>Expense</option>
-          </select>         
+          <CategoryTypeSelect name="categoryTypeId" value={this.state.category.categoryTypeId}
+              categoryTypes={this.props.categoryTypes} ref='categoryTypeIdField' 
+              onChange={this.handleChange.bind(this)} />
           <div className='help-block'>{this.validator.errorFor('categoryTypeId')}</div>
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>
@@ -62,3 +56,9 @@ export default class CategoryForm extends React.Component {
     );
   }
 }
+
+CategoryForm.propTypes = {
+  category: React.PropTypes.object.isRequired,
+  categoryTypes: React.PropTypes.array.isRequired
+};
+
