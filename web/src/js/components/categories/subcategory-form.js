@@ -9,7 +9,7 @@ export default class SubcategoryForm extends React.Component {
 
   constructor(props) {
     super();
-    this.state = { subcategory: props.subcategory }
+    this.state = { subcategory: props.subcategory };
     this.validator = new FormValidator(this.validationSchema());
   }
 
@@ -55,3 +55,11 @@ export default class SubcategoryForm extends React.Component {
     );
   }
 }
+
+SubcategoryForm.propTypes = {
+  subcategory: React.PropTypes.shape({
+    name: React.PropTypes.string,
+    categoryId: React.PropTypes.number
+  }).isRequired,
+  groupedCategories: React.PropTypes.array.isRequired
+};

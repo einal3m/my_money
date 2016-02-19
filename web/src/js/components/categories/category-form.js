@@ -9,7 +9,7 @@ export default class CategoryForm extends React.Component {
   constructor(props) {
     super();
 
-    this.state = { category: props.category }
+    this.state = { category: props.category };
     this.validator = new FormValidator(this.validationSchema());
   }
 
@@ -58,7 +58,10 @@ export default class CategoryForm extends React.Component {
 }
 
 CategoryForm.propTypes = {
-  category: React.PropTypes.object.isRequired,
+  category: React.PropTypes.shape({
+    name: React.PropTypes.string,
+    categoryTypeId: React.PropTypes.number
+  }).isRequired,
   categoryTypes: React.PropTypes.array.isRequired
 };
 
