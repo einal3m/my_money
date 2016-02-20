@@ -32,7 +32,7 @@ describe('CategoryReducer', () => {
 
   describe('SET_CATEGORY_TYPES', () => {
     it('stores the given category types into the store', () =>{
-      let action = { type: 'SET_CATEGORY_TYPES', categoryTypes: categoryTypes }
+      let action = { type: 'SET_CATEGORY_TYPES', categoryTypes: categoryTypes };
       let nextState = categoryReducer(undefined, action);
 
       expect(nextState.get('categoryTypes').toJS()).toEqual(categoryTypes);
@@ -42,7 +42,7 @@ describe('CategoryReducer', () => {
 
   describe('SET_CATEGORIES', () => {
     it('stores the categories into the store', () => {
-      let action = { type: 'SET_CATEGORIES', categories: categories }
+      let action = { type: 'SET_CATEGORIES', categories: categories };
       let nextState = categoryReducer(undefined, action);
 
       expect(nextState.get('categories').toJS()).toEqual(categories);
@@ -52,7 +52,7 @@ describe('CategoryReducer', () => {
 
   describe('SET_SUBCATEGORIES', () => {
     it('stores the categories into the store', () => {
-      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories }
+      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories };
       let nextState = categoryReducer(undefined, action);
 
       expect(nextState.get('subcategories').toJS()).toEqual(subcategories);
@@ -60,24 +60,22 @@ describe('CategoryReducer', () => {
     });
   });
 
-  describe('ADD_CATEGORY', () => {
-    it('adds the category to the store', () => {
-      let category = {id: 13, name: 'Melanie', categoryTypeId: 2}
-      let action = { type: 'SET_CATEGORIES', categories: categories }
+  describe('SET_CATEGORY', () => {
+    it('adds the category to the store if it doesnt exist', () => {
+      let newCategory = {id: 13, name: 'Melanie', categoryTypeId: 2};
+      let action = { type: 'SET_CATEGORIES', categories: categories };
       let nextState = categoryReducer(undefined, action);
-      action = {type: 'ADD_CATEGORY', category: category };
+      action = {type: 'SET_CATEGORY', category: newCategory };
       nextState = categoryReducer(nextState, action);
 
       expect(nextState.get('categories').size).toEqual(3);
-      expect(nextState.get('categories').last().toJS()).toEqual(category);
+      expect(nextState.get('categories').last().toJS()).toEqual(newCategory);
     });
-  });
 
-  describe('SET_CATEGORY', () => {
-    it('updates the category in the store', () => {
+    it('updates the category if it does exist', () => {
       let updatedCategory = {id: 12, name: 'NewName', categoryTypeId: 3};
 
-      let action = { type: 'SET_CATEGORIES', categories: categories }
+      let action = { type: 'SET_CATEGORIES', categories: categories };
       let nextState = categoryReducer(undefined, action);
       action = {type: 'SET_CATEGORY', category: updatedCategory };
       nextState = categoryReducer(nextState, action);
@@ -87,4 +85,31 @@ describe('CategoryReducer', () => {
       expect(nextState.get('categories').last().toJS()).toEqual(updatedCategory);
     });
   });
+
+  describe('SET_SUBCATEGORY', () => {
+    it('adds the subcategory to the store if it doesnt exist', () => {
+      let newSubcategory = {id: 23, name: 'Melanie', categoryId: 11};
+      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories };
+      let nextState = categoryReducer(undefined, action);
+      action = {type: 'SET_SUBCATEGORY', subcategory: newSubcategory };
+      nextState = categoryReducer(nextState, action);
+
+      expect(nextState.get('subcategories').size).toEqual(3);
+      expect(nextState.get('subcategories').last().toJS()).toEqual(newSubcategory);
+    });
+
+    it('updates the subcategory if it does exist', () => {
+      let updatedSubcategory = {id: 22, name: 'NewName', categoryId: 12};
+
+      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories };
+      let nextState = categoryReducer(undefined, action);
+      action = {type: 'SET_SUBCATEGORY', subcategory: updatedSubcategory };
+      nextState = categoryReducer(nextState, action);
+
+      expect(nextState.get('subcategories').size).toEqual(2);
+      expect(nextState.get('subcategories').first().toJS()).toEqual(updatedSubcategory);
+      expect(nextState.get('subcategories').last().toJS()).toEqual(subcategories[1]);
+    });
+  });
+
 });
