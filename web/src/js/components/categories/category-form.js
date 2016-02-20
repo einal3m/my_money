@@ -8,8 +8,7 @@ import CategoryTypeSelect from '../common/category-type-select';
 export default class CategoryForm extends React.Component {
   constructor(props) {
     super();
-
-    this.state = { category: props.category };
+    this.state = { category: Object.assign({}, props.category) };
     this.validator = new FormValidator(this.validationSchema());
   }
 
