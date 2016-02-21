@@ -7,13 +7,27 @@ describe('SubcategoryTransformer', () => {
         id: 23,
         name: 'mySubcategory',
         category_id: 2
-      }
+      };
 
       let transformedSubcategory = subcategoryTransformer.transformFromApi(subcategory);
 
       expect(transformedSubcategory.id).toEqual(23);
       expect(transformedSubcategory.name).toEqual('mySubcategory');
       expect(transformedSubcategory.categoryId).toEqual(2);
+    });
+  });
+
+  describe('transformToApi', () => {
+    it('converts new subcategory to API format', () => {
+      let subcategory = {
+        name: 'mySubcategory',
+        categoryId: 2
+      };
+
+      let transformedSubcategory = subcategoryTransformer.transformToApi(subcategory);
+
+      expect(transformedSubcategory.name).toEqual('mySubcategory');
+      expect(transformedSubcategory.category_id).toEqual(2);
     });
   });
 });

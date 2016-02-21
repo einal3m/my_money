@@ -21,7 +21,7 @@ describe('CategoryList', () => {
     groupedCategories = [
       {categoryType: { id: 1, code: 'income', name: 'Income' }, categories: [category1, category2]},
       {categoryType: { id: 2, code: 'expense', name: 'Expense' }, categories: [category3]}      
-    ]
+    ];
 
     categoryList = shallowRenderer(
       <CategoryList loaded groupedCategories={groupedCategories} />
@@ -102,12 +102,12 @@ describe('CategoryList', () => {
     });
 
     it('modals onSave function calls the create category action', () =>{
-      spyOn(categoryActions, 'createCategory');
+      spyOn(categoryActions, 'saveCategory');
       categoryList.refs.newButton.props.onSelect(null, 'category');
       let modal = categoryList.refs.modal;
 
       modal.props.onSave('category');
-      expect(categoryActions.createCategory).toHaveBeenCalledWith('category');
+      expect(categoryActions.saveCategory).toHaveBeenCalledWith('category');
     });
 
     it('modals onSave function calls the create subcategory action', () =>{

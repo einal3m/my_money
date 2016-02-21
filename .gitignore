@@ -24,3 +24,5 @@ coverage
 # Ignore npm modules
 web/node_modules
 npm-debug.log
+
+.idea*

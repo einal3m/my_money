@@ -21,7 +21,7 @@ export class CategoryList extends React.Component {
     this.state = { showModal: false };
   }
 
-  newCategory(event, eventKey) {
+  newModel(event, eventKey) {
     if (eventKey === 'category') {
       this.setState({ showModal: true, modalType: 'Category', category: {} });
     } else {
@@ -49,11 +49,11 @@ export class CategoryList extends React.Component {
     categoryActions.handleSaveSubcategory(subcategory);
   }
 
-  handleSave() {
+  handleSave(model) {
     if (this.state.modalType === 'Category') {
-      return this.handleSaveCategory;
+      return categoryActions.saveCategory(model);
     } else {
-      return categoryActions.saveSubcategory;
+      return categoryActions.saveSubcategory(model);
     }
   }
 
@@ -79,7 +79,7 @@ export class CategoryList extends React.Component {
 
   renderNewCategoryButtons() {
     return (
-      <Dropdown id='new-category' pullRight onSelect={this.newCategory.bind(this)} ref='newButton'>
+      <Dropdown id='new-category' pullRight onSelect={this.newModel.bind(this)} ref='newButton'>
         <Dropdown.Toggle>
           <Glyphicon glyph='plus' /> New
         </Dropdown.Toggle>
@@ -92,9 +92,8 @@ export class CategoryList extends React.Component {
   }
 
   renderForm() {
-    let categoryTypes = this.props.groupedCategories.map(categoryType => categoryType.categoryType);
-    
     if (this.state.modalType === 'Category') {
+      let categoryTypes = this.props.groupedCategories.map(categoryType => categoryType.categoryType);
       return <CategoryForm categoryTypes={categoryTypes} category={this.state.category}/>
     } else {
       return <SubcategoryForm groupedCategories={this.props.groupedCategories} subcategory={this.state.subcategory}/>
@@ -104,7 +103,7 @@ export class CategoryList extends React.Component {
   renderModal() {
     if (this.state.showModal) {
       return (
-        <FormModal ref='modal' show onClose={this.closeModal.bind(this)} onSave={this.handleSave().bind(this)} modelName={this.state.modalType}>
+        <FormModal ref='modal' show onClose={this.closeModal.bind(this)} onSave={this.handleSave.bind(this)} modelName={this.state.modalType}>
           {this.renderForm()}
         </FormModal>
       );
