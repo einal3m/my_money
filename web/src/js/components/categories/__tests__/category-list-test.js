@@ -69,54 +69,106 @@ describe('CategoryList', () => {
       );
     });
 
-    it('does not show modal by default', () => {
-      expect(categoryList.refs.categoryModal).toBeUndefined();
-    });
+    describe('modals', () => {
+      it('does not show modal by default', () => {
+        expect(categoryList.refs.categoryModal).toBeUndefined();
+      });
 
-    it('shows category modal when you click on the new category button', () => {
-      categoryList.refs.newButton.props.onSelect(null, 'category');
+      describe('category modal', () => {
+        it('shows category modal when you click on the new category button', () => {
+          categoryList.refs.newButton.props.onSelect(null, 'category');
 
-      let modal = categoryList.refs.modal;
-      expect(modal).toBeDefined();
+          let modal = categoryList.refs.modal;
+          expect(modal).toBeDefined();
 
-      let form = modal.props.children;
-      expect(form.type).toEqual(CategoryForm);
-      expect(form.props.category).toEqual({});
-    });
+          let form = modal.props.children;
+          expect(form.type).toEqual(CategoryForm);
+          expect(form.props.category).toEqual({});
+          expect(modal.props.allowDelete).toEqual(false);
+        });
 
-    it('shows subcategory modal when you click on the new subcategory button', () => {
-      categoryList.refs.newButton.props.onSelect(null, 'subcategory');
+        it('shows the category modal when editCategory is called', () => {
+          let category = {id: 1, name: 'Category'};
+          categoryList.editCategory(category);
 
-      let modal = categoryList.refs.modal;
-      expect(modal).toBeDefined();
+          let modal = categoryList.refs.modal;
+          expect(modal).toBeDefined();
 
-      let form = modal.props.children;
-      expect(form.type).toEqual(SubcategoryForm);
-      expect(form.props.subcategory).toEqual({});
-    });
+          let form = modal.props.children;
+          expect(form.type).toEqual(CategoryForm);
+          expect(form.props.category).toEqual(category);
+          expect(modal.props.allowDelete).toEqual(true);
+        });
 
-    it('closes modal when modals onClose function called', () => {
-      categoryList.refs.newButton.props.onSelect(null, 'category');
-      categoryList.refs.modal.props.onClose();
-      expect(categoryList.refs.modal).toBeUndefined();
-    });
+        it('calls the delete category method', () => {
+          let category = {id: 1, name: 'Category'};
+          categoryList.editCategory(category);
 
-    it('modals onSave function calls the create category action', () =>{
-      spyOn(categoryActions, 'saveCategory');
-      categoryList.refs.newButton.props.onSelect(null, 'category');
-      let modal = categoryList.refs.modal;
+          spyOn(categoryActions, 'deleteCategory');
+          categoryList.refs.modal.props.onDelete(1);
+          expect(categoryActions.deleteCategory).toHaveBeenCalledWith(1);
+        });
+      });
 
-      modal.props.onSave('category');
-      expect(categoryActions.saveCategory).toHaveBeenCalledWith('category');
-    });
+      describe('subcategory modal', () => {
+        it('shows subcategory modal when you click on the new subcategory button', () => {
+          categoryList.refs.newButton.props.onSelect(null, 'subcategory');
 
-    it('modals onSave function calls the create subcategory action', () =>{
-      spyOn(categoryActions, 'saveSubcategory');
-      categoryList.refs.newButton.props.onSelect(null, 'subcategory');
-      let modal = categoryList.refs.modal;
+          let modal = categoryList.refs.modal;
+          expect(modal).toBeDefined();
 
-      modal.props.onSave('subcategory');
-      expect(categoryActions.saveSubcategory).toHaveBeenCalledWith('subcategory');
+          let form = modal.props.children;
+          expect(form.type).toEqual(SubcategoryForm);
+          expect(form.props.subcategory).toEqual({});
+          expect(modal.props.allowDelete).toEqual(false);
+        });
+
+        it('shows the subcategory modal when editSubcategory is called', () => {
+          let subcategory = {id: 1, name: 'Subcategory'};
+          categoryList.editSubcategory(subcategory);
+
+          let modal = categoryList.refs.modal;
+          expect(modal).toBeDefined();
+
+          let form = modal.props.children;
+          expect(form.type).toEqual(SubcategoryForm);
+          expect(form.props.subcategory).toEqual(subcategory);
+          expect(modal.props.allowDelete).toEqual(true);
+        });
+
+        it('calls the delete subcategory method', () => {
+          let subcategory = {id: 1, name: 'Subcategory'};
+          categoryList.editSubcategory(subcategory);
+
+          spyOn(categoryActions, 'deleteSubcategory');
+          categoryList.refs.modal.props.onDelete(1);
+          expect(categoryActions.deleteSubcategory).toHaveBeenCalledWith(1);
+        });
+      });
+
+      it('closes modal when modals onClose function called', () => {
+        categoryList.refs.newButton.props.onSelect(null, 'category');
+        categoryList.refs.modal.props.onClose();
+        expect(categoryList.refs.modal).toBeUndefined();
+      });
+
+      it('modals onSave function calls the create category action', () =>{
+        spyOn(categoryActions, 'saveCategory');
+        categoryList.refs.newButton.props.onSelect(null, 'category');
+        let modal = categoryList.refs.modal;
+
+        modal.props.onSave('category');
+        expect(categoryActions.saveCategory).toHaveBeenCalledWith('category');
+      });
+
+      it('modals onSave function calls the create subcategory action', () =>{
+        spyOn(categoryActions, 'saveSubcategory');
+        categoryList.refs.newButton.props.onSelect(null, 'subcategory');
+        let modal = categoryList.refs.modal;
+
+        modal.props.onSave('subcategory');
+        expect(categoryActions.saveSubcategory).toHaveBeenCalledWith('subcategory');
+      });
     });
   });
 });

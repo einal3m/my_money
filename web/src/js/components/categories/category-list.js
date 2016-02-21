@@ -23,18 +23,18 @@ export class CategoryList extends React.Component {
 
   newModel(event, eventKey) {
     if (eventKey === 'category') {
-      this.setState({ showModal: true, modalType: 'Category', category: {} });
+      this.setState({ showModal: true, modalType: 'Category', category: {}, allowDelete: false });
     } else {
-      this.setState({ showModal: true, modalType: 'Subcategory', subcategory: {} });
+      this.setState({ showModal: true, modalType: 'Subcategory', subcategory: {}, allowDelete: false });
     }
   }
 
   editCategory(category) {
-    this.setState({ showModal: true, modalType: 'Category', category: category});
+    this.setState({ showModal: true, modalType: 'Category', category: category, allowDelete: true});
   }
 
   editSubcategory(subcategory) {
-    this.setState({ showModal: true, modalType: 'Subcategory', subcategory: subcategory});
+    this.setState({ showModal: true, modalType: 'Subcategory', subcategory: subcategory, allowDelete: true});
   }
 
   handleSaveCategory(category) {
@@ -51,9 +51,17 @@ export class CategoryList extends React.Component {
 
   handleSave(model) {
     if (this.state.modalType === 'Category') {
-      return categoryActions.saveCategory(model);
+      categoryActions.saveCategory(model);
     } else {
-      return categoryActions.saveSubcategory(model);
+      categoryActions.saveSubcategory(model);
+    }
+  }
+
+  handleDelete(modelId) {
+    if (this.state.modalType === 'Category') {
+      categoryActions.deleteCategory(modelId);
+    } else {
+      categoryActions.deleteSubcategory(modelId);
     }
   }
 
@@ -94,7 +102,7 @@ export class CategoryList extends React.Component {
   renderForm() {
     if (this.state.modalType === 'Category') {
       let categoryTypes = this.props.groupedCategories.map(categoryType => categoryType.categoryType);
-      return <CategoryForm categoryTypes={categoryTypes} category={this.state.category}/>
+      return <CategoryForm categoryTypes={categoryTypes} category={this.state.category} />
     } else {
       return <SubcategoryForm groupedCategories={this.props.groupedCategories} subcategory={this.state.subcategory}/>
     }
@@ -103,7 +111,9 @@ export class CategoryList extends React.Component {
   renderModal() {
     if (this.state.showModal) {
       return (
-        <FormModal ref='modal' show onClose={this.closeModal.bind(this)} onSave={this.handleSave.bind(this)} modelName={this.state.modalType}>
+        <FormModal ref='modal' show onClose={this.closeModal.bind(this)} onSave={this.handleSave.bind(this)}
+                   modelName={this.state.modalType} allowDelete={this.state.allowDelete}
+                   onDelete={this.handleDelete.bind(this)}>
           {this.renderForm()}
         </FormModal>
       );

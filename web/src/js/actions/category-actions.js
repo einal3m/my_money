@@ -48,6 +48,10 @@ class CategoryActions {
     });
   }
 
+  deleteCategory(categoryId) {
+    console.log('delete category', categoryId);
+  }
+
   saveSubcategory(subcategory) {
     if (subcategory.id) {
       this.updateSubcategory(subcategory);
@@ -74,6 +78,10 @@ class CategoryActions {
     }).catch(function(e) {
       console.log('ERROR: Create Subcategory failed: ', e);
     });
+  }
+
+  deleteSubcategory(subcategoryId) {
+    console.log('delete subcategory', subcategoryId);
   }
 
   storeCategoryTypes(categoryTypes) {
