@@ -40,76 +40,94 @@ describe('CategoryReducer', () => {
     });
   });
 
-  describe('SET_CATEGORIES', () => {
-    it('stores the categories into the store', () => {
+  describe('category actions', () => {
+    let loadedState;
+    beforeEach(() => {
       let action = { type: 'SET_CATEGORIES', categories: categories };
-      let nextState = categoryReducer(undefined, action);
+      loadedState = categoryReducer(undefined, action);
+    });
 
-      expect(nextState.get('categories').toJS()).toEqual(categories);
-      expect(nextState.get('categoriesLoaded')).toEqual(true);
+    describe('SET_CATEGORIES', () => {
+      it('stores the categories into the store', () => {
+        expect(loadedState.get('categories').toJS()).toEqual(categories);
+        expect(loadedState.get('categoriesLoaded')).toEqual(true);
+      });
+    });
+
+    describe('SET_CATEGORY', () => {
+      it('adds the category to the store if it doesnt exist', () => {
+        let newCategory = {id: 13, name: 'Melanie', categoryTypeId: 2};
+        let action = {type: 'SET_CATEGORY', category: newCategory };
+        let state = categoryReducer(loadedState, action);
+
+        expect(state.get('categories').size).toEqual(3);
+        expect(state.get('categories').last().toJS()).toEqual(newCategory);
+      });
+
+      it('updates the category if it does exist', () => {
+        let updatedCategory = {id: 12, name: 'NewName', categoryTypeId: 3};
+        let action = {type: 'SET_CATEGORY', category: updatedCategory };
+        let state = categoryReducer(loadedState, action);
+
+        expect(state.get('categories').size).toEqual(2);
+        expect(state.get('categories').first().toJS()).toEqual(categories[0]);
+        expect(state.get('categories').last().toJS()).toEqual(updatedCategory);
+      });
+    });
+
+    describe('REMOVE_CATEGORY', () => {
+      it('removes the category from the store', () => {
+        let action = {type: 'REMOVE_CATEGORY', categoryId: 11};
+        let state = categoryReducer(loadedState, action);
+
+        expect(state.get('categories').size).toEqual(1);
+        expect(state.get('categories').first().toJS()).toEqual(categories[1]);
+      });
     });
   });
 
-  describe('SET_SUBCATEGORIES', () => {
-    it('stores the categories into the store', () => {
+  describe('subcategories', () => {
+    let loadedState;
+    beforeEach(() => {
       let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories };
-      let nextState = categoryReducer(undefined, action);
+      loadedState = categoryReducer(undefined, action);
+    });
 
-      expect(nextState.get('subcategories').toJS()).toEqual(subcategories);
-      expect(nextState.get('subcategoriesLoaded')).toEqual(true);
+    describe('SET_SUBCATEGORIES', () => {
+      it('stores the categories into the store', () => {
+        expect(loadedState.get('subcategories').toJS()).toEqual(subcategories);
+        expect(loadedState.get('subcategoriesLoaded')).toEqual(true);
+      });
+    });
+    describe('SET_SUBCATEGORY', () => {
+      it('adds the subcategory to the store if it doesnt exist', () => {
+        let newSubcategory = {id: 23, name: 'Melanie', categoryId: 11};
+        let action = {type: 'SET_SUBCATEGORY', subcategory: newSubcategory };
+        let state = categoryReducer(loadedState, action);
+
+        expect(state.get('subcategories').size).toEqual(3);
+        expect(state.get('subcategories').last().toJS()).toEqual(newSubcategory);
+      });
+
+      it('updates the subcategory if it does exist', () => {
+        let updatedSubcategory = {id: 22, name: 'NewName', categoryId: 12};
+        let action = {type: 'SET_SUBCATEGORY', subcategory: updatedSubcategory };
+        let state = categoryReducer(loadedState, action);
+
+        expect(state.get('subcategories').size).toEqual(2);
+        expect(state.get('subcategories').first().toJS()).toEqual(updatedSubcategory);
+        expect(state.get('subcategories').last().toJS()).toEqual(subcategories[1]);
+      });
+    });
+
+    describe('REMOVE_SUBCATEGORY', () => {
+      it('removes the subcategory from the store', () => {
+        let action = {type: 'REMOVE_SUBCATEGORY', subcategoryId: 21};
+        let state = categoryReducer(loadedState, action);
+
+        expect(state.get('subcategories').size).toEqual(1);
+        expect(state.get('subcategories').first().toJS()).toEqual(subcategories[0]);
+      });
     });
   });
-
-  describe('SET_CATEGORY', () => {
-    it('adds the category to the store if it doesnt exist', () => {
-      let newCategory = {id: 13, name: 'Melanie', categoryTypeId: 2};
-      let action = { type: 'SET_CATEGORIES', categories: categories };
-      let nextState = categoryReducer(undefined, action);
-      action = {type: 'SET_CATEGORY', category: newCategory };
-      nextState = categoryReducer(nextState, action);
-
-      expect(nextState.get('categories').size).toEqual(3);
-      expect(nextState.get('categories').last().toJS()).toEqual(newCategory);
-    });
-
-    it('updates the category if it does exist', () => {
-      let updatedCategory = {id: 12, name: 'NewName', categoryTypeId: 3};
-
-      let action = { type: 'SET_CATEGORIES', categories: categories };
-      let nextState = categoryReducer(undefined, action);
-      action = {type: 'SET_CATEGORY', category: updatedCategory };
-      nextState = categoryReducer(nextState, action);
-
-      expect(nextState.get('categories').size).toEqual(2);
-      expect(nextState.get('categories').first().toJS()).toEqual(categories[0]);
-      expect(nextState.get('categories').last().toJS()).toEqual(updatedCategory);
-    });
-  });
-
-  describe('SET_SUBCATEGORY', () => {
-    it('adds the subcategory to the store if it doesnt exist', () => {
-      let newSubcategory = {id: 23, name: 'Melanie', categoryId: 11};
-      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories };
-      let nextState = categoryReducer(undefined, action);
-      action = {type: 'SET_SUBCATEGORY', subcategory: newSubcategory };
-      nextState = categoryReducer(nextState, action);
-
-      expect(nextState.get('subcategories').size).toEqual(3);
-      expect(nextState.get('subcategories').last().toJS()).toEqual(newSubcategory);
-    });
-
-    it('updates the subcategory if it does exist', () => {
-      let updatedSubcategory = {id: 22, name: 'NewName', categoryId: 12};
-
-      let action = { type: 'SET_SUBCATEGORIES', subcategories: subcategories };
-      let nextState = categoryReducer(undefined, action);
-      action = {type: 'SET_SUBCATEGORY', subcategory: updatedSubcategory };
-      nextState = categoryReducer(nextState, action);
-
-      expect(nextState.get('subcategories').size).toEqual(2);
-      expect(nextState.get('subcategories').first().toJS()).toEqual(updatedSubcategory);
-      expect(nextState.get('subcategories').last().toJS()).toEqual(subcategories[1]);
-    });
-  });
-
 });
