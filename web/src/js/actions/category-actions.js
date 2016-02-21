@@ -7,17 +7,18 @@ class CategoryActions {
 
   getCategories() {
     let that = this;
-    return apiUtil.get('http://localhost:3000/category_type2').then(response => {
-      that.storeCategoryTypes(response.category_type2);
+    return apiUtil.get({
+      url: 'http://localhost:3000/category_type2',
+      onSuccess: response => this.storeCategoryTypes(response.category_type2)
     }).then(() => {
-      apiUtil.get('http://localhost:3000/categories').then(response => {
-      that.storeCategories(response.categories.map(category => categoryTransformer.transformFromApi(category)));
+      apiUtil.get({
+        url: 'http://localhost:3000/categories',
+        onSuccess: response => that.storeCategories(response.categories.map(category => categoryTransformer.transformFromApi(category)))
     })}).then(() => {
-      apiUtil.get('http://localhost:3000/subcategories').then(response => {
-      that.storeSubcategories(response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory)));
-    })}).catch(function(e) {
-      console.log('ERROR: ', e);
-    });
+      apiUtil.get({
+        url: 'http://localhost:3000/subcategories',
+        onSuccess: response => that.storeSubcategories(response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory)))
+    })});
   }
 
   saveCategory(category) {
@@ -29,31 +30,25 @@ class CategoryActions {
   }
 
   createCategory(category) {
-    let that = this;
-    let apiCategory = categoryTransformer.transformToApi(category);
-    return apiUtil.post('http://localhost:3000/categories', {category: apiCategory}).then(response => {
-      that.storeCategory(categoryTransformer.transformFromApi(response.category));
-    }).catch(function(e) {
-      console.log('ERROR: Create Category failed: ', e);
+    return apiUtil.post({
+      url: 'http://localhost:3000/categories',
+      body: {category: categoryTransformer.transformToApi(category)},
+      onSuccess: response => this.storeCategory(categoryTransformer.transformFromApi(response.category))
     });
   }
 
   updateCategory(category) {
-    let that = this;
-    let apiCategory = categoryTransformer.transformToApi(category);
-    return apiUtil.put('http://localhost:3000/categories/' + category.id, {category: apiCategory}).then(response => {
-      that.storeCategory(categoryTransformer.transformFromApi(response.category));
-    }).catch(function(e) {
-      console.log('ERROR: Update Category failed: ', e);
+    return apiUtil.put({
+      url: 'http://localhost:3000/categories/' + category.id,
+      body: {category: categoryTransformer.transformToApi(category)},
+      onSuccess: response => this.storeCategory(categoryTransformer.transformFromApi(response.category))
     });
   }
 
   deleteCategory(categoryId) {
-    let that = this;
-    return apiUtil.delete('http://localhost:3000/categories/' + categoryId).then(response => {
-      that.removeCategory(categoryId);
-    }).catch(function(e) {
-      console.log('ERROR: Delete Category failed: ', e);
+    return apiUtil.delete({
+      url: 'http://localhost:3000/categories/' + categoryId,
+      onSuccess: response => this.removeCategory(categoryId)
     });
   }
 
@@ -66,31 +61,25 @@ class CategoryActions {
   }
 
   createSubcategory(subcategory) {
-    let that = this;
-    let apiSubcategory = subcategoryTransformer.transformToApi(subcategory);
-    return apiUtil.post('http://localhost:3000/subcategories', {subcategory: apiSubcategory}).then(response => {
-      that.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory));
-    }).catch(function(e) {
-      console.log('ERROR: Create Subcategory failed: ', e);
+    return apiUtil.post({
+      url: 'http://localhost:3000/subcategories',
+      body: {subcategory: subcategoryTransformer.transformToApi(subcategory)},
+      onSuccess: response => this.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory))
     });
   }
 
   updateSubcategory(subcategory) {
-    let that = this;
-    let apiSubcategory = subcategoryTransformer.transformToApi(subcategory);
-    return apiUtil.put('http://localhost:3000/subcategories/' + subcategory.id, {subcategory: apiSubcategory}).then(response => {
-      that.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory));
-    }).catch(function(e) {
-      console.log('ERROR: Update Subcategory failed: ', e);
+    return apiUtil.put({
+      url: 'http://localhost:3000/subcategories/' + subcategory.id,
+      body: {subcategory: subcategoryTransformer.transformToApi(subcategory)},
+      onSuccess: response => this.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory))
     });
   }
 
   deleteSubcategory(subcategoryId) {
-    let that = this;
-    return apiUtil.delete('http://localhost:3000/subcategories/' + subcategoryId).then(response => {
-      that.removeSubcategory(subcategoryId);
-    }).catch(function(e) {
-      console.log('ERROR: Delete Subcategory failed: ', e);
+    return apiUtil.delete({
+      url: 'http://localhost:3000/subcategories/' + subcategoryId,
+      onSuccess: () => this.removeSubcategory(subcategoryId)
     });
   }
 
@@ -130,7 +119,6 @@ class CategoryActions {
   }
 
   storeSubcategory(subcategory) {
-    console.log('storeCategory');
     store.dispatch({
       type: 'SET_SUBCATEGORY',
       subcategory: subcategory

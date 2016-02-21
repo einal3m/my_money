@@ -1,20 +1,30 @@
 
 class ApiUtil {
 
-  get(url) {
-    return this.send(url, 'GET');
+  get(options) {
+    return this.makeRequest(options.url, 'GET', null, options.onSuccess);
   }
 
-  post(url, body) {
-    return this.send(url, 'POST', JSON.stringify(body));
+  post(options) {
+    return this.makeRequest(options.url, 'POST', JSON.stringify(options.body), options.onSuccess);
   }
 
-  put(url, body) {
-    return this.send(url, 'PUT', JSON.stringify(body));
+  put(options) {
+    return this.makeRequest(options.url, 'PUT', JSON.stringify(options.body), options.onSuccess);
   }
 
-  delete(url) {
-    return this.send(url, 'DELETE');
+  delete(options) {
+    return this.makeRequest(options.url, 'DELETE', null, options.onSuccess);
+  }
+
+  makeRequest(url, method, body, onSuccessCallback) {
+    return this.send(url, method, body).then(response => {
+      if (onSuccessCallback) {
+        onSuccessCallback(response);
+      }
+    }).catch(function(e) {
+      console.log(`ApiUtil Error: ${method} ${url}`, e);
+    });
   }
 
   send(url, method, body) {

@@ -16,11 +16,9 @@ export class AccountActions {
   }
 
   getAccounts() {
-    let that = this;
-    return apiUtil.get('http://localhost:3000/accounts').then(function(response) {
-      that.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)));
-    }).catch(function(e) {
-      console.log('ERROR: ', e);
+    return apiUtil.get({
+      url: 'http://localhost:3000/accounts',
+      onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)))
     });
   }
 

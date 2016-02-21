@@ -11,17 +11,21 @@ describe('AccountActions', () => {
   });
 
   describe('getAccounts', () => {
-    // TODO: figure out why the spies are not working
-    xit('makes an ajax request to GET/accounts and calls callback on success', () => {
-      spyOn(accountActions, 'storeAccounts');
-      spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
-      spyOn(apiUtil, 'get').and.returnValue(Promise.resolve({accounts: [{account_type: 'savings'}]}));
-
+    it('makes an ajax request to GET/accounts and calls callback on success', () => {
+      spyOn(apiUtil, 'get');
       accountActions.getAccounts();
+      expect(apiUtil.get).toHaveBeenCalled();
 
-      expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
+      let getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('http://localhost:3000/accounts');
+
+      spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
+      spyOn(accountActions, 'storeAccounts');
+      let successCallback = getArgs.onSuccess;
+      successCallback({accounts: ['account']});
+
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
-      expect(apiUtil.get).toHaveBeenCalledWith('http://localhost:3000/accounts');
+      expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
     });
 
   });
