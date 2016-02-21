@@ -127,8 +127,8 @@ export class CategoryList extends React.Component {
           {this.renderNewCategoryButtons()}
         </PageHeader>
 
-        <div className="container">
-          <div className='row category-list'>
+        <div id='category-list' className="container">
+          <div className='row'>
             {this.renderCategoryTypes()}
           </div>
         </div>

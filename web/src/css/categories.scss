@@ -1,11 +1,24 @@
 @import 'colours';
 
-.category-list {
+#category-list {
   button {
     margin-left: 10px;
   }
 
   table {
     border-top: 2px solid $main-color;
+
+    .subcategory td{
+      border: none;
+      padding-left: 20px;
+
+      &::before {
+        content: "- ";
+      }
+    }
+
+    .category {
+      font-size: larger;
+    }
   }
 }

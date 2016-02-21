@@ -7,7 +7,7 @@ export default class SubcategoryRow extends React.Component {
 
   render() {
     return (
-      <tr onClick={this.handleClick.bind(this)} >
+      <tr className='subcategory' onClick={this.handleClick.bind(this)} >
         <td>{this.props.subcategory.name}</td>
       </tr>
     );
