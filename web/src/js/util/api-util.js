@@ -13,6 +13,10 @@ class ApiUtil {
     return this.send(url, 'PUT', JSON.stringify(body));
   }
 
+  delete(url) {
+    return this.send(url, 'DELETE');
+  }
+
   send(url, method, body) {
     return new Promise(function(resolve, reject) {
       console.log(`ApiUtil ${method}: ${url}`);
@@ -22,8 +26,12 @@ class ApiUtil {
       request.setRequestHeader("Content-type", "application/json");
 
       request.onload = function() {
-        if (request.status == 200 || request.status == 201) {
-          resolve(JSON.parse(request.response));
+        if (request.status == 200 || request.status == 201 || request.status == 204) {
+          let response;
+          if (request.response) {
+            response = JSON.parse(request.response);
+          }
+          resolve(response);
         }
         else {
           reject(Error(request.statusText));

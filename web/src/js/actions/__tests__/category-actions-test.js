@@ -55,6 +55,14 @@ describe('CategoryActions', () => {
         category: 'category'
       });
     });
+
+    it('removeCategory dispatches the category id to the store', () => {
+      categoryActions.removeCategory(13);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'REMOVE_CATEGORY',
+        categoryId: 13
+      });
+    });
   });
 
   describe('subcategory actions', () => {
@@ -85,6 +93,14 @@ describe('CategoryActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_SUBCATEGORY',
         subcategory: 'subcategory'
+      });
+    });
+
+    it('removeSubcategory dispatches the subcategory id to the store', () => {
+      categoryActions.removeSubcategory(14);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'REMOVE_SUBCATEGORY',
+        subcategoryId: 14
       });
     });
   });
