@@ -3,15 +3,15 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, NavBrand, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 require("../../../css/nav.scss");
 
 export default class Header extends React.Component {
   render() {
     return (
       <Navbar>
-        <NavBrand><Link className="navbar-brand" to="/"><strong>my</strong> money</Link></NavBrand>
-        <Nav right>
+        <NavbarBrand><Link className="navbar-brand" to="/"><strong>my</strong> money</Link></NavbarBrand>
+        <Nav pullRight>
           <LinkContainer to="/accounts"><NavItem eventKey={1}>accounts</NavItem></LinkContainer>
           <LinkContainer to="/transactions"><NavItem eventKey={2}>transactions</NavItem></LinkContainer>
           <LinkContainer to="/categories"><NavItem eventKey={3}>categories</NavItem></LinkContainer>
