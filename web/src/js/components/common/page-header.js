@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import Sticky from 'react-stickydiv';
 import ApiStatus from '../../util/api-status';
 import apiStatusActions from '../../actions/api-status-actions';
 require("../../../css/common.scss");
@@ -32,21 +33,23 @@ export default class PageTitle extends React.Component {
 
   render() {
     return (
-      <div className="page-title">
-        <div className="container">
-          <div className="row">
-            <div className="title col-xs-8">
-              <div className="inline-heading"><h1>{this.props.title}</h1></div>
-              <span className='status'>{this.renderStatus()}</span>
-            </div>
-            <div className="button-group col-xs-4">
-              <div className="pull-right">
-                {this.props.children}
+      <Sticky zIndex={999}>
+        <div className="page-title">
+          <div className="container">
+            <div className="row">
+              <div className="title col-xs-8">
+                <div className="inline-heading"><h1>{this.props.title}</h1></div>
+                <span className='status'>{this.renderStatus()}</span>
+              </div>
+              <div className="button-group col-xs-4">
+                <div className="pull-right">
+                  {this.props.children}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Sticky>
     );
   }
 }

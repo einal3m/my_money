@@ -10,7 +10,6 @@ import CategoryForm from './category-form';
 import SubcategoryForm from './subcategory-form';
 import categoryActions from '../../actions/category-actions';
 import categorySelector from '../../selectors/category-selector';
-import Sticky from 'react-stickydiv';
 require("../../../css/common.scss");
 require("../../../css/categories.scss");
 
@@ -123,11 +122,9 @@ export class CategoryList extends React.Component {
   render() {
     return (
       <div>
-        <Sticky zIndex={999}>
-          <PageHeader title='my categories' apiStatus={this.props.apiStatus}>
-            {this.renderNewCategoryButtons()}
-          </PageHeader>
-        </Sticky>
+        <PageHeader title='my categories' apiStatus={this.props.apiStatus}>
+          {this.renderNewCategoryButtons()}
+        </PageHeader>
 
         <div id='category-list' className="container">
           <div className='row'>
