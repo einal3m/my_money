@@ -4,6 +4,7 @@ import dateRangeReducer from './date-range-reducer';
 import transactionReducer from './transaction-reducer';
 import categoryReducer from './category-reducer';
 import importReducer from './import-reducer';
+import apiReducer from './api-status-reducer';
 
 export default createStore(
   combineReducers({
@@ -11,6 +12,7 @@ export default createStore(
     dateRangeStore: dateRangeReducer,
     transactionStore: transactionReducer,
     categoryStore: categoryReducer,
-    importStore: importReducer
+    importStore: importReducer,
+    apiStatusStore: apiReducer
   })
 );

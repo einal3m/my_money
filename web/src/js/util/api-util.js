@@ -1,3 +1,4 @@
+import apiStatusActions from '../actions/api-status-actions';
 
 class ApiUtil {
 
@@ -23,7 +24,8 @@ class ApiUtil {
         onSuccessCallback(response);
       }
     }).catch(function(e) {
-      console.log(`ApiUtil Error: ${method} ${url}`, e);
+      apiStatusActions.storeApiError(e.message);
+      console.log(`Api Error: ${method} ${url}, $e.message`);
     });
   }
 
@@ -36,15 +38,17 @@ class ApiUtil {
       request.setRequestHeader("Content-type", "application/json");
 
       request.onload = function() {
-        if (request.status == 200 || request.status == 201 || request.status == 204) {
+        if (request.status === 200 || request.status === 201 || request.status === 204) {
           let response;
           if (request.response) {
             response = JSON.parse(request.response);
           }
           resolve(response);
         }
-        else {
-          reject(Error(request.statusText));
+        else if (request.status === 422) {
+          reject(Error(JSON.parse(request.response).message));
+        } else {
+          reject(Error("Unknown Error"));
         }
       };
 

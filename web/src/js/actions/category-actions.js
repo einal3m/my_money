@@ -7,6 +7,8 @@ class CategoryActions {
 
   getCategories() {
     let that = this;
+    store.dispatch({type: 'GET_CATEGORIES'});
+
     return apiUtil.get({
       url: 'http://localhost:3000/category_type2',
       onSuccess: response => this.storeCategoryTypes(response.category_type2)
@@ -22,6 +24,7 @@ class CategoryActions {
   }
 
   saveCategory(category) {
+    store.dispatch({type: 'SAVE_CATEGORY'});
     if (category.id) {
       this.updateCategory(category);
     } else {
@@ -46,6 +49,7 @@ class CategoryActions {
   }
 
   deleteCategory(categoryId) {
+    store.dispatch({type: 'DELETE_CATEGORY'});
     return apiUtil.delete({
       url: 'http://localhost:3000/categories/' + categoryId,
       onSuccess: response => this.removeCategory(categoryId)
@@ -53,6 +57,7 @@ class CategoryActions {
   }
 
   saveSubcategory(subcategory) {
+    store.dispatch({type: 'SAVE_SUBCATEGORY'});
     if (subcategory.id) {
       this.updateSubcategory(subcategory);
     } else {
@@ -77,6 +82,7 @@ class CategoryActions {
   }
 
   deleteSubcategory(subcategoryId) {
+    store.dispatch({type: 'DELETE_SUBCATEGORY'});
     return apiUtil.delete({
       url: 'http://localhost:3000/subcategories/' + subcategoryId,
       onSuccess: () => this.removeSubcategory(subcategoryId)

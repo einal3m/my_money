@@ -34,12 +34,14 @@ describe('CategoryActions', () => {
         spyOn(categoryActions, 'createCategory');
         categoryActions.saveCategory({name: 'Melanie'});
         expect(categoryActions.createCategory).toHaveBeenCalledWith({name: 'Melanie'});
+        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_CATEGORY'});
       });
 
       it('calls updateCategory when id is present', () => {
         spyOn(categoryActions, 'updateCategory');
         categoryActions.saveCategory({id: 1, name: 'Melanie'});
         expect(categoryActions.updateCategory).toHaveBeenCalledWith({id: 1, name: 'Melanie'});
+        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_CATEGORY'});
       });
     });
 
@@ -91,6 +93,7 @@ describe('CategoryActions', () => {
       spyOn(apiUtil, 'delete');
       categoryActions.deleteCategory(23);
       expect(apiUtil.delete).toHaveBeenCalled();
+      expect(dispatcherSpy).toHaveBeenCalledWith({type: 'DELETE_CATEGORY'});
 
       let deleteArgs   = apiUtil.delete.calls.argsFor(0)[0];
       expect(deleteArgs.url).toEqual('http://localhost:3000/categories/23');
@@ -132,12 +135,14 @@ describe('CategoryActions', () => {
         spyOn(categoryActions, 'createSubcategory');
         categoryActions.saveSubcategory({name: 'Melanie'});
         expect(categoryActions.createSubcategory).toHaveBeenCalledWith({name: 'Melanie'});
+        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_SUBCATEGORY'});
       });
 
       it('calls updateSubcategory when id is present', () => {
         spyOn(categoryActions, 'updateSubcategory');
         categoryActions.saveSubcategory({id: 1, name: 'Melanie'});
         expect(categoryActions.updateSubcategory).toHaveBeenCalledWith({id: 1, name: 'Melanie'});
+        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_SUBCATEGORY'});
       });
     });
 
@@ -188,6 +193,7 @@ describe('CategoryActions', () => {
       spyOn(apiUtil, 'delete');
       categoryActions.deleteSubcategory(43);
       expect(apiUtil.delete).toHaveBeenCalled();
+      expect(dispatcherSpy).toHaveBeenCalledWith({type: 'DELETE_SUBCATEGORY'});
 
       let deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
       expect(deleteArgs.url).toEqual('http://localhost:3000/subcategories/43');
