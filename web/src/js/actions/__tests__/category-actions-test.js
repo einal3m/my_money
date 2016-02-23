@@ -55,7 +55,7 @@ describe('CategoryActions', () => {
       expect(apiUtil.post).toHaveBeenCalled();
 
       let postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual('http://localhost:3000/categories');
+      expect(postArgs.url).toEqual('categories');
 
       spyOn(categoryTransformer, 'transformFromApi').and.returnValue('newCategory');
       spyOn(categoryActions, 'storeCategory');
@@ -77,7 +77,7 @@ describe('CategoryActions', () => {
       expect(apiUtil.put).toHaveBeenCalled();
 
       let putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual('http://localhost:3000/categories/23');
+      expect(putArgs.url).toEqual('categories/23');
       expect(putArgs.body).toEqual({category: 'transformedCategory'});
 
       spyOn(categoryTransformer, 'transformFromApi').and.returnValue('updatedCategory');
@@ -96,7 +96,7 @@ describe('CategoryActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({type: 'DELETE_CATEGORY'});
 
       let deleteArgs   = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('http://localhost:3000/categories/23');
+      expect(deleteArgs.url).toEqual('categories/23');
 
       spyOn(categoryActions, 'removeCategory');
       let successCallback = deleteArgs.onSuccess;
@@ -156,7 +156,7 @@ describe('CategoryActions', () => {
       expect(apiUtil.post).toHaveBeenCalled();
 
       let postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual('http://localhost:3000/subcategories');
+      expect(postArgs.url).toEqual('subcategories');
 
       spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('newSubcategory');
       spyOn(categoryActions, 'storeSubcategory');
@@ -178,7 +178,7 @@ describe('CategoryActions', () => {
       expect(apiUtil.put).toHaveBeenCalled();
 
       let putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual('http://localhost:3000/subcategories/11');
+      expect(putArgs.url).toEqual('subcategories/11');
 
       spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('updatedSubcategory');
       spyOn(categoryActions, 'storeSubcategory');
@@ -196,7 +196,7 @@ describe('CategoryActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({type: 'DELETE_SUBCATEGORY'});
 
       let deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('http://localhost:3000/subcategories/43');
+      expect(deleteArgs.url).toEqual('subcategories/43');
 
       spyOn(categoryActions, 'removeSubcategory');
       let successCallback = deleteArgs.onSuccess;

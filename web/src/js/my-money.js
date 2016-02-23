@@ -4,6 +4,7 @@ import Header from './components/layout/header';
 import Footer from './components/layout/footer';
 import { Provider } from 'react-redux';
 import store from './stores/store';
+import apiUtil from './util/api-util';
 import AccountList from './components/accounts/account-list';
 import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
@@ -24,6 +25,9 @@ const App = React.createClass({
     )
   }
 });
+
+let host = document.getElementById('host').textContent;
+apiUtil.setUrl(host);
 
 render((
   <Router history={hashHistory}>

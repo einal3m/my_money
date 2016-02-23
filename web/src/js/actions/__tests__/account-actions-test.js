@@ -17,7 +17,7 @@ describe('AccountActions', () => {
       expect(apiUtil.get).toHaveBeenCalled();
 
       let getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('http://localhost:3000/accounts');
+      expect(getArgs.url).toEqual('accounts');
 
       spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
       spyOn(accountActions, 'storeAccounts');

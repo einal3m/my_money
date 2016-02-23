@@ -4,4 +4,8 @@ class StaticPagesController < ApplicationController
 
   def my_money
   end
+
+  def react
+    render :layout => false
+  end
 end

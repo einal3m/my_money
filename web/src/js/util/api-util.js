@@ -2,6 +2,18 @@ import apiStatusActions from '../actions/api-status-actions';
 
 class ApiUtil {
 
+  constructor() {
+    this.host = null;
+  }
+
+  setUrl(host) {
+    this.host = host;
+  }
+
+  getUrl(url) {
+    return `http://${this.host}/${url}`;
+  }
+
   get(options) {
     return this.makeRequest(options.url, 'GET', null, options.onSuccess);
   }
@@ -19,22 +31,24 @@ class ApiUtil {
   }
 
   makeRequest(url, method, body, onSuccessCallback) {
+    let that = this;
     return this.send(url, method, body).then(response => {
       if (onSuccessCallback) {
         onSuccessCallback(response);
       }
     }).catch(function(e) {
       apiStatusActions.storeApiError(e.message);
-      console.log(`Api Error: ${method} ${url}, $e.message`);
+      console.log(`Api Error: ${method} ${that.getUrl(url)}, $e.message`);
     });
   }
 
   send(url, method, body) {
+    let that = this;
     return new Promise(function(resolve, reject) {
-      console.log(`ApiUtil ${method}: ${url}`);
+      console.log(`ApiUtil ${method}: ${that.getUrl(url)}`);
       var request = new XMLHttpRequest();
 
-      request.open(method, url);
+      request.open(method, that.getUrl(url));
       request.setRequestHeader("Content-type", "application/json");
 
       request.onload = function() {

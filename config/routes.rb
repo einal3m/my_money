@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post 'transactions/index'
 
   get 'my_money' => 'accounts#my_money'
+  get 'react' => 'static_pages#react'
   get 'static_pages/home'
   get 'upload/file_chooser'
   post 'upload/upload_file'

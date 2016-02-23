@@ -17,7 +17,7 @@ export class AccountActions {
 
   getAccounts() {
     return apiUtil.get({
-      url: 'http://localhost:3000/accounts',
+      url: 'accounts',
       onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)))
     });
   }

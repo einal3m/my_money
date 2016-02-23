@@ -10,15 +10,15 @@ class CategoryActions {
     store.dispatch({type: 'GET_CATEGORIES'});
 
     return apiUtil.get({
-      url: 'http://localhost:3000/category_type2',
+      url: 'category_type2',
       onSuccess: response => this.storeCategoryTypes(response.category_type2)
     }).then(() => {
       apiUtil.get({
-        url: 'http://localhost:3000/categories',
+        url: 'categories',
         onSuccess: response => that.storeCategories(response.categories.map(category => categoryTransformer.transformFromApi(category)))
     })}).then(() => {
       apiUtil.get({
-        url: 'http://localhost:3000/subcategories',
+        url: 'subcategories',
         onSuccess: response => that.storeSubcategories(response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory)))
     })});
   }
@@ -34,7 +34,7 @@ class CategoryActions {
 
   createCategory(category) {
     return apiUtil.post({
-      url: 'http://localhost:3000/categories',
+      url: 'categories',
       body: {category: categoryTransformer.transformToApi(category)},
       onSuccess: response => this.storeCategory(categoryTransformer.transformFromApi(response.category))
     });
@@ -42,7 +42,7 @@ class CategoryActions {
 
   updateCategory(category) {
     return apiUtil.put({
-      url: 'http://localhost:3000/categories/' + category.id,
+      url: 'categories/' + category.id,
       body: {category: categoryTransformer.transformToApi(category)},
       onSuccess: response => this.storeCategory(categoryTransformer.transformFromApi(response.category))
     });
@@ -51,7 +51,7 @@ class CategoryActions {
   deleteCategory(categoryId) {
     store.dispatch({type: 'DELETE_CATEGORY'});
     return apiUtil.delete({
-      url: 'http://localhost:3000/categories/' + categoryId,
+      url: 'categories/' + categoryId,
       onSuccess: response => this.removeCategory(categoryId)
     });
   }
@@ -67,7 +67,7 @@ class CategoryActions {
 
   createSubcategory(subcategory) {
     return apiUtil.post({
-      url: 'http://localhost:3000/subcategories',
+      url: 'subcategories',
       body: {subcategory: subcategoryTransformer.transformToApi(subcategory)},
       onSuccess: response => this.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory))
     });
@@ -75,7 +75,7 @@ class CategoryActions {
 
   updateSubcategory(subcategory) {
     return apiUtil.put({
-      url: 'http://localhost:3000/subcategories/' + subcategory.id,
+      url: 'subcategories/' + subcategory.id,
       body: {subcategory: subcategoryTransformer.transformToApi(subcategory)},
       onSuccess: response => this.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory))
     });
@@ -84,7 +84,7 @@ class CategoryActions {
   deleteSubcategory(subcategoryId) {
     store.dispatch({type: 'DELETE_SUBCATEGORY'});
     return apiUtil.delete({
-      url: 'http://localhost:3000/subcategories/' + subcategoryId,
+      url: 'subcategories/' + subcategoryId,
       onSuccess: () => this.removeSubcategory(subcategoryId)
     });
   }
