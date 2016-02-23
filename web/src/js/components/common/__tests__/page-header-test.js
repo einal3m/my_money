@@ -1,20 +1,73 @@
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import TestUtils from 'react-addons-test-utils';
 import React from 'react';
 import PageHeader from '../page-header';
+import apiStatusActions from '../../../actions/api-status-actions';
 
 describe('PageHeader', () => {
-  let title, buttonGroup;
-  beforeEach(() => {
-    let pageHeader = shallowRenderer(<PageHeader title="myTitle">myChild</PageHeader>);
-    [title, buttonGroup] = pageHeader.props.children.props.children.props.children;
+  describe('render', () => {
+    let title, buttonGroup;
+    beforeEach(() => {
+      let apiStatus = {status: 'done'};
+      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={apiStatus}>myChild</PageHeader>);
+      [title, buttonGroup] = pageHeader.props.children.props.children.props.children;
+    });
+
+    it('has a title', () => {
+      let [h1, status] = title.props.children;
+
+      expect(h1.props.children.props.children).toEqual('myTitle');
+      expect(h1.props.children.type).toEqual('h1');
+      expect(status.props.children).toBeUndefined();
+    });
+
+    it('has a buttonGroup with children', () => {
+      expect(buttonGroup.props.children.props.children).toEqual('myChild');
+    });
   });
 
-  it('has a title', () => {
-    expect(title.props.children.props.children).toEqual('myTitle');
-    expect(title.props.children.type).toEqual('h1');
+  describe('api status', () => {
+    it('loading', () => {
+      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{status: 'loading'}}>myChild</PageHeader>);
+      let status = pageHeader.props.children.props.children.props.children[0].props.children[1];
+      expect(status.props.children).toEqual('Loading...');
+    });
+
+    it('saving', () => {
+      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{status: 'saving'}}>myChild</PageHeader>);
+      let status = pageHeader.props.children.props.children.props.children[0].props.children[1];
+      expect(status.props.children).toEqual('Saving...');
+    });
+
+    it('deleting', () => {
+      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{status: 'deleting'}}>myChild</PageHeader>);
+      let status = pageHeader.props.children.props.children.props.children[0].props.children[1];
+      expect(status.props.children).toEqual('Deleting...');
+    });
+
+    it('error', () => {
+      let pageHeader = shallowRenderer(
+        <PageHeader title="myTitle" apiStatus={{status: 'error', message: 'myMessage'}}>myChild</PageHeader>
+      );
+      let status = pageHeader.props.children.props.children.props.children[0].props.children[1];
+      let [error, message, x] = status.props.children.props.children;
+
+      expect(error).toEqual('Error: ');
+      expect(message).toEqual('myMessage');
+    });
   });
 
-  it('has a buttonGroup with children', () => {
-    expect(buttonGroup.props.children.props.children).toEqual('myChild');
+  describe('clear error', () => {
+    it('click clears the error', () => {
+      let pageHeader = TestUtils.renderIntoDocument(
+        <PageHeader title="myTitle" apiStatus={{status: 'error', message: 'myMessage'}}>myChild</PageHeader>
+      );
+      spyOn(apiStatusActions, 'clearApiError');
+
+      let clearError = pageHeader.refs.clearError;
+      TestUtils.Simulate.click(clearError);
+
+      expect(apiStatusActions.clearApiError).toHaveBeenCalled();
+    });
   });
 });

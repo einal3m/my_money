@@ -30,7 +30,7 @@ describe('CategoryList', () => {
 
   describe('render', () => {
     it('has a header with buttons', () => {
-      let header = categoryList.props.children[0];
+      let header = categoryList.props.children[0].props.children;
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('my categories');

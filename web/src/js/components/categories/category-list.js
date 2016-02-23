@@ -10,7 +10,7 @@ import CategoryForm from './category-form';
 import SubcategoryForm from './subcategory-form';
 import categoryActions from '../../actions/category-actions';
 import categorySelector from '../../selectors/category-selector';
-import { toJS } from 'immutable';
+import Sticky from 'react-stickydiv';
 require("../../../css/common.scss");
 require("../../../css/categories.scss");
 
@@ -123,9 +123,11 @@ export class CategoryList extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title="my categories">
-          {this.renderNewCategoryButtons()}
-        </PageHeader>
+        <Sticky zIndex={999}>
+          <PageHeader title='my categories' apiStatus={this.props.apiStatus}>
+            {this.renderNewCategoryButtons()}
+          </PageHeader>
+        </Sticky>
 
         <div id='category-list' className="container">
           <div className='row'>
@@ -144,7 +146,8 @@ function mapStateToProps(state) {
     loaded: state.categoryStore.get('categoriesLoaded') && 
             state.categoryStore.get('categoryTypesLoaded') && 
             state.categoryStore.get('subcategoriesLoaded'),
-    groupedCategories: categorySelector(state).toJS()
+    groupedCategories: categorySelector(state).toJS(),
+    apiStatus: state.apiStatusStore.toJS()
   };
 }
 
