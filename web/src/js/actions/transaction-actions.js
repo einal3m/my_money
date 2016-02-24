@@ -1,4 +1,4 @@
-import transactionApi from '../apis/transaction-api';
+import apiUtil from '../util/api-util';
 import store from '../stores/store';
 import accountActions from './account-actions';
 import dateRangeActions from './date-range-actions';
@@ -9,14 +9,25 @@ class TransactionActions {
     accountActions.getAccounts().then(() => {
       dateRangeActions.getDateRanges().then(() => {
 
-        let account = store.getState().accountStore.get('currentAccount');
+        let accountId = store.getState().accountStore.get('currentAccount').get('id');
         let dateRange = store.getState().dateRangeStore.get('currentDateRange');
+        let fromDate = dateRange.get('fromDate');
+        let toDate = dateRange.get('toDate');
         let description;
         let moreOptions = store.getState().transactionStore.get('moreOptions');
         if (moreOptions) {
           description = store.getState().transactionStore.get('searchDescription');
         }
-        transactionApi.index(account.get('id'), dateRange.get('fromDate'), dateRange.get('toDate'), description);
+
+        let url = 'accounts/' + accountId + '/transactions?from_date=' + fromDate + '&to_date=' + toDate;
+        if (description) {
+          url = `${url}&description=${description}`;
+        }
+
+        return apiUtil.get({
+          url: url,
+          onSuccess: response => this.storeTransactions(response.transactions)
+        });
     })});
   }
 

@@ -15,24 +15,31 @@ class ApiUtil {
   }
 
   get(options) {
-    return this.makeRequest(options.url, 'GET', null, options.onSuccess);
+    return this.makeRequest(options.url, 'GET', null, null, options.onSuccess);
   }
 
   post(options) {
-    return this.makeRequest(options.url, 'POST', JSON.stringify(options.body), options.onSuccess);
+    return this.makeRequest(options.url, 'POST', 'application/json', JSON.stringify(options.body), options.onSuccess);
+  }
+
+  upload(options) {
+    let formData = new FormData();
+    formData.append('data_file', options.file);
+
+    return this.makeRequest(options.url, 'POST', null, formData, options.onSuccess);
   }
 
   put(options) {
-    return this.makeRequest(options.url, 'PUT', JSON.stringify(options.body), options.onSuccess);
+    return this.makeRequest(options.url, 'PUT', 'application/json', JSON.stringify(options.body), options.onSuccess);
   }
 
   delete(options) {
-    return this.makeRequest(options.url, 'DELETE', null, options.onSuccess);
+    return this.makeRequest(options.url, 'DELETE', null, null, options.onSuccess);
   }
 
-  makeRequest(url, method, body, onSuccessCallback) {
+  makeRequest(url, method, contentType, body, onSuccessCallback) {
     let that = this;
-    return this.send(url, method, body).then(response => {
+    return this.send(url, method, contentType, body).then(response => {
       if (onSuccessCallback) {
         onSuccessCallback(response);
       }
@@ -42,14 +49,16 @@ class ApiUtil {
     });
   }
 
-  send(url, method, body) {
+  send(url, method, contentType, body) {
     let that = this;
     return new Promise(function(resolve, reject) {
       console.log(`ApiUtil ${method}: ${that.getUrl(url)}`);
       var request = new XMLHttpRequest();
 
       request.open(method, that.getUrl(url));
-      request.setRequestHeader("Content-type", "application/json");
+      if (contentType) {
+        request.setRequestHeader('Content-type', contentType);
+      }
 
       request.onload = function() {
         if (request.status === 200 || request.status === 201 || request.status === 204) {

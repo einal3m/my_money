@@ -1,7 +1,9 @@
 import importActions from '../import-actions';
-import transactionApi from '../../apis/transaction-api';
+import transactionTransformer from '../../transformers/transaction-transformer';
+import apiUtil from '../../util/api-util';
 import store from '../../stores/store';
 import { hashHistory } from 'react-router';
+import { fromJS } from 'immutable';
 
 describe('ImportActions', () => {
   let dispatcherSpy;
@@ -11,22 +13,68 @@ describe('ImportActions', () => {
 
   describe('uploadOFX', () => {
     it('calls the ofx api with the file and accountId', () => {
-      spyOn(transactionApi, 'uploadOFX');
-      importActions.uploadOFX(45, 'file');
-      expect(transactionApi.uploadOFX).toHaveBeenCalledWith(45, 'file');
+      let file = {name: 'file.ofx'};
+      spyOn(apiUtil, 'upload');
+      spyOn(hashHistory, 'push');
+
+      importActions.uploadOFX(45, file);
+
+      expect(apiUtil.upload).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'UPLOAD_OFX', fileName: 'file.ofx' });
+      expect(hashHistory.push).toHaveBeenCalledWith('/import');
+
+      let uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
+      expect(uploadArgs.url).toEqual('accounts/45/transactions/ofx');
+      expect(uploadArgs.file).toEqual(file);
+
+      spyOn(transactionTransformer, 'transformFromOfxApi').and.returnValue('transformedFromApi');
+      spyOn(importActions, 'storeOfxTransactions');
+      let successCallback = uploadArgs.onSuccess;
+      successCallback({transactions: ['transaction']});
+
+      expect(transactionTransformer.transformFromOfxApi).toHaveBeenCalledWith('transaction');
+      expect(importActions.storeOfxTransactions).toHaveBeenCalledWith(['transformedFromApi']);
     });
   });
 
   describe('storeOfxTransactions', () => {
     it('dispatches the transactions to the store and changes to import route', () => {
-      spyOn(hashHistory, 'push');
       importActions.storeOfxTransactions(['transactions']);
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_OFX_TRANSACTIONS',
         transactions: ['transactions']
       });
-      expect(hashHistory.push).toHaveBeenCalledWith('/import');
+    });
+  });
+
+  describe('import transactions', () => {
+    it('calls the bank statement api to upload the transactions', () => {
+      spyOn(apiUtil, 'post');
+      spyOn(store, 'getState').and.returnValue({
+        importStore: fromJS({
+          transactions: [{memo: 'one', import: false}, {memo: 'two', import: true}],
+          fileName: 'file.ofx'
+        }),
+        accountStore: fromJS({currentAccount: {id: 45}})
+      });
+      spyOn(transactionTransformer, 'transformToApi').and.returnValue('transaction');
+
+      importActions.importTransactions();
+
+      expect(apiUtil.post).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'SAVE_TRANSACTIONS' });
+      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith({memo: 'two', import: true});
+
+      let postArgs = apiUtil.post.calls.argsFor(0)[0];
+      expect(postArgs.url).toEqual('accounts/45/bank_statements');
+      expect(postArgs.body.account_id).toEqual(45);
+      expect(postArgs.body.transactions).toEqual(['transaction']);
+      expect(postArgs.body.file_name).toEqual('file.ofx');
+
+      spyOn(importActions, 'importComplete');
+      postArgs.onSuccess();
+      expect(importActions.importComplete).toHaveBeenCalled();
     });
   });
 

@@ -14,6 +14,7 @@ describe('ImportReducer', () => {
     const state = importReducer();
 
     expect(state.get('transactions').toJS()).toEqual([]);
+    expect(state.get('fileName')).toEqual(null);
   });
 
   describe('SET_OFX_TRANSACTIONS', () => {
@@ -23,6 +24,15 @@ describe('ImportReducer', () => {
 
       expect(state.get('transactions').get(0).toJS()).toEqual(transactions[0]);
       expect(state.get('transactions').get(1).toJS()).toEqual(transactions[1]);
+    });
+  });
+
+  describe('UPLOAD_OFX', () => {
+    it('sets the file name', () => {
+      let action = {type: 'UPLOAD_OFX', fileName: 'file.ofx'};
+      let state = importReducer(undefined, action);
+
+      expect(state.get('fileName')).toEqual('file.ofx');
     });
   });
 });
