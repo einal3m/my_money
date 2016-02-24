@@ -13,7 +13,7 @@ import staticDataActions from '../../../actions/date-range-actions';
 describe('SearchCriteria', () => {
   let dateRanges, account, accountGroups, accountTypes;
   beforeEach(() => {
-    spyOn(transactionActions, 'fetchTransactions');      
+    spyOn(transactionActions, 'getTransactions');      
 
     dateRanges = fromJS([
       { id: 11, name: 'Name1', custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
@@ -87,7 +87,7 @@ describe('SearchCriteria', () => {
       spyOn(accountActions, 'setCurrentAccount')
       searchCriteria.onAccountChange(3);
       expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(3);
-      expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+      expect(transactionActions.getTransactions).toHaveBeenCalled();
     });
 
     describe('onDateRangeChange', () => {
@@ -95,21 +95,21 @@ describe('SearchCriteria', () => {
         spyOn(staticDataActions, 'setCurrentDateRange')
         searchCriteria.onDateRangeChange({id: 11});
         expect(staticDataActions.setCurrentDateRange).toHaveBeenCalledWith(11);
-        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+        expect(transactionActions.getTransactions).toHaveBeenCalled();
       });
 
       it('from date change updates current date range and fetches transactions', () => {
         spyOn(staticDataActions, 'updateCurrentDateRange')
         searchCriteria.onDateRangeChange({fromDate: '2001-09-08'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({fromDate: '2001-09-08'});
-        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+        expect(transactionActions.getTransactions).toHaveBeenCalled();
       });
 
       it('to date change updates current date range and fetches transactions', () => {
         spyOn(staticDataActions, 'updateCurrentDateRange')
         searchCriteria.onDateRangeChange({toDate: '2001-09-24'});
         expect(staticDataActions.updateCurrentDateRange).toHaveBeenCalledWith({toDate: '2001-09-24'});
-        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+        expect(transactionActions.getTransactions).toHaveBeenCalled();
       });
     });
 
@@ -118,7 +118,7 @@ describe('SearchCriteria', () => {
         spyOn(transactionActions, 'toggleMoreOrLess');
         TestUtils.Simulate.click(searchCriteria.refs.optionToggle);
         expect(transactionActions.toggleMoreOrLess).toHaveBeenCalled();
-        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+        expect(transactionActions.getTransactions).toHaveBeenCalled();
       });
     });
 
@@ -127,7 +127,7 @@ describe('SearchCriteria', () => {
         spyOn(transactionActions, 'setSearchDescription');
         searchCriteria.onDescriptionChange('new String');
         expect(transactionActions.setSearchDescription).toHaveBeenCalledWith('new String');
-        expect(transactionActions.fetchTransactions).toHaveBeenCalled();
+        expect(transactionActions.getTransactions).toHaveBeenCalled();
       });
     });
   });

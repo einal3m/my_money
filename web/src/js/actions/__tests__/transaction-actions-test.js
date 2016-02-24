@@ -11,40 +11,20 @@ describe('TransactionActions', () => {
     dispatcherSpy = spyOn(store, 'dispatch');
   });
 
-  describe('fetchTransactions', () => {
-    it('retrieves a list of transactions if accounts and dates are loaded', () => {
+  describe('getTransactions', () => {
+    xit('calls the api for accounts, date ranges and transactions', () => {
       spyOn(store, 'getState').and.returnValue({
         accountStore: fromJS({loaded: true, currentAccount: {id: 45}}),
         dateRangeStore: fromJS({loaded: true, currentDateRange: {fromDate: '2015-01-01', toDate: '2015-02-02'}}),
         transactionStore: fromJS({moreOptions: true, searchDescription: 'my String'})
       });
+      spyOn(accountActions, 'getAccounts').and.returnValue(Promise.resolve());
+      spyOn(dateRangeActions, 'getDateRanges').and.returnValue(Promise.resolve());
       spyOn(transactionApi, 'index');
-      transactionActions.fetchTransactions();
-      expect(transactionApi.index).toHaveBeenCalledWith(45, '2015-01-01', '2015-02-02', 'my String');
-    });
 
-    it('retrieves accounts if accounts are not loaded', () => {
-      spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({loaded: false}),
-        dateRangeStore: fromJS({loaded: true})
-      });
-      spyOn(transactionApi, 'index');
-      spyOn(accountActions, 'fetchAccounts');
-      transactionActions.fetchTransactions();
-      expect(transactionApi.index).not.toHaveBeenCalled();
-      expect(accountActions.fetchAccounts).toHaveBeenCalled();
-    });
+      transactionActions.getTransactions();
 
-    it('retrieves date ranges if accounts are loaded', () => {
-      spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({loaded: true}),
-        dateRangeStore: fromJS({loaded: false})
-      });
-      spyOn(transactionApi, 'index');
-      spyOn(dateRangeActions, 'fetchDateRanges');
-      transactionActions.fetchTransactions();
-      expect(transactionApi.index).not.toHaveBeenCalled();
-      expect(dateRangeActions.fetchDateRanges).toHaveBeenCalled();
+      expect(transactionApi.index).toHaveBeenCalled();
     });
   });
 

@@ -1,8 +1,8 @@
 import accountActions from '../account-actions';
-import accountApi from '../../apis/account-api';
 import accountTransformer from '../../transformers/account-transformer';
 import store from '../../stores/store';
 import apiUtil from '../../util/api-util';
+import { fromJS } from 'immutable';
 
 describe('AccountActions', () => {
   let dispatcherSpy;
@@ -12,9 +12,12 @@ describe('AccountActions', () => {
 
   describe('getAccounts', () => {
     it('makes an ajax request to GET/accounts and calls callback on success', () => {
-      spyOn(apiUtil, 'get');
-      accountActions.getAccounts();
+      spyOn(apiUtil, 'get').and.returnValue(Promise.resolve());
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: false}) });
+      let promise = accountActions.getAccounts();
       expect(apiUtil.get).toHaveBeenCalled();
+      expect(promise.then).toBeDefined();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_ACCOUNTS' });
 
       let getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts');
@@ -28,13 +31,12 @@ describe('AccountActions', () => {
       expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
     });
 
-  });
-
-  describe('fetchAccounts', () => {
-    it('retrieves a list of accounts', () => {
-      spyOn(accountApi, 'index');
-      accountActions.fetchAccounts();
-      expect(accountApi.index).toHaveBeenCalled();
+    it('doesnt call the api if accounts already loaded', () => {
+      spyOn(apiUtil, 'get');
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: true}) });
+      let promise = accountActions.getAccounts();
+      expect(apiUtil.get).not.toHaveBeenCalled();
+      expect(promise.then).toBeDefined();
     });
   });
 
@@ -49,10 +51,25 @@ describe('AccountActions', () => {
   });
 
   describe('createAccount', () => {
-    it('calls the account service to create the account', () => {
-      spyOn(accountApi, 'create');
+    it('calls the api to create the account', () => {
+      spyOn(apiUtil, 'post');
+      spyOn(accountTransformer, 'transformToApi').and.returnValue('transformedAccount');
       accountActions.createAccount('account');
-      expect(accountApi.create).toHaveBeenCalledWith('account');
+      expect(apiUtil.post).toHaveBeenCalled();
+      expect(accountTransformer.transformToApi).toHaveBeenCalledWith('account');
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'SAVE_ACCOUNT' });
+
+      let postArgs = apiUtil.post.calls.argsFor(0)[0];
+      expect(postArgs.url).toEqual('accounts');
+      expect(postArgs.body).toEqual({account: 'transformedAccount'});
+
+      spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
+      spyOn(accountActions, 'storeAccount');
+      let successCallback = postArgs.onSuccess;
+      successCallback({account: 'account'});
+
+      expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
+      expect(accountActions.storeAccount).toHaveBeenCalledWith('transformedFromApi');
     });
   });
 
@@ -67,10 +84,19 @@ describe('AccountActions', () => {
   });
 
   describe('deleteAccount', () => {
-    it('calls the account service to delete the account', () => {
-      spyOn(accountApi, 'destroy');
+    it('calls the account api to delete the account', () => {
+      spyOn(apiUtil, 'delete');
       accountActions.deleteAccount(34);
-      expect(accountApi.destroy).toHaveBeenCalledWith(34);
+      expect(apiUtil.delete).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_ACCOUNT' });
+
+      let deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
+      expect(deleteArgs.url).toEqual('accounts/34');
+
+      spyOn(accountActions, 'removeAccount');
+      let successCallback = deleteArgs.onSuccess;
+      successCallback();
+      expect(accountActions.removeAccount).toHaveBeenCalled();
     });
   });
 

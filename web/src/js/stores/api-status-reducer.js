@@ -8,9 +8,15 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
+    case 'GET_ACCOUNTS':
+    case 'GET_DATE_RANGES':
     case 'GET_CATEGORIES':
       return setLoading(state);
 
+    case 'SET_ACCOUNTS':
+    case 'ADD_ACCOUNT':
+    case 'REMOVE_ACCOUNT':
+    case 'SET_DATE_RANGES':
     case 'CLEAR_API_ERROR':
     case 'SET_CATEGORY_TYPES':
     case 'SET_CATEGORIES':
@@ -21,10 +27,12 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'REMOVE_SUBCATEGORY':
       return setDone(state);
 
+    case 'SAVE_ACCOUNT':
     case 'SAVE_CATEGORY':
     case 'SAVE_SUBCATEGORY':
       return setSaving(state);
 
+    case 'DELETE_ACCOUNT':
     case 'DELETE_CATEGORY':
     case 'DELETE_SUBCATEGORY':
       return setDeleting(state);

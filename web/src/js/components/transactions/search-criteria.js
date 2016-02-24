@@ -51,7 +51,7 @@ export class SearchCriteria extends React.Component {
   }
 
   fetch() {
-    transactionActions.fetchTransactions();
+    transactionActions.getTransactions();
   }
 
   renderStaticCriteria(){
