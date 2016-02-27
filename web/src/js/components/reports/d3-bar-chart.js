@@ -3,32 +3,25 @@ import barChart from './bar-chart';
 import moneyUtil from '../../util/money-util';
 import ChartTooltip from './chart-tooltip';
 
-export default class D3Chart extends React.Component {
+export default class D3BarChart extends React.Component {
 
   constructor() {
     super();
     this.state = {tooltipData: null};
+    this.callBacks = {
+      showTooltip: this.showTooltip.bind(this),
+      hideTooltip: this.hideTooltip.bind(this),
+      formatYLabels: this.formatMoney.bind(this)
+    };
   }
 
   componentDidMount() {
-    let seriesData = [
-      {name: 'Actual', data: [400, 2300, -1000, -1005, -2345], backgroundColour: '#61ABDB', borderColor: 'maroon'},
-      {name: 'Last Year', data: [4300, 2300, 1000, -1500, -2345], backgroundColour: '#FDCA3A', borderColor: 'maroon'},
-      {name: 'Budget', data: [2500, -2300, -3330, -1500, 10], backgroundColour: '#80D8C4', borderColor: 'maroon'}
-    ];
-
     let options = {
       height: 450,
       width: this.refs.chartContainer.getDOMNode().offsetWidth - 20
     };
 
-    let callBacks = {
-      showTooltip: this.showTooltip.bind(this),
-      hideTooltip: this.hideTooltip.bind(this),
-      formatYLabels: this.formatMoney.bind(this)
-    };
-
-    barChart(['Feb-15', 'Mar-15', 'Apr-15', 'May-15', 'Jun-15'], seriesData, '#d3-chart', options, callBacks);
+    barChart(this.props.chartData.xAxisLabels, this.props.chartData.seriesData, '#d3-chart', options, this.callBacks);
   }
 
   showTooltip(tooltipData) {

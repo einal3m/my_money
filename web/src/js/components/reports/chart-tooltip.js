@@ -3,11 +3,9 @@ import React from 'react';
 export default class ChartTooltip extends React.Component {
 
   show() {
-    console.log('showTooltip');
   }
 
   hide() {
-    console.log('hideTooltip');
   }
 
   renderTooltipItems() {
