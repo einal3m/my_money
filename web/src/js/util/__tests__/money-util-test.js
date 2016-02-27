@@ -25,4 +25,12 @@ describe('moneyUtil', () => {
       expect(moneyUtil.numberFormat(-45.9)).toEqual('45.90');
     });
   });
+
+  describe('numberFormatWithSign', () => {
+    it('converts dollar values into money format without dollar, with sign', () => {
+      expect(moneyUtil.numberFormatWithSign(67.9)).toEqual('67.90');
+      expect(moneyUtil.numberFormatWithSign(-6667.97)).toEqual('-6,667.97');
+      expect(moneyUtil.numberFormatWithSign(0.0)).toEqual('0.00');
+    });
+  });
 });

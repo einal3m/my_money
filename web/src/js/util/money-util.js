@@ -12,6 +12,11 @@ let moneyUtil = {
 
   numberFormat(dollars) {
     return accounting.formatNumber(Math.abs(dollars), 2, ',');
+  },
+
+  numberFormatWithSign(dollars) {
+    return accounting.formatMoney(dollars,
+      {precision: 2, format: { pos : "%v", neg : "-%v", zero: "0.00" }});
   }
 };
 

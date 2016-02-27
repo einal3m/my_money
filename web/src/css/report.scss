@@ -1,0 +1,44 @@
+
+.chartContainer {
+  //padding: 10px;
+}
+
+#d3-chart svg {
+  margin: 10px;
+  border: solid black 1px;
+  position: relative;
+
+  .y-axis text {
+    font-size: 10px;
+  }
+}
+
+.chart-tooltip {
+  background-color: white;
+  position: absolute;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  top: 20px;
+  z-index: 500;
+
+  .tooltip-title {
+    font-weight: bold;
+  }
+
+  .tooltip-icon {
+    display: inline-block;
+    padding-right: 10px;
+  }
+
+  .tooltip-label {
+    display: inline-block;
+    width: 70px;
+  }
+
+  .tooltip-value {
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+  }
+}
