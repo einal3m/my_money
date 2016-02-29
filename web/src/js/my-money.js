@@ -9,7 +9,8 @@ import AccountList from './components/accounts/account-list';
 import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
 import ImportPage from './components/import/import-page';
-import Reports from './components/reports/reports';
+import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
+import AccountBalanceChart from './components/reports/account-balance-chart';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 require('babel-polyfill');
 
@@ -37,7 +38,10 @@ render((
       <Route path="transactions" component={TransactionList} />
       <Route path="categories" component={CategoryList} />
       <Route path="import" component={ImportPage} />
-      <Route path="reports" component={Reports} />
+      <Route path='reports'>
+        <Route path='accountBalance' component={AccountBalanceChart} />
+        <Route path='incomeVsExpenseBar' component={IncomeVsExpenseBarChart} />
+      </Route>
       <IndexRoute component={AccountList}/>
     </Route>
   </Router>
