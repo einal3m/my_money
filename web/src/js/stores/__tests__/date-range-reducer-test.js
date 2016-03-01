@@ -16,7 +16,7 @@ describe('DateRangeReducer', () => {
 
     expect(state.get('loaded')).toEqual(false);
     expect(state.get('dateRanges').toJS()).toEqual([]);
-    expect(state.get('currentDateRange')).toEqual(null);
+    expect(state.get('currentDateRange').toJS()).toEqual({});
   });
 
   describe('SET_DATE_RANGES', () => {

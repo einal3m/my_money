@@ -1,11 +1,10 @@
 import React from 'react';
-import AccountFilter from '../account-filter';
+import AccountFilter from './account-filter';
 import DateRangeFilter from './date-range-filter';
 
 export default class SearchCriteria extends React.Component {
 
   renderFilter(name) {
-    console.log('render filter', name);
     switch (name) {
       case 'DATE_RANGE_FILTER':
         return <DateRangeFilter key='DATE_RANGE_FILTER' fetch={this.props.fetch} />;

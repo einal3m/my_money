@@ -8,7 +8,7 @@ const INITIAL_STATE = Map({
     Map({ id:1, code: 'savings', name:'Savings' }),
     Map({ id:2, code: 'share', name: 'Share' })
   ]),
-  currentAccount: null
+  currentAccount: Map({})
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {

@@ -18,7 +18,7 @@ describe('reducer', () => {
       { id: 1, code: 'savings', name: 'Savings' },
       { id: 2, code: 'share', name: 'Share' }
     ]);
-    expect(state.get('currentAccount')).toEqual(null);
+    expect(state.get('currentAccount').toJS()).toEqual({});
   });
 
   describe('SET_ACCOUNTS', () => {

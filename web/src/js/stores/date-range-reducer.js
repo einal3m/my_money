@@ -3,7 +3,7 @@ import { Map, List, fromJS } from 'immutable';
 const INITIAL_STATE = Map({
   loaded: false,
   dateRanges: List(),
-  currentDateRange: null
+  currentDateRange: Map({})
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
