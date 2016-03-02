@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import accountActions from '../../../actions/account-actions';
+import accountSelector from '../../../selectors/account-selector';
 import { Input } from 'react-bootstrap';
 
 export class AccountFilter extends React.Component {
@@ -72,7 +73,7 @@ AccountFilter.propTypes = {
 function mapStateToProps(state) {
   return {
     loaded: state.accountStore.get('loaded'),
-    accountGroups: state.accountStore.get('accountGroups').toJS(),
+    accountGroups: accountSelector(state).toJS(),
     accountTypes: state.accountStore.get('accountTypes').toJS(),
     currentAccount: state.accountStore.get('currentAccount').toJS()
   };

@@ -50,6 +50,24 @@ export class AccountActions {
   setCurrentAccount(id) {
     store.dispatch({ type: 'SET_CURRENT_ACCOUNT', id: id });
   }
+
+  addSelectedAccount() {
+    let accounts = store.getState().accountStore.get('accounts');
+    let selectedAccounts = store.getState().accountStore.get('selectedAccounts');
+
+    let nextAccount = accounts.filter(account => !selectedAccounts.includes(account.get('id'))).first().get('id');
+
+    store.dispatch({type: 'ADD_SELECTED_ACCOUNT', accountId: nextAccount});
+  }
+
+  removeSelectedAccount(index) {
+    store.dispatch({type: 'REMOVE_SELECTED_ACCOUNT', index: index});
+  }
+
+  setSelectedAccount(index, accountId) {
+    store.dispatch({type: 'SET_SELECTED_ACCOUNT', index: index, accountId: accountId});
+  }
+
 }
 
 export default new AccountActions();

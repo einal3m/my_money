@@ -3,12 +3,12 @@ import { Map, List, fromJS } from 'immutable';
 const INITIAL_STATE = Map({
   loaded: false,
   accounts: List(),
-  accountGroups: Map(),
   accountTypes: List([
     Map({ id:1, code: 'savings', name:'Savings' }),
     Map({ id:2, code: 'share', name: 'Share' })
   ]),
-  currentAccount: Map({})
+  currentAccount: Map({}),
+  selectedAccounts: List([])
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -21,6 +21,12 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     return removeAccount(state, action.id);
   case 'SET_CURRENT_ACCOUNT':
     return setCurrentAccount(state, action.id);
+  case 'ADD_SELECTED_ACCOUNT':
+    return addSelectedAccount(state, action.accountId);
+  case 'REMOVE_SELECTED_ACCOUNT':
+    return removeSelectedAccount(state, action.index);
+  case 'SET_SELECTED_ACCOUNT':
+    return setSelectedAccount(state, action.index, action.accountId);
   }
   return state;
 }
@@ -28,15 +34,13 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 function setAccounts(state, accounts) {
   return state.set('loaded', true)
               .set('accounts', fromJS(accounts))
-              .set('accountGroups', accountGroups(accounts))
               .set('currentAccount', Map(accounts[0]));
 }
 
 function addAccount(state, account) {
   const accounts = state.get('accounts').push(fromJS(account));
   return state.set('currentAccount', fromJS(account))
-              .set('accounts', accounts)
-              .set('accountGroups', accountGroups(accounts));
+              .set('accounts', accounts);
 }
 
 function removeAccount(state, id) {
@@ -47,14 +51,21 @@ function removeAccount(state, id) {
   }
 
   return state.set('accounts', accounts)
-              .set('currentAccount', currentAccount)
-              .set('accountGroups', accountGroups(accounts));
+              .set('currentAccount', currentAccount);
 }
 
 function setCurrentAccount(state, id) {
   return state.set('currentAccount', state.get('accounts').find(account => account.get('id') === id));
 }
 
-function accountGroups(accounts) {
-  return fromJS(accounts).groupBy(account => account.get('accountType'));
+function addSelectedAccount(state, accountId) {
+  return state.set('selectedAccounts', state.get('selectedAccounts').push(accountId));
+}
+
+function removeSelectedAccount(state, index) {
+  return state.set('selectedAccounts', state.get('selectedAccounts').delete(index));
+}
+
+function setSelectedAccount(state, index, accountId) {
+  return state.set('selectedAccounts', state.get('selectedAccounts').set(index, accountId));
 }

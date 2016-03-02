@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import React from 'react';
 import { toJS } from 'immutable';
 import accountActions from '../../actions/account-actions';
+import accountSelector from '../../selectors/account-selector';
 import PageHeader from '../common/page-header';
 import AccountGroup from './account-group';
 import { Button, DropdownButton, MenuItem, Dropdown, Glyphicon } from 'react-bootstrap';
@@ -92,7 +93,7 @@ export class AccountList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    accountGroups: state.accountStore.get('accountGroups'),
+    accountGroups: accountSelector(state),
     accountTypes: state.accountStore.get('accountTypes')
   };
 }

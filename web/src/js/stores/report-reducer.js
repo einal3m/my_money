@@ -1,8 +1,7 @@
 import { Map, List, fromJS } from 'immutable';
 
 const INITIAL_STATE = Map({
-  accountBalances: Map({}),
-  accountBalanceAccounts: List([])
+  accountBalances: Map({})
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -14,6 +13,5 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setAccountBalances(state, accountId, report) {
-  return state.set('accountBalances', state.get('accountBalances').set(accountId, fromJS(report)))
-              .set('accountBalanceAccounts', fromJS([accountId]));
+  return state.set('accountBalances', state.get('accountBalances').set(accountId, fromJS(report)));
 }

@@ -7,9 +7,10 @@ import { toJS } from 'immutable';
 import accountActions from '../../actions/account-actions';
 import transactionActions from '../../actions/transaction-actions';
 import dateRangeActions from '../../actions/date-range-actions';
+import accountSelector from '../../selectors/account-selector';
 
-import AccountFilter from '../common/account-filter';
-import DateRangeFilter from '../common/date-range-filter';
+import AccountFilter from '../common/criteria/account-filter';
+import DateRangeFilter from '../common/criteria/date-range-filter';
 import DescriptionFilter from '../common/description-filter';
 import { Glyphicon } from 'react-bootstrap';
 require("../../../css/transaction.scss");
@@ -56,10 +57,8 @@ export class SearchCriteria extends React.Component {
 
   renderStaticCriteria(){
     return [
-      <AccountFilter key='1' currentAccount={this.props.currentAccount} accountGroups={this.props.accountGroups} 
-        accountTypes={this.props.accountTypes} onChange={this.onAccountChange.bind(this)}/>,
-      <DateRangeFilter key='2' dateRanges={this.props.dateRanges} currentDateRange={this.props.currentDateRange} 
-        onChange={this.onDateRangeChange.bind(this)}/>
+      <AccountFilter key='1' fetch={this.fetch}/>,
+      <DateRangeFilter key='2' fetch={this.fetch}/>
     ];
   }
 
@@ -112,7 +111,7 @@ export class SearchCriteria extends React.Component {
 function mapStateToProps(state) {
   return {
     loaded: state.accountStore.get('loaded') && state.dateRangeStore.get('loaded'),
-    accountGroups: state.accountStore.get('accountGroups'),
+    accountGroups: accountSelector(state),
     accountTypes: state.accountStore.get('accountTypes'),
     currentAccount: state.accountStore.get('currentAccount'),
     dateRanges: state.dateRangeStore.get('dateRanges'),
