@@ -1,6 +1,7 @@
 import reportActions from '../report-actions';
 import apiUtil from '../../util/api-util';
 import store from '../../stores/store';
+import { fromJS } from 'immutable';
 
 describe('ReportActions', () => {
   let dispatcherSpy;
@@ -11,8 +12,12 @@ describe('ReportActions', () => {
   describe('get EOD balance report', () => {
     it('getAccountBalanceReport calls the report api', () => {
       spyOn(apiUtil, 'get');
+      spyOn(store, 'getState').and.returnValue({
+        accountStore: fromJS({currentAccount: {id: 34}}),
+        dateRangeStore: fromJS({currentDateRange: {fromDate: '2016-03-01', toDate: '2016-03-31'}}),
+      });
 
-      reportActions.getAccountBalanceReport(34, '2016-03-01', '2016-03-31');
+      reportActions.getAccountBalanceReport();
       expect(apiUtil.get).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({type: 'GET_REPORT'});
 

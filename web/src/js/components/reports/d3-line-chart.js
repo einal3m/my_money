@@ -28,14 +28,25 @@ export default class D3LineChart extends React.Component {
     lineChart(this.props.chartData.seriesData, '#d3-chart', options, this.callbacks);
   }
 
+  shouldComponentUpdate(props, state) {
+    if (props != this.props) {
+      console.log('re render chart');
+      let options = {
+        height: 450,
+        width: this.refs.chartContainer.offsetWidth - 20
+      };
+      let svg = document.getElementsByTagName('svg')[0];
+      svg.parentNode.removeChild(svg);
+      lineChart(props.chartData.seriesData, '#d3-chart', options, this.callbacks);
+    }
+
+    return (state != this.state);
+  }
+
   showTooltip(tooltipData) {
     this.setState({tooltipData: tooltipData});
     this.refs.tooltip.show();
   }
-  //
-  //hideTooltip() {
-  //  this.refs.tooltip.hide();
-  //}
 
   formatMoney(amount) {
     return moneyUtil.numberFormatWithSign(amount);

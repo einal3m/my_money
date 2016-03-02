@@ -14,7 +14,6 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setAccountBalances(state, accountId, report) {
-  console.log('setAccountBalances');
   return state.set('accountBalances', state.get('accountBalances').set(accountId, fromJS(report)))
               .set('accountBalanceAccounts', fromJS([accountId]));
 }

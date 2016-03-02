@@ -39,8 +39,8 @@ function createScales(seriesData, dim, callbacks) {
 
   var xScale = d3.time.scale()
     .domain([
-      d3.min(seriesData, series => d3.min(series.data, data => convertDate(data[0]))),
-      d3.max(seriesData, series => d3.max(series.data, data => convertDate(data[0])))])
+      d3.min(seriesData, series => d3.min(series.data, data => data[0])),
+      d3.max(seriesData, series => d3.max(series.data, data => data[0]))])
     .range([0, dim.chartWidth]);
 
   var yScale = d3.scale.linear()
@@ -98,7 +98,7 @@ function createXAxis(vis, xScale, dim, callbacks) {
 function createLines(vis, xScale, yScale, seriesData, dim) {
 
   let d3Line = d3.svg.line()
-    .x(data => xScale(convertDate(data[0])))
+    .x(data => xScale(data[0]))
     .y(data => yScale(data[1]))
     .interpolate('step-after');
 
@@ -115,7 +115,6 @@ function createLines(vis, xScale, yScale, seriesData, dim) {
 }
 
 function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
-
   let focus = vis.append("g")
     .attr("class", "focus")
     .attr('transform', 'translate(' + dim.leftMargin + ', ' + dim.topMargin + ')')
@@ -138,7 +137,7 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     .on("mousemove", moveCircles);
 
   let yFor = (date, series) => {
-    let points = series.data.filter(data => date >= convertDate(data[0]));
+    let points = series.data.filter(data => date >= data[0]);
     let point;
     if (points.length > 0) {
       point = points.slice(-1)[0];
