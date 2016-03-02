@@ -11,6 +11,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'GET_ACCOUNTS':
     case 'GET_DATE_RANGES':
     case 'GET_CATEGORIES':
+    case 'GET_REPORT':
     case 'UPLOAD_OFX':
       return setLoading(state);
 
@@ -27,6 +28,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'REMOVE_CATEGORY':
     case 'REMOVE_SUBCATEGORY':
     case 'SET_OFX_TRANSACTIONS':
+    case 'SET_ACCOUNT_BALANCE_REPORT':
       return setDone(state);
 
     case 'SAVE_ACCOUNT':

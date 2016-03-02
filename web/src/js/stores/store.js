@@ -5,6 +5,7 @@ import transactionReducer from './transaction-reducer';
 import categoryReducer from './category-reducer';
 import importReducer from './import-reducer';
 import apiReducer from './api-status-reducer';
+import reportReducer from './report-reducer';
 
 export default createStore(
   combineReducers({
@@ -13,6 +14,7 @@ export default createStore(
     transactionStore: transactionReducer,
     categoryStore: categoryReducer,
     importStore: importReducer,
-    apiStatusStore: apiReducer
+    apiStatusStore: apiReducer,
+    reportStore: reportReducer
   })
 );
