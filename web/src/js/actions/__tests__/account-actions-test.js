@@ -119,33 +119,11 @@ describe('AccountActions', () => {
       });
     });
 
-    it('addSelectedAccount', () => {
-      spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({
-          accounts: [{id: 1}, {id: 2}, {id: 3}],
-          selectedAccounts: [1]
-      })});
-      accountActions.addSelectedAccount();
+    it('toggleSelectedAccount', () => {
+      accountActions.toggleSelectedAccount(45);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'ADD_SELECTED_ACCOUNT',
-        accountId: 2
-      });
-    });
-
-    it('removeSelectedAccount', () => {
-      accountActions.removeSelectedAccount(1);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'REMOVE_SELECTED_ACCOUNT',
-        index: 1
-      })
-    });
-
-    it('setSelectedAccount', () => {
-      accountActions.setSelectedAccount(4, 6);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_SELECTED_ACCOUNT',
-        index: 4,
-        accountId: 6
+        type: 'TOGGLE_SELECTED_ACCOUNT',
+        accountId: 45
       });
     });
   });

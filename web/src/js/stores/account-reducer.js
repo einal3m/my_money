@@ -21,12 +21,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     return removeAccount(state, action.id);
   case 'SET_CURRENT_ACCOUNT':
     return setCurrentAccount(state, action.id);
-  case 'ADD_SELECTED_ACCOUNT':
-    return addSelectedAccount(state, action.accountId);
-  case 'REMOVE_SELECTED_ACCOUNT':
-    return removeSelectedAccount(state, action.index);
-  case 'SET_SELECTED_ACCOUNT':
-    return setSelectedAccount(state, action.index, action.accountId);
+  case 'TOGGLE_SELECTED_ACCOUNT':
+    return toggleSelectedAccount(state, action.accountId);
   }
   return state;
 }
@@ -34,7 +30,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 function setAccounts(state, accounts) {
   return state.set('loaded', true)
               .set('accounts', fromJS(accounts))
-              .set('currentAccount', Map(accounts[0]));
+              .set('currentAccount', Map(accounts[0]))
+              .set('selectedAccounts', List([accounts[0].id]));
 }
 
 function addAccount(state, account) {
@@ -58,14 +55,15 @@ function setCurrentAccount(state, id) {
   return state.set('currentAccount', state.get('accounts').find(account => account.get('id') === id));
 }
 
+function toggleSelectedAccount(state, accountId) {
+  let selected = state.get('selectedAccounts').includes(accountId);
+  return selected ? removeSelectedAccount(state, accountId) : addSelectedAccount(state, accountId);
+}
+
 function addSelectedAccount(state, accountId) {
   return state.set('selectedAccounts', state.get('selectedAccounts').push(accountId));
 }
 
-function removeSelectedAccount(state, index) {
-  return state.set('selectedAccounts', state.get('selectedAccounts').delete(index));
-}
-
-function setSelectedAccount(state, index, accountId) {
-  return state.set('selectedAccounts', state.get('selectedAccounts').set(index, accountId));
+function removeSelectedAccount(state, accountId) {
+  return state.set('selectedAccounts', state.get('selectedAccounts').filter(id => id !== accountId));
 }

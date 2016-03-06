@@ -42,8 +42,6 @@ export class AccountBalanceReport extends React.Component {
 function mapStateToProps(state) {
   return {
     loaded: state.accountStore.get('loaded') && state.dateRangeStore.get('loaded'),
-    currentAccount: state.accountStore.get('currentAccount').toJS(),
-    currentDateRange: state.dateRangeStore.get('currentDateRange').toJS(),
     seriesData: accountBalanceSelector(state).toJS()
   };
 }

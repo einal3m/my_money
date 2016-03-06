@@ -3,10 +3,9 @@ import { Map, List } from 'immutable';
 
 const accountSelector = state => state.accountStore.get('accounts');
 const accountBalancesSelector = state => state.reportStore.get('accountBalances');
-const accountBalanceAccountsSelector = state => state.reportStore.get('accountBalanceAccounts');
+const selectedAccountsSelector = state => state.accountStore.get('selectedAccounts');
 
 let chartColours = ['#61ABDB', '#FDCA3A', '#80D8C4'];
-
 
 function lineSeriesData(accounts, accountBalances, selectedAccounts) {
   return selectedAccounts.map((accountId, index) => {
@@ -21,6 +20,6 @@ function lineSeriesData(accounts, accountBalances, selectedAccounts) {
 export default createSelector(
   accountSelector,
   accountBalancesSelector,
-  accountBalanceAccountsSelector,
+  selectedAccountsSelector,
   (accounts, accountBalances, selectedAccounts) => lineSeriesData(accounts, accountBalances, selectedAccounts)
 );

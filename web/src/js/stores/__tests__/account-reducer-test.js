@@ -40,6 +40,10 @@ describe('reducer', () => {
     it('sets currentAccount to first account', () => {
       expect(nextState.get('currentAccount').toJS()).toEqual(account1);
     });
+
+    it('sets selectedAccounts to id of first account', () => {
+      expect(nextState.get('selectedAccounts').toJS()).toEqual([11]);
+    });
   });
 
   describe('ADD_ACCOUNT', () => {
@@ -137,37 +141,22 @@ describe('reducer', () => {
   });
 
   describe('account filter selected accounts', () => {
-    describe('ADD_SELECTED_ACCOUNT', () => {
-      it('adds the next default account to the list', () => {
-        let action = { type: 'ADD_SELECTED_ACCOUNT', accountId: 4 };
+    describe('TOGGLE_SELECTED_ACCOUNT', () => {
+      it('toggles the selected account in the list', () => {
+        let action = { type: 'TOGGLE_SELECTED_ACCOUNT', accountId: 4 };
         let state = reducer(undefined, action);
 
         expect(state.get('selectedAccounts').toJS()).toEqual([4]);
 
-        action = { type: 'ADD_SELECTED_ACCOUNT', accountId: 1 };
+        action = { type: 'TOGGLE_SELECTED_ACCOUNT', accountId: 1 };
         let nextState = reducer(state, action);
 
         expect(nextState.get('selectedAccounts').toJS()).toEqual([4, 1]);
-      });
-    });
 
-    describe('REMOVE_SELECTED_ACCOUNT', () => {
-      it('removes the account from the list', () => {
-        let initialState = fromJS({selectedAccounts: [4, 5, 6]});
-        let action = { type: 'REMOVE_SELECTED_ACCOUNT', index: 1 };
-        let state = reducer(initialState, action);
+        action = { type: 'TOGGLE_SELECTED_ACCOUNT', accountId: 4 };
+        let anotherState = reducer(nextState, action);
 
-        expect(state.get('selectedAccounts').toJS()).toEqual([4, 6]);
-      });
-    });
-
-    describe('SET_SELECTED_ACCOUNT', () => {
-      it('sets the account in the list', () => {
-        let initialState = fromJS({selectedAccounts: [4, 5, 6]});
-        let action = { type: 'SET_SELECTED_ACCOUNT', index: 1, accountId: 7 };
-        let state = reducer(initialState, action);
-
-        expect(state.get('selectedAccounts').toJS()).toEqual([4, 7, 6]);
+        expect(anotherState.get('selectedAccounts').toJS()).toEqual([1]);
       });
     });
   });

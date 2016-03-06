@@ -13,8 +13,8 @@ describe('AccountBalanceSelector', () => {
     let accounts = [{id: 3, name: 'Account3'}, {id: 5, name: 'Account5'}];
 
     let seriesData = accountBalanceSelector({
-      reportStore: fromJS({accountBalances: accountBalances, accountBalanceAccounts: selectedAccounts}),
-      accountStore: fromJS({accounts: accounts})
+      reportStore: fromJS({accountBalances: accountBalances}),
+      accountStore: fromJS({accounts: accounts, selectedAccounts: selectedAccounts})
     });
 
     let series1 = seriesData.get(0);
@@ -37,8 +37,8 @@ describe('AccountBalanceSelector', () => {
 
   it('returns an empty list when there is no data', () => {
     let seriesData = accountBalanceSelector({
-      reportStore: fromJS({accountBalances: {}, accountBalanceAccounts: []}),
-      accountStore: fromJS({accounts: []})
+      reportStore: fromJS({accountBalances: {}}),
+      accountStore: fromJS({accounts: [], selectedAccounts: []})
     });
 
     expect(seriesData.size).toEqual(0);

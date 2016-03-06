@@ -2,6 +2,7 @@ import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import accountActions from '../../../../actions/account-actions';
 import { AccountFilter } from '../account-filter';
+import AccountPicker from '../../controls/account-picker';
 import TestUtils from 'react-addons-test-utils';
 import { Input } from 'react-bootstrap';
 
@@ -29,52 +30,69 @@ describe('AccountFilter', () => {
       let accountFilter = shallowRenderer(<AccountFilter loaded={false} accountTypes={accountTypes}
                                                          fetch={fetchSpy} accountGroups={accountGroups}
                                                          currentAccount={currentAccount}/>);
-      expect(accountFilter.props.children).toBeUndefined();
+      let dropdown = accountFilter.props.children.props.children;
+      expect(dropdown).toBeUndefined();
       expect(accountActions.getAccounts).toHaveBeenCalled();
     });
 
-    it('has a select with account groups', () => {
+    it('has a select with single value', () => {
       let accountFilter = shallowRenderer(
         <AccountFilter loaded accountTypes={accountTypes} accountGroups={accountGroups}
-           fetch={fetchSpy} currentAccount={currentAccount}/>
+                       fetch={fetchSpy} currentAccount={currentAccount}/>
       );
       let dropdown = accountFilter.props.children.props.children;
 
-      expect(dropdown.type).toEqual(Input);
+      expect(dropdown.type).toEqual(AccountPicker);
       expect(dropdown.props.value).toEqual(currentAccount.id);
-      let [accountGroup1, accountGroup2] = dropdown.props.children;
-
-      expect(accountGroup1.props.label).toEqual('Savings Accounts');
-      expect(accountGroup1.type).toEqual('optgroup');
-
-      let account2 = accountGroup1.props.children[0];
-      expect(account2.type).toEqual('option');
-      expect(account2.props.children).toEqual('Account 2');
-
-      expect(accountGroup2.props.label).toEqual('Share Accounts');
-
-      let account1 = accountGroup2.props.children[0];
-      expect(account1.type).toEqual('option');
-      expect(account1.props.children).toEqual('Account 1');
-
-      let account3 = accountGroup2.props.children[1];
-      expect(account3.type).toEqual('option');
-      expect(account3.props.children).toEqual('Account 3');
+      expect(dropdown.props.accountTypes).toEqual(accountTypes);
+      expect(dropdown.props.accountGroups).toEqual(accountGroups);
     });
-  });
 
-  describe('select account', () => {
-    it('calls an action', () => {
-      spyOn(accountActions, 'setCurrentAccount');
-
-      let accountFilter = TestUtils.renderIntoDocument(
-        <AccountFilter accountTypes={accountTypes} accountGroups={accountGroups} fetch={fetchSpy}
-          currentAccount={currentAccount} onChange={fetchSpy} loaded />
+    it('has a select with multiple values', () => {
+      let accountFilter = shallowRenderer(
+        <AccountFilter loaded multiple accountTypes={accountTypes} accountGroups={accountGroups}
+                       fetch={fetchSpy} selectedAccounts={[1,2]}/>
       );
-      accountFilter.refs.accountSelect.props.onChange({target: {value: '6'}});
+      let dropdown = accountFilter.props.children.props.children;
 
-      expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(6);
-      expect(fetchSpy).toHaveBeenCalled();
+      expect(dropdown.type).toEqual(AccountPicker);
+      expect(dropdown.props.value).toEqual([1,2]);
+      expect(dropdown.props.accountTypes).toEqual(accountTypes);
+      expect(dropdown.props.accountGroups).toEqual(accountGroups);
+    });
+
+    describe('on Change', () => {
+      it('single account picker on change calls an action', () => {
+        spyOn(accountActions, 'setCurrentAccount');
+        spyOn(accountActions, 'toggleSelectedAccount');
+
+        let accountFilter = shallowRenderer(
+          <AccountFilter loaded accountTypes={accountTypes} accountGroups={accountGroups}
+                         fetch={fetchSpy} currentAccount={currentAccount}/>
+        );
+        let dropdown = accountFilter.props.children.props.children;
+
+        dropdown.props.onChange(5);
+        expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(5);
+        expect(accountActions.toggleSelectedAccount).not.toHaveBeenCalled();
+        expect(fetchSpy).toHaveBeenCalled();
+      });
+
+      it('multiple account picker on change calls an action', () => {
+        spyOn(accountActions, 'setCurrentAccount');
+        spyOn(accountActions, 'toggleSelectedAccount');
+
+        let accountFilter = shallowRenderer(
+          <AccountFilter loaded multiple accountTypes={accountTypes} accountGroups={accountGroups}
+                         fetch={fetchSpy} selectedAccounts={[1,2]} />
+        );
+        let dropdown = accountFilter.props.children.props.children;
+
+        dropdown.props.onChange(5);
+        expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(5);
+        expect(accountActions.toggleSelectedAccount).toHaveBeenCalledWith(5);
+        expect(fetchSpy).toHaveBeenCalled();
+      });
     });
   });
 });
