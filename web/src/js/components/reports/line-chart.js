@@ -138,13 +138,11 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
 
   let yFor = (date, series) => {
     let points = series.data.filter(data => date >= data[0]);
-    let point;
     if (points.length > 0) {
-      point = points.slice(-1)[0];
+      return points.slice(-1)[0][1];
     } else {
-      point = series.data[0];
+      return;
     }
-    return point[1];
   };
 
   let roundedDate = (date) => {
@@ -168,8 +166,13 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
 
     seriesData.forEach((series, seriesIndex) => {
       let y =  yFor(date, series);
-      focusCircles[seriesIndex].attr("transform", "translate(" + xScale(date) + "," + yScale(y) + ")");
-      values[seriesIndex] = callbacks.formatYLabels(y);
+      if (Number.isFinite(y)) {
+        focusCircles[seriesIndex].attr('transform', 'translate(' + xScale(date) + ',' + yScale(y) + ')')
+          .style('display', null);
+      } else {
+        focusCircles[seriesIndex].style('display', 'none');
+      }
+      values[seriesIndex] = Number.isFinite(y) ? callbacks.formatYLabels(y) : '--';
     });
 
     tooltipData.values = values;
