@@ -2,17 +2,7 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:edit, :update, :destroy]
 
   def index
-    from_date = params[:from_date]
-    to_date = params[:to_date]
-    description = params[:description]
-    
-    if description
-      transactions = account.transactions.find_by_dates(from_date, to_date).find_by_description(description).reverse_date_order
-    else
-      transactions = account.transactions.find_by_dates(from_date, to_date).reverse_date_order
-    end
-
-    render json: transactions
+    render json: description ? transactions_by_date_and_description : transactions_by_date
   end
 
   def create
@@ -77,6 +67,26 @@ class TransactionsController < ApplicationController
   end
 
   private
+
+  def from_date
+    @from_date ||= params[:from_date]
+  end
+
+  def to_date
+    @to_date ||= params[:to_date]
+  end
+
+  def description
+    @description ||= params[:description]
+  end
+
+  def transactions_by_date
+    account.transactions.find_by_dates(from_date, to_date).reverse_date_order
+  end
+
+  def transactions_by_date_and_description
+    account.transactions.find_by_dates(from_date, to_date).find_by_description(description).reverse_date_order
+  end
 
   def build_transaction(t)
     t.account = account

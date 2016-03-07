@@ -2,8 +2,8 @@ module Lib
   # BalanceSearch
   #
   # This search retrieves the end of day balances for the specfied account for the
-  # specified date range.  It also includes data for the first and last date of the date range
-  # for graphing purposes.
+  # specified date range.  It will not include dates which are before the account
+  # opening balance date.
   class BalanceSearch < Search
     attr_reader :account, :date_range
     LINE_CHART_DF = '%d %b, %Y'
@@ -16,7 +16,7 @@ module Lib
     # returns an array of end of day balances with the following format:
     # ["01-Jan-14", 56].  ???Does it need the first and last date in the data???
     def eod_balance
-      return [] if transactions.empty?
+      return [] if before_opening_balance_date?
 
       sql_data = transactions.group(:date).having('id = MAX(id)')
       build_data(sql_data)
@@ -45,15 +45,21 @@ module Lib
 
     # if first day of date range not in data, then add it
     def add_first_day(sql_data, data)
-      return if (sql_data.first.date == @date_range.from_date)
-      eod_balance = @account.eod_balance(@date_range.from_date - 1)
-      data.unshift([@date_range.from_date.strftime(LINE_CHART_DF), eod_balance])
+      first_day = @date_range.from_date > @account.starting_date ? @date_range.from_date : @account.starting_date
+      return if sql_data.first && (sql_data.first.date == first_day)
+
+      eod_balance = @account.eod_balance(first_day)
+      data.unshift([first_day.strftime(LINE_CHART_DF), eod_balance])
     end
 
     # if last day of date range not in data, then add it
     def add_last_day(sql_data, data)
-      return if (sql_data.last.date == @date_range.to_date)
+      return if sql_data.last && (sql_data.last.date == @date_range.to_date)
       data << [@date_range.to_date.strftime(LINE_CHART_DF), data.last[1]]
+    end
+
+    def before_opening_balance_date?
+      @date_range.to_date < @account.starting_date
     end
   end
 end

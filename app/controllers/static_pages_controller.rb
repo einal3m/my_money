@@ -6,6 +6,6 @@ class StaticPagesController < ApplicationController
   end
 
   def react
-    render :layout => false
+    render layout: false
   end
 end
