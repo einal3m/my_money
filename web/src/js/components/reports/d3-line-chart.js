@@ -3,6 +3,7 @@ import lineChart from './line-chart';
 import moneyUtil from '../../util/money-util';
 import dateUtil from '../../util/date-util';
 import ChartTooltip from './chart-tooltip';
+import ChartLegend from './chart-legend';
 
 export default class D3LineChart extends React.Component {
 
@@ -59,9 +60,10 @@ export default class D3LineChart extends React.Component {
 
   render() {
     return (
-      <div className='text-center' ref='chartContainer' className='chart-container'>
-        <ChartTooltip ref='tooltip' show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000}/>
-        <div id='d3-chart' />
+        <div className='text-center' ref='chartContainer' className='chart-container'>
+          <ChartTooltip ref='tooltip' show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000}/>
+          <ChartLegend chartData={this.props.chartData}/>
+          <div id='d3-chart' />
       </div>
     );
   }

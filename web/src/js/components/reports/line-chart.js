@@ -9,11 +9,12 @@ export default function lineChart(seriesData, id, options, callbacks) {
     noOfSeries: seriesData.length,
     topMargin: 20,
     leftMargin: 80,
+    rightMargin: 80,
     xAxisHeight: 30
   };
 
   dim.chartHeight = height - dim.topMargin - dim.xAxisHeight;
-  dim.chartWidth = width - dim.leftMargin;
+  dim.chartWidth = width - dim.leftMargin - dim.rightMargin;
 
   var vis = d3.select(id).append('svg')
     .attr('width', width)
