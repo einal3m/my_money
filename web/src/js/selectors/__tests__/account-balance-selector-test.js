@@ -35,10 +35,19 @@ describe('AccountBalanceSelector', () => {
     expect(data2.get(1).get(1)).toEqual(44.44);
   });
 
-  it('returns an empty list when there is no data', () => {
+  it('returns an empty list when there are no selected accounts', () => {
     let seriesData = accountBalanceSelector({
       reportStore: fromJS({accountBalances: {}}),
       accountStore: fromJS({accounts: [], selectedAccounts: []})
+    });
+
+    expect(seriesData.size).toEqual(0);
+  });
+
+  it('returns an empty list when there is no accountBalance data', () => {
+    let seriesData = accountBalanceSelector({
+      reportStore: fromJS({accountBalances: {}}),
+      accountStore: fromJS({accounts: [{id: 1, name: 'Melanie'}], selectedAccounts: [1]})
     });
 
     expect(seriesData.size).toEqual(0);

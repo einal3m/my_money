@@ -2,12 +2,6 @@ import React from 'react';
 
 export default class ChartTooltip extends React.Component {
 
-  show() {
-  }
-
-  hide() {
-  }
-
   renderTooltipItems() {
     return this.props.tooltipData.seriesLabel.map((label, i) => (
       <div key={i} className='tooltip-item'>
@@ -19,7 +13,7 @@ export default class ChartTooltip extends React.Component {
   }
 
   renderTooltip() {
-    if (this.props.tooltipData) {
+    if (this.props.show) {
       let style = {top: '40px'};
       if (this.props.tooltipData.tooltipPosition === 'right') {
         style.right = '20px';//(this.props.chartWidth - 10) + 'px';

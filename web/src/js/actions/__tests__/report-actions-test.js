@@ -13,7 +13,7 @@ describe('ReportActions', () => {
     it('getAccountBalanceReport calls the report api', () => {
       spyOn(apiUtil, 'get');
       spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({currentAccount: {id: 34}}),
+        accountStore: fromJS({selectedAccounts: [34]}),
         dateRangeStore: fromJS({currentDateRange: {fromDate: '2016-03-01', toDate: '2016-03-31'}}),
       });
 

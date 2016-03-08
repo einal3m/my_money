@@ -134,15 +134,15 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     return group;
   });
 
-  vis.append("rect")
-    .attr("class", "overlay")
-    .attr("width", dim.chartWidth)
-    .attr("height", dim.chartHeight)
+  vis.append('rect')
+    .attr('class', 'overlay')
+    .attr('width', dim.chartWidth)
+    .attr('height', dim.chartHeight)
     .attr('transform', 'translate(' + dim.leftMargin + ', ' + dim.topMargin + ')')
     .style({fill: 'none', 'pointer-events': 'all'})
-    .on("mouseover", () => focus.style("display", null))
-    .on("mouseout", () => focus.style("display", 'none'))
-    .on("mousemove", moveCircles);
+    .on('mouseover', () => focus.style('display', null))
+    .on('mouseout', hideCircles)
+    .on('mousemove', moveCircles);
 
   let yFor = (date, series) => {
     let points = series.data.filter(data => date >= data[0]);
@@ -186,6 +186,13 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     tooltipData.values = values;
     if (callbacks.showTooltip) {
       callbacks.showTooltip(tooltipData);
+    }
+  }
+
+  function hideCircles() {
+    focus.style("display", 'none');
+    if (callbacks.hideTooltip) {
+      callbacks.hideTooltip();
     }
   }
 }

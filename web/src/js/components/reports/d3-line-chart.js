@@ -9,13 +9,12 @@ export default class D3LineChart extends React.Component {
   constructor() {
     super();
 
-    this.state = {tooltipData: null};
+    this.state = {tooltipData: null, showTooltip: false};
     this.callbacks = {
       showTooltip: this.showTooltip.bind(this),
-    //  hideTooltip: this.hideTooltip.bind(this),
+      hideTooltip: this.hideTooltip.bind(this),
       formatYLabels: this.formatMoney.bind(this),
       formatXLabels: this.formatDate.bind(this)
-
     };
   }
 
@@ -30,7 +29,6 @@ export default class D3LineChart extends React.Component {
 
   shouldComponentUpdate(props, state) {
     if (props != this.props) {
-      console.log('re render chart');
       let options = {
         height: 450,
         width: this.refs.chartContainer.offsetWidth - 20
@@ -44,8 +42,11 @@ export default class D3LineChart extends React.Component {
   }
 
   showTooltip(tooltipData) {
-    this.setState({tooltipData: tooltipData});
-    this.refs.tooltip.show();
+    this.setState({tooltipData: tooltipData, showTooltip: true});
+  }
+
+  hideTooltip() {
+    this.setState({tooltipData: null, showTooltip: false});
   }
 
   formatMoney(amount) {
@@ -59,7 +60,7 @@ export default class D3LineChart extends React.Component {
   render() {
     return (
       <div className='text-center' ref='chartContainer' className='chart-container'>
-        <ChartTooltip ref='tooltip' tooltipData={this.state.tooltipData} chartWidth={1000}/>
+        <ChartTooltip ref='tooltip' show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000}/>
         <div id='d3-chart' />
       </div>
     );

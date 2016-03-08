@@ -4,13 +4,15 @@ import store from '../stores/store';
 class ReportActions {
   getAccountBalanceReport() {
 
-    let accountId = store.getState().accountStore.get('currentAccount').get('id');
+    let selectedAccounts = store.getState().accountStore.get('selectedAccounts');
     let dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
 
-    store.dispatch({ type: 'GET_REPORT' });
-    return apiUtil.get({
-      url: `report/eod_balance?account_id=${accountId}&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`,
-      onSuccess: response => this.storeAccountBalanceReport(accountId, response.report)
+    selectedAccounts.forEach(accountId => {
+      store.dispatch({ type: 'GET_REPORT' });
+      return apiUtil.get({
+        url: `report/eod_balance?account_id=${accountId}&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`,
+        onSuccess: response => this.storeAccountBalanceReport(accountId, response.report)
+      });
     });
   }
 
