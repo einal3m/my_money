@@ -20,9 +20,9 @@ export default class ChartTooltip extends React.Component {
 
   renderTooltip() {
     if (this.props.tooltipData) {
-      let style = {top: '30px'};
+      let style = {top: '40px'};
       if (this.props.tooltipData.tooltipPosition === 'right') {
-        style.left = (this.props.chartWidth - 10) + 'px';
+        style.right = '20px';//(this.props.chartWidth - 10) + 'px';
       } else {
         style.left = '100px';
       }

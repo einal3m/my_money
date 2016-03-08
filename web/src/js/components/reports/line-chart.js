@@ -7,7 +7,7 @@ export default function lineChart(seriesData, id, options, callbacks) {
 
   let dim = {
     noOfSeries: seriesData.length,
-    topMargin: 10,
+    topMargin: 20,
     leftMargin: 80,
     xAxisHeight: 30
   };
@@ -121,9 +121,17 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     .style("display", "none");
 
   let focusCircles = seriesData.map(series => {
-    return focus.append('circle')
-      .attr('r', 4.5)
+    let group = focus.append('g');
+
+    group.append('circle')
+      .attr('r', 6)
+      .style({stroke: series.backgroundColour, fill: 'white', 'stroke-width': '2'});
+
+    group.append('circle')
+      .attr('r', 3.5)
       .style({fill: series.backgroundColour});
+
+    return group;
   });
 
   vis.append("rect")
@@ -160,7 +168,7 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
       periodLabel: callbacks.formatXLabels(date),
       seriesLabel: seriesData.map(series => series.name),
       colours: seriesData.map(series => series.backgroundColour),
-      tooltipPosition: 'left'
+      tooltipPosition: xScale(date) > dim.chartWidth/2 ? 'left': 'right'
     };
     let values = [];
 

@@ -1,11 +1,11 @@
+@import 'colours';
 
-.chartContainer {
-  //padding: 10px;
+.chart-container {
+  border-top: 2px solid $main-color;
 }
 
 #d3-chart svg {
   margin: 10px;
-  border: solid black 1px;
   position: relative;
 
   .y-axis text {
@@ -18,31 +18,40 @@
 }
 
 .chart-tooltip {
-  background-color: white;
+  background: rgba(120, 120, 120, .5);
   position: absolute;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
   top: 20px;
   z-index: 500;
 
   .tooltip-title {
+    color: white;
     font-weight: bold;
+    font-size: 16px;
+    padding-bottom: 5px;
+  }
+
+  .tooltip-item {
+    opacity: 1;
+    background-color: white;
+    padding: 5px;
+    margin-bottom: 1px;
   }
 
   .tooltip-icon {
     display: inline-block;
+    font-size: 18px;
     padding-right: 10px;
   }
 
   .tooltip-label {
     display: inline-block;
-    width: 70px;
+    width: 80px;
   }
 
   .tooltip-value {
     display: inline-block;
-    width: 50px;
+    width: 80px;
     text-align: right;
   }
 }
