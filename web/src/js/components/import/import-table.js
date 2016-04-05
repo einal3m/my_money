@@ -9,7 +9,11 @@ export default class ImportTable extends React.Component {
 
   renderTransactions() {
     return this.props.transactions.map((transaction, index) => {
-      return <ImportRow key={index} transaction={transaction} />;
+      return (
+        <ImportRow key={index} transaction={transaction}
+                   groupedCategories={this.props.groupedCategories}
+                   subcategories={this.props.subcategories} />
+      );
     });
   }
 
@@ -46,3 +50,9 @@ export default class ImportTable extends React.Component {
     );
   }
 }
+
+ImportTable.propTypes = {
+  transactions: React.PropTypes.array.isRequired,
+  groupedCategories: React.PropTypes.array.isRequired,
+  subcategories: React.PropTypes.array.isRequired
+};

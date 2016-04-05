@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import TransactionTable from './transaction-table';
 import importActions from '../../actions/import-actions';
+import categoryActions from '../../actions/category-actions';
 import FileChooserModal from '../import/file-chooser-modal';
 
 require("../../../css/common.scss");
@@ -14,6 +15,8 @@ require("../../../css/common.scss");
 export class TransactionList extends React.Component {
   constructor() {
     super();
+    categoryActions.getCategories();
+
     this.state = {
       showImportModal: false
     }

@@ -7,13 +7,16 @@ import { Button } from 'react-bootstrap';
 import importActions from '../../../actions/import-actions';
 
 describe('ImportPage', () => {
-  let importPage, account, transactions;
+  let importPage, account, transactions, groupedCategories, subcategories;
   beforeEach(() => {
     account = {id: 1, name: 'Account1'};
     transactions = [{amount: 50}, {amount: 250}];
+    groupedCategories = ['categories'];
+    subcategories = ['subcategories'];
 
     importPage = shallowRenderer(
-      <ImportPage account={account} ofxTransactions={transactions} />
+      <ImportPage account={account} ofxTransactions={transactions}
+                  groupedCategories={groupedCategories} subcategories={subcategories} />
     );
   });
 
@@ -27,6 +30,8 @@ describe('ImportPage', () => {
 
       expect(table.props.children.type).toEqual(ImportTable);
       expect(table.props.children.props.transactions).toEqual(transactions);
+      expect(table.props.children.props.groupedCategories).toEqual(groupedCategories);
+      expect(table.props.children.props.subcategories).toEqual(subcategories);
     });
   });
 
