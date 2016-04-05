@@ -36,6 +36,7 @@ describe('AccountPicker', () => {
 
       let button = dropdown.props.children;
       expect(button.type).toEqual(DropdownButton);
+      expect(button.props.title).toEqual('Add/Remove Accounts...');
 
       let menuItems = button.props.children;
       expect(menuItems.length).toEqual(6);
@@ -60,6 +61,7 @@ describe('AccountPicker', () => {
 
       let button = dropdown.props.children;
       expect(button.type).toEqual(DropdownButton);
+      expect(button.props.title).toEqual('Account 1');
 
       let menuItems = button.props.children;
       expect(menuItems.length).toEqual(6);

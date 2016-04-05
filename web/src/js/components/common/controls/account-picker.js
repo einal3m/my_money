@@ -36,13 +36,32 @@ export default class AccountPicker extends React.Component {
     return menuItems;
   }
 
+  renderTitle() {
+    let title;
+    if (this.props.multiple) {
+      title = 'Add/Remove Accounts...';
+    } else {
+      this.props.accountTypes.forEach(accountType => {
+        if (this.props.accountGroups[accountType.code]) {
+          this.props.accountGroups[accountType.code].forEach(account => {
+            if (account.id === this.props.value) {
+              title = account.name;
+            }
+          });
+        }
+      });
+    }
+
+    return title;
+  }
+
   render() {
     return (
       <div className='form-horizontal'>
         <div className='form-group'>
           <label className="control-label col-xs-4">Accounts</label>
           <div className='col-xs-8'>
-            <DropdownButton ref='dropdown' title='Add/Remove Accounts...' pullRight id='account-dropdown' onSelect={this.onSelect.bind(this)}>
+            <DropdownButton ref='dropdown' title={this.renderTitle()} pullRight id='account-dropdown' onSelect={this.onSelect.bind(this)}>
               {this.renderMultiAccounts()}
             </DropdownButton>
           </div>
