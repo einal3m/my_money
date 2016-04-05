@@ -3,7 +3,7 @@
 import React from 'react';
 import { Input } from 'react-bootstrap';
 import FormValidator from '../../util/form-validator';
-import CategoryTypeSelect from '../common/category-type-select';
+import CategoryTypeSelect from '../common/controls/category-type-select';
 
 export default class CategoryForm extends React.Component {
   constructor(props) {

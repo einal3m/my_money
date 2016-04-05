@@ -2,7 +2,7 @@ import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import SubcategoryForm from '../subcategory-form';
-import GroupedCategorySelect from '../../common/grouped-category-select';
+import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 
 describe('SubcategoryForm', () => {
   let subcategory, groupedCategories;

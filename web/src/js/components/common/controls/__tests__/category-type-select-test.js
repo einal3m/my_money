@@ -1,5 +1,5 @@
 import React from 'react';
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import CategoryTypeSelect from '../category-type-select';
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Input } from 'react-bootstrap';
 import FormValidator from '../../util/form-validator';
-import GroupedCategorySelect from '../common/grouped-category-select';
+import GroupedCategorySelect from '../common/controls/grouped-category-select';
 
 export default class SubcategoryForm extends React.Component {
 

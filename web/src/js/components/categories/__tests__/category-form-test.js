@@ -2,7 +2,7 @@ import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import CategoryForm from '../category-form';
-import CategoryTypeSelect from '../../common/category-type-select';
+import CategoryTypeSelect from '../../common/controls/category-type-select';
 
 describe('CategoryForm', () => {
   let category, categoryTypes;
