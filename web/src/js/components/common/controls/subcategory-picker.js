@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MenuItem, DropdownButton} from 'react-bootstrap';
+require("../../../../css/picker.scss");
 
 export default class SubcategoryPicker extends React.Component {
 
@@ -47,7 +48,7 @@ export default class SubcategoryPicker extends React.Component {
     let subcategories = this.subcategoriesForCategory();
 
     return (
-      <div className='form-horizontal'>
+      <div className='picker form-horizontal'>
         <DropdownButton title={this.renderTitle()} pullRight id='subcategory-dropdown'
                         onSelect={this.onSelect.bind(this)}>
           {this.renderSubcategories(subcategories)}

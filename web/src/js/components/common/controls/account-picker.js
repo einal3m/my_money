@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import accountActions from '../../../actions/account-actions';
 import { MenuItem, DropdownButton} from 'react-bootstrap';
+require("../../../../css/picker.scss");
 
 export default class AccountPicker extends React.Component {
 
@@ -57,7 +58,7 @@ export default class AccountPicker extends React.Component {
 
   render() {
     return (
-      <div className='form-horizontal'>
+      <div className='picker form-horizontal'>
         <div className='form-group'>
           <label className="control-label col-xs-4">Accounts</label>
           <div className='col-xs-8'>

@@ -1,0 +1,20 @@
+
+.picker {
+  .dropdown {
+    width: 100%;
+
+    button {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: left;
+    }
+
+    button > span:nth-child(2) {
+      right: 3px;
+      position: absolute;
+      padding-left: 2px;
+    }
+  }
+}
