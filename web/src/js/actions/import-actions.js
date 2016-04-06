@@ -40,6 +40,38 @@ class ImportActions {
     store.dispatch({ type: 'SET_OFX_TRANSACTIONS', transactions: [] });
     hashHistory.push('/transactions');
   }
+
+  setNotes(index, notes) {
+    store.dispatch({
+      type: 'SET_NOTES',
+      index: index,
+      notes: notes
+    });
+  }
+
+  setCategoryId(index, categoryId) {
+    store.dispatch({
+      type: 'SET_CATEGORY_ID',
+      index: index,
+      categoryId: categoryId
+    });
+  }
+
+  setSubcategoryId(index, subcategoryId) {
+    store.dispatch({
+      type: 'SET_SUBCATEGORY_ID',
+      index: index,
+      subcategoryId: subcategoryId
+    });
+  }
+
+  setImport(index, importFlag) {
+    store.dispatch({
+      type: 'SET_IMPORT',
+      index: index,
+      import: importFlag
+    });
+  }
 }
 
 export default new ImportActions();

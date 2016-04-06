@@ -10,7 +10,7 @@ export default class ImportTable extends React.Component {
   renderTransactions() {
     return this.props.transactions.map((transaction, index) => {
       return (
-        <ImportRow key={index} transaction={transaction}
+        <ImportRow key={index} index={index} transaction={transaction}
                    groupedCategories={this.props.groupedCategories}
                    subcategories={this.props.subcategories} />
       );
@@ -23,13 +23,11 @@ export default class ImportTable extends React.Component {
         <Table hover id='transaction-table'>
           <thead>
             <tr>
-              <th></th>
               <th className='date'>date</th>
-              <th>bank memo</th>
-              <th>notes</th>
-              <th>category</th>
-              <th>subcategory</th>
+              <th>bank memo / notes</th>
+              <th>category / subcategory</th>
               <th className='currency'>amount</th>
+              <th>&nbsp;</th>
             </tr>
           </thead>
           <tbody>

@@ -5,8 +5,8 @@ describe('ImportReducer', () => {
   let transactions;
   beforeEach(() => {
     transactions = [
-      { id: 11, name: 'Name1', default: false, custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
-      { id: 22, name: 'Name2', default: true, custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' }
+      { import: true, date: '2016-07-31', notes: 'note', categoryId: null, subcategoryId: null },
+      { import: false, date: '2016-07-11', categoryId: null, subcategoryId: null }
     ];
   });
 
@@ -33,6 +33,50 @@ describe('ImportReducer', () => {
       let state = importReducer(undefined, action);
 
       expect(state.get('fileName')).toEqual('file.ofx');
+    });
+  });
+
+  describe('update ofx transactions', () => {
+    let initialState;
+    beforeEach(() => {
+      let action = {type: 'SET_OFX_TRANSACTIONS', transactions: transactions};
+      initialState = importReducer(undefined, action);
+    });
+
+    describe('SET_NOTES', () => {
+      it('sets the notes for the specified transaction', () => {
+        let action = {type: 'SET_NOTES', index: 1, notes: 'newNote'};
+        let state = importReducer(initialState, action);
+
+        expect(state.get('transactions').get(1).get('notes')).toEqual('newNote');
+      });
+    });
+
+    describe('SET_CATEGORY_ID', () => {
+      it('sets the category id for the specified transaction', () => {
+        let action = {type: 'SET_CATEGORY_ID', index: 1, categoryId: 13};
+        let state = importReducer(initialState, action);
+
+        expect(state.get('transactions').get(1).get('categoryId')).toEqual(13);
+      });
+    });
+
+    describe('SET_SUBCATEGORY_ID', () => {
+      it('sets the subcategory id for the specified transaction', () => {
+        let action = {type: 'SET_SUBCATEGORY_ID', index: 1, subcategoryId: 23};
+        let state = importReducer(initialState, action);
+
+        expect(state.get('transactions').get(1).get('subcategoryId')).toEqual(23);
+      });
+    });
+
+    describe('SET_IMPORT', () => {
+      it('sets the import flag for the specified transaction', () => {
+        let action = {type: 'SET_IMPORT', index: 1, import: true};
+        let state = importReducer(initialState, action);
+
+        expect(state.get('transactions').get(1).get('import')).toEqual(true);
+      });
     });
   });
 });

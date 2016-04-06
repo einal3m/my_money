@@ -4,15 +4,24 @@ import moneyUtil from '../../util/money-util';
 import Amount from '../common/amount';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
 import SubcategoryPicker from '../common/controls/subcategory-picker';
+import importActions from '../../actions/import-actions';
 
 export default class ImportRow extends React.Component {
 
-  categoryChange() {
-
+  onImportChange(event) {
+    importActions.setImport(this.props.index, event.target.checked);
   }
 
-  subcategoryChange() {
+  onCategoryChange(event) {
+    importActions.setCategoryId(this.props.index, event.target.value);
+  }
 
+  onSubcategoryChange(subcategoryId) {
+    importActions.setSubcategoryId(this.props.index, subcategoryId);
+  }
+
+  onNotesChange(event) {
+    importActions.setNotes(this.props.index, event.target.value);
   }
 
   renderDate(date) {
@@ -21,52 +30,71 @@ export default class ImportRow extends React.Component {
 
   renderImport() {
     return (
-      <input type='checkbox' className='form-control' checked={this.props.transaction.import} />
+      <input type='checkbox' checked={this.props.transaction.import}
+             onChange={this.onImportChange.bind(this)} />
     );
   }
 
   renderNotes() {
     return (
-      <input className='form-control' value={this.props.transaction.notes} />
+      <input className='form-control' value={this.props.transaction.notes} onChange={this.onNotesChange.bind(this)}/>
     );
   }
 
   renderCategory() {
     return (
       <GroupedCategorySelect groupedCategories={this.props.groupedCategories}
-                             onChange={this.categoryChange.bind(this)}
+                             onChange={this.onCategoryChange.bind(this)}
                              value={this.props.transaction.categoryId} />
     );
   }
 
   renderSubcategory() {
+    if (!this.props.transaction.categoryId) {
+      return;
+    }
+
     let subcategories = this.props.subcategories.filter(
       subcategory => subcategory.categoryId === this.props.transaction.categoryId
     );
 
     return (
       <SubcategoryPicker subcategories={subcategories}
-                         onChange={this.subcategoryChange.bind(this)}
+                         onChange={this.onSubcategoryChange.bind(this)}
                          value={this.props.transaction.subcategoryId} />
     );
   }
 
+  rowClass() {
+    if (this.props.transaction.duplicate) {
+      return 'danger';
+    }
+    return '';
+  }
+
   render() {
     return (
-      <tr>
-        <td>{this.renderImport()}</td>
+      <tr className={this.rowClass()}>
         <td>{this.renderDate(this.props.transaction.date)}</td>
-        <td>{this.props.transaction.memo}</td>
-        <td>{this.renderNotes()}</td>
-        <td>{this.renderCategory()}</td>
-        <td>{this.renderSubcategory()}</td>
+        <td>
+          {this.props.transaction.memo}
+          <p />
+          {this.renderNotes()}
+        </td>
+        <td>
+          {this.renderCategory()}
+          <p />
+          {this.renderSubcategory()}
+        </td>
         <td className='currency'><Amount amount={this.props.transaction.amount} /></td>
+        <td>{this.renderImport()}</td>
       </tr>
     );
   }
 }
 
 ImportRow.propTypes = {
+  index: React.PropTypes.number.isRequired,
   transaction: React.PropTypes.object.isRequired,
   groupedCategories: React.PropTypes.array.isRequired,
   subcategories: React.PropTypes.array.isRequired

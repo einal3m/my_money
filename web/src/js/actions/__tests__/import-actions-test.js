@@ -90,4 +90,46 @@ describe('ImportActions', () => {
       expect(hashHistory.push).toHaveBeenCalledWith('/transactions');
     });
   });
+
+  describe('updating ofx transactions', () => {
+    it('setNotes dispatches note to the store', () => {
+      importActions.setNotes(3, 'newNote');
+
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_NOTES',
+        index: 3,
+        notes: 'newNote'
+      });
+    });
+
+    it('setCategoryId dispatches category id to the store', () => {
+      importActions.setCategoryId(4, 34);
+
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_CATEGORY_ID',
+        index: 4,
+        categoryId: 34
+      });
+    });
+
+    it('setSubcategoryId dispatches subcategory id to the store', () => {
+      importActions.setSubcategoryId(5, 27);
+
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_SUBCATEGORY_ID',
+        index: 5,
+        subcategoryId: 27
+      });
+    });
+
+    it('setImport dispatches import flag to the store', () => {
+      importActions.setImport(6, true);
+
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: 'SET_IMPORT',
+        index: 6,
+        import: true
+      });
+    });
+  });
 });

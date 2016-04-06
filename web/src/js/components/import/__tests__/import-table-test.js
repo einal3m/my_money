@@ -27,9 +27,11 @@ describe('ImportTable', () => {
       expect(table.props.children[0].props.transaction).toEqual(transactions[0]);
       expect(table.props.children[0].props.groupedCategories).toEqual(groupedCategories);
       expect(table.props.children[0].props.subcategories).toEqual(subcategories);
+      expect(table.props.children[0].props.index).toEqual(0);
       expect(table.props.children[1].props.transaction).toEqual(transactions[1]);
       expect(table.props.children[1].props.groupedCategories).toEqual(groupedCategories);
       expect(table.props.children[1].props.subcategories).toEqual(subcategories);
+      expect(table.props.children[1].props.index).toEqual(1);
     });
 
     it('has no table if no transactions', () => {

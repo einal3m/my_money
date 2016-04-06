@@ -17,7 +17,7 @@ export default class SubcategoryPicker extends React.Component {
   renderSubcategories() {
     return this.props.subcategories.map(subcategory => {
       return (
-        <MenuItem key={subcategory.id}>{this.renderSubcategoryName(subcategory)}</MenuItem>
+        <MenuItem key={subcategory.id} eventKey={subcategory.id}>{this.renderSubcategoryName(subcategory)}</MenuItem>
       )
     });
   }
