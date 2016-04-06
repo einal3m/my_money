@@ -5,7 +5,7 @@ describe('ImportReducer', () => {
   let transactions;
   beforeEach(() => {
     transactions = [
-      { import: true, date: '2016-07-31', notes: 'note', categoryId: null, subcategoryId: null },
+      { import: true, date: '2016-07-31', notes: 'note', categoryId: 10, subcategoryId: 11 },
       { import: false, date: '2016-07-11', categoryId: null, subcategoryId: null }
     ];
   });
@@ -53,11 +53,12 @@ describe('ImportReducer', () => {
     });
 
     describe('SET_CATEGORY_ID', () => {
-      it('sets the category id for the specified transaction', () => {
-        let action = {type: 'SET_CATEGORY_ID', index: 1, categoryId: 13};
+      it('sets the category id for the specified transaction, sets subcategory id to null', () => {
+        let action = {type: 'SET_CATEGORY_ID', index: 0, categoryId: 13};
         let state = importReducer(initialState, action);
 
-        expect(state.get('transactions').get(1).get('categoryId')).toEqual(13);
+        expect(state.get('transactions').get(0).get('categoryId')).toEqual(13);
+        expect(state.get('transactions').get(0).get('subcategoryId')).toEqual(null);
       });
     });
 

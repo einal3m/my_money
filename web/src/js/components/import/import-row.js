@@ -54,12 +54,9 @@ export default class ImportRow extends React.Component {
       return;
     }
 
-    let subcategories = this.props.subcategories.filter(
-      subcategory => subcategory.categoryId === this.props.transaction.categoryId
-    );
-
     return (
-      <SubcategoryPicker subcategories={subcategories}
+      <SubcategoryPicker subcategories={this.props.subcategories}
+                         categoryId={this.props.transaction.categoryId}
                          onChange={this.onSubcategoryChange.bind(this)}
                          value={this.props.transaction.subcategoryId} />
     );

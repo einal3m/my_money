@@ -8,9 +8,11 @@ describe('SubcategoryPicker', () => {
   let subcategoryPicker, subcategories, onChangeSpy;
   beforeEach(() => {
     subcategories = [
-      { id: 1, name: 'One' },
-      { id: 3, name: 'Two' },
-      { id: 2, name: 'Three' }
+      { id: 1, categoryId: 11, name: 'One' },
+      { id: 2, categoryId: 12, name: 'One Again' },
+      { id: 3, categoryId: 11, name: 'Two' },
+      { id: 4, categoryId: 13, name: 'Two Again' },
+      { id: 5, categoryId: 11, name: 'Three' }
     ];
 
     onChangeSpy = jasmine.createSpy('onChangeSpy');
@@ -19,7 +21,7 @@ describe('SubcategoryPicker', () => {
   describe('render', () => {
     it('when no subcategory selected', () => {
       subcategoryPicker = shallowRenderer(
-        <SubcategoryPicker subcategories={subcategories} value={null} onChange={onChangeSpy} />
+        <SubcategoryPicker subcategories={subcategories} value={null} onChange={onChangeSpy} categoryId={11} />
       );
 
       let dropdown = subcategoryPicker.props.children;
@@ -37,7 +39,7 @@ describe('SubcategoryPicker', () => {
 
     it('when a subcategory is selected', () => {
       subcategoryPicker = shallowRenderer(
-        <SubcategoryPicker subcategories={subcategories} value={2} onChange={onChangeSpy} />
+        <SubcategoryPicker subcategories={subcategories} value={5} onChange={onChangeSpy} categoryId={11} />
       );
 
       let dropdown = subcategoryPicker.props.children;
@@ -57,7 +59,7 @@ describe('SubcategoryPicker', () => {
   describe('events', () => {
     it('selecting menuitem calls the onChange prop', () => {
       subcategoryPicker = shallowRenderer(
-        <SubcategoryPicker subcategories={subcategories} value={2} onChange={onChangeSpy} />
+        <SubcategoryPicker subcategories={subcategories} value={2} onChange={onChangeSpy} categoryId={11} />
       );
 
       let dropdown = subcategoryPicker.props.children;

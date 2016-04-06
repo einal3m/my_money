@@ -36,7 +36,8 @@ function setNotes(state, index, notes) {
 }
 
 function setCategoryId(state, index, categoryId) {
-  return state.setIn(['transactions',index,'categoryId'], categoryId);
+  return state.setIn(['transactions',index,'categoryId'], categoryId)
+              .setIn(['transactions',index,'subcategoryId'], null);
 }
 
 function setSubcategoryId(state, index, subcategoryId) {
