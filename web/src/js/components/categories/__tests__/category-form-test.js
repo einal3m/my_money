@@ -1,13 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
 import CategoryForm from '../category-form';
-import CategoryTypeSelect from '../../common/controls/category-type-select';
+import Picker from '../../common/controls/picker';
 
 describe('CategoryForm', () => {
   let category, categoryTypes;
   beforeEach(() => {
-    category = {id: 11, name: 'categoryName', categoryTypeId: 3};
+    category = {id: 11, name: 'categoryName', categoryTypeId: 1};
     categoryTypes = [{id: 1, name: 'Income'}, {id: 2, name: 'Expense'}];
   });
 
@@ -20,8 +21,9 @@ describe('CategoryForm', () => {
 
     it('has a category type', () => {
       expect(categoryType.props.children[0].props.children).toEqual('Category Type');
-      expect(categoryType.props.children[1].type).toEqual(CategoryTypeSelect);
-      expect(categoryType.props.children[1].props.value).toEqual(3);
+      expect(categoryType.props.children[1].type).toEqual(Picker);
+      expect(categoryType.props.children[1].props.options).toEqual(categoryTypes);
+      expect(categoryType.props.children[1].props.value).toEqual(1);
     });
 
     it('has a name field', () => {
@@ -43,7 +45,7 @@ describe('CategoryForm', () => {
     it('returns false if name field is missing', () => {
       let form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes}/>);
       spyOn(form, 'forceUpdate');
-      form.state.category = {name: '', categoryTypeId: 3};
+      form.state.category = {name: '', categoryTypeId: 2};
       expect(form.isValid()).toEqual(false);
       expect(form.forceUpdate).toHaveBeenCalled();
     });
@@ -58,7 +60,7 @@ describe('CategoryForm', () => {
   });
 
   describe('updating state and validation', () => {
-    it('updates state and validates name is required', () => {
+    it('name is required', () => {
       let form = TestUtils.renderIntoDocument(<CategoryForm category={{}} categoryTypes={categoryTypes}/>);
       let name = form.refs.nameField;
       let formGroup = name.parentNode;
@@ -71,6 +73,24 @@ describe('CategoryForm', () => {
       name.value = 'giraffe'
       TestUtils.Simulate.change(name);
       expect(form.state.category.name).toEqual('giraffe');
+      expect(formGroup.className).toMatch(/has-success/);
+      expect(helpBlock.textContent).toEqual('');
+    });
+
+    it('category type is required', () => {
+      let form = TestUtils.renderIntoDocument(<CategoryForm category={{categoryTypeId: 2}} categoryTypes={categoryTypes}/>);
+      let categoryType = form.refs.categoryTypeIdField;
+      let formGroup = ReactDOM.findDOMNode(categoryType).parentNode;
+      let helpBlock = formGroup.getElementsByClassName('help-block')[0];
+
+      categoryType.props.onChange(null);
+      form.forceUpdate();
+      expect(formGroup.className).toMatch(/has-error/);
+      expect(helpBlock.textContent).toEqual('Category type id is required');
+
+      categoryType.props.onChange(2);
+      form.forceUpdate();
+      expect(form.state.category.categoryTypeId).toEqual(2);
       expect(formGroup.className).toMatch(/has-success/);
       expect(helpBlock.textContent).toEqual('');
     });

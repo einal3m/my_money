@@ -2,7 +2,7 @@ import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 
 import SubcategoryPicker from '../subcategory-picker';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import Picker from '../picker';
 
 describe('SubcategoryPicker', () => {
   let subcategoryPicker, subcategories, onChangeSpy;
@@ -19,51 +19,23 @@ describe('SubcategoryPicker', () => {
   });
 
   describe('render', () => {
-    it('when no subcategory selected', () => {
+    it('has a picker with subset of subcategories', () => {
       subcategoryPicker = shallowRenderer(
         <SubcategoryPicker subcategories={subcategories} value={null} onChange={onChangeSpy} categoryId={11} />
       );
 
-      let dropdown = subcategoryPicker.props.children;
-
-      expect(dropdown.type).toEqual(DropdownButton);
-      expect(dropdown.props.title).toEqual('Please select...');
-
-      let menuItems = dropdown.props.children;
-      expect(menuItems.length).toEqual(3);
-
-      expect(menuItems[0].props.children).toEqual('   One');
-      expect(menuItems[1].props.children).toEqual('   Two');
-      expect(menuItems[2].props.children).toEqual('   Three');
-    });
-
-    it('when a subcategory is selected', () => {
-      subcategoryPicker = shallowRenderer(
-        <SubcategoryPicker subcategories={subcategories} value={5} onChange={onChangeSpy} categoryId={11} />
-      );
-
-      let dropdown = subcategoryPicker.props.children;
-
-      expect(dropdown.type).toEqual(DropdownButton);
-      expect(dropdown.props.title).toEqual('Three');
-
-      let menuItems = dropdown.props.children;
-      expect(menuItems.length).toEqual(3);
-
-      expect(menuItems[0].props.children).toEqual('   One');
-      expect(menuItems[1].props.children).toEqual('   Two');
-      expect(menuItems[2].props.children).toEqual('✓ Three');
+      expect(subcategoryPicker.type).toEqual(Picker);
+      expect(subcategoryPicker.props.options).toEqual([subcategories[0], subcategories[2], subcategories[4]]);
     });
   });
 
   describe('events', () => {
-    it('selecting menuitem calls the onChange prop', () => {
+    it('dropdown onChange calls the onChange prop', () => {
       subcategoryPicker = shallowRenderer(
         <SubcategoryPicker subcategories={subcategories} value={2} onChange={onChangeSpy} categoryId={11} />
       );
 
-      let dropdown = subcategoryPicker.props.children;
-      dropdown.props.onSelect({}, '4');
+      subcategoryPicker.props.onChange(4);
 
       expect(onChangeSpy).toHaveBeenCalledWith(4);
     });

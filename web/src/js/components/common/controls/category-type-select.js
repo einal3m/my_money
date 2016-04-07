@@ -31,5 +31,6 @@ export default class CategoryTypeSelect extends React.Component {
 
 CategoryTypeSelect.propTypes = {
   value: React.PropTypes.number,
+  categoryTypes: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func.isRequired
 };
