@@ -5,17 +5,11 @@ import accountTransformer from '../transformers/account-transformer';
 export class AccountActions {
 
   getAccounts() {
-    let accountsLoaded = store.getState().accountStore.get('loaded');
-
-    if (accountsLoaded) {
-      return Promise.resolve();
-    } else {
-      store.dispatch({type: 'GET_ACCOUNTS'});
-      return apiUtil.get({
-        url: 'accounts',
-        onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)))
-      });
-    }
+    store.dispatch({type: 'GET_ACCOUNTS'});
+    return apiUtil.get({
+      url: 'accounts',
+      onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)))
+    });
   }
 
   storeAccounts(accounts) {
