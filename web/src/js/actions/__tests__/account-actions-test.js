@@ -30,6 +30,22 @@ describe('AccountActions', () => {
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
     });
+
+    it('doesnt call the api if accounts already loaded', () => {
+      spyOn(apiUtil, 'get');
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: true}) });
+      let promise = accountActions.getAccounts();
+      expect(apiUtil.get).not.toHaveBeenCalled();
+      expect(promise.then).toBeDefined();
+    });
+
+    it('does call the api if forceReload already loaded', () => {
+      spyOn(apiUtil, 'get');
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: true}) });
+      accountActions.getAccounts(true);
+      expect(apiUtil.get).toHaveBeenCalled();
+    });
+
   });
 
   describe('storeAccounts', () => {

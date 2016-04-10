@@ -4,12 +4,18 @@ import accountTransformer from '../transformers/account-transformer';
 
 export class AccountActions {
 
-  getAccounts() {
-    store.dispatch({type: 'GET_ACCOUNTS'});
-    return apiUtil.get({
-      url: 'accounts',
-      onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)))
-    });
+  getAccounts(forceReload=false) {
+    let accountsLoaded = store.getState().accountStore.get('loaded');
+
+    if (accountsLoaded && !forceReload) {
+      return Promise.resolve();
+    } else {
+      store.dispatch({type: 'GET_ACCOUNTS'});
+      return apiUtil.get({
+        url: 'accounts',
+        onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account)))
+      });
+    }
   }
 
   storeAccounts(accounts) {

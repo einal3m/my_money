@@ -44,6 +44,12 @@ describe('reducer', () => {
     it('sets selectedAccounts to id of first account', () => {
       expect(nextState.get('selectedAccounts').toJS()).toEqual([11]);
     });
+
+    it('does not reset currentAccount if already set', () => {
+      let newState = reducer(nextState, {type: 'SET_CURRENT_ACCOUNT', id: account2.id});
+      let reloadedState = reducer(newState, {type: 'SET_ACCOUNTS', accounts: [account1, account2]});
+      expect(reloadedState.get('currentAccount').toJS()).toEqual(account2);
+    });
   });
 
   describe('ADD_ACCOUNT', () => {

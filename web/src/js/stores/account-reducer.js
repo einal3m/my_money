@@ -30,8 +30,15 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 function setAccounts(state, accounts) {
   return state.set('loaded', true)
               .set('accounts', fromJS(accounts))
-              .set('currentAccount', Map(accounts[0]))
+              .set('currentAccount', currentAccount(state, accounts))
               .set('selectedAccounts', List([accounts[0].id]));
+}
+
+function currentAccount(state, accounts) {
+  if (state.get('currentAccount').get('id')) {
+    return state.get('currentAccount');
+  }
+  return Map(accounts[0]);
 }
 
 function addAccount(state, account) {
