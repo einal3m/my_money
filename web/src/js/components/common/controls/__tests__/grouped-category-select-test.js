@@ -8,9 +8,9 @@ describe('GroupedCategorySelect', () => {
   let select, groupedCategories, onChangeSpy;
   beforeEach(() => {
     onChangeSpy = jasmine.createSpy('onChangeSpy');
-    let category1 = {id: 1, name: 'category1'};
-    let category2 = {id: 2, name: 'category2'};
-    let category3 = {id: 3, name: 'category3'};
+    let category1 = {id: 1, name: 'Wages'};
+    let category2 = {id: 2, name: 'Bills'};
+    let category3 = {id: 3, name: 'Tax Return'};
     groupedCategories = [
       {categoryType: {name: 'Income', id: 4}, categories: [category1, category3]},
       {categoryType: {name: 'Expense', id: 5}, categories: [category2]}
@@ -32,10 +32,10 @@ describe('GroupedCategorySelect', () => {
 
       let [type1, type2] = optionGroups;
       expect(type1.props.label).toEqual('Income');
-      expect(type1.props.children[0].props.children).toEqual('category1');
-      expect(type1.props.children[1].props.children).toEqual('category3');
+      expect(type1.props.children[0].props.children).toEqual('Tax Return');
+      expect(type1.props.children[1].props.children).toEqual('Wages');
       expect(type2.props.label).toEqual('Expense');
-      expect(type2.props.children[0].props.children).toEqual('category2');
+      expect(type2.props.children[0].props.children).toEqual('Bills');
     });
 
     it('has a select with a placeholder when value is missing', () => {

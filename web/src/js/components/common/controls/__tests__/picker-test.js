@@ -31,8 +31,8 @@ describe('Picker', () => {
       expect(menuItems.length).toEqual(3);
 
       expect(menuItems[0].props.children).toEqual('   One');
-      expect(menuItems[1].props.children).toEqual('   Two');
-      expect(menuItems[2].props.children).toEqual('   Three');
+      expect(menuItems[1].props.children).toEqual('   Three');
+      expect(menuItems[2].props.children).toEqual('   Two');
     });
 
     it('when an item is selected', () => {
@@ -49,8 +49,8 @@ describe('Picker', () => {
       expect(menuItems.length).toEqual(3);
 
       expect(menuItems[0].props.children).toEqual('   One');
-      expect(menuItems[1].props.children).toEqual('   Two');
-      expect(menuItems[2].props.children).toEqual('✓ Three');
+      expect(menuItems[1].props.children).toEqual('✓ Three');
+      expect(menuItems[2].props.children).toEqual('   Two');
     });
   });
 

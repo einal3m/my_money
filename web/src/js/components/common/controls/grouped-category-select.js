@@ -6,6 +6,17 @@ export default class GroupedCategorySelect extends React.Component {
     this.props.onChange({target: {name: event.target.name, value: Number(event.target.value)}});
   }
 
+  sortedCategories(categories) {
+    return categories.sort((a, b) => {
+      let nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+      if (nameA < nameB)
+        return -1;
+      if (nameA > nameB)
+        return 1;
+      return 0;
+    });
+  }
+
   renderBlankOption() {
     if (!this.props.value) {
       return <option value='0' disabled>Please select...</option>;
@@ -22,7 +33,7 @@ export default class GroupedCategorySelect extends React.Component {
     return this.props.groupedCategories.map(categoryType => {
       return (
         <optgroup key={`catType_${categoryType.categoryType.id}`} label={categoryType.categoryType.name}>
-          {this.renderCategories(categoryType.categories)}
+          {this.renderCategories(this.sortedCategories(categoryType.categories))}
         </optgroup>
       );
     });

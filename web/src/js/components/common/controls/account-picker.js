@@ -10,6 +10,17 @@ export default class AccountPicker extends React.Component {
     this.props.onChange(Number(key));
   }
 
+  sortedAccounts(accounts) {
+    return accounts.sort((a, b) => {
+      let nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+      if (nameA < nameB)
+        return -1;
+      if (nameA > nameB)
+        return 1;
+      return 0;
+    });
+  }
+
   renderAccountName(account) {
     let selected;
     if (this.props.multiple) {
@@ -26,7 +37,7 @@ export default class AccountPicker extends React.Component {
     this.props.accountTypes.forEach(accountType => {
       if (this.props.accountGroups[accountType.code]) {
         menuItems.push(<MenuItem key={`account_type_${accountType.code}`} header>{accountType.name}</MenuItem>);
-        this.props.accountGroups[accountType.code].map(account => {
+        this.sortedAccounts(this.props.accountGroups[accountType.code]).map(account => {
           menuItems.push(<MenuItem key={`account_${account.id}`} eventKey={account.id}>{this.renderAccountName(account)}</MenuItem>);
         });
         menuItems.push(<MenuItem key={`divider_${accountType.code}`} divider/>);

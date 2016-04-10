@@ -16,8 +16,8 @@ describe('AccountPicker', () => {
     ];
 
     accountGroups = {
-      'savings': [ { id: 2, name: 'Account 2' } ],
-      'share': [ { id: 1, name: 'Account 1' }, { id: 3, name: 'Account 3' } ]
+      'savings': [ { id: 2, name: 'oneAccount' } ],
+      'share': [ { id: 1, name: 'myAccount' }, { id: 3, name: 'anotherAccount' } ]
     };
 
     onChangeSpy = jasmine.createSpy('onChangeSpy');
@@ -42,11 +42,11 @@ describe('AccountPicker', () => {
       expect(menuItems.length).toEqual(6);
 
       expect(menuItems[0].props.children).toEqual('Savings');
-      expect(menuItems[1].props.children).toEqual('✓ Account 2');
+      expect(menuItems[1].props.children).toEqual('✓ oneAccount');
       expect(menuItems[2].props.divider).toEqual(true);
       expect(menuItems[3].props.children).toEqual('Share');
-      expect(menuItems[4].props.children).toEqual('✓ Account 1');
-      expect(menuItems[5].props.children).toEqual('   Account 3');
+      expect(menuItems[4].props.children).toEqual('   anotherAccount');
+      expect(menuItems[5].props.children).toEqual('✓ myAccount');
     });
 
     it('multiple false has a dropdown button with one menu item selected', () => {
@@ -61,17 +61,17 @@ describe('AccountPicker', () => {
 
       let button = dropdown.props.children;
       expect(button.type).toEqual(DropdownButton);
-      expect(button.props.title).toEqual('Account 1');
+      expect(button.props.title).toEqual('myAccount');
 
       let menuItems = button.props.children;
       expect(menuItems.length).toEqual(6);
 
       expect(menuItems[0].props.children).toEqual('Savings');
-      expect(menuItems[1].props.children).toEqual('   Account 2');
+      expect(menuItems[1].props.children).toEqual('   oneAccount');
       expect(menuItems[2].props.divider).toEqual(true);
       expect(menuItems[3].props.children).toEqual('Share');
-      expect(menuItems[4].props.children).toEqual('✓ Account 1');
-      expect(menuItems[5].props.children).toEqual('   Account 3');
+      expect(menuItems[4].props.children).toEqual('   anotherAccount');
+      expect(menuItems[5].props.children).toEqual('✓ myAccount');
     });
   });
 
