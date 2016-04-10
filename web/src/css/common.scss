@@ -58,6 +58,13 @@ ul.slats {
     .slat-detail {
       padding-bottom: 10px;
       border-bottom: 1px solid silver;
+
+      a {
+        color: $main-color;
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
 
     padding-bottom: 10px;

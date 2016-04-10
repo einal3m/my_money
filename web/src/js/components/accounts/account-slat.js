@@ -2,6 +2,7 @@
 import React from 'react';
 import { MenuItem, DropdownButton, Menu, Glyphicon } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { hashHistory } from 'react-router';
 import moneyUtil from '../../util/money-util';
 import accountActions from '../../actions/account-actions';
 import transactionActions from '../../actions/transaction-actions';
@@ -11,12 +12,17 @@ require('../../../images/piggy-bank.gif');
 export default class AccountSlat extends React.Component {
   accountActions(event, eventKey) {
     if (eventKey === '1') {
-      transactionActions.fetchTransactions(this.props.account.get('id'));
+      this.viewTransactions();
     }
     if (eventKey === '3') {
       accountActions.deleteAccount(this.props.account.get('id'));
     }
-  } 
+  }
+
+  viewTransactions() {
+    accountActions.setCurrentAccount(this.props.account.get('id'));
+    hashHistory.push('/transactions');
+  }
 
   renderSlatImage(accountType) {
     if (accountType === 'savings') {
@@ -49,6 +55,10 @@ export default class AccountSlat extends React.Component {
     return moneyUtil.moneyFormat(currentBalanceDollars);
   }
 
+  renderName() {
+    return <a className='name-link' onClick={this.viewTransactions.bind(this)}><h4>{this.props.account.get('name')}</h4></a>;
+  }
+
   render() {
     return (
       <li className='slat-item'>
@@ -59,7 +69,7 @@ export default class AccountSlat extends React.Component {
           <div className="slat-detail col-sm-11 col-xs-10">
             <div className="row">
               <div className="col-xs-4 col-sm-6">
-                <h4>{this.props.account.get('name')}</h4>
+                {this.renderName()}
                 <span className="text-muted">{this.props.account.get('bank')}</span>
               </div>
               <div className="currency col-xs-4 col-sm-5">
