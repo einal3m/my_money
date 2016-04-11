@@ -21,17 +21,22 @@ describe('ImportPage', () => {
   });
 
   describe('render', () => {
-    it('has a header and a table', () => {
-      let [header, table] = importPage.props.children;
+    it('has a header, title and a table', () => {
+      let [header, container] = importPage.props.children;
+      let [title, table] = container.props.children;
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('import transactions');
       expect(header.props.children.type).toEqual(Button);
 
-      expect(table.props.children.type).toEqual(ImportTable);
-      expect(table.props.children.props.transactions).toEqual(transactions);
-      expect(table.props.children.props.groupedCategories).toEqual(groupedCategories);
-      expect(table.props.children.props.subcategories).toEqual(subcategories);
+      expect(title.props.children[0]).toEqual('into ');
+      expect(title.props.children[1].props.children).toEqual('Account1');
+      expect(title.props.children[2]).toEqual(' account');
+
+      expect(table.type).toEqual(ImportTable);
+      expect(table.props.transactions).toEqual(transactions);
+      expect(table.props.groupedCategories).toEqual(groupedCategories);
+      expect(table.props.subcategories).toEqual(subcategories);
     });
   });
 

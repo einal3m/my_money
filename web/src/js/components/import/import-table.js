@@ -24,8 +24,10 @@ export default class ImportTable extends React.Component {
           <thead>
             <tr>
               <th className='date'>date</th>
-              <th>bank memo / notes</th>
-              <th>category / subcategory</th>
+              <th className='memo'>bank memo</th>
+              <th className='notes'>notes</th>
+              <th className='category'>category</th>
+              <th className='subcategory'>subcategory</th>
               <th className='currency'>amount</th>
               <th>&nbsp;</th>
             </tr>

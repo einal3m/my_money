@@ -35,27 +35,27 @@ describe('ImportRow', () => {
 
       expect(importRow.props.children[0].props.children).toEqual('19-Dec-2016');
 
-      expect(importRow.props.children[1].props.children[0]).toEqual('myMemo');
+      expect(importRow.props.children[1].props.children).toEqual('myMemo');
 
-      let notes = importRow.props.children[1].props.children[2];
+      let notes = importRow.props.children[2].props.children;
       expect(notes.type).toEqual('input');
       expect(notes.props.value).toEqual('myNotes');
 
-      let categorySelect = importRow.props.children[2].props.children[0];
+      let categorySelect = importRow.props.children[3].props.children;
       expect(categorySelect.type).toEqual(GroupedCategorySelect);
       expect(categorySelect.props.value).toEqual(14);
       expect(categorySelect.props.groupedCategories).toEqual(groupedCategories);
 
-      let subcategorySelect = importRow.props.children[2].props.children[2];
+      let subcategorySelect = importRow.props.children[4].props.children;
       expect(subcategorySelect.type).toEqual(SubcategoryPicker);
       expect(subcategorySelect.props.value).toEqual(27);
       expect(subcategorySelect.props.subcategories).toEqual(subcategories);
       expect(subcategorySelect.props.categoryId).toEqual(14);
 
-      expect(importRow.props.children[3].props.children.type).toEqual(Amount);
-      expect(importRow.props.children[3].props.children.props.amount).toEqual(250);
+      expect(importRow.props.children[5].props.children.type).toEqual(Amount);
+      expect(importRow.props.children[5].props.children.props.amount).toEqual(250);
 
-      let shouldImport = importRow.props.children[4].props.children;
+      let shouldImport = importRow.props.children[6].props.children;
       expect(shouldImport.type).toEqual('input');
       expect(shouldImport.props.type).toEqual('checkbox');
       expect(shouldImport.props.checked).toEqual(false);
@@ -84,7 +84,7 @@ describe('ImportRow', () => {
       it('calls the setNotes action with new value', () => {
         spyOn(importActions, 'setNotes');
 
-        let notes = importRow.props.children[1].props.children[2];
+        let notes = importRow.props.children[2].props.children;
         notes.props.onChange({target: {value: 'newNote'}});
 
         expect(importActions.setNotes).toHaveBeenCalledWith(4, 'newNote');
@@ -95,7 +95,7 @@ describe('ImportRow', () => {
       it('calls the setCategoryId action with new value', () => {
         spyOn(importActions, 'setCategoryId');
 
-        let categorySelect = importRow.props.children[2].props.children[0];
+        let categorySelect = importRow.props.children[3].props.children;
         categorySelect.props.onChange({target: {value: 3}});
 
         expect(importActions.setCategoryId).toHaveBeenCalledWith(4, 3);
@@ -106,7 +106,7 @@ describe('ImportRow', () => {
       it('calls the setSubcategoryId action with new value', () => {
         spyOn(importActions, 'setSubcategoryId');
 
-        let subcategorySelect = importRow.props.children[2].props.children[2];
+        let subcategorySelect = importRow.props.children[4].props.children;
         subcategorySelect.props.onChange(2);
 
         expect(importActions.setSubcategoryId).toHaveBeenCalledWith(4, 2);
@@ -117,7 +117,7 @@ describe('ImportRow', () => {
       it('calls the setImport action with new value', () => {
         spyOn(importActions, 'setImport');
 
-        let shouldImport = importRow.props.children[4].props.children;
+        let shouldImport = importRow.props.children[6].props.children;
         shouldImport.props.onChange({target: {checked: true}});
 
         expect(importActions.setImport).toHaveBeenCalledWith(4, true);

@@ -16,6 +16,14 @@ export class ImportPage extends React.Component {
     importActions.importTransactions();
   }
 
+  renderTitle() {
+    return (
+      <h5>
+        into <strong>{this.props.account.name}</strong> account
+      </h5>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -23,6 +31,7 @@ export class ImportPage extends React.Component {
           <Button onClick={this.importTransactions.bind(this)}><i className="fa fa-file-text-o"></i> Import</Button>
         </PageHeader>
         <div className="container import">
+          {this.renderTitle()}
           <ImportTable transactions={this.props.ofxTransactions}
                        groupedCategories={this.props.groupedCategories}
                        subcategories={this.props.subcategories} />

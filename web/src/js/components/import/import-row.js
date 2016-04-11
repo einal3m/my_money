@@ -73,16 +73,10 @@ export default class ImportRow extends React.Component {
     return (
       <tr className={this.rowClass()}>
         <td>{this.renderDate(this.props.transaction.date)}</td>
-        <td>
-          {this.props.transaction.memo}
-          <p />
-          {this.renderNotes()}
-        </td>
-        <td>
-          {this.renderCategory()}
-          <p />
-          {this.renderSubcategory()}
-        </td>
+        <td>{this.props.transaction.memo}</td>
+        <td>{this.renderNotes()}</td>
+        <td>{this.renderCategory()}</td>
+        <td>{this.renderSubcategory()}</td>
         <td className='currency'><Amount amount={this.props.transaction.amount} /></td>
         <td>{this.renderImport()}</td>
       </tr>
