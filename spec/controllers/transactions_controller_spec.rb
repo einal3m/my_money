@@ -175,7 +175,6 @@ RSpec.describe TransactionsController, type: :controller do
   describe 'ofx' do
     before :each do
       @account = FactoryGirl.create(:account)
-      # @file = fixture_file_upload('test.ofx')
       @file = 'FILE'
       @memo = 'MEMO'
       @date = '2014-07-01'
@@ -208,6 +207,14 @@ RSpec.describe TransactionsController, type: :controller do
       json = JSON.parse(response.body)
       expect(json['transactions'][0]['duplicate']).to be_truthy
       expect(json['transactions'][0]['import']).to be_falsey
+    end
+
+    it 'does not set to duplicate if matching transaction in a different account' do
+      FactoryGirl.create(:transaction, memo: @memo, date: @date, amount: @amount)
+      get :ofx, { account_id: @account.id, data_file: @file }, valid_session
+      json = JSON.parse(response.body)
+      expect(json['transactions'][0]['duplicate']).to be_falsey
+      expect(json['transactions'][0]['import']).to be_truthy
     end
 
     it 'sets category and subcategory for transactions which match a pattern' do

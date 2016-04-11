@@ -90,7 +90,7 @@ class TransactionsController < ApplicationController
 
   def build_transaction(t)
     t.account = account
-    t.duplicate = Transaction.exists?(date: t.date, memo: t.memo, amount: t.amount)
+    t.duplicate = Transaction.exists?(account: account, date: t.date, memo: t.memo, amount: t.amount)
     t.import = !t.duplicate
     apply_patterns(t)
   end
