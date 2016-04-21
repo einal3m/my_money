@@ -24,7 +24,7 @@ describe('ImportActions', () => {
       expect(hashHistory.push).toHaveBeenCalledWith('/import');
 
       let uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
-      expect(uploadArgs.url).toEqual('accounts/45/transactions/ofx');
+      expect(uploadArgs.url).toEqual('accounts/45/transactions/import');
       expect(uploadArgs.file).toEqual(file);
 
       spyOn(transactionTransformer, 'transformFromOfxApi').and.returnValue('transformedFromApi');

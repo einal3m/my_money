@@ -9,7 +9,7 @@ class ImportActions {
     store.dispatch({ type: 'UPLOAD_OFX', fileName: file.name });
     hashHistory.push('/import');
     return apiUtil.upload({
-      url: `accounts/${accountId}/transactions/ofx`,
+      url: `accounts/${accountId}/transactions/import`,
       file: file,
       onSuccess: response => this.storeOfxTransactions(
         response.transactions.map(transaction => transactionTransformer.transformFromOfxApi(transaction))

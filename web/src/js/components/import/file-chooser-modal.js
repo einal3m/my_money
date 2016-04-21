@@ -55,7 +55,7 @@ export default class FileChooserModal extends React.Component {
           <form className="form-horizontal">
             <label>Choose File:</label>&nbsp;
             <label htmlFor='fileChooser' className='btn btn-default'><i className="fa fa-folder-open-o" /></label>
-            <input ref='fileChooser' id='fileChooser' type='file' className='hidden' accept='.ofx' onChange={this.onChooseFile.bind(this)}/>
+            <input ref='fileChooser' id='fileChooser' type='file' className='hidden' accept='.ofx,.csv' onChange={this.onChooseFile.bind(this)}/>
             {this.renderFileName()}
           </form>
         </Modal.Body>
