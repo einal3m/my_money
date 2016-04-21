@@ -53,8 +53,8 @@ Lambda:
 # PredicateName:
 #   Enabled: false
 
-# ClassLength:
-#   Max: 120
+ClassLength:
+  Max: 120
 
 # TrivialAccessors:
 #   Enabled: false

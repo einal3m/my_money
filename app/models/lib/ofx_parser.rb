@@ -1,5 +1,5 @@
 module Lib
-  class OfxParser
+  class OfxParser < Lib::Parser
     STMTTRN = '<STMTTRN>'
     END_STMTTRN = '</STMTTRN>'
     MAPPINGS = {
@@ -50,18 +50,10 @@ module Lib
       when 'TRNAMT'
         transaction.amount = parse_amount value
       when 'DTPOSTED'
-        transaction.date = parse_date value
+        transaction.date = parse_iso_date value
       else
         transaction.send("#{MAPPINGS[code]}=", value) if MAPPINGS.key?(code)
       end
-    end
-
-    def parse_date(date)
-      Date.iso8601(date)
-    end
-
-    def parse_amount(amount)
-      ((amount.gsub(/\s+/, '').to_f) * 100).round
     end
   end
 end

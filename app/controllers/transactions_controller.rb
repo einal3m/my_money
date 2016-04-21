@@ -56,14 +56,18 @@ class TransactionsController < ApplicationController
     render json: Transaction.unreconciled(account).reverse_date_order
   end
 
-  def ofx
-    ofx_parser = Lib::OfxParser.new(params[:data_file])
+  def import
+    ofx_parser = parser(params[:data_file])
     @transactions = ofx_parser.transactions
 
     @transactions.each do |t|
       build_transaction(t)
     end
     render json: @transactions
+  end
+
+  def parser(data_file)
+    data_file.original_filename.end_with?('ofx') ? Lib::OfxParser.new(data_file) : Lib::CsvParser.new(data_file)
   end
 
   private

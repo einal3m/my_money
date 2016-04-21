@@ -37,7 +37,7 @@ Rails.application.routes.draw do
     resources :transactions do
       collection do
         get 'unreconciled'
-        post 'ofx'
+        post 'import'
       end
     end
     resources :patterns
