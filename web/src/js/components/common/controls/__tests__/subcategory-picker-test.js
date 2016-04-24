@@ -5,7 +5,7 @@ import SubcategoryPicker from '../subcategory-picker';
 import Picker from '../picker';
 
 describe('SubcategoryPicker', () => {
-  let subcategoryPicker, subcategories, onChangeSpy;
+  let subcategoryPicker, subcategories, onChangeSpy, groupedCategories;
   beforeEach(() => {
     subcategories = [
       { id: 1, categoryId: 11, name: 'One' },
@@ -15,13 +15,22 @@ describe('SubcategoryPicker', () => {
       { id: 5, categoryId: 11, name: 'Three' }
     ];
 
+    let category1 = {id: 11, name: 'Wages', subcategories: [subcategories[0], subcategories[2], subcategories[4]]};
+    let category2 = {id: 12, name: 'Bills', subcategories: [subcategories[1]]};
+    let category3 = {id: 13, name: 'Tax Return', subcategories: [subcategories[3]]};
+
+    groupedCategories = [
+      {categoryType: {name: 'Income', id: 4}, categories: [category1, category3]},
+      {categoryType: {name: 'Expense', id: 5}, categories: [category2]}
+    ];
+
     onChangeSpy = jasmine.createSpy('onChangeSpy');
   });
 
   describe('render', () => {
     it('has a picker with subset of subcategories', () => {
       subcategoryPicker = shallowRenderer(
-        <SubcategoryPicker subcategories={subcategories} value={null} onChange={onChangeSpy} categoryId={11} />
+        <SubcategoryPicker groupedCategories={groupedCategories} value={null} onChange={onChangeSpy} categoryId={11} />
       );
 
       expect(subcategoryPicker.type).toEqual(Picker);
@@ -32,7 +41,7 @@ describe('SubcategoryPicker', () => {
   describe('events', () => {
     it('dropdown onChange calls the onChange prop', () => {
       subcategoryPicker = shallowRenderer(
-        <SubcategoryPicker subcategories={subcategories} value={2} onChange={onChangeSpy} categoryId={11} />
+        <SubcategoryPicker groupedCategories={groupedCategories} value={2} onChange={onChangeSpy} categoryId={11} />
       );
 
       subcategoryPicker.props.onChange(4);

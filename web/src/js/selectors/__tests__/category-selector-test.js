@@ -4,20 +4,24 @@ import { fromJS, toJS } from 'immutable';
 describe('CategorySelector', () => {
   let categories, categoryTypes, subcategories, categoryStore;
   beforeEach(() => {
-    categories = [
-      {id: 11, name: 'Expense1', categoryTypeId: 3},
-      {id: 12, name: 'Income1', categoryTypeId: 2},
-      {id: 13, name: 'Transfer', categoryTypeId: 1}
-    ];
     categoryTypes = [
       {id: 1, name: 'Transfer', code: 'transfer', editable: false},
       {id: 2, name: 'Income', code: 'income', editable: true},
       {id: 3, name: 'Expense', code: 'expense', editable: true}
     ];
 
+    categories = [
+      {id: 11, name: 'C Expense1', categoryTypeId: 3},
+      {id: 12, name: 'Income1', categoryTypeId: 2},
+      {id: 13, name: 'Transfer', categoryTypeId: 1},
+      {id: 14, name: 'a Expense1', categoryTypeId: 3},
+      {id: 15, name: 'B Expense', categoryTypeId: 3}
+    ];
+
     subcategories = [
-      {id: 22, name: 'Sub2', categoryId: 11},
-      {id: 21, name: 'Sub1', categoryId: 11}
+      {id: 21, name: 'c Sub2', categoryId: 11},
+      {id: 22, name: 'a Sub1', categoryId: 11},
+      {id: 23, name: 'B Sub1', categoryId: 11}
     ];
 
     categoryStore = {
@@ -26,7 +30,7 @@ describe('CategorySelector', () => {
   });
 
   describe('editableGroupedCategories', () => {
-    it('groups editable categories by category type', () => {
+    it('groups and sorts editable categories and subcategories', () => {
       let groups = editableGroupedCategories(categoryStore).toJS();
 
       expect(groups.length).toEqual(2);
@@ -36,13 +40,17 @@ describe('CategorySelector', () => {
       });
       expect(groups[1]).toEqual({
         categoryType: categoryTypes[2],
-        categories: [Object.assign(categories[0], {subcategories: [subcategories[0], subcategories[1]]})]
+        categories: [
+          Object.assign(categories[3], {subcategories: []}),
+          Object.assign(categories[4], {subcategories: []}),
+          Object.assign(categories[0], {subcategories: [subcategories[1], subcategories[2], subcategories[0]]})
+        ]
       });
     });
   });
 
   describe('groupedCategories', () => {
-    it('groups all categories by category type', () => {
+    it('groups and sorts all categories and subcategories', () => {
       let groups = groupedCategories(categoryStore).toJS();
 
       expect(groups.length).toEqual(3);
@@ -56,7 +64,11 @@ describe('CategorySelector', () => {
       });
       expect(groups[2]).toEqual({
         categoryType: categoryTypes[2],
-        categories: [Object.assign(categories[0], {subcategories: [subcategories[0], subcategories[1]]})]
+        categories: [
+          Object.assign(categories[3], {subcategories: []}),
+          Object.assign(categories[4], {subcategories: []}),
+          Object.assign(categories[0], {subcategories: [subcategories[1], subcategories[2], subcategories[0]]})
+        ]
       });
     });
   });

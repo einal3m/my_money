@@ -15,17 +15,21 @@ function filteredCategoryGroups(categoryTypes, editableOnly=false) {
 function groupCategories(categoryTypes, categories, subcategories, editableOnly=false) {
   let categoryGroups = categories.groupBy(category => category.get('categoryTypeId'));
   return filteredCategoryGroups(categoryTypes, editableOnly).map(categoryType => {
-    let categoriesForType = categoryGroups.get(categoryType.get('id'));
+    let categoriesForType = sorted(categoryGroups.get(categoryType.get('id')));
     if (categoriesForType) {
       let categoriesWithSubcategories = categoriesForType.map(category => {
         let subcategoriesForCategory = subcategories.filter(
           subcategory => subcategory.get('categoryId') === category.get('id')
         );
-        return category.set('subcategories', subcategoriesForCategory);
+        return category.set('subcategories', sorted(subcategoriesForCategory));
       });
       return Map({categoryType: categoryType, categories: categoriesWithSubcategories});
     }
   });
+}
+
+function sorted(items) {
+  return items.sortBy(item => item.get('name').toLowerCase());
 }
 
 export const groupedCategories = createSelector(

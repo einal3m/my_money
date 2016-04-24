@@ -32,8 +32,8 @@ describe('GroupedCategorySelect', () => {
 
       let [type1, type2] = optionGroups;
       expect(type1.props.label).toEqual('Income');
-      expect(type1.props.children[0].props.children).toEqual('Tax Return');
-      expect(type1.props.children[1].props.children).toEqual('Wages');
+      expect(type1.props.children[0].props.children).toEqual('Wages');
+      expect(type1.props.children[1].props.children).toEqual('Tax Return');
       expect(type2.props.label).toEqual('Expense');
       expect(type2.props.children[0].props.children).toEqual('Bills');
     });

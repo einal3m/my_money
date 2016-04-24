@@ -9,17 +9,6 @@ export default class Picker extends React.Component {
     this.props.onChange(Number(key));
   }
 
-  sortedOptions() {
-    return this.props.options.sort((a, b) => {
-      let nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
-      if (nameA < nameB) //sort string ascending
-        return -1;
-      if (nameA > nameB)
-        return 1;
-      return 0;
-    });
-  }
-
   renderOptionName(option) {
     let selected = (this.props.value === option.id);
     let prefix = selected ? '\u2713' : '\u00A0\u00A0';
@@ -27,7 +16,7 @@ export default class Picker extends React.Component {
   }
 
   renderOptions() {
-    return this.sortedOptions().map(option => {
+    return this.props.options.map(option => {
       return (
         <MenuItem key={option.id} eventKey={option.id}>
           {this.renderOptionName(option)}

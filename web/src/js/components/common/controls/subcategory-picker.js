@@ -6,7 +6,9 @@ require("../../../../css/picker.scss");
 export default class SubcategoryPicker extends React.Component {
 
   subcategoriesForCategory() {
-    return this.props.subcategories.filter(subcategory => subcategory.categoryId === this.props.categoryId);
+    return this.props.groupedCategories.map(categoryType => {
+      return categoryType.categories.filter(category => category.id === this.props.categoryId);
+    }).filter(array => array.length === 1)[0][0].subcategories;
   }
 
   render() {
@@ -21,6 +23,6 @@ export default class SubcategoryPicker extends React.Component {
 SubcategoryPicker.propTypes = {
   value: React.PropTypes.number,
   categoryId: React.PropTypes.number.isRequired,
-  subcategories: React.PropTypes.array.isRequired,
+  groupedCategories: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func.isRequired
 };

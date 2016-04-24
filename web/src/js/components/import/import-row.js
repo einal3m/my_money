@@ -55,7 +55,7 @@ export default class ImportRow extends React.Component {
     }
 
     return (
-      <SubcategoryPicker subcategories={this.props.subcategories}
+      <SubcategoryPicker groupedCategories={this.props.groupedCategories}
                          categoryId={this.props.transaction.categoryId}
                          onChange={this.onSubcategoryChange.bind(this)}
                          value={this.props.transaction.subcategoryId} />

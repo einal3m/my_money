@@ -49,7 +49,7 @@ describe('ImportRow', () => {
       let subcategorySelect = importRow.props.children[4].props.children;
       expect(subcategorySelect.type).toEqual(SubcategoryPicker);
       expect(subcategorySelect.props.value).toEqual(27);
-      expect(subcategorySelect.props.subcategories).toEqual(subcategories);
+      expect(subcategorySelect.props.groupedCategories).toEqual(groupedCategories);
       expect(subcategorySelect.props.categoryId).toEqual(14);
 
       expect(importRow.props.children[5].props.children.type).toEqual(Amount);
