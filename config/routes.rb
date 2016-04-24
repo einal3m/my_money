@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       collection do
         get 'unreconciled'
         post 'import'
+        post 'ofx'
       end
     end
     resources :patterns

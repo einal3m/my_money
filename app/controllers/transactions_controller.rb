@@ -56,6 +56,10 @@ class TransactionsController < ApplicationController
     render json: Transaction.unreconciled(account).reverse_date_order
   end
 
+  def ofx
+    import
+  end
+
   def import
     ofx_parser = parser(params[:data_file])
     @transactions = ofx_parser.transactions
