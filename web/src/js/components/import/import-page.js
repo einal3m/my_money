@@ -6,7 +6,7 @@ import ImportTable from './import-table';
 import { Button } from 'react-bootstrap';
 import importActions from '../../actions/import-actions';
 import React from 'react';
-import categorySelector from '../../selectors/category-selector';
+import { groupedCategories } from '../../selectors/category-selector';
 require("../../../css/common.scss");
 require("../../../css/import.scss");
 
@@ -45,7 +45,7 @@ function mapStateToProps(state) {
   return {
     account: state.accountStore.get('currentAccount').toJS(),
     ofxTransactions: state.importStore.get('transactions').toJS(),
-    groupedCategories: categorySelector(state).toJS(),
+    groupedCategories: groupedCategories(state).toJS(),
     subcategories: state.categoryStore.get('subcategories').toJS()
   };
 }

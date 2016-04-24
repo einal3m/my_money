@@ -9,7 +9,7 @@ import FormModal from '../common/form-modal';
 import CategoryForm from './category-form';
 import SubcategoryForm from './subcategory-form';
 import categoryActions from '../../actions/category-actions';
-import categorySelector from '../../selectors/category-selector';
+import { editableGroupedCategories } from '../../selectors/category-selector';
 require("../../../css/common.scss");
 require("../../../css/categories.scss");
 
@@ -143,7 +143,7 @@ function mapStateToProps(state) {
     loaded: state.categoryStore.get('categoriesLoaded') && 
             state.categoryStore.get('categoryTypesLoaded') && 
             state.categoryStore.get('subcategoriesLoaded'),
-    groupedCategories: categorySelector(state).toJS(),
+    groupedCategories: editableGroupedCategories(state).toJS(),
     apiStatus: state.apiStatusStore.toJS()
   };
 }
