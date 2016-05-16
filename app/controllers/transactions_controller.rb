@@ -61,17 +61,17 @@ class TransactionsController < ApplicationController
   end
 
   def import
-    ofx_parser = parser(params[:data_file])
-    @transactions = ofx_parser.transactions
-
-    @transactions.each do |t|
-      build_transaction(t)
-    end
-    render json: @transactions
+    transactions = Lib::TransactionImporter.new(account, params[:data_file]).execute
+    render json: transactions
   end
 
-  def parser(data_file)
-    data_file.original_filename.end_with?('ofx') ? Lib::OfxParser.new(data_file) : Lib::CsvParser.new(data_file)
+  def matching
+    date = params[:date]
+    amount = - params[:amount].to_i
+
+    txns = Transaction.where(amount: amount, date: date).where.not(account: account)
+
+    render json: txns
   end
 
   private
@@ -94,27 +94,6 @@ class TransactionsController < ApplicationController
 
   def transactions_by_date_and_description
     account.transactions.find_by_dates(from_date, to_date).find_by_description(description).reverse_date_order
-  end
-
-  def build_transaction(t)
-    t.account = account
-    t.duplicate = Transaction.exists?(account: account, date: t.date, memo: t.memo, amount: t.amount)
-    t.import = !t.duplicate
-    apply_patterns(t)
-  end
-
-  def apply_patterns(transaction)
-    Pattern.where(account_id: account.id).each do |pattern|
-      next unless transaction.memo.downcase.include? pattern.match_text.downcase
-      allocate_transaction(transaction, pattern)
-      break
-    end
-  end
-
-  def allocate_transaction(transaction, pattern)
-    transaction.category_id = pattern.category_id
-    transaction.subcategory_id = pattern.subcategory_id
-    transaction.notes = pattern.notes
   end
 
   def set_transaction

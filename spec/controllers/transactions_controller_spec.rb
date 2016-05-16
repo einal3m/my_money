@@ -171,95 +171,48 @@ RSpec.describe TransactionsController, type: :controller do
     end
   end
 
-  # ofx parses the OFX and returns a list of transactions
   describe 'import' do
-    let (:file) { fixture_file_upload('test.ofx', 'text/plain') }
-    describe 'ofx' do
+    let (:file) { 'data_file' }
+    let (:account) { FactoryGirl.create(:account) }
+    let (:importer) { instance_double(Lib::TransactionImporter) }
+    # let (:transaction) { instance_double(ImportedTransaction) }
 
-      before :each do
-        @account = FactoryGirl.create(:account)
-        @memo = 'MEMO'
-        @date = '2014-07-01'
-        @amount = 333
+    it 'calls the transaction importer' do
+      expect(Lib::TransactionImporter).to receive(:new).with(account, file).and_return(importer)
+      expect(importer).to receive(:execute).and_return({transactions: ['transaction']})
 
-        ofx_parser = double :parser
-        transaction = ImportedTransaction.new(memo: @memo, date: @date, amount: @amount)
+      get :import, { account_id: account.id, data_file: file }, valid_session
 
-        expect(Lib::OfxParser).to receive(:new).with(file).and_return(ofx_parser)
-        expect(ofx_parser).to receive(:transactions).and_return([transaction])
-      end
+      expect(response).to be_success
+      json = JSON.parse(response.body)
 
-      it 'returns the transactions from the OFX file' do
-        get :import, { account_id: @account.id, data_file: file }, valid_session
-        expect(response).to be_success
-        json = JSON.parse(response.body)
-
-        expect(json['transactions'].length).to eq(1)
-
-        expect(json['transactions'][0]['memo']).to eq(@memo)
-        expect(json['transactions'][0]['date']).to eq(@date)
-        expect(json['transactions'][0]['amount']).to eq(@amount)
-        expect(json['transactions'][0]['duplicate']).to be_falsey
-        expect(json['transactions'][0]['import']).to be_truthy
-      end
-
-      it 'sets transactions to duplicate if they already exist' do
-        FactoryGirl.create(:transaction, account: @account, memo: @memo, date: @date, amount: @amount)
-        get :import, { account_id: @account.id, data_file: file }, valid_session
-        json = JSON.parse(response.body)
-        expect(json['transactions'][0]['duplicate']).to be_truthy
-        expect(json['transactions'][0]['import']).to be_falsey
-      end
-
-      it 'does not set to duplicate if matching transaction in a different account' do
-        FactoryGirl.create(:transaction, memo: @memo, date: @date, amount: @amount)
-        get :import, { account_id: @account.id, data_file: file }, valid_session
-        json = JSON.parse(response.body)
-        expect(json['transactions'][0]['duplicate']).to be_falsey
-        expect(json['transactions'][0]['import']).to be_truthy
-      end
-
-      it 'sets category and subcategory for transactions which match a pattern' do
-        category = FactoryGirl.create(:category)
-        subcategory = FactoryGirl.create(:subcategory, category: category)
-        FactoryGirl.create(:pattern, account: @account, match_text: @memo, notes: 'New Note', category: category, subcategory: subcategory)
-
-        get :import, { account_id: @account.id, data_file: file }, valid_session
-        json = JSON.parse(response.body)
-
-        expect(json['transactions'][0]['category_id']).to eq(category.id)
-        expect(json['transactions'][0]['subcategory_id']).to eq(subcategory.id)
-        expect(json['transactions'][0]['notes']).to eq('New Note')
-        expect(json['transactions'][0]['duplicate']).to be_falsey
-        expect(json['transactions'][0]['import']).to be_truthy
-      end
+      expect(json['transactions'].length).to eq(1)
+      expect(json['transactions'][0]).to eq('transaction')
     end
-    describe 'csv' do
-      let (:file) { fixture_file_upload('test.csv', 'text/plain') }
-      it 'returns the transactions from the OFX file' do
-        @account = FactoryGirl.create(:account)
-        @memo = 'MEMO'
-        @date = '2014-07-01'
-        @amount = 333
+  end
 
-        csv_parser = double :csv_parser
-        transaction = ImportedTransaction.new(memo: @memo, date: @date, amount: @amount)
+  describe 'matching' do
+    it 'returns transactions from other accounts which match given params' do
+      a1 = FactoryGirl.create(:account)
+      a2 = FactoryGirl.create(:account)
 
-        expect(Lib::CsvParser).to receive(:new).with(file).and_return(csv_parser)
-        expect(csv_parser).to receive(:transactions).and_return([transaction])
+      date = '2014-07-01'
+      amount = 333
 
-        get :import, { account_id: @account.id, data_file: file }, valid_session
-        expect(response).to be_success
-        json = JSON.parse(response.body)
+      t1 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      FactoryGirl.create(:transaction, account: a2, date: date, amount: amount)
+      FactoryGirl.create(:transaction, account: a1, date: date, amount: -amount)
+      FactoryGirl.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
+      FactoryGirl.create(:transaction, account: a2, date: date, amount: 444)
+      t6 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
 
-        expect(json['transactions'].length).to eq(1)
+      get :matching, { account_id: a1.id, date: date, amount: amount }, valid_session
+      expect(response).to be_success
 
-        expect(json['transactions'][0]['memo']).to eq(@memo)
-        expect(json['transactions'][0]['date']).to eq(@date)
-        expect(json['transactions'][0]['amount']).to eq(@amount)
-        expect(json['transactions'][0]['duplicate']).to be_falsey
-        expect(json['transactions'][0]['import']).to be_truthy
-      end
+      json = JSON.parse(response.body)
+      expect(json['transactions'].length).to eq(2)
+      expect(json['transactions'][0]['id']).to eq(t1.id)
+      expect(json['transactions'][1]['id']).to eq(t6.id)
     end
   end
 end

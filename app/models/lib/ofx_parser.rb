@@ -21,7 +21,7 @@ module Lib
     private
 
     def parse
-      ofx_array = @file.read.split(/\r\n/)
+      ofx_array = @file.read.split(/\r\n|\n/)
       txn_array = []
 
       ofx_array.each_with_index do |ofx, i|
