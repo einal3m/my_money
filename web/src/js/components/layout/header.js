@@ -18,7 +18,7 @@ export default class Header extends React.Component {
           <LinkContainer to="/patterns"><NavItem eventKey={4}>patterns</NavItem></LinkContainer>
           <NavDropdown eventKey={5} title="reports" id="basic-nav-dropdown">
             <LinkContainer to="/reports/incomeVsExpenseBar"><MenuItem eventKey={1}>Income/Expense Bar Chart</MenuItem></LinkContainer>
-            <LinkContainer to="/reports"><MenuItem eventKey={2}>Income vs Expenses</MenuItem></LinkContainer>
+            <LinkContainer to="/reports/incomeVsExpenses"><MenuItem eventKey={2}>Income vs Expenses</MenuItem></LinkContainer>
             <LinkContainer to="/reports"><MenuItem eventKey={3}>Category Report</MenuItem></LinkContainer>
             <LinkContainer to="/reports"><MenuItem eventKey={4}>Subcategory Report</MenuItem></LinkContainer>
             <MenuItem divider />

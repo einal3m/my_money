@@ -11,6 +11,7 @@ import CategoryList from './components/categories/category-list';
 import ImportPage from './components/import/import-page';
 import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
 import AccountBalanceChart from './components/reports/account-balance-chart';
+import IncomeVsExpensesReport from './components/reports/income-vs-expenses-report';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 require('babel-polyfill');
 
@@ -41,6 +42,7 @@ render((
       <Route path='reports'>
         <Route path='accountBalance' component={AccountBalanceChart} />
         <Route path='incomeVsExpenseBar' component={IncomeVsExpenseBarChart} />
+        <Route path='incomeVsExpenses' component={IncomeVsExpensesReport} />
       </Route>
       <IndexRoute component={AccountList}/>
     </Route>
