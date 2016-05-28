@@ -2,6 +2,7 @@ import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
 import ImportRow from '../import-row';
 import Amount from '../../common/amount';
+import Date from '../../common/date';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
 import importActions from '../../../actions/import-actions';
@@ -33,7 +34,8 @@ describe('ImportRow', () => {
       expect(importRow.type).toEqual('tr');
       expect(importRow.props.className).toEqual('');
 
-      expect(importRow.props.children[0].props.children).toEqual('19-Dec-2016');
+      expect(importRow.props.children[0].props.children.type).toEqual(Date);
+      expect(importRow.props.children[0].props.children.props.date).toEqual(transaction.date);
 
       expect(importRow.props.children[1].props.children).toEqual('myMemo');
 

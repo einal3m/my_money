@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import moneyUtil from '../../util/money-util';
 import Amount from '../common/amount';
+import Date from '../common/date';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
 import SubcategoryPicker from '../common/controls/subcategory-picker';
 import importActions from '../../actions/import-actions';
@@ -22,10 +23,6 @@ export default class ImportRow extends React.Component {
 
   onNotesChange(event) {
     importActions.setNotes(this.props.index, event.target.value);
-  }
-
-  renderDate(date) {
-    return moment(date, "YYYY-MM-DD").format('DD-MMM-YYYY');
   }
 
   renderImport() {
@@ -72,7 +69,7 @@ export default class ImportRow extends React.Component {
   render() {
     return (
       <tr className={this.rowClass()}>
-        <td>{this.renderDate(this.props.transaction.date)}</td>
+        <td><Date date={this.props.transaction.date} /></td>
         <td>{this.props.transaction.memo}</td>
         <td>{this.renderNotes()}</td>
         <td>{this.renderCategory()}</td>

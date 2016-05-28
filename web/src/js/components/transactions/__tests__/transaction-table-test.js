@@ -2,22 +2,26 @@ import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
 import { TransactionTable } from '../transaction-table';
 import TransactionRow from '../transaction-row';
-import { fromJS } from 'immutable';
 import { Table } from 'react-bootstrap';
 
 describe('TransactionTable', () => {
   let transactionTable;
 
+
   describe('render', () => {
-    let transactions, account;
+    let transactions, account, groupedCategories, subcategories;
+
     beforeEach(() => {
-      transactions = fromJS([{id: 1}]);
-      account = fromJS({name: 'my Account'});
+      transactions = [{id: 1, date: '2015-12-19', amount: 300, balance: 400}];
+      account = {name: 'my Account'};
+      groupedCategories = [{categoryType: 'Income'}];
+      subcategories = [{id: 1}];
     });
 
     it('when criteria not loaded', () => {
       transactionTable = shallowRenderer(
-        <TransactionTable searchCriteriaLoaded={false} transactions={[]} account={null} />
+        <TransactionTable searchCriteriaLoaded={false} transactions={[]} account={null}
+                          groupedCategories={groupedCategories} subcategories={subcategories} />
       );
 
       expect(transactionTable.props.children[0]).toBeUndefined();
@@ -26,7 +30,8 @@ describe('TransactionTable', () => {
 
     it('when criteria loaded and no transactions', () => {
       transactionTable = shallowRenderer(
-        <TransactionTable searchCriteriaLoaded transactions={fromJS([])} account={account} />
+        <TransactionTable searchCriteriaLoaded transactions={[]} account={account}
+                          groupedCategories={groupedCategories} subcategories={subcategories} />
       );
 
       let [title, message] = transactionTable.props.children;
@@ -36,7 +41,8 @@ describe('TransactionTable', () => {
 
     it('when criteria loaded and has transactions', () => {
       transactionTable = shallowRenderer(
-        <TransactionTable searchCriteriaLoaded transactions={transactions} account={account} />
+        <TransactionTable searchCriteriaLoaded transactions={transactions} account={account}
+                          groupedCategories={groupedCategories} subcategories={subcategories} />
       );
 
       let [title, table] = transactionTable.props.children;
@@ -52,7 +58,7 @@ describe('TransactionTable', () => {
       expect(balance.props.children).toEqual('balance');
 
       expect(tbody.props.children[0].type).toEqual(TransactionRow);
-      expect(tbody.props.children[0].props.transaction).toEqual(transactions.get(0));
+      expect(tbody.props.children[0].props.transaction).toEqual(transactions[0]);
     });
   });
 });

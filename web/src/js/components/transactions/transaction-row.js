@@ -4,11 +4,9 @@ import React from 'react';
 import moment from 'moment';
 import moneyUtil from '../../util/money-util';
 import Amount from '../common/amount';
+import Date from '../common/date';
 
 export default class TransactionRow extends React.Component {
-  renderDate(date) {
-    return moment(date, "YYYY-MM-DD").format('DD-MMM-YYYY');
-  }
 
   renderMemoNotes(memo, notes) {
     let text = memo ? memo : '';
@@ -35,11 +33,25 @@ export default class TransactionRow extends React.Component {
   render() {
     return (
       <tr>
-        <td>{this.renderDate(this.props.transaction.get('date'))}</td>
-        <td>{this.renderMemoNotes(this.props.transaction.get('memo'), this.props.transaction.get('notes'))}</td>
-        <td className='currency'><Amount amount={this.props.transaction.get('amount')} /></td>
-        <td className='currency'>{this.renderBalance(this.props.transaction.get('balance'))}</td>
+        <td><Date date={this.props.transaction.date} /></td>
+        <td>{this.renderMemoNotes(this.props.transaction.memo, this.props.transaction.notes)}</td>
+        <td className='currency'><Amount amount={this.props.transaction.amount} /></td>
+        <td className='currency'>{this.renderBalance(this.props.transaction.balance)}</td>
       </tr>
     );
   }
 }
+
+TransactionRow.propTypes = {
+  transaction: React.PropTypes.shape({
+    id: React.PropTypes.number.isRequired,
+    date: React.PropTypes.string.isRequired,
+    memo: React.PropTypes.string,
+    notes: React.PropTypes.string,
+    amount: React.PropTypes.number.isRequired,
+    balance: React.PropTypes.number.isRequired
+  }).isRequired,
+  groupedCategories: React.PropTypes.array.isRequired,
+  subcategories: React.PropTypes.array.isRequired
+};
+

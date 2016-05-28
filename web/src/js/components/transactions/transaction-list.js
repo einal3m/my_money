@@ -68,6 +68,11 @@ export class TransactionList extends React.Component {
   }
 }
 
+TransactionList.propTypes = {
+  loaded: React.PropTypes.bool.isRequired,
+  currentAccount: React.PropTypes.shape({id: React.PropTypes.number}),
+};
+
 function mapStateToProps(state) {
   return {
     loaded: state.accountStore.get('loaded'),

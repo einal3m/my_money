@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import moneyUtil from '../../util/money-util';
 
 export default class Amount extends React.Component {
