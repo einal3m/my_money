@@ -26,3 +26,6 @@ web/node_modules
 npm-debug.log
 
 .idea*
+
+web/public/bootstrap.min.css
+public/assets
