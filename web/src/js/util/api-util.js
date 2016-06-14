@@ -45,7 +45,7 @@ class ApiUtil {
       }
     }).catch(function(e) {
       apiStatusActions.storeApiError(e.message);
-      console.log(`Api Error: ${method} ${that.getUrl(url)}, $e.message`);
+      console.log(`Api Error: ${method} ${that.getUrl(url)}, ${e.message}`);
     });
   }
 

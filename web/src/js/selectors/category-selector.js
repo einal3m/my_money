@@ -29,6 +29,9 @@ function groupCategories(categoryTypes, categories, subcategories, editableOnly=
 }
 
 function sorted(items) {
+  if (!items) {
+    return List([]);
+  }
   return items.sortBy(item => item.get('name').toLowerCase());
 }
 

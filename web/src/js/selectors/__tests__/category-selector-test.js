@@ -47,6 +47,18 @@ describe('CategorySelector', () => {
         ]
       });
     });
+
+    it('returns empty arrays when there are no categories', () => {
+      let store = {
+        categoryStore: fromJS({categories: [], categoryTypes: categoryTypes, subcategories: []})
+      };
+
+      let groups = editableGroupedCategories(store).toJS();
+      expect(groups).toEqual([
+        {categoryType: categoryTypes[1], categories: []},
+        {categoryType: categoryTypes[2], categories: []}
+      ]);
+    });
   });
 
   describe('groupedCategories', () => {
