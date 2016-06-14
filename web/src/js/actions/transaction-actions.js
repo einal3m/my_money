@@ -2,6 +2,7 @@ import apiUtil from '../util/api-util';
 import store from '../stores/store';
 import accountActions from './account-actions';
 import dateRangeActions from './date-range-actions';
+import transactionTransformer from '../transformers/transaction-transformer';
 
 class TransactionActions {
 
@@ -26,7 +27,9 @@ class TransactionActions {
 
         return apiUtil.get({
           url: url,
-          onSuccess: response => this.storeTransactions(response.transactions)
+          onSuccess: response => this.storeTransactions(
+            response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction))
+          )
         });
     })});
   }

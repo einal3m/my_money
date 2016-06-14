@@ -22,7 +22,8 @@ let transactionTransformer = {
       categoryId: transaction.category_id,
       subcategoryId: transaction.subcategory_id,
       notes: transaction.notes,
-      memo: transaction.memo
+      memo: transaction.memo,
+      balance: transaction.balance
     };
   },
 

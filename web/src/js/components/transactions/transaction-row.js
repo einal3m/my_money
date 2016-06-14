@@ -5,6 +5,7 @@ import moment from 'moment';
 import moneyUtil from '../../util/money-util';
 import Amount from '../common/amount';
 import Date from '../common/date';
+import Balance from '../common/balance';
 
 export default class TransactionRow extends React.Component {
 
@@ -15,28 +16,40 @@ export default class TransactionRow extends React.Component {
     return text;
   }
 
-  renderBalance(balance) {
-    let formattedAmount = moneyUtil.numberFormat(moneyUtil.centsToDollars(balance));
+  selectedCategory(categoryId) {
+    return this.props.groupedCategories.map(categoryType =>
+      categoryType.categories.filter(category => category.id === categoryId)
+    ).filter(c => c.length > 0)[0][0];
+  }
 
-    let cents = formattedAmount.substr(formattedAmount.length-2, 2);
-    let dollars = formattedAmount.substr(0, formattedAmount.length-3);
+  selectedSubcategory(subcategoryId, category) {
+    return category.subcategories.filter(subcategory => subcategory.id === subcategoryId)[0];
+  }
 
-    let rightBracket;
-    if (balance < 0) {
-      dollars = '(' + dollars;
-      rightBracket = <span className='dollars'>)</span>;   
+  renderCategory(categoryId, subcategoryId) {
+    if (!categoryId && !subcategoryId) return '';
+
+    let selectedCategory = this.selectedCategory(categoryId);
+    let text = selectedCategory.name;
+
+    if (subcategoryId) {
+      let selectedSubcategory = this.selectedSubcategory(subcategoryId, selectedCategory);
+      text += `/${selectedSubcategory.name}`;
     }
-    dollars = '$' + dollars;
-    return <span><span className='dollars'>{dollars}</span>.<span className='cents'>{cents}</span>{rightBracket}</span>;
+
+    return text;
   }
 
   render() {
     return (
       <tr>
         <td><Date date={this.props.transaction.date} /></td>
-        <td>{this.renderMemoNotes(this.props.transaction.memo, this.props.transaction.notes)}</td>
+        <td>
+          <div>{this.renderMemoNotes(this.props.transaction.memo, this.props.transaction.notes)}</div>
+          <div className='category'>{this.renderCategory(this.props.transaction.categoryId, this.props.transaction.subcategoryId)}</div>
+        </td>
         <td className='currency'><Amount amount={this.props.transaction.amount} /></td>
-        <td className='currency'>{this.renderBalance(this.props.transaction.balance)}</td>
+        <td className='currency'><Balance balance={this.props.transaction.balance} /></td>
       </tr>
     );
   }
@@ -49,9 +62,10 @@ TransactionRow.propTypes = {
     memo: React.PropTypes.string,
     notes: React.PropTypes.string,
     amount: React.PropTypes.number.isRequired,
-    balance: React.PropTypes.number.isRequired
+    balance: React.PropTypes.number.isRequired,
+    categoryId: React.PropTypes.number,
+    subcategoryId: React.PropTypes.number
   }).isRequired,
-  groupedCategories: React.PropTypes.array.isRequired,
-  subcategories: React.PropTypes.array.isRequired
+  groupedCategories: React.PropTypes.array.isRequired
 };
 

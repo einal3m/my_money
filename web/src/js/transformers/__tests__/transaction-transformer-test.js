@@ -12,7 +12,7 @@ describe('transactionTransformer', () => {
         subcategoryId: 11,
         notes: 'a note',
         memo: 'a memo'
-      }
+      };
 
       let transformedTransaction = transactionTransformer.transformToApi(transaction);
 
@@ -37,8 +37,9 @@ describe('transactionTransformer', () => {
         category_id: 3,
         subcategory_id: 11,
         notes: 'a note',
-        memo: 'a memo'
-      }
+        memo: 'a memo',
+        balance: 3000
+      };
 
       let transformedTransaction = transactionTransformer.transformFromApi(transaction);
 
@@ -50,6 +51,7 @@ describe('transactionTransformer', () => {
       expect(transformedTransaction.subcategoryId).toEqual(11);
       expect(transformedTransaction.notes).toEqual('a note');
       expect(transformedTransaction.memo).toEqual('a memo');
+      expect(transformedTransaction.balance).toEqual(3000);
     });
   });
 
@@ -65,7 +67,7 @@ describe('transactionTransformer', () => {
         notes: null,
         import: false,
         duplicate: true
-      }
+      };
 
       let transformedTransaction = transactionTransformer.transformFromOfxApi(transaction);
 

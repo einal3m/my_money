@@ -2,7 +2,7 @@ import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
 import Amount from '../amount';
 
-describe('ImportTable', () => {
+describe('Amount', () => {
   describe('render', () => {
     it('with positive amount', () => {
       let amount = shallowRenderer(<Amount amount={670707} />);

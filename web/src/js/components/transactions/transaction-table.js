@@ -65,7 +65,6 @@ TransactionTable.propTypes = {
   searchCriteriaLoaded: React.PropTypes.bool.isRequired,
   transactions: React.PropTypes.arrayOf(React.PropTypes.shape({id: React.PropTypes.number.isRequired})),
   groupedCategories: React.PropTypes.array.isRequired,
-  subcategories: React.PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
@@ -74,7 +73,6 @@ function mapStateToProps(state) {
     account: state.accountStore.get('currentAccount').toJS(),
     searchCriteriaLoaded: state.accountStore.get('loaded') && state.dateRangeStore.get('loaded'),
     groupedCategories: groupedCategories(state).toJS(),
-    subcategories: state.categoryStore.get('subcategories').toJS()
   };
 }
 

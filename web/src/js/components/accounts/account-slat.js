@@ -4,6 +4,7 @@ import { MenuItem, DropdownButton, Menu, Glyphicon } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { hashHistory } from 'react-router';
 import moneyUtil from '../../util/money-util';
+import Balance from '../common/balance';
 import accountActions from '../../actions/account-actions';
 import transactionActions from '../../actions/transaction-actions';
 require("../../../css/common.scss");
@@ -72,8 +73,8 @@ export default class AccountSlat extends React.Component {
                 {this.renderName()}
                 <span className="text-muted">{this.props.account.get('bank')}</span>
               </div>
-              <div className="currency col-xs-4 col-sm-5">
-                <h3>{this.renderCurrentBalance()}</h3>
+              <div className="currency balance col-xs-4 col-sm-5">
+                <Balance balance={this.props.account.get('currentBalance')} />
               </div>
               <div className="slat-icon col-xs-4 col-sm-1">
                 {this.renderButtonGroup()}

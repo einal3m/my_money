@@ -3,6 +3,7 @@ import TestUtils from 'react-addons-test-utils';
 import { fromJS } from 'immutable';
 import React from 'react';
 import AccountSlat from '../account-slat';
+import Balance from '../../common/balance';
 import accountActions from '../../../actions/account-actions';
 import { hashHistory } from 'react-router';
 
@@ -21,7 +22,8 @@ describe('AccountSlat', () => {
 
       expect(name.props.children.props.children).toEqual('myAccount');
       expect(bank.props.children).toEqual('myBank');
-      expect(currentBalance.props.children).toEqual('$ 60.70');
+      expect(currentBalance.type).toEqual(Balance);
+      expect(currentBalance.props.balance).toEqual(6070);
       expect(buttonGroup.props.children.props.title).toEqual('...');
     });
   });
