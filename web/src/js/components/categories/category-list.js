@@ -73,7 +73,7 @@ export class CategoryList extends React.Component {
       return this.props.groupedCategories.map(group => {
         let categoryTypeCode = group.categoryType.code;
         return (
-          <div key={categoryTypeCode} className='col-sm-6'>
+          <div key={categoryTypeCode} className='col-sm-6 category-group'>
             <CategoryTypeTable categoryType={group.categoryType} 
               categories={group.categories}
               editCategory={this.editCategory.bind(this)} 

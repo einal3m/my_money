@@ -191,7 +191,7 @@ RSpec.describe TransactionsController, type: :controller do
     end
   end
 
-  describe 'matching' do
+  xdescribe 'matching' do
     it 'returns transactions from other accounts which match given params' do
       a1 = FactoryGirl.create(:account)
       a2 = FactoryGirl.create(:account)

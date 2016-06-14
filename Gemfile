@@ -62,4 +62,5 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'simplecov', '~> 0.9.0', require: false
+  gem 'classify'
 end

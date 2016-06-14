@@ -9,6 +9,7 @@ require 'factory_girl_helper'
 require 'serializer_helper'
 require 'capybara_helper'
 require 'yaml'
+require 'classify'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -18,6 +19,7 @@ require 'yaml'
 # end with _spec.rb. You can configure this pattern with with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
 Dir[Rails.root.join('spec/features/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/features/helpers/**/*.rb')].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -26,6 +28,10 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+  Dir[Rails.root.join('spec/features/helpers/**/*.rb')].each do |file|
+    config.include Classify.it!(File.basename(file, '.rb'))
+  end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
