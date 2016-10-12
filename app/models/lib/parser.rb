@@ -11,7 +11,7 @@ module Lib
     end
 
     def parse_amount(amount)
-      ((amount.gsub(/\s+/, '').to_f) * 100).round
+      ((amount.tr('$', '').gsub(/\s+/, '').to_f) * 100).round
     end
   end
 end
