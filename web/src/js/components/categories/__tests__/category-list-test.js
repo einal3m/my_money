@@ -10,17 +10,21 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import categoryActions from '../../../actions/category-actions';
 
 describe('CategoryList', () => {
-  let categoryList, groupedCategories, category1, category2, category3;
+  let categoryList,
+    groupedCategories,
+    category1,
+    category2,
+    category3;
   beforeEach(() => {
     spyOn(categoryActions, 'getCategories');
 
-    category1 = {id: 1, name: 'One', subcategories: []};
-    category2 = {id: 2, name: 'Two', subcategories: [{id: 45, name: 'Four', categoryId: 2}]};
-    category3 = {id: 3, name: 'Three', subcategories: []};
+    category1 = { id: 1, name: 'One', subcategories: [] };
+    category2 = { id: 2, name: 'Two', subcategories: [{ id: 45, name: 'Four', categoryId: 2 }] };
+    category3 = { id: 3, name: 'Three', subcategories: [] };
 
     groupedCategories = [
-      {categoryType: { id: 1, code: 'income', name: 'Income' }, categories: [category1, category2]},
-      {categoryType: { id: 2, code: 'expense', name: 'Expense' }, categories: [category3]}      
+      { categoryType: { id: 1, code: 'income', name: 'Income' }, categories: [category1, category2] },
+      { categoryType: { id: 2, code: 'expense', name: 'Expense' }, categories: [category3] },
     ];
 
     categoryList = shallowRenderer(
@@ -30,17 +34,17 @@ describe('CategoryList', () => {
 
   describe('render', () => {
     it('has a header with buttons', () => {
-      let header = categoryList.props.children[0];
+      const header = categoryList.props.children[0];
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('my categories');
 
-      let dropdown = header.props.children;
+      const dropdown = header.props.children;
 
       expect(dropdown.type).toEqual(Dropdown);
       expect(dropdown.props.children[0].props.children[1]).toMatch(/New/);
 
-      let buttons = dropdown.props.children[1];
+      const buttons = dropdown.props.children[1];
       expect(buttons.props.children[0].type).toEqual(MenuItem);
       expect(buttons.props.children[0].props.children).toEqual('New Category');
 
@@ -49,7 +53,7 @@ describe('CategoryList', () => {
     });
 
     it('has a table for each category type', () => {
-      let tables = categoryList.props.children[1].props.children;
+      const tables = categoryList.props.children[1].props.children;
       let [income, expense] = tables.props.children;
 
       expect(income.props.children.type).toEqual(CategoryTypeTable);
@@ -65,7 +69,7 @@ describe('CategoryList', () => {
   describe('events', () => {
     beforeEach(() => {
       categoryList = TestUtils.renderIntoDocument(
-        <CategoryList loaded groupedCategories={groupedCategories}/>
+        <CategoryList loaded groupedCategories={groupedCategories} />
       );
     });
 
@@ -78,30 +82,30 @@ describe('CategoryList', () => {
         it('shows category modal when you click on the new category button', () => {
           categoryList.refs.newButton.props.onSelect(null, 'category');
 
-          let modal = categoryList.refs.modal;
+          const modal = categoryList.refs.modal;
           expect(modal).toBeDefined();
 
-          let form = modal.props.children;
+          const form = modal.props.children;
           expect(form.type).toEqual(CategoryForm);
           expect(form.props.category).toEqual({});
           expect(modal.props.allowDelete).toEqual(false);
         });
 
         it('shows the category modal when editCategory is called', () => {
-          let category = {id: 1, name: 'Category'};
+          const category = { id: 1, name: 'Category' };
           categoryList.editCategory(category);
 
-          let modal = categoryList.refs.modal;
+          const modal = categoryList.refs.modal;
           expect(modal).toBeDefined();
 
-          let form = modal.props.children;
+          const form = modal.props.children;
           expect(form.type).toEqual(CategoryForm);
           expect(form.props.category).toEqual(category);
           expect(modal.props.allowDelete).toEqual(true);
         });
 
         it('calls the delete category method', () => {
-          let category = {id: 1, name: 'Category'};
+          const category = { id: 1, name: 'Category' };
           categoryList.editCategory(category);
 
           spyOn(categoryActions, 'deleteCategory');
@@ -114,30 +118,30 @@ describe('CategoryList', () => {
         it('shows subcategory modal when you click on the new subcategory button', () => {
           categoryList.refs.newButton.props.onSelect(null, 'subcategory');
 
-          let modal = categoryList.refs.modal;
+          const modal = categoryList.refs.modal;
           expect(modal).toBeDefined();
 
-          let form = modal.props.children;
+          const form = modal.props.children;
           expect(form.type).toEqual(SubcategoryForm);
           expect(form.props.subcategory).toEqual({});
           expect(modal.props.allowDelete).toEqual(false);
         });
 
         it('shows the subcategory modal when editSubcategory is called', () => {
-          let subcategory = {id: 1, name: 'Subcategory'};
+          const subcategory = { id: 1, name: 'Subcategory' };
           categoryList.editSubcategory(subcategory);
 
-          let modal = categoryList.refs.modal;
+          const modal = categoryList.refs.modal;
           expect(modal).toBeDefined();
 
-          let form = modal.props.children;
+          const form = modal.props.children;
           expect(form.type).toEqual(SubcategoryForm);
           expect(form.props.subcategory).toEqual(subcategory);
           expect(modal.props.allowDelete).toEqual(true);
         });
 
         it('calls the delete subcategory method', () => {
-          let subcategory = {id: 1, name: 'Subcategory'};
+          const subcategory = { id: 1, name: 'Subcategory' };
           categoryList.editSubcategory(subcategory);
 
           spyOn(categoryActions, 'deleteSubcategory');
@@ -152,19 +156,19 @@ describe('CategoryList', () => {
         expect(categoryList.refs.modal).toBeUndefined();
       });
 
-      it('modals onSave function calls the create category action', () =>{
+      it('modals onSave function calls the create category action', () => {
         spyOn(categoryActions, 'saveCategory');
         categoryList.refs.newButton.props.onSelect(null, 'category');
-        let modal = categoryList.refs.modal;
+        const modal = categoryList.refs.modal;
 
         modal.props.onSave('category');
         expect(categoryActions.saveCategory).toHaveBeenCalledWith('category');
       });
 
-      it('modals onSave function calls the create subcategory action', () =>{
+      it('modals onSave function calls the create subcategory action', () => {
         spyOn(categoryActions, 'saveSubcategory');
         categoryList.refs.newButton.props.onSelect(null, 'subcategory');
-        let modal = categoryList.refs.modal;
+        const modal = categoryList.refs.modal;
 
         modal.props.onSave('subcategory');
         expect(categoryActions.saveSubcategory).toHaveBeenCalledWith('subcategory');

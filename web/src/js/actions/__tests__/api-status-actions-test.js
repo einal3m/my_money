@@ -12,7 +12,7 @@ describe('ApiStatusActions', () => {
       apiStatusActions.storeApiError('myMessage');
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_API_ERROR',
-        message: 'myMessage'
+        message: 'myMessage',
       });
     });
   });
@@ -20,7 +20,7 @@ describe('ApiStatusActions', () => {
   describe('clearApiError', () => {
     it('dispatches the action to the store', () => {
       apiStatusActions.clearApiError();
-      expect(dispatcherSpy).toHaveBeenCalledWith({type: 'CLEAR_API_ERROR'});
+      expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'CLEAR_API_ERROR' });
     });
   });
 });

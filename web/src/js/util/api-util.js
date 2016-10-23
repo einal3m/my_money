@@ -23,7 +23,7 @@ class ApiUtil {
   }
 
   upload(options) {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('data_file', options.file);
 
     return this.makeRequest(options.url, 'POST', null, formData, options.onSuccess);
@@ -38,29 +38,29 @@ class ApiUtil {
   }
 
   makeRequest(url, method, contentType, body, onSuccessCallback) {
-    let that = this;
-    return this.send(url, method, contentType, body).then(response => {
+    const that = this;
+    return this.send(url, method, contentType, body).then((response) => {
       if (onSuccessCallback) {
         onSuccessCallback(response);
       }
-    }).catch(function(e) {
+    }).catch((e) => {
       apiStatusActions.storeApiError(e.message);
       console.log(`Api Error: ${method} ${that.getUrl(url)}, ${e.message}`);
     });
   }
 
   send(url, method, contentType, body) {
-    let that = this;
-    return new Promise(function(resolve, reject) {
+    const that = this;
+    return new Promise((resolve, reject) => {
       console.log(`ApiUtil ${method}: ${that.getUrl(url)}`);
-      var request = new XMLHttpRequest();
+      const request = new XMLHttpRequest();
 
       request.open(method, that.getUrl(url));
       if (contentType) {
         request.setRequestHeader('Content-type', contentType);
       }
 
-      request.onload = function() {
+      request.onload = function () {
         if (request.status === 200 || request.status === 201 || request.status === 204) {
           let response;
           if (request.response) {
@@ -71,12 +71,12 @@ class ApiUtil {
         else if (request.status === 422) {
           reject(Error(JSON.parse(request.response).message));
         } else {
-          reject(Error("Unknown Error"));
+          reject(Error('Unknown Error'));
         }
       };
 
-      request.onerror = function() {
-        reject(Error("Network Error"));
+      request.onerror = function () {
+        reject(Error('Network Error'));
       };
 
       request.send(body);

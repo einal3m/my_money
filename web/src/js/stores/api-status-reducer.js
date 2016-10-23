@@ -3,7 +3,7 @@ import ApiStatus from '../util/api-status';
 
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
-  message: null
+  message: null,
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -35,7 +35,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'SAVE_CATEGORY':
     case 'SAVE_SUBCATEGORY':
     case 'SAVE_TRANSACTIONS':
-        return setSaving(state);
+      return setSaving(state);
 
     case 'DELETE_ACCOUNT':
     case 'DELETE_CATEGORY':

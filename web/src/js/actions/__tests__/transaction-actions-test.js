@@ -13,9 +13,9 @@ describe('TransactionActions', () => {
   describe('getTransactions', () => {
     xit('calls the api for accounts, date ranges and transactions', () => {
       spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({loaded: true, currentAccount: {id: 45}}),
-        dateRangeStore: fromJS({loaded: true, currentDateRange: {fromDate: '2015-01-01', toDate: '2015-02-02'}}),
-        transactionStore: fromJS({moreOptions: true, searchDescription: 'my String'})
+        accountStore: fromJS({ loaded: true, currentAccount: { id: 45 } }),
+        dateRangeStore: fromJS({ loaded: true, currentDateRange: { fromDate: '2015-01-01', toDate: '2015-02-02' } }),
+        transactionStore: fromJS({ moreOptions: true, searchDescription: 'my String' }),
       });
       spyOn(accountActions, 'getAccounts').and.returnValue(Promise.resolve());
       spyOn(dateRangeActions, 'getDateRanges').and.returnValue(Promise.resolve());
@@ -32,7 +32,7 @@ describe('TransactionActions', () => {
       transactionActions.storeTransactions(['transactions']);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_TRANSACTIONS',
-        transactions: ['transactions']
+        transactions: ['transactions'],
       });
     });
   });
@@ -42,7 +42,7 @@ describe('TransactionActions', () => {
       transactionActions.setSearchDescription('my String');
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_SEARCH_DESCRIPTION',
-        description: 'my String'
+        description: 'my String',
       });
     });
   });
@@ -51,7 +51,7 @@ describe('TransactionActions', () => {
     it('dispatches the toggle actions', () => {
       transactionActions.toggleMoreOrLess();
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'TOGGLE_MORE_OR_LESS'
+        type: 'TOGGLE_MORE_OR_LESS',
       });
     });
   });

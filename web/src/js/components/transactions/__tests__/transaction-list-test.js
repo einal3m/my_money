@@ -12,7 +12,7 @@ describe('TransactionList', () => {
   describe('render', () => {
     it('search criteria and transaction table', () => {
       spyOn(categoryActions, 'getCategories');
-      transactionList = shallowRenderer(<TransactionList loaded currentAccount={{name: 'Melanie'}}/>);
+      transactionList = shallowRenderer(<TransactionList loaded currentAccount={{ name: 'Melanie' }} />);
 
       let [header, searchCriteria, table] = transactionList.props.children;
 

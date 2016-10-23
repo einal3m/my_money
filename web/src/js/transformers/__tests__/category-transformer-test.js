@@ -3,25 +3,25 @@ import categoryTransformer from '../category-transformer';
 describe('CategoryTransformer', () => {
   describe('transformToApi', () => {
     it('converts new category to API format', () => {
-      let category = {
+      const category = {
         name: 'myCategory',
-        categoryTypeId: 2
-      }
+        categoryTypeId: 2,
+      };
 
-      let transformedCategory = categoryTransformer.transformToApi(category);
+      const transformedCategory = categoryTransformer.transformToApi(category);
 
       expect(transformedCategory.name).toEqual('myCategory');
       expect(transformedCategory.category_type_id).toEqual(2);
     });
 
     it('converts existing category to API format', () => {
-      let category = {
+      const category = {
         id: 11,
         name: 'myCategory',
-        categoryTypeId: 2
-      }
+        categoryTypeId: 2,
+      };
 
-      let transformedCategory = categoryTransformer.transformToApi(category);
+      const transformedCategory = categoryTransformer.transformToApi(category);
 
       expect(transformedCategory.id).toEqual(11);
       expect(transformedCategory.name).toEqual('myCategory');
@@ -31,13 +31,13 @@ describe('CategoryTransformer', () => {
 
   describe('transformFromApi', () => {
     it('converts category from API format', () => {
-      let category = {
+      const category = {
         id: 23,
         name: 'myCategory',
-        category_type_id: 2
-      }
+        category_type_id: 2,
+      };
 
-      let transformedCategory = categoryTransformer.transformFromApi(category);
+      const transformedCategory = categoryTransformer.transformFromApi(category);
 
       expect(transformedCategory.id).toEqual(23);
       expect(transformedCategory.name).toEqual('myCategory');

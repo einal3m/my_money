@@ -8,7 +8,7 @@ export default class CategoryRow extends React.Component {
 
   render() {
     return (
-      <tr className='category' onClick={this.handleClick.bind(this)} >
+      <tr className="category" onClick={this.handleClick.bind(this)} >
         <td>{this.props.category.name}</td>
       </tr>
     );
@@ -17,7 +17,7 @@ export default class CategoryRow extends React.Component {
 
 CategoryRow.propTypes = {
   category: React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired
+    name: React.PropTypes.string.isRequired,
   }).isRequired,
-  onClickHandler: React.PropTypes.func.isRequired
+  onClickHandler: React.PropTypes.func.isRequired,
 };

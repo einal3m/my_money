@@ -1,13 +1,16 @@
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
-import ImportTable  from '../import-table';
+import ImportTable from '../import-table';
 import { Table } from 'react-bootstrap';
 import ImportRow from '../import-row';
 
 describe('ImportTable', () => {
-  let importTable, transactions, groupedCategories, subcategories;
+  let importTable,
+    transactions,
+    groupedCategories,
+    subcategories;
   beforeEach(() => {
-    transactions = [{amount: 50}, {amount: 250}];
+    transactions = [{ amount: 50 }, { amount: 250 }];
     groupedCategories = ['categories'];
     subcategories = ['subcategories'];
   });
@@ -36,7 +39,7 @@ describe('ImportTable', () => {
 
     it('has no table if no transactions', () => {
       importTable = shallowRenderer(
-        <ImportTable transactions={[]} groupedCategories={groupedCategories} subcategories={subcategories}/>
+        <ImportTable transactions={[]} groupedCategories={groupedCategories} subcategories={subcategories} />
       );
 
       expect(importTable.props.children.props.children).toEqual('No transactions to import');

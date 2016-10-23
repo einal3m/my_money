@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import moment from 'moment';
@@ -29,11 +29,11 @@ export default class TransactionRow extends React.Component {
   renderCategory(categoryId, subcategoryId) {
     if (!categoryId && !subcategoryId) return '';
 
-    let selectedCategory = this.selectedCategory(categoryId);
+    const selectedCategory = this.selectedCategory(categoryId);
     let text = selectedCategory.name;
 
     if (subcategoryId) {
-      let selectedSubcategory = this.selectedSubcategory(subcategoryId, selectedCategory);
+      const selectedSubcategory = this.selectedSubcategory(subcategoryId, selectedCategory);
       text += `/${selectedSubcategory.name}`;
     }
 
@@ -46,10 +46,10 @@ export default class TransactionRow extends React.Component {
         <td><Date date={this.props.transaction.date} /></td>
         <td>
           <div>{this.renderMemoNotes(this.props.transaction.memo, this.props.transaction.notes)}</div>
-          <div className='category'>{this.renderCategory(this.props.transaction.categoryId, this.props.transaction.subcategoryId)}</div>
+          <div className="category">{this.renderCategory(this.props.transaction.categoryId, this.props.transaction.subcategoryId)}</div>
         </td>
-        <td className='currency'><Amount amount={this.props.transaction.amount} /></td>
-        <td className='currency'><Balance balance={this.props.transaction.balance} /></td>
+        <td className="currency"><Amount amount={this.props.transaction.amount} /></td>
+        <td className="currency"><Balance balance={this.props.transaction.balance} /></td>
       </tr>
     );
   }
@@ -64,8 +64,8 @@ TransactionRow.propTypes = {
     amount: React.PropTypes.number.isRequired,
     balance: React.PropTypes.number.isRequired,
     categoryId: React.PropTypes.number,
-    subcategoryId: React.PropTypes.number
+    subcategoryId: React.PropTypes.number,
   }).isRequired,
-  groupedCategories: React.PropTypes.array.isRequired
+  groupedCategories: React.PropTypes.array.isRequired,
 };
 

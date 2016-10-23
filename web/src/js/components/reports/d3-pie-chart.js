@@ -5,9 +5,9 @@ import moneyUtil from '../../util/money-util';
 export default class D3PieChart extends React.Component {
 
   componentDidMount() {
-    let options = {
+    const options = {
       height: 450,
-      width: 450
+      width: 450,
     };
 
     const data = [100.34, 3445.22, 212, 2000.11];
@@ -17,8 +17,8 @@ export default class D3PieChart extends React.Component {
 
   render() {
     return (
-      <div ref='chartContainer' className='chart-container'>
-        <div id='d3-chart' />
+      <div ref="chartContainer" className="chart-container">
+        <div id="d3-chart" />
       </div>
     );
   }

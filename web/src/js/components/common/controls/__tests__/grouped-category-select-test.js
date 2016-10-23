@@ -4,23 +4,24 @@ import TestUtils from 'react-addons-test-utils';
 import GroupedCategorySelect from '../grouped-category-select';
 
 describe('GroupedCategorySelect', () => {
-
-  let select, groupedCategories, onChangeSpy;
+  let select,
+    groupedCategories,
+    onChangeSpy;
   beforeEach(() => {
     onChangeSpy = jasmine.createSpy('onChangeSpy');
-    let category1 = {id: 1, name: 'Wages'};
-    let category2 = {id: 2, name: 'Bills'};
-    let category3 = {id: 3, name: 'Tax Return'};
+    const category1 = { id: 1, name: 'Wages' };
+    const category2 = { id: 2, name: 'Bills' };
+    const category3 = { id: 3, name: 'Tax Return' };
     groupedCategories = [
-      {categoryType: {name: 'Income', id: 4}, categories: [category1, category3]},
-      {categoryType: {name: 'Expense', id: 5}, categories: [category2]}
+      { categoryType: { name: 'Income', id: 4 }, categories: [category1, category3] },
+      { categoryType: { name: 'Expense', id: 5 }, categories: [category2] },
     ];
   });
 
   describe('render', () => {
     it('has a select with correct category selected', () => {
       select = shallowRenderer(
-        <GroupedCategorySelect value={2} groupedCategories={groupedCategories} onChange={onChangeSpy}/>
+        <GroupedCategorySelect value={2} groupedCategories={groupedCategories} onChange={onChangeSpy} />
       );
 
       expect(select.type).toEqual('select');
@@ -39,7 +40,7 @@ describe('GroupedCategorySelect', () => {
     });
 
     it('has a select with a placeholder when value is missing', () => {
-      select = shallowRenderer(<GroupedCategorySelect groupedCategories={groupedCategories} onChange={onChangeSpy}/>);
+      select = shallowRenderer(<GroupedCategorySelect groupedCategories={groupedCategories} onChange={onChangeSpy} />);
       expect(select.type).toEqual('select');
       expect(select.props.value).toEqual('0');
 
@@ -52,11 +53,11 @@ describe('GroupedCategorySelect', () => {
   describe('onChange', () => {
     it('calls the onChange prop', () => {
       select = TestUtils.renderIntoDocument(
-        <GroupedCategorySelect value={2} groupedCategories={groupedCategories} onChange={onChangeSpy}/>
+        <GroupedCategorySelect value={2} groupedCategories={groupedCategories} onChange={onChangeSpy} />
       );
-      TestUtils.Simulate.change(select.refs.select, {target: {name: 'categoryId', value: '2'}});
+      TestUtils.Simulate.change(select.refs.select, { target: { name: 'categoryId', value: '2' } });
 
-      expect(onChangeSpy).toHaveBeenCalledWith({target: {name: 'categoryId', value: 2}});
+      expect(onChangeSpy).toHaveBeenCalledWith({ target: { name: 'categoryId', value: 2 } });
     });
   });
 });

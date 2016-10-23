@@ -1,6 +1,6 @@
-'use strict';
 
-import {connect} from 'react-redux';
+
+import { connect } from 'react-redux';
 import React from 'react';
 import PageHeader from '../common/page-header';
 import { MenuItem, Dropdown, Glyphicon } from 'react-bootstrap';
@@ -10,8 +10,8 @@ import CategoryForm from './category-form';
 import SubcategoryForm from './subcategory-form';
 import categoryActions from '../../actions/category-actions';
 import { editableGroupedCategories } from '../../selectors/category-selector';
-require("../../../css/common.scss");
-require("../../../css/categories.scss");
+require('../../../css/common.scss');
+require('../../../css/categories.scss');
 
 export class CategoryList extends React.Component {
   constructor() {
@@ -29,11 +29,11 @@ export class CategoryList extends React.Component {
   }
 
   editCategory(category) {
-    this.setState({ showModal: true, modalType: 'Category', category: category, allowDelete: true});
+    this.setState({ showModal: true, modalType: 'Category', category, allowDelete: true });
   }
 
   editSubcategory(subcategory) {
-    this.setState({ showModal: true, modalType: 'Subcategory', subcategory: subcategory, allowDelete: true});
+    this.setState({ showModal: true, modalType: 'Subcategory', subcategory, allowDelete: true });
   }
 
   handleSaveCategory(category) {
@@ -70,14 +70,15 @@ export class CategoryList extends React.Component {
 
   renderCategoryTypes() {
     if (this.props.loaded) {
-      return this.props.groupedCategories.map(group => {
-        let categoryTypeCode = group.categoryType.code;
+      return this.props.groupedCategories.map((group) => {
+        const categoryTypeCode = group.categoryType.code;
         return (
-          <div key={categoryTypeCode} className='col-sm-6 category-group'>
-            <CategoryTypeTable categoryType={group.categoryType} 
+          <div key={categoryTypeCode} className="col-sm-6 category-group">
+            <CategoryTypeTable categoryType={group.categoryType}
               categories={group.categories}
-              editCategory={this.editCategory.bind(this)} 
-              editSubcategory={this.editSubcategory.bind(this)} />
+              editCategory={this.editCategory.bind(this)}
+              editSubcategory={this.editSubcategory.bind(this)}
+            />
           </div>
         );
       });
@@ -86,13 +87,13 @@ export class CategoryList extends React.Component {
 
   renderNewCategoryButtons() {
     return (
-      <Dropdown id='new-category' pullRight onSelect={this.newModel.bind(this)} ref='newButton'>
+      <Dropdown id="new-category" pullRight onSelect={this.newModel.bind(this)} ref="newButton">
         <Dropdown.Toggle>
-          <Glyphicon glyph='plus' /> New
+          <Glyphicon glyph="plus" /> New
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem key='1' eventKey='category'>New Category</MenuItem>
-          <MenuItem key='2' eventKey='subcategory'>New Subcategory</MenuItem>
+          <MenuItem key="1" eventKey="category">New Category</MenuItem>
+          <MenuItem key="2" eventKey="subcategory">New Subcategory</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
     );
@@ -100,19 +101,20 @@ export class CategoryList extends React.Component {
 
   renderForm() {
     if (this.state.modalType === 'Category') {
-      let categoryTypes = this.props.groupedCategories.map(categoryType => categoryType.categoryType);
-      return <CategoryForm categoryTypes={categoryTypes} category={this.state.category} />
+      const categoryTypes = this.props.groupedCategories.map(categoryType => categoryType.categoryType);
+      return <CategoryForm categoryTypes={categoryTypes} category={this.state.category} />;
     } else {
-      return <SubcategoryForm groupedCategories={this.props.groupedCategories} subcategory={this.state.subcategory}/>
+      return <SubcategoryForm groupedCategories={this.props.groupedCategories} subcategory={this.state.subcategory} />;
     }
   }
 
   renderModal() {
     if (this.state.showModal) {
       return (
-        <FormModal ref='modal' show onClose={this.closeModal.bind(this)} onSave={this.handleSave.bind(this)}
-                   modelName={this.state.modalType} allowDelete={this.state.allowDelete}
-                   onDelete={this.handleDelete.bind(this)}>
+        <FormModal ref="modal" show onClose={this.closeModal.bind(this)} onSave={this.handleSave.bind(this)}
+          modelName={this.state.modalType} allowDelete={this.state.allowDelete}
+          onDelete={this.handleDelete.bind(this)}
+        >
           {this.renderForm()}
         </FormModal>
       );
@@ -122,12 +124,12 @@ export class CategoryList extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title='my categories' apiStatus={this.props.apiStatus}>
+        <PageHeader title="my categories" apiStatus={this.props.apiStatus}>
           {this.renderNewCategoryButtons()}
         </PageHeader>
 
-        <div id='category-list' className="container">
-          <div className='row'>
+        <div id="category-list" className="container">
+          <div className="row">
             {this.renderCategoryTypes()}
           </div>
         </div>
@@ -140,11 +142,11 @@ export class CategoryList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.categoryStore.get('categoriesLoaded') && 
-            state.categoryStore.get('categoryTypesLoaded') && 
+    loaded: state.categoryStore.get('categoriesLoaded') &&
+            state.categoryStore.get('categoryTypesLoaded') &&
             state.categoryStore.get('subcategoriesLoaded'),
     groupedCategories: editableGroupedCategories(state).toJS(),
-    apiStatus: state.apiStatusStore.toJS()
+    apiStatus: state.apiStatusStore.toJS(),
   };
 }
 

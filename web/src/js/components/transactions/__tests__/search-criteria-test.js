@@ -11,41 +11,45 @@ import transactionActions from '../../../actions/transaction-actions';
 import staticDataActions from '../../../actions/date-range-actions';
 
 describe('SearchCriteria', () => {
-  let dateRanges, account, accountGroups, accountTypes;
+  let dateRanges,
+    account,
+    accountGroups,
+    accountTypes;
   beforeEach(() => {
-    spyOn(transactionActions, 'getTransactions');      
+    spyOn(transactionActions, 'getTransactions');
 
     dateRanges = fromJS([
       { id: 11, name: 'Name1', custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
-      { id: 22, name: 'Name2', custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' }
+      { id: 22, name: 'Name2', custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' },
     ]);
 
     accountTypes = fromJS([
       { id: 1, code: 'savings', name: 'Savings' },
       { id: 3, code: 'other', name: 'Other' },
-      { id: 2, code: 'share', name: 'Share' }
+      { id: 2, code: 'share', name: 'Share' },
     ]);
 
     account = { id: 1, name: 'Account 1' };
     accountGroups = fromJS({
-      'savings': [ { id: 2, name: 'Account 2' } ],
-      'share': [ account, { id: 3, name: 'Account 3' } ]
+      savings: [{ id: 2, name: 'Account 2' }],
+      share: [account, { id: 3, name: 'Account 3' }],
     });
   });
 
   describe('render', () => {
     it('does not render filters if data has not loaded', () => {
-      let searchCriteria = shallowRenderer(
-        <SearchCriteria loaded={false} accountGroups={{}} accountTypes={[]} currentAccount={null} dateRanges={[]} currentDateRange={''}/>
+      const searchCriteria = shallowRenderer(
+        <SearchCriteria loaded={false} accountGroups={{}} accountTypes={[]} currentAccount={null} dateRanges={[]} currentDateRange={''} />
       );
 
       expect(searchCriteria.props.children).toBeUndefined();
     });
 
     it('does render filters if data has loaded', () => {
-      let searchCriteria = shallowRenderer(
+      const searchCriteria = shallowRenderer(
         <SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
-          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions={false}/>
+          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions={false}
+        />
       );
       let [staticFilters, showMore] = searchCriteria.props.children;
       let [accountFilter, dateFilter] = staticFilters;
@@ -56,9 +60,10 @@ describe('SearchCriteria', () => {
     });
 
     it('renders extra filters if more options is true', () => {
-      let searchCriteria = shallowRenderer(
+      const searchCriteria = shallowRenderer(
         <SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
-          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions searchDescription={'Melanie'}/>
+          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions searchDescription={'Melanie'}
+        />
       );
       let [staticFilters, showLess, searchFilter] = searchCriteria.props.children;
 
@@ -72,8 +77,9 @@ describe('SearchCriteria', () => {
   xdescribe('events', () => {
     let searchCriteria;
     beforeEach(() => {
-      searchCriteria = TestUtils.renderIntoDocument(<SearchCriteria loaded={true} accountTypes={accountTypes} accountGroups={accountGroups} 
-        currentAccount={fromJS(account)} dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} />);
+      searchCriteria = TestUtils.renderIntoDocument(<SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups}
+        currentAccount={fromJS(account)} dateRanges={dateRanges} currentDateRange={dateRanges.get(1)}
+      />);
     });
 
     describe('onToggleMoreOrLess', () => {

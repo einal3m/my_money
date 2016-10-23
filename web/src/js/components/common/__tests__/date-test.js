@@ -5,7 +5,7 @@ import Date from '../date';
 describe('Date', () => {
   describe('render', () => {
     it('formats the date', () => {
-      let date = shallowRenderer(<Date date={'2015-07-03'} />);
+      const date = shallowRenderer(<Date date={'2015-07-03'} />);
 
       expect(date.props.children).toEqual('03-Jul-2015');
     });

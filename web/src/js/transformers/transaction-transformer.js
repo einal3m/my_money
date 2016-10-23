@@ -1,5 +1,5 @@
 
-let transactionTransformer = {
+const transactionTransformer = {
   transformToApi(transaction) {
     return {
       id: transaction.id,
@@ -9,7 +9,7 @@ let transactionTransformer = {
       category_id: transaction.categoryId,
       subcategory_id: transaction.subcategoryId,
       notes: transaction.notes,
-      memo: transaction.memo
+      memo: transaction.memo,
     };
   },
 
@@ -23,7 +23,7 @@ let transactionTransformer = {
       subcategoryId: transaction.subcategory_id,
       notes: transaction.notes,
       memo: transaction.memo,
-      balance: transaction.balance
+      balance: transaction.balance,
     };
   },
 
@@ -37,9 +37,9 @@ let transactionTransformer = {
       subcategoryId: transaction.subcategory_id,
       notes: transaction.notes,
       import: transaction.import,
-      duplicate: transaction.duplicate
+      duplicate: transaction.duplicate,
     };
-  }
-}
+  },
+};
 
 export default transactionTransformer;

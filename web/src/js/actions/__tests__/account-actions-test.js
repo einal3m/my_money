@@ -13,19 +13,19 @@ describe('AccountActions', () => {
   describe('getAccounts', () => {
     it('makes an ajax request to GET/accounts and calls callback on success', () => {
       spyOn(apiUtil, 'get').and.returnValue(Promise.resolve());
-      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: false}) });
-      let promise = accountActions.getAccounts();
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: false }) });
+      const promise = accountActions.getAccounts();
       expect(apiUtil.get).toHaveBeenCalled();
       expect(promise.then).toBeDefined();
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_ACCOUNTS' });
 
-      let getArgs = apiUtil.get.calls.argsFor(0)[0];
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts');
 
       spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
       spyOn(accountActions, 'storeAccounts');
-      let successCallback = getArgs.onSuccess;
-      successCallback({accounts: ['account']});
+      const successCallback = getArgs.onSuccess;
+      successCallback({ accounts: ['account'] });
 
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
@@ -33,19 +33,18 @@ describe('AccountActions', () => {
 
     it('doesnt call the api if accounts already loaded', () => {
       spyOn(apiUtil, 'get');
-      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: true}) });
-      let promise = accountActions.getAccounts();
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: true }) });
+      const promise = accountActions.getAccounts();
       expect(apiUtil.get).not.toHaveBeenCalled();
       expect(promise.then).toBeDefined();
     });
 
     it('does call the api if forceReload already loaded', () => {
       spyOn(apiUtil, 'get');
-      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({loaded: true}) });
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: true }) });
       accountActions.getAccounts(true);
       expect(apiUtil.get).toHaveBeenCalled();
     });
-
   });
 
   describe('storeAccounts', () => {
@@ -53,7 +52,7 @@ describe('AccountActions', () => {
       accountActions.storeAccounts(['account']);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_ACCOUNTS',
-        accounts: ['account']
+        accounts: ['account'],
       });
     });
   });
@@ -67,14 +66,14 @@ describe('AccountActions', () => {
       expect(accountTransformer.transformToApi).toHaveBeenCalledWith('account');
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'SAVE_ACCOUNT' });
 
-      let postArgs = apiUtil.post.calls.argsFor(0)[0];
+      const postArgs = apiUtil.post.calls.argsFor(0)[0];
       expect(postArgs.url).toEqual('accounts');
-      expect(postArgs.body).toEqual({account: 'transformedAccount'});
+      expect(postArgs.body).toEqual({ account: 'transformedAccount' });
 
       spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
       spyOn(accountActions, 'storeAccount');
-      let successCallback = postArgs.onSuccess;
-      successCallback({account: 'account'});
+      const successCallback = postArgs.onSuccess;
+      successCallback({ account: 'account' });
 
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(accountActions.storeAccount).toHaveBeenCalledWith('transformedFromApi');
@@ -86,7 +85,7 @@ describe('AccountActions', () => {
       accountActions.storeAccount('account');
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'ADD_ACCOUNT',
-        account: 'account'
+        account: 'account',
       });
     });
   });
@@ -98,11 +97,11 @@ describe('AccountActions', () => {
       expect(apiUtil.delete).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_ACCOUNT' });
 
-      let deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
+      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
       expect(deleteArgs.url).toEqual('accounts/34');
 
       spyOn(accountActions, 'removeAccount');
-      let successCallback = deleteArgs.onSuccess;
+      const successCallback = deleteArgs.onSuccess;
       successCallback();
       expect(accountActions.removeAccount).toHaveBeenCalled();
     });
@@ -113,7 +112,7 @@ describe('AccountActions', () => {
       accountActions.removeAccount(34);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'REMOVE_ACCOUNT',
-        id: 34
+        id: 34,
       });
     });
   });
@@ -123,7 +122,7 @@ describe('AccountActions', () => {
       accountActions.setCurrentAccount(45);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_CURRENT_ACCOUNT',
-        id: 45
+        id: 45,
       });
     });
 
@@ -131,7 +130,7 @@ describe('AccountActions', () => {
       accountActions.toggleSelectedAccount(45);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'TOGGLE_SELECTED_ACCOUNT',
-        accountId: 45
+        accountId: 45,
       });
     });
   });

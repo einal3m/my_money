@@ -5,12 +5,14 @@ import Picker from '../picker';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 describe('Picker', () => {
-  let picker, options, onChangeSpy;
+  let picker,
+    options,
+    onChangeSpy;
   beforeEach(() => {
     options = [
       { id: 1, name: 'One' },
       { id: 3, name: 'Two' },
-      { id: 5, name: 'Three' }
+      { id: 5, name: 'Three' },
     ];
 
     onChangeSpy = jasmine.createSpy('onChangeSpy');
@@ -22,12 +24,12 @@ describe('Picker', () => {
         <Picker options={options} value={null} onChange={onChangeSpy} />
       );
 
-      let dropdown = picker.props.children;
+      const dropdown = picker.props.children;
 
       expect(dropdown.type).toEqual(DropdownButton);
       expect(dropdown.props.title).toEqual('Please select...');
 
-      let menuItems = dropdown.props.children;
+      const menuItems = dropdown.props.children;
       expect(menuItems.length).toEqual(3);
 
       expect(menuItems[0].props.children).toEqual('   One');
@@ -40,12 +42,12 @@ describe('Picker', () => {
         <Picker options={options} value={5} onChange={onChangeSpy} />
       );
 
-      let dropdown = picker.props.children;
+      const dropdown = picker.props.children;
 
       expect(dropdown.type).toEqual(DropdownButton);
       expect(dropdown.props.title).toEqual('Three');
 
-      let menuItems = dropdown.props.children;
+      const menuItems = dropdown.props.children;
       expect(menuItems.length).toEqual(3);
 
       expect(menuItems[0].props.children).toEqual('   One');
@@ -60,7 +62,7 @@ describe('Picker', () => {
         <Picker options={options} value={5} onChange={onChangeSpy} />
       );
 
-      let dropdown = picker.props.children;
+      const dropdown = picker.props.children;
       dropdown.props.onSelect({}, '4');
 
       expect(onChangeSpy).toHaveBeenCalledWith(4);

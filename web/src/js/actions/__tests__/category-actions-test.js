@@ -12,7 +12,7 @@ describe('CategoryActions', () => {
   });
 
   describe('getCategories', () => {
-    //TODO: work out how to test promises
+    // TODO: work out how to test promises
     xit('calls the api util to get category types, categories and subcategories', () => {
 
     });
@@ -23,7 +23,7 @@ describe('CategoryActions', () => {
       categoryActions.storeCategoryTypes('categoryTypes');
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_CATEGORY_TYPES',
-        categoryTypes: 'categoryTypes'
+        categoryTypes: 'categoryTypes',
       });
     });
   });
@@ -32,16 +32,16 @@ describe('CategoryActions', () => {
     describe('saveCategory', () => {
       it('calls createCategory when no id is present', () => {
         spyOn(categoryActions, 'createCategory');
-        categoryActions.saveCategory({name: 'Melanie'});
-        expect(categoryActions.createCategory).toHaveBeenCalledWith({name: 'Melanie'});
-        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_CATEGORY'});
+        categoryActions.saveCategory({ name: 'Melanie' });
+        expect(categoryActions.createCategory).toHaveBeenCalledWith({ name: 'Melanie' });
+        expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'SAVE_CATEGORY' });
       });
 
       it('calls updateCategory when id is present', () => {
         spyOn(categoryActions, 'updateCategory');
-        categoryActions.saveCategory({id: 1, name: 'Melanie'});
-        expect(categoryActions.updateCategory).toHaveBeenCalledWith({id: 1, name: 'Melanie'});
-        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_CATEGORY'});
+        categoryActions.saveCategory({ id: 1, name: 'Melanie' });
+        expect(categoryActions.updateCategory).toHaveBeenCalledWith({ id: 1, name: 'Melanie' });
+        expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'SAVE_CATEGORY' });
       });
     });
 
@@ -54,20 +54,20 @@ describe('CategoryActions', () => {
       expect(categoryTransformer.transformToApi).toHaveBeenCalledWith('category');
       expect(apiUtil.post).toHaveBeenCalled();
 
-      let postArgs = apiUtil.post.calls.argsFor(0)[0];
+      const postArgs = apiUtil.post.calls.argsFor(0)[0];
       expect(postArgs.url).toEqual('categories');
 
       spyOn(categoryTransformer, 'transformFromApi').and.returnValue('newCategory');
       spyOn(categoryActions, 'storeCategory');
-      let successCallback = postArgs.onSuccess;
-      successCallback({category: 'categoryFromApi'});
+      const successCallback = postArgs.onSuccess;
+      successCallback({ category: 'categoryFromApi' });
 
       expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('categoryFromApi');
       expect(categoryActions.storeCategory).toHaveBeenCalledWith('newCategory');
     });
 
     it('updateCategory calls apiUtil.put with callback', () => {
-      let category = {id: 23, name: 'Cat'};
+      const category = { id: 23, name: 'Cat' };
       spyOn(apiUtil, 'put');
       spyOn(categoryTransformer, 'transformToApi').and.returnValue('transformedCategory');
 
@@ -76,14 +76,14 @@ describe('CategoryActions', () => {
       expect(categoryTransformer.transformToApi).toHaveBeenCalledWith(category);
       expect(apiUtil.put).toHaveBeenCalled();
 
-      let putArgs = apiUtil.put.calls.argsFor(0)[0];
+      const putArgs = apiUtil.put.calls.argsFor(0)[0];
       expect(putArgs.url).toEqual('categories/23');
-      expect(putArgs.body).toEqual({category: 'transformedCategory'});
+      expect(putArgs.body).toEqual({ category: 'transformedCategory' });
 
       spyOn(categoryTransformer, 'transformFromApi').and.returnValue('updatedCategory');
       spyOn(categoryActions, 'storeCategory');
-      let successCallback = putArgs.onSuccess;
-      successCallback({category: 'categoryFromApi'});
+      const successCallback = putArgs.onSuccess;
+      successCallback({ category: 'categoryFromApi' });
 
       expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('categoryFromApi');
       expect(categoryActions.storeCategory).toHaveBeenCalledWith('updatedCategory');
@@ -93,13 +93,13 @@ describe('CategoryActions', () => {
       spyOn(apiUtil, 'delete');
       categoryActions.deleteCategory(23);
       expect(apiUtil.delete).toHaveBeenCalled();
-      expect(dispatcherSpy).toHaveBeenCalledWith({type: 'DELETE_CATEGORY'});
+      expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'DELETE_CATEGORY' });
 
-      let deleteArgs   = apiUtil.delete.calls.argsFor(0)[0];
+      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
       expect(deleteArgs.url).toEqual('categories/23');
 
       spyOn(categoryActions, 'removeCategory');
-      let successCallback = deleteArgs.onSuccess;
+      const successCallback = deleteArgs.onSuccess;
       successCallback();
       expect(categoryActions.removeCategory).toHaveBeenCalledWith(23);
     });
@@ -108,7 +108,7 @@ describe('CategoryActions', () => {
       categoryActions.storeCategories(['categories']);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_CATEGORIES',
-        categories: ['categories']
+        categories: ['categories'],
       });
     });
 
@@ -116,7 +116,7 @@ describe('CategoryActions', () => {
       categoryActions.storeCategory('category');
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_CATEGORY',
-        category: 'category'
+        category: 'category',
       });
     });
 
@@ -124,7 +124,7 @@ describe('CategoryActions', () => {
       categoryActions.removeCategory(13);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'REMOVE_CATEGORY',
-        categoryId: 13
+        categoryId: 13,
       });
     });
   });
@@ -133,16 +133,16 @@ describe('CategoryActions', () => {
     describe('saveSubcategory', () => {
       it('calls createSubcategory when no id is present', () => {
         spyOn(categoryActions, 'createSubcategory');
-        categoryActions.saveSubcategory({name: 'Melanie'});
-        expect(categoryActions.createSubcategory).toHaveBeenCalledWith({name: 'Melanie'});
-        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_SUBCATEGORY'});
+        categoryActions.saveSubcategory({ name: 'Melanie' });
+        expect(categoryActions.createSubcategory).toHaveBeenCalledWith({ name: 'Melanie' });
+        expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'SAVE_SUBCATEGORY' });
       });
 
       it('calls updateSubcategory when id is present', () => {
         spyOn(categoryActions, 'updateSubcategory');
-        categoryActions.saveSubcategory({id: 1, name: 'Melanie'});
-        expect(categoryActions.updateSubcategory).toHaveBeenCalledWith({id: 1, name: 'Melanie'});
-        expect(dispatcherSpy).toHaveBeenCalledWith({type: 'SAVE_SUBCATEGORY'});
+        categoryActions.saveSubcategory({ id: 1, name: 'Melanie' });
+        expect(categoryActions.updateSubcategory).toHaveBeenCalledWith({ id: 1, name: 'Melanie' });
+        expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'SAVE_SUBCATEGORY' });
       });
     });
 
@@ -155,20 +155,20 @@ describe('CategoryActions', () => {
       expect(subcategoryTransformer.transformToApi).toHaveBeenCalledWith('subcategory');
       expect(apiUtil.post).toHaveBeenCalled();
 
-      let postArgs = apiUtil.post.calls.argsFor(0)[0];
+      const postArgs = apiUtil.post.calls.argsFor(0)[0];
       expect(postArgs.url).toEqual('subcategories');
 
       spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('newSubcategory');
       spyOn(categoryActions, 'storeSubcategory');
-      let successCallback = postArgs.onSuccess;
-      successCallback({subcategory: 'subcategoryFromApi'});
+      const successCallback = postArgs.onSuccess;
+      successCallback({ subcategory: 'subcategoryFromApi' });
 
       expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith('subcategoryFromApi');
       expect(categoryActions.storeSubcategory).toHaveBeenCalledWith('newSubcategory');
     });
 
     it('updateSubcategory calls apiUtil.put with callback', () => {
-      let subcategory = {id: 11, name: 'Sub'};
+      const subcategory = { id: 11, name: 'Sub' };
       spyOn(apiUtil, 'put');
       spyOn(subcategoryTransformer, 'transformToApi').and.returnValue('transformedSubcategory');
 
@@ -177,13 +177,13 @@ describe('CategoryActions', () => {
       expect(subcategoryTransformer.transformToApi).toHaveBeenCalledWith(subcategory);
       expect(apiUtil.put).toHaveBeenCalled();
 
-      let putArgs = apiUtil.put.calls.argsFor(0)[0];
+      const putArgs = apiUtil.put.calls.argsFor(0)[0];
       expect(putArgs.url).toEqual('subcategories/11');
 
       spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('updatedSubcategory');
       spyOn(categoryActions, 'storeSubcategory');
-      let successCallback = putArgs.onSuccess;
-      successCallback({subcategory: 'subcategoryFromApi'});
+      const successCallback = putArgs.onSuccess;
+      successCallback({ subcategory: 'subcategoryFromApi' });
 
       expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith('subcategoryFromApi');
       expect(categoryActions.storeSubcategory).toHaveBeenCalledWith('updatedSubcategory');
@@ -193,13 +193,13 @@ describe('CategoryActions', () => {
       spyOn(apiUtil, 'delete');
       categoryActions.deleteSubcategory(43);
       expect(apiUtil.delete).toHaveBeenCalled();
-      expect(dispatcherSpy).toHaveBeenCalledWith({type: 'DELETE_SUBCATEGORY'});
+      expect(dispatcherSpy).toHaveBeenCalledWith({ type: 'DELETE_SUBCATEGORY' });
 
-      let deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
+      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
       expect(deleteArgs.url).toEqual('subcategories/43');
 
       spyOn(categoryActions, 'removeSubcategory');
-      let successCallback = deleteArgs.onSuccess;
+      const successCallback = deleteArgs.onSuccess;
       successCallback();
       expect(categoryActions.removeSubcategory).toHaveBeenCalledWith(43);
     });
@@ -208,7 +208,7 @@ describe('CategoryActions', () => {
       categoryActions.storeSubcategories(['subcategories']);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_SUBCATEGORIES',
-        subcategories: ['subcategories']
+        subcategories: ['subcategories'],
       });
     });
 
@@ -216,7 +216,7 @@ describe('CategoryActions', () => {
       categoryActions.storeSubcategory('subcategory');
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_SUBCATEGORY',
-        subcategory: 'subcategory'
+        subcategory: 'subcategory',
       });
     });
 
@@ -224,7 +224,7 @@ describe('CategoryActions', () => {
       categoryActions.removeSubcategory(14);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'REMOVE_SUBCATEGORY',
-        subcategoryId: 14
+        subcategoryId: 14,
       });
     });
   });

@@ -11,11 +11,12 @@ export default class CategoryTypeTable extends React.Component {
 
   renderCategories() {
     if (this.props.categories) {
-      return this.props.categories.map(category => {
+      return this.props.categories.map((category) => {
         return [
-          <CategoryRow key={category.id}  onClickHandler={this.props.editCategory} 
-                       categoryType={this.props.categoryType} category={category} />,
-          this.renderSubcategories(category)
+          <CategoryRow key={category.id} onClickHandler={this.props.editCategory}
+            categoryType={this.props.categoryType} category={category}
+          />,
+          this.renderSubcategories(category),
         ];
       });
     }
@@ -24,7 +25,8 @@ export default class CategoryTypeTable extends React.Component {
   renderSubcategories(category) {
     return category.subcategories.map(subcategory =>
       <SubcategoryRow key={subcategory.id} category={category}
-                      subcategory={subcategory} onClickHandler={this.props.editSubcategory} />
+        subcategory={subcategory} onClickHandler={this.props.editSubcategory}
+      />
     );
   }
 
@@ -35,7 +37,7 @@ export default class CategoryTypeTable extends React.Component {
 
   renderTable() {
     return (
-      <Table hover id='category-table'>
+      <Table hover id="category-table">
         <tbody>
           {this.renderCategories()}
         </tbody>
@@ -55,12 +57,12 @@ export default class CategoryTypeTable extends React.Component {
 
 CategoryTypeTable.propTypes = {
   categoryType: React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired
+    name: React.PropTypes.string.isRequired,
   }).isRequired,
   categories: React.PropTypes.arrayOf(React.PropTypes.shape({
     id: React.PropTypes.number.isRequired,
-    name: React.PropTypes.string.isRequired
+    name: React.PropTypes.string.isRequired,
   })).isRequired,
   editCategory: React.PropTypes.func.isRequired,
-  editSubcategory: React.PropTypes.func.isRequired
+  editSubcategory: React.PropTypes.func.isRequired,
 };

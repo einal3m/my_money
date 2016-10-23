@@ -7,25 +7,25 @@ export default class D3BarChart extends React.Component {
 
   constructor() {
     super();
-    this.state = {tooltipData: null};
+    this.state = { tooltipData: null };
     this.callBacks = {
       showTooltip: this.showTooltip.bind(this),
       hideTooltip: this.hideTooltip.bind(this),
-      formatYLabels: this.formatMoney.bind(this)
+      formatYLabels: this.formatMoney.bind(this),
     };
   }
 
   componentDidMount() {
-    let options = {
+    const options = {
       height: 450,
-      width: this.refs.chartContainer.getDOMNode().offsetWidth - 20
+      width: this.refs.chartContainer.getDOMNode().offsetWidth - 20,
     };
 
     barChart(this.props.chartData.xAxisLabels, this.props.chartData.seriesData, '#d3-chart', options, this.callBacks);
   }
 
   showTooltip(tooltipData) {
-    this.setState({tooltipData: tooltipData});
+    this.setState({ tooltipData });
     this.refs.tooltip.show();
   }
 
@@ -39,9 +39,9 @@ export default class D3BarChart extends React.Component {
 
   render() {
     return (
-      <div className='text-center' ref='chartContainer' className='chart-container'>
-        <ChartTooltip ref='tooltip' tooltipData={this.state.tooltipData} chartWidth={1000}/>
-        <div id='d3-chart' />
+      <div className="text-center" ref="chartContainer" className="chart-container">
+        <ChartTooltip ref="tooltip" tooltipData={this.state.tooltipData} chartWidth={1000} />
+        <div id="d3-chart" />
       </div>
     );
   }

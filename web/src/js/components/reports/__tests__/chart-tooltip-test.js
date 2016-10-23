@@ -4,15 +4,15 @@ import ChartTooltip from '../chart-tooltip';
 
 describe('ChartTooltip', () => {
   it('displays each series name,amount and colour', () => {
-    let tooltipData = {
+    const tooltipData = {
       periodLabel: 'Tooltip Title',
       seriesLabel: ['Series One', 'Series Two'],
       colours: ['red', 'blue'],
       values: ['32', '45'],
-      tooltipPosition: 'left'
+      tooltipPosition: 'left',
     };
 
-    let chartTooltip = shallowRenderer(<ChartTooltip show tooltipData={tooltipData} />);
+    const chartTooltip = shallowRenderer(<ChartTooltip show tooltipData={tooltipData} />);
     let [title, tooltipItems] = chartTooltip.props.children.props.children;
 
     expect(title.props.children).toEqual('Tooltip Title');

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Input } from 'react-bootstrap';
@@ -16,14 +16,14 @@ export default class SubcategoryForm extends React.Component {
   validationSchema() {
     return {
       name: { presence: true },
-      categoryId: { presence: true }
+      categoryId: { presence: true },
     };
   }
 
   handleChange(event) {
-    let subcategory = this.state.subcategory;
+    const subcategory = this.state.subcategory;
     subcategory[event.target.name] = event.target.value;
-    this.setState({subcategory: subcategory});
+    this.setState({ subcategory });
     this.validator.validateField(event.target.name, event.target.value);
   }
 
@@ -40,16 +40,18 @@ export default class SubcategoryForm extends React.Component {
     return (
       <div>
         <div className={`form-group ${this.validator.errorState('categoryId')}`}>
-          <label className='control-label'>Category</label>
+          <label className="control-label">Category</label>
           <GroupedCategorySelect name="categoryId" value={this.state.subcategory.categoryId}
-            ref='categoryIdField' groupedCategories={this.props.groupedCategories} onChange={this.handleChange.bind(this)} />
-          <div className='help-block'>{this.validator.errorFor('categoryId')}</div>
+            ref="categoryIdField" groupedCategories={this.props.groupedCategories} onChange={this.handleChange.bind(this)}
+          />
+          <div className="help-block">{this.validator.errorFor('categoryId')}</div>
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>
-          <label className='control-label'>Name</label>
-          <input className='form-control' name='name' type='text' value={this.state.subcategory.name || ''}
-            onChange={this.handleChange.bind(this)} ref='nameField' />
-          <div className='help-block'>{this.validator.errorFor('name')}</div>
+          <label className="control-label">Name</label>
+          <input className="form-control" name="name" type="text" value={this.state.subcategory.name || ''}
+            onChange={this.handleChange.bind(this)} ref="nameField"
+          />
+          <div className="help-block">{this.validator.errorFor('name')}</div>
         </div>
       </div>
     );
@@ -59,7 +61,7 @@ export default class SubcategoryForm extends React.Component {
 SubcategoryForm.propTypes = {
   subcategory: React.PropTypes.shape({
     name: React.PropTypes.string,
-    categoryId: React.PropTypes.number
+    categoryId: React.PropTypes.number,
   }).isRequired,
-  groupedCategories: React.PropTypes.array.isRequired
+  groupedCategories: React.PropTypes.array.isRequired,
 };

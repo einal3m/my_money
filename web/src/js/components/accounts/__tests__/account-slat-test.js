@@ -8,7 +8,8 @@ import accountActions from '../../../actions/account-actions';
 import { hashHistory } from 'react-router';
 
 describe('AccountSlat', () => {
-  let account, accountSlat;
+  let account,
+    accountSlat;
   beforeEach(() => {
     account = fromJS({ id: 22, name: 'myAccount', bank: 'myBank', currentBalance: 6070 });
   });
@@ -18,7 +19,7 @@ describe('AccountSlat', () => {
       accountSlat = shallowRenderer(<AccountSlat account={account} />);
       let [info, balance, buttonGroup] = accountSlat.props.children.props.children[1].props.children.props.children;
       let [name, bank] = info.props.children;
-      let currentBalance = balance.props.children;
+      const currentBalance = balance.props.children;
 
       expect(name.props.children.props.children).toEqual('myAccount');
       expect(bank.props.children).toEqual('myBank');
@@ -52,7 +53,7 @@ describe('AccountSlat', () => {
       });
 
       it('from name link - sets the current account account and navigates to transaction page', () => {
-        let nameLink = TestUtils.findRenderedDOMComponentWithClass(accountSlat, 'name-link');
+        const nameLink = TestUtils.findRenderedDOMComponentWithClass(accountSlat, 'name-link');
         TestUtils.Simulate.click(nameLink);
         expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(22);
         expect(hashHistory.push).toHaveBeenCalledWith('/transactions');

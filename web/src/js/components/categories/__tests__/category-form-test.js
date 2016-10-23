@@ -6,16 +6,19 @@ import CategoryForm from '../category-form';
 import Picker from '../../common/controls/picker';
 
 describe('CategoryForm', () => {
-  let category, categoryTypes;
+  let category,
+    categoryTypes;
   beforeEach(() => {
-    category = {id: 11, name: 'categoryName', categoryTypeId: 1};
-    categoryTypes = [{id: 1, name: 'Income'}, {id: 2, name: 'Expense'}];
+    category = { id: 11, name: 'categoryName', categoryTypeId: 1 };
+    categoryTypes = [{ id: 1, name: 'Income' }, { id: 2, name: 'Expense' }];
   });
 
   describe('render', () => {
-    let form, name, categoryType;
+    let form,
+      name,
+      categoryType;
     beforeEach(() => {
-      form = shallowRenderer(<CategoryForm category={category} categoryTypes={categoryTypes}/>);
+      form = shallowRenderer(<CategoryForm category={category} categoryTypes={categoryTypes} />);
       [categoryType, name] = form.props.children;
     });
 
@@ -32,28 +35,28 @@ describe('CategoryForm', () => {
       expect(name.props.children[1].props.value).toEqual('categoryName');
     });
   });
-  
+
   describe('isValid', () => {
     it('returns true if all fields are valid', () => {
-      let form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes}/>);
+      const form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes} />);
       spyOn(form, 'forceUpdate');
-      form.state.category = {name: 'myName', categoryTypeId: 2};
+      form.state.category = { name: 'myName', categoryTypeId: 2 };
       expect(form.isValid()).toEqual(true);
       expect(form.forceUpdate).toHaveBeenCalled();
     });
 
     it('returns false if name field is missing', () => {
-      let form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes}/>);
+      const form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes} />);
       spyOn(form, 'forceUpdate');
-      form.state.category = {name: '', categoryTypeId: 2};
+      form.state.category = { name: '', categoryTypeId: 2 };
       expect(form.isValid()).toEqual(false);
       expect(form.forceUpdate).toHaveBeenCalled();
     });
 
     it('returns false if category type field is missing', () => {
-      let form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes}/>);
+      const form = TestUtils.renderIntoDocument(<CategoryForm category={category} categoryTypes={categoryTypes} />);
       spyOn(form, 'forceUpdate');
-      form.state.category = {name: 'myName', categoryTypeId: null};
+      form.state.category = { name: 'myName', categoryTypeId: null };
       expect(form.isValid()).toEqual(false);
       expect(form.forceUpdate).toHaveBeenCalled();
     });
@@ -61,16 +64,16 @@ describe('CategoryForm', () => {
 
   describe('updating state and validation', () => {
     it('name is required', () => {
-      let form = TestUtils.renderIntoDocument(<CategoryForm category={{}} categoryTypes={categoryTypes}/>);
-      let name = form.refs.nameField;
-      let formGroup = name.parentNode;
-      let helpBlock = formGroup.getElementsByClassName('help-block')[0];
+      const form = TestUtils.renderIntoDocument(<CategoryForm category={{}} categoryTypes={categoryTypes} />);
+      const name = form.refs.nameField;
+      const formGroup = name.parentNode;
+      const helpBlock = formGroup.getElementsByClassName('help-block')[0];
 
       TestUtils.Simulate.change(name);
       expect(formGroup.className).toMatch(/has-error/);
       expect(helpBlock.textContent).toEqual('Name is required');
 
-      name.value = 'giraffe'
+      name.value = 'giraffe';
       TestUtils.Simulate.change(name);
       expect(form.state.category.name).toEqual('giraffe');
       expect(formGroup.className).toMatch(/has-success/);
@@ -78,10 +81,10 @@ describe('CategoryForm', () => {
     });
 
     it('category type is required', () => {
-      let form = TestUtils.renderIntoDocument(<CategoryForm category={{categoryTypeId: 2}} categoryTypes={categoryTypes}/>);
-      let categoryType = form.refs.categoryTypeIdField;
-      let formGroup = ReactDOM.findDOMNode(categoryType).parentNode;
-      let helpBlock = formGroup.getElementsByClassName('help-block')[0];
+      const form = TestUtils.renderIntoDocument(<CategoryForm category={{ categoryTypeId: 2 }} categoryTypes={categoryTypes} />);
+      const categoryType = form.refs.categoryTypeIdField;
+      const formGroup = ReactDOM.findDOMNode(categoryType).parentNode;
+      const helpBlock = formGroup.getElementsByClassName('help-block')[0];
 
       categoryType.props.onChange(null);
       form.forceUpdate();

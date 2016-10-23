@@ -5,7 +5,7 @@ const accountSelector = state => state.accountStore.get('accounts');
 const accountBalancesSelector = state => state.reportStore.get('accountBalances');
 const selectedAccountsSelector = state => state.accountStore.get('selectedAccounts');
 
-let chartColours = ['#9467bd', '#bcbd22', '#17becf', '#e377c2', '#ffbb78'];
+const chartColours = ['#9467bd', '#bcbd22', '#17becf', '#e377c2', '#ffbb78'];
 
 function lineSeriesData(accounts, accountBalances, selectedAccounts) {
   let seriesData = List([]);
@@ -13,8 +13,8 @@ function lineSeriesData(accounts, accountBalances, selectedAccounts) {
     if (accountBalances.get(accountId)) {
       seriesData = seriesData.push(Map({
         name: accounts.find(account => account.get('id') == accountId).get('name'),
-        data: accountBalances.get(accountId).map(point => List([new Date(point.get(0)), point.get(1)/100.0])),
-        backgroundColour: chartColours[index % 5]
+        data: accountBalances.get(accountId).map(point => List([new Date(point.get(0)), point.get(1) / 100.0])),
+        backgroundColour: chartColours[index % 5],
       }));
     }
   });

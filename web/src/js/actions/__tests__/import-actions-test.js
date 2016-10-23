@@ -13,7 +13,7 @@ describe('ImportActions', () => {
 
   describe('uploadOFX', () => {
     it('calls the ofx api with the file and accountId', () => {
-      let file = {name: 'file.ofx'};
+      const file = { name: 'file.ofx' };
       spyOn(apiUtil, 'upload');
       spyOn(hashHistory, 'push');
 
@@ -23,14 +23,14 @@ describe('ImportActions', () => {
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'UPLOAD_OFX', fileName: 'file.ofx' });
       expect(hashHistory.push).toHaveBeenCalledWith('/import');
 
-      let uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
+      const uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
       expect(uploadArgs.url).toEqual('accounts/45/transactions/import');
       expect(uploadArgs.file).toEqual(file);
 
       spyOn(transactionTransformer, 'transformFromOfxApi').and.returnValue('transformedFromApi');
       spyOn(importActions, 'storeOfxTransactions');
-      let successCallback = uploadArgs.onSuccess;
-      successCallback({transactions: ['transaction']});
+      const successCallback = uploadArgs.onSuccess;
+      successCallback({ transactions: ['transaction'] });
 
       expect(transactionTransformer.transformFromOfxApi).toHaveBeenCalledWith('transaction');
       expect(importActions.storeOfxTransactions).toHaveBeenCalledWith(['transformedFromApi']);
@@ -43,7 +43,7 @@ describe('ImportActions', () => {
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_OFX_TRANSACTIONS',
-        transactions: ['transactions']
+        transactions: ['transactions'],
       });
     });
   });
@@ -53,10 +53,10 @@ describe('ImportActions', () => {
       spyOn(apiUtil, 'post');
       spyOn(store, 'getState').and.returnValue({
         importStore: fromJS({
-          transactions: [{memo: 'one', import: false}, {memo: 'two', import: true}],
-          fileName: 'file.ofx'
+          transactions: [{ memo: 'one', import: false }, { memo: 'two', import: true }],
+          fileName: 'file.ofx',
         }),
-        accountStore: fromJS({currentAccount: {id: 45}})
+        accountStore: fromJS({ currentAccount: { id: 45 } }),
       });
       spyOn(transactionTransformer, 'transformToApi').and.returnValue('transaction');
 
@@ -64,9 +64,9 @@ describe('ImportActions', () => {
 
       expect(apiUtil.post).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'SAVE_TRANSACTIONS' });
-      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith({memo: 'two', import: true});
+      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith({ memo: 'two', import: true });
 
-      let postArgs = apiUtil.post.calls.argsFor(0)[0];
+      const postArgs = apiUtil.post.calls.argsFor(0)[0];
       expect(postArgs.url).toEqual('accounts/45/bank_statements');
       expect(postArgs.body.account_id).toEqual(45);
       expect(postArgs.body.transactions).toEqual(['transaction']);
@@ -85,7 +85,7 @@ describe('ImportActions', () => {
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_OFX_TRANSACTIONS',
-        transactions: []
+        transactions: [],
       });
       expect(hashHistory.push).toHaveBeenCalledWith('/transactions');
     });
@@ -98,7 +98,7 @@ describe('ImportActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_NOTES',
         index: 3,
-        notes: 'newNote'
+        notes: 'newNote',
       });
     });
 
@@ -108,7 +108,7 @@ describe('ImportActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_CATEGORY_ID',
         index: 4,
-        categoryId: 34
+        categoryId: 34,
       });
     });
 
@@ -118,7 +118,7 @@ describe('ImportActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_SUBCATEGORY_ID',
         index: 5,
-        subcategoryId: 27
+        subcategoryId: 27,
       });
     });
 
@@ -128,7 +128,7 @@ describe('ImportActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_IMPORT',
         index: 6,
-        import: true
+        import: true,
       });
     });
   });

@@ -7,16 +7,21 @@ import { Button } from 'react-bootstrap';
 import importActions from '../../../actions/import-actions';
 
 describe('ImportPage', () => {
-  let importPage, account, transactions, groupedCategories, subcategories;
+  let importPage,
+    account,
+    transactions,
+    groupedCategories,
+    subcategories;
   beforeEach(() => {
-    account = {id: 1, name: 'Account1'};
-    transactions = [{amount: 50}, {amount: 250}];
+    account = { id: 1, name: 'Account1' };
+    transactions = [{ amount: 50 }, { amount: 250 }];
     groupedCategories = ['categories'];
     subcategories = ['subcategories'];
 
     importPage = shallowRenderer(
       <ImportPage account={account} ofxTransactions={transactions}
-                  groupedCategories={groupedCategories} subcategories={subcategories} />
+        groupedCategories={groupedCategories} subcategories={subcategories}
+      />
     );
   });
 
@@ -44,7 +49,7 @@ describe('ImportPage', () => {
     describe('click import button', () => {
       it('calls the import action', () => {
         spyOn(importActions, 'importTransactions');
-        let button = importPage.props.children[0].props.children;
+        const button = importPage.props.children[0].props.children;
         button.props.onClick();
 
         expect(importActions.importTransactions).toHaveBeenCalled();

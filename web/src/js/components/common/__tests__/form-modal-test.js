@@ -5,13 +5,18 @@ import FormModal from '../form-modal';
 import { Modal, Button } from 'react-bootstrap';
 
 describe('FormModal', () => {
-  let modelName, onCloseSpy, onSaveSpy, onDeleteSpy, modal, child;
+  let modelName,
+    onCloseSpy,
+    onSaveSpy,
+    onDeleteSpy,
+    modal,
+    child;
   beforeEach(() => {
     modelName = 'ModelName';
     onCloseSpy = jasmine.createSpy('onCloseSpy');
     onSaveSpy = jasmine.createSpy('onSaveSpy');
     onDeleteSpy = jasmine.createSpy('onDeleteSpy');
-    child = <div id='testChild' />;
+    child = <div id="testChild" />;
   });
 
   describe('render', () => {
@@ -24,7 +29,7 @@ describe('FormModal', () => {
     it('it is a modal and has a title', () => {
       expect(modal.type).toEqual(Modal);
 
-      let header = modal.props.children[0];
+      const header = modal.props.children[0];
 
       expect(header.type).toEqual(Modal.Header);
       expect(header.props.children.type).toEqual(Modal.Title);
@@ -32,14 +37,14 @@ describe('FormModal', () => {
     });
 
     it('adds a form ref to the child', () => {
-      let body = modal.props.children[1];
+      const body = modal.props.children[1];
 
       expect(body.props.children.props.id).toEqual('testChild');
       expect(body.props.children.ref).toEqual('form');
     });
 
     it('has a footer with cancel and save buttons', () => {
-      let footer = modal.props.children[2];
+      const footer = modal.props.children[2];
 
       expect(footer.type).toEqual(Modal.Footer);
 
@@ -55,7 +60,7 @@ describe('FormModal', () => {
       modal = shallowRenderer(
         <FormModal show allowDelete={false} modelName={modelName} onClose={onCloseSpy} onSave={onSaveSpy}>{child}</FormModal>
       );
-      let footer = modal.props.children[2];
+      const footer = modal.props.children[2];
       let [deleteButton, cancelButton, saveButton] = footer.props.children;
       expect(deleteButton).toBeUndefined();
       expect(cancelButton.props.children).toEqual('Cancel');
@@ -67,7 +72,8 @@ describe('FormModal', () => {
     beforeEach(() => {
       modal = TestUtils.renderIntoDocument(
         <FormModal show modelName={modelName} allowDelete onClose={onCloseSpy} onSave={onSaveSpy}
-                   onDelete={onDeleteSpy}>{child}</FormModal>
+          onDelete={onDeleteSpy}
+        >{child}</FormModal>
       );
       modal.refs.form = jasmine.createSpyObj('form', ['isValid', 'getModel']);
     });
@@ -90,7 +96,7 @@ describe('FormModal', () => {
 
     describe('onDelete success', () => {
       it('calls the onDelete prop with the form models id', () => {
-        modal.refs.form.getModel.and.returnValue({id: 13});
+        modal.refs.form.getModel.and.returnValue({ id: 13 });
         modal.refs.deleteButton1.props.onClick();
         modal.refs.deleteButton2.props.onClick();
 

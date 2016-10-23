@@ -1,14 +1,14 @@
-'use strict';
 
-import {connect} from 'react-redux';
+
+import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
 import ImportTable from './import-table';
 import { Button } from 'react-bootstrap';
 import importActions from '../../actions/import-actions';
 import React from 'react';
 import { groupedCategories } from '../../selectors/category-selector';
-require("../../../css/common.scss");
-require("../../../css/import.scss");
+require('../../../css/common.scss');
+require('../../../css/import.scss');
 
 export class ImportPage extends React.Component {
 
@@ -28,13 +28,14 @@ export class ImportPage extends React.Component {
     return (
       <div>
         <PageHeader title="import transactions">
-          <Button onClick={this.importTransactions.bind(this)}><i className="fa fa-file-text-o"></i> Import</Button>
+          <Button onClick={this.importTransactions.bind(this)}><i className="fa fa-file-text-o" /> Import</Button>
         </PageHeader>
         <div className="container import">
           {this.renderTitle()}
           <ImportTable transactions={this.props.ofxTransactions}
-                       groupedCategories={this.props.groupedCategories}
-                       subcategories={this.props.subcategories} />
+            groupedCategories={this.props.groupedCategories}
+            subcategories={this.props.subcategories}
+          />
         </div>
       </div>
     );
@@ -46,7 +47,7 @@ function mapStateToProps(state) {
     account: state.accountStore.get('currentAccount').toJS(),
     ofxTransactions: state.importStore.get('transactions').toJS(),
     groupedCategories: groupedCategories(state).toJS(),
-    subcategories: state.categoryStore.get('subcategories').toJS()
+    subcategories: state.categoryStore.get('subcategories').toJS(),
   };
 }
 

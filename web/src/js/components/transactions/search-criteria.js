@@ -1,7 +1,7 @@
-'use strict';
+
 
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 
 import accountActions from '../../actions/account-actions';
@@ -13,7 +13,7 @@ import AccountFilter from '../common/criteria/account-filter';
 import DateRangeFilter from '../common/criteria/date-range-filter';
 import DescriptionFilter from '../common/description-filter';
 import { Glyphicon } from 'react-bootstrap';
-require("../../../css/transaction.scss");
+require('../../../css/transaction.scss');
 
 export class SearchCriteria extends React.Component {
 
@@ -21,7 +21,7 @@ export class SearchCriteria extends React.Component {
     super();
     this.fetch();
   }
-  
+
   onAccountChange(accountId) {
     accountActions.setCurrentAccount(accountId);
     this.fetch();
@@ -30,13 +30,13 @@ export class SearchCriteria extends React.Component {
   onDateRangeChange(data) {
     if (data.id) {
       dateRangeActions.setCurrentDateRange(data.id);
-      let newDateRange = this.props.dateRanges.filter(dateRange => dateRange.id === data.id)[0];
+      const newDateRange = this.props.dateRanges.filter(dateRange => dateRange.id === data.id)[0];
       this.fetch();
     } else if (data.fromDate) {
-      dateRangeActions.updateCurrentDateRange({fromDate: data.fromDate});
+      dateRangeActions.updateCurrentDateRange({ fromDate: data.fromDate });
       this.fetch();
     } else if (data.toDate) {
-      dateRangeActions.updateCurrentDateRange({toDate: data.toDate});
+      dateRangeActions.updateCurrentDateRange({ toDate: data.toDate });
       this.fetch();
     }
   }
@@ -55,17 +55,17 @@ export class SearchCriteria extends React.Component {
     transactionActions.getTransactions();
   }
 
-  renderStaticCriteria(){
+  renderStaticCriteria() {
     return [
-      <AccountFilter key='1' fetch={this.fetch}/>,
-      <DateRangeFilter key='2' fetch={this.fetch}/>
+      <AccountFilter key="1" fetch={this.fetch} />,
+      <DateRangeFilter key="2" fetch={this.fetch} />,
     ];
   }
 
   renderOptionToggle() {
     return (
-      <div key='3' className='row'>
-        <div ref='optionToggle' onClick={this.onToggleMoreOrLess.bind(this)} className='more-or-less pull-right'>
+      <div key="3" className="row">
+        <div ref="optionToggle" onClick={this.onToggleMoreOrLess.bind(this)} className="more-or-less pull-right">
           {this.renderMoreOrLess()}
         </div>
       </div>
@@ -74,17 +74,18 @@ export class SearchCriteria extends React.Component {
 
   renderMoreOrLess() {
     if (this.props.moreOptions) {
-      return <span>less <Glyphicon glyph='triangle-top' /></span>;
+      return <span>less <Glyphicon glyph="triangle-top" /></span>;
     } else {
-      return <span>more <Glyphicon glyph='triangle-bottom' /></span>;
+      return <span>more <Glyphicon glyph="triangle-bottom" /></span>;
     }
   }
 
   renderMoreCriteria() {
     if (this.props.moreOptions) {
       return (
-        <DescriptionFilter key='4' description={this.props.searchDescription} 
-        onChange={this.onDescriptionChange.bind(this)}/>
+        <DescriptionFilter key="4" description={this.props.searchDescription}
+          onChange={this.onDescriptionChange.bind(this)}
+        />
       );
     }
   }
@@ -94,14 +95,14 @@ export class SearchCriteria extends React.Component {
       return [
         this.renderStaticCriteria(),
         this.renderOptionToggle(),
-        this.renderMoreCriteria()
+        this.renderMoreCriteria(),
       ];
     }
   }
 
   render() {
     return (
-      <div id='search-criteria'>
+      <div id="search-criteria">
         {this.renderCriteria()}
       </div>
     );
@@ -117,7 +118,7 @@ function mapStateToProps(state) {
     dateRanges: state.dateRangeStore.get('dateRanges'),
     currentDateRange: state.dateRangeStore.get('currentDateRange'),
     searchDescription: state.transactionStore.get('searchDescription'),
-    moreOptions: state.transactionStore.get('moreOptions')
+    moreOptions: state.transactionStore.get('moreOptions'),
   };
 }
 

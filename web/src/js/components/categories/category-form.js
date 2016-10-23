@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Input } from 'react-bootstrap';
@@ -15,18 +15,18 @@ export default class CategoryForm extends React.Component {
   validationSchema() {
     return {
       categoryTypeId: { presence: true },
-      name: { presence: true }
+      name: { presence: true },
     };
   }
 
   handleCategoryTypeChange(categoryTypeId) {
-    this.handleChange({target: {name: 'categoryTypeId', value: categoryTypeId}});
+    this.handleChange({ target: { name: 'categoryTypeId', value: categoryTypeId } });
   }
 
   handleChange(event) {
-    let category = this.state.category;
+    const category = this.state.category;
     category[event.target.name] = event.target.value;
-    this.setState({category: category});
+    this.setState({ category });
     this.validator.validateField(event.target.name, event.target.value);
   }
 
@@ -43,17 +43,19 @@ export default class CategoryForm extends React.Component {
     return (
       <div>
         <div className={`form-group ${this.validator.errorState('categoryTypeId')}`}>
-          <label className='control-label'>Category Type</label>
+          <label className="control-label">Category Type</label>
           <Picker name="categoryTypeId" value={this.state.category.categoryTypeId}
-              options={this.props.categoryTypes} ref='categoryTypeIdField'
-              onChange={this.handleCategoryTypeChange.bind(this)} />
-          <div className='help-block'>{this.validator.errorFor('categoryTypeId')}</div>
+            options={this.props.categoryTypes} ref="categoryTypeIdField"
+            onChange={this.handleCategoryTypeChange.bind(this)}
+          />
+          <div className="help-block">{this.validator.errorFor('categoryTypeId')}</div>
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>
-          <label className='control-label'>Name</label>
-          <input className='form-control' name='name' type='text' value={this.state.category.name || ''}
-            onChange={this.handleChange.bind(this)} ref='nameField' />
-          <div className='help-block'>{this.validator.errorFor('name')}</div>
+          <label className="control-label">Name</label>
+          <input className="form-control" name="name" type="text" value={this.state.category.name || ''}
+            onChange={this.handleChange.bind(this)} ref="nameField"
+          />
+          <div className="help-block">{this.validator.errorFor('name')}</div>
         </div>
       </div>
     );
@@ -63,8 +65,8 @@ export default class CategoryForm extends React.Component {
 CategoryForm.propTypes = {
   category: React.PropTypes.shape({
     name: React.PropTypes.string,
-    categoryTypeId: React.PropTypes.number
+    categoryTypeId: React.PropTypes.number,
   }).isRequired,
-  categoryTypes: React.PropTypes.array.isRequired
+  categoryTypes: React.PropTypes.array.isRequired,
 };
 

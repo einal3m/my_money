@@ -1,10 +1,10 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, NavbarBrand, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
-require("../../../css/nav.scss");
+require('../../../css/nav.scss');
 
 export default class Header extends React.Component {
   render() {
@@ -25,7 +25,7 @@ export default class Header extends React.Component {
             <LinkContainer to="/reports/accountBalance"><MenuItem eventKey={4}>Account Balance Line Chart</MenuItem></LinkContainer>
           </NavDropdown>
         </Nav>
-      </Navbar> 
+      </Navbar>
     );
   }
 }

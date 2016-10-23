@@ -10,19 +10,19 @@ export default class D3LineChart extends React.Component {
   constructor() {
     super();
 
-    this.state = {tooltipData: null, showTooltip: false};
+    this.state = { tooltipData: null, showTooltip: false };
     this.callbacks = {
       showTooltip: this.showTooltip.bind(this),
       hideTooltip: this.hideTooltip.bind(this),
       formatYLabels: this.formatMoney.bind(this),
-      formatXLabels: this.formatDate.bind(this)
+      formatXLabels: this.formatDate.bind(this),
     };
   }
 
   componentDidMount() {
-    let options = {
+    const options = {
       height: 450,
-      width: this.refs.chartContainer.offsetWidth - 20
+      width: this.refs.chartContainer.offsetWidth - 20,
     };
 
     lineChart(this.props.chartData.seriesData, '#d3-chart', options, this.callbacks);
@@ -30,11 +30,11 @@ export default class D3LineChart extends React.Component {
 
   shouldComponentUpdate(props, state) {
     if (props != this.props) {
-      let options = {
+      const options = {
         height: 450,
-        width: this.refs.chartContainer.offsetWidth - 20
+        width: this.refs.chartContainer.offsetWidth - 20,
       };
-      let svg = document.getElementsByTagName('svg')[0];
+      const svg = document.getElementsByTagName('svg')[0];
       svg.parentNode.removeChild(svg);
       lineChart(props.chartData.seriesData, '#d3-chart', options, this.callbacks);
     }
@@ -43,11 +43,11 @@ export default class D3LineChart extends React.Component {
   }
 
   showTooltip(tooltipData) {
-    this.setState({tooltipData: tooltipData, showTooltip: true});
+    this.setState({ tooltipData, showTooltip: true });
   }
 
   hideTooltip() {
-    this.setState({tooltipData: null, showTooltip: false});
+    this.setState({ tooltipData: null, showTooltip: false });
   }
 
   formatMoney(amount) {
@@ -60,10 +60,10 @@ export default class D3LineChart extends React.Component {
 
   render() {
     return (
-        <div className='text-center' ref='chartContainer' className='chart-container'>
-          <ChartTooltip ref='tooltip' show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000}/>
-          <ChartLegend chartData={this.props.chartData}/>
-          <div id='d3-chart' />
+      <div className="text-center" ref="chartContainer" className="chart-container">
+        <ChartTooltip ref="tooltip" show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000} />
+        <ChartLegend chartData={this.props.chartData} />
+        <div id="d3-chart" />
       </div>
     );
   }

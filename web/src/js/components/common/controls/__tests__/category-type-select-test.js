@@ -4,20 +4,21 @@ import TestUtils from 'react-addons-test-utils';
 import CategoryTypeSelect from '../category-type-select';
 
 describe('CategoryTypeSelect', () => {
-
-  let select, categoryTypes, onChangeSpy;
+  let select,
+    categoryTypes,
+    onChangeSpy;
   beforeEach(() => {
     onChangeSpy = jasmine.createSpy('onChangeSpy');
     categoryTypes = [
-      {id: 1, name: 'One'},
-      {id: 2, name: 'Two'}
+      { id: 1, name: 'One' },
+      { id: 2, name: 'Two' },
     ];
   });
 
   describe('render', () => {
     it('has a select with correct category type selected', () => {
       select = shallowRenderer(
-        <CategoryTypeSelect value={2} categoryTypes={categoryTypes} onChange={onChangeSpy}/>
+        <CategoryTypeSelect value={2} categoryTypes={categoryTypes} onChange={onChangeSpy} />
       );
 
       expect(select.type).toEqual('select');
@@ -31,7 +32,7 @@ describe('CategoryTypeSelect', () => {
     });
 
     it('has a select with a placeholder when value is missing', () => {
-      select = shallowRenderer(<CategoryTypeSelect categoryTypes={categoryTypes} onChange={onChangeSpy}/>);
+      select = shallowRenderer(<CategoryTypeSelect categoryTypes={categoryTypes} onChange={onChangeSpy} />);
       expect(select.type).toEqual('select');
       expect(select.props.value).toEqual('0');
 
@@ -46,11 +47,11 @@ describe('CategoryTypeSelect', () => {
   describe('onChange', () => {
     it('calls the onChange prop', () => {
       select = TestUtils.renderIntoDocument(
-        <CategoryTypeSelect value={2} categoryTypes={categoryTypes} onChange={onChangeSpy}/>
+        <CategoryTypeSelect value={2} categoryTypes={categoryTypes} onChange={onChangeSpy} />
       );
-      TestUtils.Simulate.change(select.refs.select, {target: {name: 'categoryTypeId', value: '2'}});
+      TestUtils.Simulate.change(select.refs.select, { target: { name: 'categoryTypeId', value: '2' } });
 
-      expect(onChangeSpy).toHaveBeenCalledWith({target: {name: 'categoryTypeId', value: 2}});
+      expect(onChangeSpy).toHaveBeenCalledWith({ target: { name: 'categoryTypeId', value: 2 } });
     });
   });
 });

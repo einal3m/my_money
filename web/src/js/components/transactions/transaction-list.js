@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import PageHeader from '../common/page-header';
@@ -10,7 +10,7 @@ import importActions from '../../actions/import-actions';
 import categoryActions from '../../actions/category-actions';
 import FileChooserModal from '../import/file-chooser-modal';
 
-require("../../../css/common.scss");
+require('../../../css/common.scss');
 
 export class TransactionList extends React.Component {
   constructor() {
@@ -18,20 +18,20 @@ export class TransactionList extends React.Component {
     categoryActions.getCategories();
 
     this.state = {
-      showImportModal: false
-    }
+      showImportModal: false,
+    };
   }
 
   hideModal() {
-    this.setState({showImportModal: false});
+    this.setState({ showImportModal: false });
   }
 
   showModal() {
-    this.setState({showImportModal: true});
+    this.setState({ showImportModal: true });
   }
 
-  formData(file){
-    var data = new FormData();
+  formData(file) {
+    const data = new FormData();
     data.append('data_file', file);
     return data;
   }
@@ -44,8 +44,9 @@ export class TransactionList extends React.Component {
   renderImportModal() {
     if (this.state.showImportModal && this.props.loaded) {
       return (
-        <FileChooserModal show={this.state.showImportModal} onHide={this.hideModal.bind(this)} 
-          onImport={this.importTransactions.bind(this)} account={this.props.currentAccount.toJS()}/>
+        <FileChooserModal show={this.state.showImportModal} onHide={this.hideModal.bind(this)}
+          onImport={this.importTransactions.bind(this)} account={this.props.currentAccount.toJS()}
+        />
       );
     }
   }
@@ -54,7 +55,7 @@ export class TransactionList extends React.Component {
     return (
       <div>
         <PageHeader title="my transactions">
-          <Button onClick={this.showModal.bind(this)}><i className="fa fa-file-text-o"></i> Import</Button>
+          <Button onClick={this.showModal.bind(this)}><i className="fa fa-file-text-o" /> Import</Button>
         </PageHeader>
         <div className="container">
           <SearchCriteria />
@@ -70,13 +71,13 @@ export class TransactionList extends React.Component {
 
 TransactionList.propTypes = {
   loaded: React.PropTypes.bool.isRequired,
-  currentAccount: React.PropTypes.shape({id: React.PropTypes.number}),
+  currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
 };
 
 function mapStateToProps(state) {
   return {
     loaded: state.accountStore.get('loaded'),
-    currentAccount: state.accountStore.get('currentAccount')
+    currentAccount: state.accountStore.get('currentAccount'),
   };
 }
 

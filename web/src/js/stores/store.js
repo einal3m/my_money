@@ -15,6 +15,6 @@ export default createStore(
     categoryStore: categoryReducer,
     importStore: importReducer,
     apiStatusStore: apiReducer,
-    reportStore: reportReducer
+    reportStore: reportReducer,
   })
 );

@@ -5,7 +5,7 @@ import { Navbar } from 'react-bootstrap';
 
 describe('Header', () => {
   it('has a menu and some links', () => {
-    let header = shallowRenderer(<Header />);
+    const header = shallowRenderer(<Header />);
     expect(header.type).toEqual(Navbar);
   });
 });

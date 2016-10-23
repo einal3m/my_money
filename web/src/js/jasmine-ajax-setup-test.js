@@ -1,9 +1,9 @@
-beforeEach(function() {
+beforeEach(() => {
   jasmine.Ajax.install();
 });
 
 
-afterEach(function() {
+afterEach(() => {
   expect(jasmine.Ajax.requests.mostRecent()).toBeUndefined();
   jasmine.Ajax.uninstall();
 });

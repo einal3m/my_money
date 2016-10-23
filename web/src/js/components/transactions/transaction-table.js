@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Panel, Table } from 'react-bootstrap';
@@ -6,15 +6,16 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import TransactionRow from './transaction-row';
 import { groupedCategories } from '../../selectors/category-selector';
-require("../../../css/transaction.scss");
+require('../../../css/transaction.scss');
 
 export class TransactionTable extends React.Component {
 
   renderTransactions() {
-    return this.props.transactions.map(transaction => {
+    return this.props.transactions.map((transaction) => {
       return (
         <TransactionRow key={transaction.id} transaction={transaction}
-                        groupedCategories={this.props.groupedCategories} subcategories={this.props.subcategories}/>
+          groupedCategories={this.props.groupedCategories} subcategories={this.props.subcategories}
+        />
       );
     });
   }
@@ -31,13 +32,13 @@ export class TransactionTable extends React.Component {
     }
     if (this.props.transactions.length > 0) {
       return (
-        <Table hover id='transaction-table'>
+        <Table hover id="transaction-table">
           <thead>
             <tr>
-              <th className='date'>date</th>
+              <th className="date">date</th>
               <th>description</th>
-              <th className='currency'>amount</th>
-              <th className='currency'>balance</th>
+              <th className="currency">amount</th>
+              <th className="currency">balance</th>
             </tr>
           </thead>
           <tbody>
@@ -61,9 +62,9 @@ export class TransactionTable extends React.Component {
 }
 
 TransactionTable.propTypes = {
-  account: React.PropTypes.shape({name: React.PropTypes.string}),
+  account: React.PropTypes.shape({ name: React.PropTypes.string }),
   searchCriteriaLoaded: React.PropTypes.bool.isRequired,
-  transactions: React.PropTypes.arrayOf(React.PropTypes.shape({id: React.PropTypes.number.isRequired})),
+  transactions: React.PropTypes.arrayOf(React.PropTypes.shape({ id: React.PropTypes.number.isRequired })),
   groupedCategories: React.PropTypes.array.isRequired,
 };
 

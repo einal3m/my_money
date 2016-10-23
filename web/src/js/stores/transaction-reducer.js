@@ -3,19 +3,19 @@ import { Map, List, fromJS } from 'immutable';
 const INITIAL_STATE = Map({
   loading: false,
   transactions: List(),
-  moreOptions: false
+  moreOptions: false,
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-  case 'SET_TRANSACTIONS':
-    return setTransactions(state, action.transactions);
-  case 'FETCHING_TRANSACTIONS':
-    return setLoadingState(state);
-  case 'SET_SEARCH_DESCRIPTION':
-    return setSearchDescription(state, action.description);  
-  case 'TOGGLE_MORE_OR_LESS':
-    return toggleMoreOrLess(state);
+    case 'SET_TRANSACTIONS':
+      return setTransactions(state, action.transactions);
+    case 'FETCHING_TRANSACTIONS':
+      return setLoadingState(state);
+    case 'SET_SEARCH_DESCRIPTION':
+      return setSearchDescription(state, action.description);
+    case 'TOGGLE_MORE_OR_LESS':
+      return toggleMoreOrLess(state);
   }
   return state;
 }

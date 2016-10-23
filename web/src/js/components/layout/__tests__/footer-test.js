@@ -4,7 +4,7 @@ import Footer from '../footer';
 
 describe('Footer', () => {
   it('has a 3 sections with links', () => {
-    let footer = shallowRenderer(<Footer />);
+    const footer = shallowRenderer(<Footer />);
     expect(footer.props.children.props.children.length).toEqual(3);
   });
 });

@@ -25,11 +25,11 @@ const App = React.createClass({
         </Provider>
         <Footer />
       </div>
-    )
-  }
+    );
+  },
 });
 
-let host = document.getElementById('host').textContent;
+const host = document.getElementById('host').textContent;
 apiUtil.setUrl(host);
 
 render((
@@ -39,12 +39,12 @@ render((
       <Route path="transactions" component={TransactionList} />
       <Route path="categories" component={CategoryList} />
       <Route path="import" component={ImportPage} />
-      <Route path='reports'>
-        <Route path='accountBalance' component={AccountBalanceChart} />
-        <Route path='incomeVsExpenseBar' component={IncomeVsExpenseBarChart} />
-        <Route path='incomeVsExpenses' component={IncomeVsExpensesReport} />
+      <Route path="reports">
+        <Route path="accountBalance" component={AccountBalanceChart} />
+        <Route path="incomeVsExpenseBar" component={IncomeVsExpenseBarChart} />
+        <Route path="incomeVsExpenses" component={IncomeVsExpensesReport} />
       </Route>
-      <IndexRoute component={AccountList}/>
+      <IndexRoute component={AccountList} />
     </Route>
   </Router>
 ), document.getElementById('app'));

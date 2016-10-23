@@ -6,25 +6,25 @@ const INITIAL_STATE = Map({
   subcategoriesLoaded: false,
   categoryTypes: List(),
   categories: List(),
-  subcategories: List()
+  subcategories: List(),
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-  case 'SET_CATEGORY_TYPES':
-    return setCategoryTypes(state, action.categoryTypes);
-  case 'SET_CATEGORIES':
-    return setCategories(state, action.categories);
-  case 'SET_CATEGORY':
-    return setCategory(state, action.category);
-  case 'REMOVE_CATEGORY':
-    return removeCategory(state, action.categoryId);
-  case 'SET_SUBCATEGORIES':
-    return setSubcategories(state, action.subcategories);
-  case 'SET_SUBCATEGORY':
-    return setSubcategory(state, action.subcategory);
-  case 'REMOVE_SUBCATEGORY':
-    return removeSubcategory(state, action.subcategoryId);
+    case 'SET_CATEGORY_TYPES':
+      return setCategoryTypes(state, action.categoryTypes);
+    case 'SET_CATEGORIES':
+      return setCategories(state, action.categories);
+    case 'SET_CATEGORY':
+      return setCategory(state, action.category);
+    case 'REMOVE_CATEGORY':
+      return removeCategory(state, action.categoryId);
+    case 'SET_SUBCATEGORIES':
+      return setSubcategories(state, action.subcategories);
+    case 'SET_SUBCATEGORY':
+      return setSubcategory(state, action.subcategory);
+    case 'REMOVE_SUBCATEGORY':
+      return removeSubcategory(state, action.subcategoryId);
   }
   return state;
 }

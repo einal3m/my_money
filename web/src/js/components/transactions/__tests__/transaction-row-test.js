@@ -6,7 +6,9 @@ import Amount from '../../common/amount';
 import Date from '../../common/date';
 
 describe('TransactionRow', () => {
-  let transaction, transactionRow, groupedCategories;
+  let transaction,
+    transactionRow,
+    groupedCategories;
   beforeEach(() => {
     transaction = {
       id: 22,
@@ -16,22 +18,22 @@ describe('TransactionRow', () => {
       memo: 'This is a memo',
       balance: 6070,
       categoryId: 3,
-      subcategoryId: 5
+      subcategoryId: 5,
     };
     groupedCategories = [{
       categoryType: 'Income',
       categories: [{
         id: 3,
         name: 'My Category',
-        subcategories: [{id: 5, name: 'My Subcategory'}]
-      }]
+        subcategories: [{ id: 5, name: 'My Subcategory' }],
+      }],
     }];
   });
 
   describe('render', () => {
     it('transaction attributes', () => {
       transactionRow = shallowRenderer(<TransactionRow transaction={transaction}
-                                                       groupedCategories={groupedCategories}
+        groupedCategories={groupedCategories}
       />);
       let [date, description, amountCell, balanceCell] = transactionRow.props.children;
 

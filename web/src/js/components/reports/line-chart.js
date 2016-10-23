@@ -1,22 +1,21 @@
 import d3 from 'd3';
 
 export default function lineChart(seriesData, id, options, callbacks) {
+  const width = options.width || 1000;
+  const height = options.height || 500;
 
-  let width = options.width || 1000;
-  let height = options.height || 500;
-
-  let dim = {
+  const dim = {
     noOfSeries: seriesData.length,
     topMargin: 20,
     leftMargin: 80,
     rightMargin: 80,
-    xAxisHeight: 30
+    xAxisHeight: 30,
   };
 
   dim.chartHeight = height - dim.topMargin - dim.xAxisHeight;
   dim.chartWidth = width - dim.leftMargin - dim.rightMargin;
 
-  var vis = d3.select(id).append('svg')
+  const vis = d3.select(id).append('svg')
     .attr('width', width)
     .attr('height', height);
 
@@ -31,20 +30,19 @@ export default function lineChart(seriesData, id, options, callbacks) {
 }
 
 function convertDate(dateString) {
-  let newDate = new Date(dateString);
+  const newDate = new Date(dateString);
   newDate.setHours(0);
   return newDate;
 }
 
 function createScales(seriesData, dim, callbacks) {
-
-  var xScale = d3.time.scale()
+  const xScale = d3.time.scale()
     .domain([
       d3.min(seriesData, series => d3.min(series.data, data => data[0])),
       d3.max(seriesData, series => d3.max(series.data, data => data[0]))])
     .range([0, dim.chartWidth]);
 
-  var yScale = d3.scale.linear()
+  const yScale = d3.scale.linear()
     .domain([
       d3.min(seriesData, series => d3.min(series.data, data => data[1])),
       d3.max(seriesData, series => d3.max(series.data, data => data[1]))])
@@ -54,21 +52,20 @@ function createScales(seriesData, dim, callbacks) {
 }
 
 function createYAxis(vis, yScale, dim, callbacks) {
-
-  var yAxis = d3.svg.axis()
+  const yAxis = d3.svg.axis()
     .scale(yScale)
     .orient('right')
     .tickSize(dim.chartWidth)
     .ticks(10)
     .tickFormat(value => callbacks.formatYLabels(value));
 
-  let yAxisG = vis.append('g')
+  const yAxisG = vis.append('g')
     .call(yAxis)
     .attr('class', 'y-axis')
-    .attr('transform', 'translate(' + dim.leftMargin + ', ' + dim.topMargin + ')');
+    .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`);
 
   yAxisG.selectAll('path.y-axis, .y-axis line, .y-axis path')
-    .style({fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges'});
+    .style({ fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges' });
 
   yAxisG.selectAll('text')
     .attr('x', -10)
@@ -76,61 +73,59 @@ function createYAxis(vis, yScale, dim, callbacks) {
 }
 
 function createXAxis(vis, xScale, dim, callbacks) {
-
-  var xAxis = d3.svg.axis()
+  const xAxis = d3.svg.axis()
     .scale(xScale)
     .tickSize(dim.chartHeight)
     .ticks(8)
     .orient('top')
     .tickFormat(value => callbacks.formatXLabels(value));
 
-  let xAxisG = vis.append('g')
+  const xAxisG = vis.append('g')
     .attr('class', 'x-axis')
-    .attr('transform', 'translate(' + dim.leftMargin + ',' + (dim.topMargin + dim.chartHeight) + ')')
+    .attr('transform', `translate(${dim.leftMargin},${dim.topMargin + dim.chartHeight})`)
     .call(xAxis);
 
   xAxisG.selectAll('path.x-axis, .x-axis line, .x-axis path')
-    .style({fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges'});
+    .style({ fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges' });
 
   xAxisG.selectAll('text')
     .attr('y', 20);
 }
 
 function createLines(vis, xScale, yScale, seriesData, dim) {
-
-  let d3Line = d3.svg.line()
+  const d3Line = d3.svg.line()
     .x(data => xScale(data[0]))
     .y(data => yScale(data[1]))
     .interpolate('step-after');
 
   seriesData.forEach((series, seriesIndex) => {
-    vis.append("g")
+    vis.append('g')
       .attr('class', `series${seriesIndex}`)
       .append('path')
       .attr('d', d3Line(series.data))
       .attr('stroke', series.backgroundColour)
       .attr('stroke-width', 2)
       .attr('fill', 'none')
-      .attr('transform', 'translate(' + dim.leftMargin + ',' + dim.topMargin + ')');
+      .attr('transform', `translate(${dim.leftMargin},${dim.topMargin})`);
   });
 }
 
 function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
-  let focus = vis.append("g")
-    .attr("class", "focus")
-    .attr('transform', 'translate(' + dim.leftMargin + ', ' + dim.topMargin + ')')
-    .style("display", "none");
+  const focus = vis.append('g')
+    .attr('class', 'focus')
+    .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`)
+    .style('display', 'none');
 
-  let focusCircles = seriesData.map(series => {
-    let group = focus.append('g');
+  const focusCircles = seriesData.map((series) => {
+    const group = focus.append('g');
 
     group.append('circle')
       .attr('r', 6)
-      .style({stroke: series.backgroundColour, fill: 'white', 'stroke-width': '2'});
+      .style({ stroke: series.backgroundColour, fill: 'white', 'stroke-width': '2' });
 
     group.append('circle')
       .attr('r', 3.5)
-      .style({fill: series.backgroundColour});
+      .style({ fill: series.backgroundColour });
 
     return group;
   });
@@ -139,14 +134,14 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     .attr('class', 'overlay')
     .attr('width', dim.chartWidth)
     .attr('height', dim.chartHeight)
-    .attr('transform', 'translate(' + dim.leftMargin + ', ' + dim.topMargin + ')')
-    .style({fill: 'none', 'pointer-events': 'all'})
+    .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`)
+    .style({ fill: 'none', 'pointer-events': 'all' })
     .on('mouseover', () => focus.style('display', null))
     .on('mouseout', hideCircles)
     .on('mousemove', moveCircles);
 
-  let yFor = (date, series) => {
-    let points = series.data.filter(data => date >= data[0]);
+  const yFor = (date, series) => {
+    const points = series.data.filter(data => date >= data[0]);
     if (points.length > 0) {
       return points.slice(-1)[0][1];
     } else {
@@ -154,29 +149,29 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     }
   };
 
-  let roundedDate = (date) => {
-    let newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const roundedDate = (date) => {
+    const newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     if (date.getHours() > 12) {
-      newDate.setDate(newDate.getDate()+1);
+      newDate.setDate(newDate.getDate() + 1);
     }
     return newDate;
   };
 
   function moveCircles() {
-    let date = roundedDate(xScale.invert(d3.mouse(this)[0]));
+    const date = roundedDate(xScale.invert(d3.mouse(this)[0]));
 
-    let tooltipData = {
+    const tooltipData = {
       periodLabel: callbacks.formatXLabels(date),
       seriesLabel: seriesData.map(series => series.name),
       colours: seriesData.map(series => series.backgroundColour),
-      tooltipPosition: xScale(date) > dim.chartWidth/2 ? 'left': 'right'
+      tooltipPosition: xScale(date) > dim.chartWidth / 2 ? 'left' : 'right',
     };
-    let values = [];
+    const values = [];
 
     seriesData.forEach((series, seriesIndex) => {
-      let y =  yFor(date, series);
+      const y = yFor(date, series);
       if (Number.isFinite(y)) {
-        focusCircles[seriesIndex].attr('transform', 'translate(' + xScale(date) + ',' + yScale(y) + ')')
+        focusCircles[seriesIndex].attr('transform', `translate(${xScale(date)},${yScale(y)})`)
           .style('display', null);
       } else {
         focusCircles[seriesIndex].style('display', 'none');
@@ -191,7 +186,7 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
   }
 
   function hideCircles() {
-    focus.style("display", 'none');
+    focus.style('display', 'none');
     if (callbacks.hideTooltip) {
       callbacks.hideTooltip();
     }
@@ -200,9 +195,9 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
 
 function create0Axis(vis, yScale, dim) {
   if (yScale(0) >= 0 && yScale(0) <= dim.chartHeight) {
-    let zeroAxis = vis.append('g')
+    const zeroAxis = vis.append('g')
       .attr('class', 'y-axis-zero')
-      .attr('transform', 'translate(' + dim.leftMargin + ',' + (dim.topMargin + yScale(0)) + ')' );
+      .attr('transform', `translate(${dim.leftMargin},${dim.topMargin + yScale(0)})`);
 
     zeroAxis.append('line')
       .attr('x1', 0)

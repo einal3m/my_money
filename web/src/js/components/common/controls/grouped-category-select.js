@@ -3,23 +3,23 @@ import React from 'react';
 export default class GroupedCategorySelect extends React.Component {
 
   handleChange(event) {
-    this.props.onChange({target: {name: event.target.name, value: Number(event.target.value)}});
+    this.props.onChange({ target: { name: event.target.name, value: Number(event.target.value) } });
   }
 
   renderBlankOption() {
     if (!this.props.value) {
-      return <option value='0' disabled>Please select...</option>;
+      return <option value="0" disabled>Please select...</option>;
     }
   }
 
   renderCategories(categories) {
-      return categories.map(category => {
-        return <option key={`cat_${category.id}`} value={category.id}>{category.name}</option>;
-      });
+    return categories.map((category) => {
+      return <option key={`cat_${category.id}`} value={category.id}>{category.name}</option>;
+    });
   }
 
   renderCategoryTypes() {
-    return this.props.groupedCategories.map(categoryType => {
+    return this.props.groupedCategories.map((categoryType) => {
       return (
         <optgroup key={`catType_${categoryType.categoryType.id}`} label={categoryType.categoryType.name}>
           {this.renderCategories(categoryType.categories)}
@@ -30,11 +30,12 @@ export default class GroupedCategorySelect extends React.Component {
 
   render() {
     return (
-      <select ref='select' className="form-control" name="categoryId" value={this.props.value || '0'} 
-          onChange={this.handleChange.bind(this)}>
+      <select ref="select" className="form-control" name="categoryId" value={this.props.value || '0'}
+        onChange={this.handleChange.bind(this)}
+      >
         {this.renderBlankOption()}
         {this.renderCategoryTypes()}
-      </select>         
+      </select>
     );
   }
 }
@@ -42,5 +43,5 @@ export default class GroupedCategorySelect extends React.Component {
 GroupedCategorySelect.propTypes = {
   value: React.PropTypes.number,
   onChange: React.PropTypes.func.isRequired,
-  groupedCategories: React.PropTypes.array.isRequired
+  groupedCategories: React.PropTypes.array.isRequired,
 };

@@ -3,7 +3,7 @@ import transactionTransformer from '../transaction-transformer';
 describe('transactionTransformer', () => {
   describe('transformToApi', () => {
     it('converts transaction to API format', () => {
-      let transaction = {
+      const transaction = {
         id: 34,
         accountId: 12,
         date: '2015-04-13',
@@ -11,10 +11,10 @@ describe('transactionTransformer', () => {
         categoryId: 3,
         subcategoryId: 11,
         notes: 'a note',
-        memo: 'a memo'
+        memo: 'a memo',
       };
 
-      let transformedTransaction = transactionTransformer.transformToApi(transaction);
+      const transformedTransaction = transactionTransformer.transformToApi(transaction);
 
       expect(transformedTransaction.id).toEqual(34);
       expect(transformedTransaction.account_id).toEqual(12);
@@ -29,7 +29,7 @@ describe('transactionTransformer', () => {
 
   describe('transformFromApi', () => {
     it('converts transaction from API format', () => {
-      let transaction = {
+      const transaction = {
         id: 34,
         account_id: 12,
         date: '2015-04-13',
@@ -38,10 +38,10 @@ describe('transactionTransformer', () => {
         subcategory_id: 11,
         notes: 'a note',
         memo: 'a memo',
-        balance: 3000
+        balance: 3000,
       };
 
-      let transformedTransaction = transactionTransformer.transformFromApi(transaction);
+      const transformedTransaction = transactionTransformer.transformFromApi(transaction);
 
       expect(transformedTransaction.id).toEqual(34);
       expect(transformedTransaction.accountId).toEqual(12);
@@ -57,7 +57,7 @@ describe('transactionTransformer', () => {
 
   describe('transformFromOfxApi', () => {
     it('converts transaction from ofx API', () => {
-      let transaction = {
+      const transaction = {
         account_id: 12,
         date: '2015-04-13',
         amount: 450,
@@ -66,10 +66,10 @@ describe('transactionTransformer', () => {
         subcategory_id: 11,
         notes: null,
         import: false,
-        duplicate: true
+        duplicate: true,
       };
 
-      let transformedTransaction = transactionTransformer.transformFromOfxApi(transaction);
+      const transformedTransaction = transactionTransformer.transformFromOfxApi(transaction);
 
       expect(transformedTransaction.accountId).toEqual(12);
       expect(transformedTransaction.date).toEqual('2015-04-13');

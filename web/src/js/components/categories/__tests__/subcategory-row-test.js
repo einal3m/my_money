@@ -3,13 +3,15 @@ import SubcategoryRow from '../subcategory-row';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 
 describe('SubcategoryRow', () => {
-  let subcategory, clickHandlerSpy, row;
+  let subcategory,
+    clickHandlerSpy,
+    row;
   beforeEach(() => {
-    subcategory = {name: 'Phone', categoryId: 3};
+    subcategory = { name: 'Phone', categoryId: 3 };
     clickHandlerSpy = jasmine.createSpy('clickHandler');
 
     row = shallowRenderer(
-      <SubcategoryRow subcategory={subcategory} onClickHandler={clickHandlerSpy}/>
+      <SubcategoryRow subcategory={subcategory} onClickHandler={clickHandlerSpy} />
     );
   });
 

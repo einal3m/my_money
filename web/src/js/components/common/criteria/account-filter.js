@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import accountActions from '../../../actions/account-actions';
 import accountSelector from '../../../selectors/account-selector';
-import { Input, MenuItem, DropdownButton} from 'react-bootstrap';
+import { Input, MenuItem, DropdownButton } from 'react-bootstrap';
 import AccountPicker from '../controls/account-picker';
 
 export class AccountFilter extends React.Component {
@@ -21,11 +21,12 @@ export class AccountFilter extends React.Component {
 
   renderAccountPicker() {
     if (this.props.loaded) {
-      let value = this.props.multiple ? this.props.selectedAccounts : this.props.currentAccount.id;
+      const value = this.props.multiple ? this.props.selectedAccounts : this.props.currentAccount.id;
       return (
         <AccountPicker multiple={this.props.multiple} accountTypes={this.props.accountTypes}
-                       accountGroups={this.props.accountGroups}
-                       value={value} onChange={this.onChange.bind(this)}/>
+          accountGroups={this.props.accountGroups}
+          value={value} onChange={this.onChange.bind(this)}
+        />
       );
     }
   }
@@ -48,7 +49,7 @@ AccountFilter.propTypes = {
   currentAccount: React.PropTypes.object,
   selectedAccounts: React.PropTypes.arrayOf(React.PropTypes.number),
   fetch: React.PropTypes.func.isRequired,
-  multiple: React.PropTypes.bool
+  multiple: React.PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -57,7 +58,7 @@ function mapStateToProps(state) {
     accountGroups: accountSelector(state).toJS(),
     accountTypes: state.accountStore.get('accountTypes').toJS(),
     selectedAccounts: state.accountStore.get('selectedAccounts').toJS(),
-    currentAccount: state.accountStore.get('currentAccount').toJS()
+    currentAccount: state.accountStore.get('currentAccount').toJS(),
   };
 }
 

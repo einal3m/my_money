@@ -9,18 +9,21 @@ describe('TransactionTable', () => {
 
 
   describe('render', () => {
-    let transactions, account, groupedCategories;
+    let transactions,
+      account,
+      groupedCategories;
 
     beforeEach(() => {
-      transactions = [{id: 1, date: '2015-12-19', amount: 300, balance: 400}];
-      account = {name: 'my Account'};
-      groupedCategories = [{categoryType: 'Income'}];
+      transactions = [{ id: 1, date: '2015-12-19', amount: 300, balance: 400 }];
+      account = { name: 'my Account' };
+      groupedCategories = [{ categoryType: 'Income' }];
     });
 
     it('when criteria not loaded', () => {
       transactionTable = shallowRenderer(
         <TransactionTable searchCriteriaLoaded={false} transactions={[]} account={null}
-                          groupedCategories={groupedCategories} />
+          groupedCategories={groupedCategories}
+        />
       );
 
       expect(transactionTable.props.children[0]).toBeUndefined();
@@ -30,7 +33,8 @@ describe('TransactionTable', () => {
     it('when criteria loaded and no transactions', () => {
       transactionTable = shallowRenderer(
         <TransactionTable searchCriteriaLoaded transactions={[]} account={account}
-                          groupedCategories={groupedCategories} />
+          groupedCategories={groupedCategories}
+        />
       );
 
       let [title, message] = transactionTable.props.children;
@@ -41,7 +45,8 @@ describe('TransactionTable', () => {
     it('when criteria loaded and has transactions', () => {
       transactionTable = shallowRenderer(
         <TransactionTable searchCriteriaLoaded transactions={transactions} account={account}
-                          groupedCategories={groupedCategories} />
+          groupedCategories={groupedCategories}
+        />
       );
 
       let [title, table] = transactionTable.props.children;

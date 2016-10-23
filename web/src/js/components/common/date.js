@@ -8,5 +8,5 @@ export default class Date extends React.Component {
 }
 
 Date.propTypes = {
-  date: React.PropTypes.string.isRequired
+  date: React.PropTypes.string.isRequired,
 };

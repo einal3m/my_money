@@ -8,7 +8,12 @@ import SubcategoryPicker from '../../common/controls/subcategory-picker';
 import importActions from '../../../actions/import-actions';
 
 describe('ImportRow', () => {
-  let importRow, transaction, groupedCategories, subcategories, sub1, sub3;
+  let importRow,
+    transaction,
+    groupedCategories,
+    subcategories,
+    sub1,
+    sub3;
   beforeEach(() => {
     transaction = {
       import: false,
@@ -17,19 +22,20 @@ describe('ImportRow', () => {
       categoryId: 14,
       subcategoryId: 27,
       amount: 250,
-      notes: 'myNotes'
+      notes: 'myNotes',
     };
     groupedCategories = [];
-    sub1 = {id: 1, categoryId: 14, name: 'One'};
-    sub3 = {id: 2, categoryId: 14, name: 'Two'};
-    subcategories = [sub1, {id: 3, categoryId: 3, name: 'Three'}, sub3];
+    sub1 = { id: 1, categoryId: 14, name: 'One' };
+    sub3 = { id: 2, categoryId: 14, name: 'Two' };
+    subcategories = [sub1, { id: 3, categoryId: 3, name: 'Three' }, sub3];
   });
 
   describe('render', () => {
     it('is a table row with transaction details', () => {
       importRow = shallowRenderer(
         <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
-                   subcategories={subcategories}/>
+          subcategories={subcategories}
+        />
       );
       expect(importRow.type).toEqual('tr');
       expect(importRow.props.className).toEqual('');
@@ -39,16 +45,16 @@ describe('ImportRow', () => {
 
       expect(importRow.props.children[1].props.children).toEqual('myMemo');
 
-      let notes = importRow.props.children[2].props.children;
+      const notes = importRow.props.children[2].props.children;
       expect(notes.type).toEqual('input');
       expect(notes.props.value).toEqual('myNotes');
 
-      let categorySelect = importRow.props.children[3].props.children;
+      const categorySelect = importRow.props.children[3].props.children;
       expect(categorySelect.type).toEqual(GroupedCategorySelect);
       expect(categorySelect.props.value).toEqual(14);
       expect(categorySelect.props.groupedCategories).toEqual(groupedCategories);
 
-      let subcategorySelect = importRow.props.children[4].props.children;
+      const subcategorySelect = importRow.props.children[4].props.children;
       expect(subcategorySelect.type).toEqual(SubcategoryPicker);
       expect(subcategorySelect.props.value).toEqual(27);
       expect(subcategorySelect.props.groupedCategories).toEqual(groupedCategories);
@@ -57,7 +63,7 @@ describe('ImportRow', () => {
       expect(importRow.props.children[5].props.children.type).toEqual(Amount);
       expect(importRow.props.children[5].props.children.props.amount).toEqual(250);
 
-      let shouldImport = importRow.props.children[6].props.children;
+      const shouldImport = importRow.props.children[6].props.children;
       expect(shouldImport.type).toEqual('input');
       expect(shouldImport.props.type).toEqual('checkbox');
       expect(shouldImport.props.checked).toEqual(false);
@@ -67,7 +73,8 @@ describe('ImportRow', () => {
       transaction.duplicate = true;
       importRow = shallowRenderer(
         <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
-                   subcategories={subcategories}/>
+          subcategories={subcategories}
+        />
       );
 
       expect(importRow.props.className).toEqual('danger');
@@ -77,8 +84,9 @@ describe('ImportRow', () => {
   describe('events', () => {
     beforeEach(() => {
       importRow = shallowRenderer(
-      <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
-                 subcategories={subcategories}/>
+        <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
+          subcategories={subcategories}
+        />
       );
     });
 
@@ -86,8 +94,8 @@ describe('ImportRow', () => {
       it('calls the setNotes action with new value', () => {
         spyOn(importActions, 'setNotes');
 
-        let notes = importRow.props.children[2].props.children;
-        notes.props.onChange({target: {value: 'newNote'}});
+        const notes = importRow.props.children[2].props.children;
+        notes.props.onChange({ target: { value: 'newNote' } });
 
         expect(importActions.setNotes).toHaveBeenCalledWith(4, 'newNote');
       });
@@ -97,8 +105,8 @@ describe('ImportRow', () => {
       it('calls the setCategoryId action with new value', () => {
         spyOn(importActions, 'setCategoryId');
 
-        let categorySelect = importRow.props.children[3].props.children;
-        categorySelect.props.onChange({target: {value: 3}});
+        const categorySelect = importRow.props.children[3].props.children;
+        categorySelect.props.onChange({ target: { value: 3 } });
 
         expect(importActions.setCategoryId).toHaveBeenCalledWith(4, 3);
       });
@@ -108,7 +116,7 @@ describe('ImportRow', () => {
       it('calls the setSubcategoryId action with new value', () => {
         spyOn(importActions, 'setSubcategoryId');
 
-        let subcategorySelect = importRow.props.children[4].props.children;
+        const subcategorySelect = importRow.props.children[4].props.children;
         subcategorySelect.props.onChange(2);
 
         expect(importActions.setSubcategoryId).toHaveBeenCalledWith(4, 2);
@@ -119,8 +127,8 @@ describe('ImportRow', () => {
       it('calls the setImport action with new value', () => {
         spyOn(importActions, 'setImport');
 
-        let shouldImport = importRow.props.children[6].props.children;
-        shouldImport.props.onChange({target: {checked: true}});
+        const shouldImport = importRow.props.children[6].props.children;
+        shouldImport.props.onChange({ target: { checked: true } });
 
         expect(importActions.setImport).toHaveBeenCalledWith(4, true);
       });

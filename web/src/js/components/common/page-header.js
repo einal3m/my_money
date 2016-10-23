@@ -1,9 +1,10 @@
-'use strict';
+
+
 import React from 'react';
 import Sticky from 'react-stickydiv';
 import ApiStatus from '../../util/api-status';
 import apiStatusActions from '../../actions/api-status-actions';
-require("../../../css/common.scss");
+require('../../../css/common.scss');
 
 export default class PageTitle extends React.Component {
 
@@ -22,9 +23,9 @@ export default class PageTitle extends React.Component {
           return 'Deleting...';
         case ApiStatus.ERROR:
           return (
-            <span className='error'>
+            <span className="error">
               Error: {this.props.apiStatus.message}
-              <i className='fa fa-times-circle' ref='clearError' onClick={this.clearError}/>
+              <i className="fa fa-times-circle" ref="clearError" onClick={this.clearError} />
             </span>
           );
       }
@@ -39,7 +40,7 @@ export default class PageTitle extends React.Component {
             <div className="row">
               <div className="title col-xs-8">
                 <div className="inline-heading"><h1>{this.props.title}</h1></div>
-                <span className='status'>{this.renderStatus()}</span>
+                <span className="status">{this.renderStatus()}</span>
               </div>
               <div className="button-group col-xs-4">
                 <div className="pull-right">

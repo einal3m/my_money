@@ -7,14 +7,16 @@ import SavingsAccountForm from '../savings-account-form';
 import ShareAccountForm from '../share-account-form';
 
 describe('NewAccountModal', () => {
-  let modal, onCloseSpy, onSaveSpy;
+  let modal,
+    onCloseSpy,
+    onSaveSpy;
   beforeEach(() => {
     onCloseSpy = jasmine.createSpy('onClose');
     onSaveSpy = jasmine.createSpy('onSave');
   });
   describe('render', () => {
     beforeEach(() => {
-      modal = shallowRenderer(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType='savings'/>);
+      modal = shallowRenderer(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType="savings" />);
     });
 
     it('has a title', () => {
@@ -28,7 +30,7 @@ describe('NewAccountModal', () => {
     });
 
     it('has a share form', () => {
-      modal = shallowRenderer(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType='share'/>);
+      modal = shallowRenderer(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType="share" />);
       let [header, body, footer] = modal.props.children.props.children;
       expect(body.props.children.type).toEqual(ShareAccountForm);
     });
@@ -36,12 +38,12 @@ describe('NewAccountModal', () => {
 
   describe('buttons', () => {
     beforeEach(() => {
-      modal = TestUtils.renderIntoDocument(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType='savings'/>)
+      modal = TestUtils.renderIntoDocument(<NewAccountModal show onClose={onCloseSpy} onSave={onSaveSpy} accountType="savings" />);
     });
 
     describe('cancel', () => {
       it('closes the modal', () => {
-        let cancelButton = modal.refs.cancelButton;
+        const cancelButton = modal.refs.cancelButton;
         cancelButton.props.onClick();
 
         expect(onCloseSpy).toHaveBeenCalled();
@@ -50,8 +52,8 @@ describe('NewAccountModal', () => {
 
     describe('save', () => {
       it('validates the form and saves the account', () => {
-        let saveButton = modal.refs.saveButton;
-        let newAccountForm = modal.refs.newAccountForm
+        const saveButton = modal.refs.saveButton;
+        const newAccountForm = modal.refs.newAccountForm;
         spyOn(newAccountForm, 'isValid').and.returnValue(true);
         spyOn(newAccountForm, 'getAccount').and.returnValue('account');
         saveButton.props.onClick();
@@ -61,8 +63,8 @@ describe('NewAccountModal', () => {
       });
 
       it('doesnt save if the form is invalid', () => {
-        let saveButton = modal.refs.saveButton;
-        let newAccountForm = modal.refs.newAccountForm
+        const saveButton = modal.refs.saveButton;
+        const newAccountForm = modal.refs.newAccountForm;
         spyOn(newAccountForm, 'isValid').and.returnValue(false);
         saveButton.props.onClick();
 

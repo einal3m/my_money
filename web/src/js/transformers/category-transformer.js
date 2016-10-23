@@ -1,9 +1,9 @@
 
-let categoryTransformer = {
+const categoryTransformer = {
   transformToApi(category) {
-    let apiCategory = {
+    const apiCategory = {
       name: category.name,
-      category_type_id: category.categoryTypeId
+      category_type_id: category.categoryTypeId,
     };
 
     if (category.id) {
@@ -16,9 +16,9 @@ let categoryTransformer = {
     return {
       id: category.id,
       name: category.name,
-      categoryTypeId: category.category_type_id
+      categoryTypeId: category.category_type_id,
     };
-  }
-}
+  },
+};
 
 export default categoryTransformer;

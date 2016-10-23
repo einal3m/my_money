@@ -9,22 +9,24 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import accountActions from '../../../actions/account-actions';
 
 describe('AccountList', () => {
-  let accountGroups, accountTypes, accountList;
+  let accountGroups,
+    accountTypes,
+    accountList;
   beforeEach(() => {
     spyOn(accountActions, 'getAccounts');
 
     accountTypes = fromJS([
       { id: 1, code: 'savings', name: 'Savings' },
       { id: 3, code: 'other', name: 'Other' },
-      { id: 2, code: 'share', name: 'Share' }
+      { id: 2, code: 'share', name: 'Share' },
     ]);
 
     accountGroups = fromJS({
-      'savings': [{id: 1, name: 'Account 2', currentBalance: 678}],
-      'share': [{id: 2, name: 'Account 1', currentBalance: 0}]
+      savings: [{ id: 1, name: 'Account 2', currentBalance: 678 }],
+      share: [{ id: 2, name: 'Account 1', currentBalance: 0 }],
     });
 
-    accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups} accountTypes={accountTypes}/>);
+    accountList = shallowRenderer(<AccountList loading={false} accountGroups={accountGroups} accountTypes={accountTypes} />);
   });
 
   it('has a header with new account dropdown button', () => {
@@ -54,7 +56,7 @@ describe('AccountList', () => {
 
   describe('new account modal', () => {
     beforeEach(() => {
-      accountList = TestUtils.renderIntoDocument(<AccountList loading={false} accountGroups={accountGroups} accountTypes={accountTypes}/>);
+      accountList = TestUtils.renderIntoDocument(<AccountList loading={false} accountGroups={accountGroups} accountTypes={accountTypes} />);
     });
 
     it('does not show modal by default', () => {
@@ -63,14 +65,14 @@ describe('AccountList', () => {
 
     it('shows savings modal when you click on the new savings account button', () => {
       accountList.refs.newAccountButton.props.onSelect(null, '1');
-      let modal = accountList.refs.newAccountModal
+      const modal = accountList.refs.newAccountModal;
       expect(modal).toBeDefined();
       expect(modal.props.accountType).toEqual('savings');
     });
 
     it('shows share modal when you click on the new share account button', () => {
       accountList.refs.newAccountButton.props.onSelect(null, '2');
-      let modal = accountList.refs.newAccountModal
+      const modal = accountList.refs.newAccountModal;
       expect(modal).toBeDefined();
       expect(modal.props.accountType).toEqual('share');
     });
@@ -81,10 +83,10 @@ describe('AccountList', () => {
       expect(accountList.refs.newAccountModal).toBeUndefined();
     });
 
-    it('modals onSave function calls the create account action', () =>{
+    it('modals onSave function calls the create account action', () => {
       spyOn(accountActions, 'createAccount');
       accountList.refs.newAccountButton.props.onSelect(null, '1');
-      let modal = accountList.refs.newAccountModal
+      const modal = accountList.refs.newAccountModal;
 
       modal.props.onSave('account');
       expect(accountActions.createAccount).toHaveBeenCalledWith('account');

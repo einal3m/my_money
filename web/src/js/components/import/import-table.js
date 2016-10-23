@@ -1,9 +1,9 @@
-'use strict';
+
 
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import ImportRow from './import-row';
-require("../../../css/transaction.scss");
+require('../../../css/transaction.scss');
 
 export default class ImportTable extends React.Component {
 
@@ -11,8 +11,9 @@ export default class ImportTable extends React.Component {
     return this.props.transactions.map((transaction, index) => {
       return (
         <ImportRow key={index} index={index} transaction={transaction}
-                   groupedCategories={this.props.groupedCategories}
-                   subcategories={this.props.subcategories} />
+          groupedCategories={this.props.groupedCategories}
+          subcategories={this.props.subcategories}
+        />
       );
     });
   }
@@ -20,15 +21,15 @@ export default class ImportTable extends React.Component {
   renderTable() {
     if (this.props.transactions.length > 0) {
       return (
-        <Table hover id='transaction-table'>
+        <Table hover id="transaction-table">
           <thead>
             <tr>
-              <th className='date'>date</th>
-              <th className='memo'>bank memo</th>
-              <th className='notes'>notes</th>
-              <th className='category'>category</th>
-              <th className='subcategory'>subcategory</th>
-              <th className='currency'>amount</th>
+              <th className="date">date</th>
+              <th className="memo">bank memo</th>
+              <th className="notes">notes</th>
+              <th className="category">category</th>
+              <th className="subcategory">subcategory</th>
+              <th className="currency">amount</th>
               <th>&nbsp;</th>
             </tr>
           </thead>
@@ -54,5 +55,5 @@ export default class ImportTable extends React.Component {
 ImportTable.propTypes = {
   transactions: React.PropTypes.array.isRequired,
   groupedCategories: React.PropTypes.array.isRequired,
-  subcategories: React.PropTypes.array.isRequired
+  subcategories: React.PropTypes.array.isRequired,
 };

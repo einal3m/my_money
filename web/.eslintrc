@@ -1,0 +1,30 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "impliedStrict": true,
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "extends": "airbnb",
+  "rules": {
+    "max-len": ["error", 120],
+    "new-cap": ["error", { "capIsNewExceptions": ["Scrollable", "Map", "List", "Router"] }],
+    "no-confusing-arrow": ["off"],
+    "no-use-before-define": ["error", "nofunc"],
+    "import/no-unresolved": ["error", { "ignore": ["test-helpers"] } ],
+    "react/sort-comp": ["off"],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "_+" }]
+  },
+  "plugins": [
+    "react"
+  ]
+}

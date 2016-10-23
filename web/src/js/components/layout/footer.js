@@ -1,8 +1,8 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
-require("../../../css/nav.scss");
+require('../../../css/nav.scss');
 
 export default class Footer extends React.Component {
   render() {
@@ -20,16 +20,16 @@ export default class Footer extends React.Component {
 
           <div className="col-sm-4">
             <h3>cool stuff</h3>
-            <a href='#accounts/first/import'>import OFX file</a><br />
-            <a href='#reports'>reports</a><br />
+            <a href="#accounts/first/import">import OFX file</a><br />
+            <a href="#reports">reports</a><br />
           </div>
 
           <div className="col-sm-4">
             <h3>find me</h3>
             <a href="http://www.github.com/melm73" target="_blank">melm73 @ GitHub </a><br />
           </div>
-          
-        </div>    
+
+        </div>
       </footer>
     );
   }

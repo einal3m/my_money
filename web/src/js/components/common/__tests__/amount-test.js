@@ -5,7 +5,7 @@ import Amount from '../amount';
 describe('Amount', () => {
   describe('render', () => {
     it('with positive amount', () => {
-      let amount = shallowRenderer(<Amount amount={670707} />);
+      const amount = shallowRenderer(<Amount amount={670707} />);
 
       let [sign, space, dollars, dot, cents] = amount.props.children;
       expect(sign.props.children).toEqual('+');
@@ -16,7 +16,7 @@ describe('Amount', () => {
     });
 
     it('with negative amount', () => {
-      let amount = shallowRenderer(<Amount amount={-670707} />);
+      const amount = shallowRenderer(<Amount amount={-670707} />);
 
       let [sign, space, dollars, dot, cents] = amount.props.children;
       expect(sign.props.children).toEqual('-');
@@ -27,7 +27,7 @@ describe('Amount', () => {
     });
 
     it('with zero amount', () => {
-      let amount = shallowRenderer(<Amount amount={0} />);
+      const amount = shallowRenderer(<Amount amount={0} />);
 
       let [sign, space, dollars, dot, cents] = amount.props.children;
       expect(sign).toBeUndefined();

@@ -10,29 +10,29 @@ class ImportActions {
     hashHistory.push('/import');
     return apiUtil.upload({
       url: `accounts/${accountId}/transactions/import`,
-      file: file,
+      file,
       onSuccess: response => this.storeOfxTransactions(
         response.transactions.map(transaction => transactionTransformer.transformFromOfxApi(transaction))
-      )
+      ),
     });
   }
 
   storeOfxTransactions(transactions) {
-    store.dispatch({ type: 'SET_OFX_TRANSACTIONS', transactions: transactions });
+    store.dispatch({ type: 'SET_OFX_TRANSACTIONS', transactions });
   }
 
   importTransactions() {
     store.dispatch({ type: 'SAVE_TRANSACTIONS' });
-    let importStore = store.getState().importStore;
-    let transactions = importStore.get('transactions').toJS().filter(transaction => transaction.import);
-    let fileName = importStore.get('fileName');
-    let accountId = store.getState().accountStore.get('currentAccount').get('id');
-    let transformedTxns = transactions.map(transaction => transactionTransformer.transformToApi(transaction));
+    const importStore = store.getState().importStore;
+    const transactions = importStore.get('transactions').toJS().filter(transaction => transaction.import);
+    const fileName = importStore.get('fileName');
+    const accountId = store.getState().accountStore.get('currentAccount').get('id');
+    const transformedTxns = transactions.map(transaction => transactionTransformer.transformToApi(transaction));
 
     return apiUtil.post({
-      url: 'accounts/' + accountId + '/bank_statements',
-      body: {account_id: accountId, file_name: fileName, transactions: transformedTxns},
-      onSuccess: () => this.importComplete()
+      url: `accounts/${accountId}/bank_statements`,
+      body: { account_id: accountId, file_name: fileName, transactions: transformedTxns },
+      onSuccess: () => this.importComplete(),
     });
   }
 
@@ -44,32 +44,32 @@ class ImportActions {
   setNotes(index, notes) {
     store.dispatch({
       type: 'SET_NOTES',
-      index: index,
-      notes: notes
+      index,
+      notes,
     });
   }
 
   setCategoryId(index, categoryId) {
     store.dispatch({
       type: 'SET_CATEGORY_ID',
-      index: index,
-      categoryId: categoryId
+      index,
+      categoryId,
     });
   }
 
   setSubcategoryId(index, subcategoryId) {
     store.dispatch({
       type: 'SET_SUBCATEGORY_ID',
-      index: index,
-      subcategoryId: subcategoryId
+      index,
+      subcategoryId,
     });
   }
 
   setImport(index, importFlag) {
     store.dispatch({
       type: 'SET_IMPORT',
-      index: index,
-      import: importFlag
+      index,
+      import: importFlag,
     });
   }
 }

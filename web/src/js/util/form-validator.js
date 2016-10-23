@@ -4,17 +4,17 @@ import moment from 'moment';
 validate.extend(validate.validators.datetime, {
   // The value is guaranteed not to be null or undefined but otherwise it
   // could be anything.
-  parse: function(value, options) {
+  parse(value, options) {
     return +moment.utc(value);
   },
   // Input is a unix timestamp
-  format: function(value, options) {
-    var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
+  format(value, options) {
+    const format = options.dateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss';
     return moment.utc(value).format(format);
-  }
+  },
 });
 
-validate.validators.presence.options = {message: "is required"};
+validate.validators.presence.options = { message: 'is required' };
 
 export default class FormValidator {
   constructor(schema) {
@@ -28,11 +28,11 @@ export default class FormValidator {
   }
 
   validateField(field, value) {
-    let validationField = {};
+    const validationField = {};
     validationField[field] = value;
 
-    let validationRule = this._ruleForField(field);
-    let error =  validate.validate(validationField, validationRule);
+    const validationRule = this._ruleForField(field);
+    const error = validate.validate(validationField, validationRule);
 
     this._reconcileErrors(field, error);
     return error;
@@ -53,18 +53,18 @@ export default class FormValidator {
 
   _ruleForField(field) {
     if (field) {
-      let singleRule = {};
+      const singleRule = {};
       singleRule[field] = this.schema[field];
       return singleRule;
     }
-    return this.schema; 
+    return this.schema;
   }
 
   _reconcileErrors(field, error) {
     if (error) {
       this.errors[field] = error[field];
     } else {
-      delete this.errors[field];      
-    }  
+      delete this.errors[field];
+    }
   }
 }

@@ -1,4 +1,5 @@
-'use strict';
+
+
 import React from 'react';
 import { MenuItem, DropdownButton, Menu, Glyphicon } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -7,7 +8,7 @@ import moneyUtil from '../../util/money-util';
 import Balance from '../common/balance';
 import accountActions from '../../actions/account-actions';
 import transactionActions from '../../actions/transaction-actions';
-require("../../../css/common.scss");
+require('../../../css/common.scss');
 require('../../../images/piggy-bank.gif');
 
 export default class AccountSlat extends React.Component {
@@ -28,13 +29,13 @@ export default class AccountSlat extends React.Component {
   renderSlatImage(accountType) {
     if (accountType === 'savings') {
       return (
-        <img src={require("../../../images/piggy-bank.gif")} height={35} width={35} />
+        <img src={require('../../../images/piggy-bank.gif')} height={35} width={35} />
       );
     } else {
       return (
         <span className="fa-stack fa-lg">
-          <i className="fa fa-circle fa-stack-2x"></i>
-          <i className="fa fa-bank fa-stack-1x fa-inverse"></i>
+          <i className="fa fa-circle fa-stack-2x" />
+          <i className="fa fa-bank fa-stack-1x fa-inverse" />
         </span>
       );
     }
@@ -42,9 +43,10 @@ export default class AccountSlat extends React.Component {
 
   renderButtonGroup() {
     return (
-      <DropdownButton title="..." pullRight noCaret id={'action-button-' + this.props.account.id} 
-                      ref='accountActionsButton' onSelect={this.accountActions.bind(this)}>
-        <LinkContainer to="/transactions"><MenuItem eventKey='1'>View Transactions</MenuItem></LinkContainer>
+      <DropdownButton title="..." pullRight noCaret id={`action-button-${this.props.account.id}`}
+        ref="accountActionsButton" onSelect={this.accountActions.bind(this)}
+      >
+        <LinkContainer to="/transactions"><MenuItem eventKey="1">View Transactions</MenuItem></LinkContainer>
         <MenuItem eventKey="2">Edit Account Details</MenuItem>
         <MenuItem eventKey="3">Delete Account</MenuItem>
       </DropdownButton>
@@ -52,17 +54,17 @@ export default class AccountSlat extends React.Component {
   }
 
   renderCurrentBalance() {
-    let currentBalanceDollars = moneyUtil.centsToDollars(this.props.account.get('currentBalance'));
+    const currentBalanceDollars = moneyUtil.centsToDollars(this.props.account.get('currentBalance'));
     return moneyUtil.moneyFormat(currentBalanceDollars);
   }
 
   renderName() {
-    return <a className='name-link' onClick={this.viewTransactions.bind(this)}><h4>{this.props.account.get('name')}</h4></a>;
+    return <a className="name-link" onClick={this.viewTransactions.bind(this)}><h4>{this.props.account.get('name')}</h4></a>;
   }
 
   render() {
     return (
-      <li className='slat-item'>
+      <li className="slat-item">
         <div className="row">
           <div className="slat-icon col-sm-1 col-xs-2">
             {this.renderSlatImage(this.props.account.get('accountType'))}

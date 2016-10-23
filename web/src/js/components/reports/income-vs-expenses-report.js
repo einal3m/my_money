@@ -7,9 +7,9 @@ export default class IncomeVsExpensesReport extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title='Income vs Expenses' />
-        <div id='report' className="container">
-          <D3PieChart/>
+        <PageHeader title="Income vs Expenses" />
+        <div id="report" className="container">
+          <D3PieChart />
         </div>
       </div>
     );

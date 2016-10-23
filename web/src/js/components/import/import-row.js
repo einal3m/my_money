@@ -27,22 +27,24 @@ export default class ImportRow extends React.Component {
 
   renderImport() {
     return (
-      <input type='checkbox' checked={this.props.transaction.import}
-             onChange={this.onImportChange.bind(this)} />
+      <input type="checkbox" checked={this.props.transaction.import}
+        onChange={this.onImportChange.bind(this)}
+      />
     );
   }
 
   renderNotes() {
     return (
-      <input className='form-control' value={this.props.transaction.notes} onChange={this.onNotesChange.bind(this)}/>
+      <input className="form-control" value={this.props.transaction.notes} onChange={this.onNotesChange.bind(this)} />
     );
   }
 
   renderCategory() {
     return (
       <GroupedCategorySelect groupedCategories={this.props.groupedCategories}
-                             onChange={this.onCategoryChange.bind(this)}
-                             value={this.props.transaction.categoryId} />
+        onChange={this.onCategoryChange.bind(this)}
+        value={this.props.transaction.categoryId}
+      />
     );
   }
 
@@ -53,9 +55,10 @@ export default class ImportRow extends React.Component {
 
     return (
       <SubcategoryPicker groupedCategories={this.props.groupedCategories}
-                         categoryId={this.props.transaction.categoryId}
-                         onChange={this.onSubcategoryChange.bind(this)}
-                         value={this.props.transaction.subcategoryId} />
+        categoryId={this.props.transaction.categoryId}
+        onChange={this.onSubcategoryChange.bind(this)}
+        value={this.props.transaction.subcategoryId}
+      />
     );
   }
 
@@ -74,7 +77,7 @@ export default class ImportRow extends React.Component {
         <td>{this.renderNotes()}</td>
         <td>{this.renderCategory()}</td>
         <td>{this.renderSubcategory()}</td>
-        <td className='currency'><Amount amount={this.props.transaction.amount} /></td>
+        <td className="currency"><Amount amount={this.props.transaction.amount} /></td>
         <td>{this.renderImport()}</td>
       </tr>
     );
@@ -85,5 +88,5 @@ ImportRow.propTypes = {
   index: React.PropTypes.number.isRequired,
   transaction: React.PropTypes.object.isRequired,
   groupedCategories: React.PropTypes.array.isRequired,
-  subcategories: React.PropTypes.array.isRequired
+  subcategories: React.PropTypes.array.isRequired,
 };

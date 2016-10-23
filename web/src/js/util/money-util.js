@@ -1,13 +1,13 @@
 import accounting from 'accounting';
 
-let moneyUtil = {
+const moneyUtil = {
   centsToDollars(cents) {
     return cents / 100;
   },
 
   moneyFormat(dollars) {
-    return accounting.formatMoney(dollars, 
-      {precision: 2, format: { pos : "%s %v", neg : "%s (%v)", zero: "%s  --" }});
+    return accounting.formatMoney(dollars,
+      { precision: 2, format: { pos: '%s %v', neg: '%s (%v)', zero: '%s  --' } });
   },
 
   numberFormat(dollars) {
@@ -16,8 +16,8 @@ let moneyUtil = {
 
   numberFormatWithSign(dollars) {
     return accounting.formatMoney(dollars,
-      {precision: 2, format: { pos : "%v", neg : "-%v", zero: "0.00" }});
-  }
+      { precision: 2, format: { pos: '%v', neg: '-%v', zero: '0.00' } });
+  },
 };
 
 export default moneyUtil;

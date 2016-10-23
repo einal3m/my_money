@@ -4,29 +4,29 @@ const INITIAL_STATE = Map({
   loaded: false,
   accounts: List(),
   accountTypes: List([
-    Map({ id:1, code: 'savings', name:'Savings' }),
-    Map({ id:2, code: 'share', name: 'Share' })
+    Map({ id: 1, code: 'savings', name: 'Savings' }),
+    Map({ id: 2, code: 'share', name: 'Share' }),
   ]),
   currentAccount: Map({}),
-  selectedAccounts: List([])
+  selectedAccounts: List([]),
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-  case 'SET_ACCOUNTS':
-    return setAccounts(state, action.accounts);
-  case 'ADD_ACCOUNT':
-    return addAccount(state, action.account);
-  case 'REMOVE_ACCOUNT':
-    return removeAccount(state, action.id);
-  case 'SET_CURRENT_ACCOUNT':
-    return setCurrentAccount(state, action.id);
-  case 'TOGGLE_SELECTED_ACCOUNT':
-    return toggleSelectedAccount(state, action.accountId);
+    case 'SET_ACCOUNTS':
+      return setAccounts(state, action.accounts);
+    case 'ADD_ACCOUNT':
+      return addAccount(state, action.account);
+    case 'REMOVE_ACCOUNT':
+      return removeAccount(state, action.id);
+    case 'SET_CURRENT_ACCOUNT':
+      return setCurrentAccount(state, action.id);
+    case 'TOGGLE_SELECTED_ACCOUNT':
+      return toggleSelectedAccount(state, action.accountId);
   }
   return state;
 }
- 
+
 function setAccounts(state, accounts) {
   return state.set('loaded', true)
               .set('accounts', fromJS(accounts))
@@ -50,7 +50,7 @@ function addAccount(state, account) {
 function removeAccount(state, id) {
   const accounts = state.get('accounts').filter(account => account.get('id') !== id);
   let currentAccount = state.get('currentAccount');
-  if (state.get('currentAccount').get('id') === id){
+  if (state.get('currentAccount').get('id') === id) {
     currentAccount = accounts.first() || null;
   }
 
@@ -63,7 +63,7 @@ function setCurrentAccount(state, id) {
 }
 
 function toggleSelectedAccount(state, accountId) {
-  let selected = state.get('selectedAccounts').includes(accountId);
+  const selected = state.get('selectedAccounts').includes(accountId);
   return selected ? removeSelectedAccount(state, accountId) : addSelectedAccount(state, accountId);
 }
 

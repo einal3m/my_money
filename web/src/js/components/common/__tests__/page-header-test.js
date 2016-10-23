@@ -6,10 +6,11 @@ import apiStatusActions from '../../../actions/api-status-actions';
 
 describe('PageHeader', () => {
   describe('render', () => {
-    let title, buttonGroup;
+    let title,
+      buttonGroup;
     beforeEach(() => {
-      let apiStatus = {status: 'done'};
-      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={apiStatus}>myChild</PageHeader>);
+      const apiStatus = { status: 'done' };
+      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={apiStatus}>myChild</PageHeader>);
       [title, buttonGroup] = pageHeader.props.children.props.children.props.children.props.children;
     });
 
@@ -28,28 +29,28 @@ describe('PageHeader', () => {
 
   describe('api status', () => {
     it('loading', () => {
-      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{status: 'loading'}}>myChild</PageHeader>);
-      let status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
+      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{ status: 'loading' }}>myChild</PageHeader>);
+      const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       expect(status.props.children).toEqual('Loading...');
     });
 
     it('saving', () => {
-      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{status: 'saving'}}>myChild</PageHeader>);
-      let status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
+      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{ status: 'saving' }}>myChild</PageHeader>);
+      const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       expect(status.props.children).toEqual('Saving...');
     });
 
     it('deleting', () => {
-      let pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{status: 'deleting'}}>myChild</PageHeader>);
-      let status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
+      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{ status: 'deleting' }}>myChild</PageHeader>);
+      const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       expect(status.props.children).toEqual('Deleting...');
     });
 
     it('error', () => {
-      let pageHeader = shallowRenderer(
-        <PageHeader title="myTitle" apiStatus={{status: 'error', message: 'myMessage'}}>myChild</PageHeader>
+      const pageHeader = shallowRenderer(
+        <PageHeader title="myTitle" apiStatus={{ status: 'error', message: 'myMessage' }}>myChild</PageHeader>
       );
-      let status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
+      const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       let [error, message, x] = status.props.children.props.children;
 
       expect(error).toEqual('Error: ');
@@ -59,12 +60,12 @@ describe('PageHeader', () => {
 
   describe('clear error', () => {
     it('click clears the error', () => {
-      let pageHeader = TestUtils.renderIntoDocument(
-        <PageHeader title="myTitle" apiStatus={{status: 'error', message: 'myMessage'}}>myChild</PageHeader>
+      const pageHeader = TestUtils.renderIntoDocument(
+        <PageHeader title="myTitle" apiStatus={{ status: 'error', message: 'myMessage' }}>myChild</PageHeader>
       );
       spyOn(apiStatusActions, 'clearApiError');
 
-      let clearError = pageHeader.refs.clearError;
+      const clearError = pageHeader.refs.clearError;
       TestUtils.Simulate.click(clearError);
 
       expect(apiStatusActions.clearApiError).toHaveBeenCalled();

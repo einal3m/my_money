@@ -5,16 +5,18 @@ import AccountGroup from '../account-group';
 import AccountSlat from '../account-slat';
 
 describe('AccountGroup', () => {
-  let accounts, accountType, accountGroup;
+  let accounts,
+    accountType,
+    accountGroup;
   beforeEach(() => {
     accountType = fromJS({ id: 1, code: 'savings', name: 'Savings' });
 
     accounts = fromJS([
-      {id: 1, name: 'Savings Maximizer', bank: 'ING', currentBalance: 50.44},
-      {id: 2, name: 'Everyday Savings', bank: 'CBA', currentBalance: 2456.09}
+      { id: 1, name: 'Savings Maximizer', bank: 'ING', currentBalance: 50.44 },
+      { id: 2, name: 'Everyday Savings', bank: 'CBA', currentBalance: 2456.09 },
     ]);
 
-    accountGroup = shallowRenderer(<AccountGroup accountType={accountType} accounts={accounts}/>);
+    accountGroup = shallowRenderer(<AccountGroup accountType={accountType} accounts={accounts} />);
   });
 
   it('has a title and a table of accounts', () => {

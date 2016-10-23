@@ -9,37 +9,36 @@ class TransactionActions {
   getTransactions() {
     accountActions.getAccounts().then(() => {
       dateRangeActions.getDateRanges().then(() => {
-
-        let accountId = store.getState().accountStore.get('currentAccount').get('id');
-        let dateRange = store.getState().dateRangeStore.get('currentDateRange');
-        let fromDate = dateRange.get('fromDate');
-        let toDate = dateRange.get('toDate');
+        const accountId = store.getState().accountStore.get('currentAccount').get('id');
+        const dateRange = store.getState().dateRangeStore.get('currentDateRange');
+        const fromDate = dateRange.get('fromDate');
+        const toDate = dateRange.get('toDate');
         let description;
-        let moreOptions = store.getState().transactionStore.get('moreOptions');
+        const moreOptions = store.getState().transactionStore.get('moreOptions');
         if (moreOptions) {
           description = store.getState().transactionStore.get('searchDescription');
         }
 
-        let url = 'accounts/' + accountId + '/transactions?from_date=' + fromDate + '&to_date=' + toDate;
+        let url = `accounts/${accountId}/transactions?from_date=${fromDate}&to_date=${toDate}`;
         if (description) {
           url = `${url}&description=${description}`;
         }
 
         return apiUtil.get({
-          url: url,
+          url,
           onSuccess: response => this.storeTransactions(
             response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction))
-          )
+          ),
         });
-    })});
+      }); });
   }
 
   storeTransactions(transactions) {
-    store.dispatch({ type: 'SET_TRANSACTIONS', transactions: transactions });
+    store.dispatch({ type: 'SET_TRANSACTIONS', transactions });
   }
 
   setSearchDescription(description) {
-    store.dispatch({ type: 'SET_SEARCH_DESCRIPTION', description: description });
+    store.dispatch({ type: 'SET_SEARCH_DESCRIPTION', description });
   }
 
   toggleMoreOrLess() {
