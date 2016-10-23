@@ -16,6 +16,7 @@
   },
   "extends": "airbnb",
   "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "max-len": ["error", 120],
     "new-cap": ["error", { "capIsNewExceptions": ["Scrollable", "Map", "List", "Router"] }],
     "no-confusing-arrow": ["off"],
