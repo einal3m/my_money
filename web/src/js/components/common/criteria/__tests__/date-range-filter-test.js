@@ -3,8 +3,6 @@ import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import dateRangeActions from '../../../../actions/date-range-actions';
 import { DateRangeFilter } from '../date-range-filter';
-import { Input, Button } from 'react-bootstrap';
-import { fromJS } from 'immutable';
 import DatePicker from '../../date-picker/DateTimeField';
 
 describe('DateRangeFilter', () => {
@@ -37,8 +35,11 @@ describe('DateRangeFilter', () => {
 
       let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
-      let select = dateRange.props.children.props.children;
-      expect(select.type).toEqual(Input);
+      let selectGroup = dateRange.props.children.props.children;
+      let label = selectGroup.props.children[0];
+      let select = selectGroup.props.children[1].props.children;
+      expect(label.props.children).toEqual('Date Range');
+      expect(select.type).toEqual('select');
       expect(select.props.value).toEqual(22);
       expect(select.props.children[0].type).toEqual('option');
       expect(select.props.children[0].props.children).toEqual('Name1');
@@ -88,7 +89,7 @@ describe('DateRangeFilter', () => {
       let dateRangeFilter = TestUtils.renderIntoDocument(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
-      dateRangeFilter.refs.dateRangeSelect.props.onChange({target: {value: '11'}});
+      TestUtils.Simulate.change(dateRangeFilter.refs.dateRangeSelect, {target: {value: '11'}});
 
       expect(dateRangeActions.setCurrentDateRange).toHaveBeenCalledWith(11);
       expect(fetchSpy).toHaveBeenCalled();
@@ -122,5 +123,4 @@ describe('DateRangeFilter', () => {
       expect(fetchSpy).toHaveBeenCalledWith();
     });
   });
-
 });

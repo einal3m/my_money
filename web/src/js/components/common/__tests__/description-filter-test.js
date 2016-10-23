@@ -14,9 +14,9 @@ describe('DescriptionFilter', () => {
   describe('render', () => {
     it('has an input', () => {
       let descriptionFilter = shallowRenderer(<DescriptionFilter description={description} onChange={onChangeSpy}/>);
-      let input = descriptionFilter.props.children.props.children;
+      let input = descriptionFilter.props.children.props.children.props.children[1];
 
-      expect(input.type).toEqual(Input);
+      expect(input.type).toEqual('input');
       expect(input.props.defaultValue).toEqual('my String');
     });
   });
@@ -30,12 +30,12 @@ describe('DescriptionFilter', () => {
     });
 
     it('when blur from input', () => {
-      descriptionFilter.refs.descriptionInput.props.onBlur({target: {value: 'new String'}});
+      TestUtils.Simulate.blur(descriptionFilter.refs.descriptionInput, {target: {value: 'new String'}});
       expect(onChangeSpy).toHaveBeenCalledWith('new String');
     });
 
     it('when enter key pressed', () => {
-      descriptionFilter.refs.descriptionInput.props.onKeyPress({which: 13, target: {value: 'new String'}});
+      TestUtils.Simulate.keyPress(descriptionFilter.refs.descriptionInput, {which: 13, target: {value: 'new String'}});
       expect(onChangeSpy).toHaveBeenCalledWith('new String');
     });
   });

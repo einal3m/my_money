@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import dateRangeActions from '../../../actions/date-range-actions';
-
-import { Input, Button, Glyphicon } from 'react-bootstrap';
 import DatePicker from '../date-picker/DateTimeField';
 require("../../../../css/bootstrap-datetimepicker.scss");
 
@@ -39,10 +37,17 @@ export class DateRangeFilter extends React.Component {
       return ([
         <div key='date-range-select' className="col-xs-4">
           <div className="form-horizontal">
-            <Input type="select" label="Date Range" value={this.props.currentDateRange.id} labelClassName="col-xs-4" wrapperClassName="col-xs-8"
-                   onChange={this.onSelectDateRange.bind(this)} ref='dateRangeSelect'>
-              {this.renderDateRanges()}
-            </Input>
+            <div className="form-group">
+              <label htmlFor="date_range" className="col-xs-4 control-label">Date Range</label>
+              <div className="col-xs-8">
+                <select className="form-control"
+                        value={this.props.currentDateRange.id}
+                        onChange={this.onSelectDateRange.bind(this)}
+                        ref='dateRangeSelect'>
+                  {this.renderDateRanges()}
+                </select>
+              </div>
+            </div>
           </div>
         </div>,
         <div key='from-date' className="col-xs-4">

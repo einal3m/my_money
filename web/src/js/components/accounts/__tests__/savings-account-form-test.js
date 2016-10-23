@@ -16,13 +16,13 @@ describe('SavingsAccountForm', () => {
     it('has a name field', () => {
       expect(name.props.children[0].props.children).toEqual('Name');
       expect(name.props.children[1].type).toEqual('input');
-      expect(name.props.children[1].props.value).toEqual(null);
+      expect(name.props.children[1].props.value).toEqual('');
     });
 
     it('has a bank field', () => {
       expect(bank.props.children[0].props.children).toEqual('Bank');
       expect(bank.props.children[1].type).toEqual('input');
-      expect(bank.props.children[1].props.value).toEqual(null);
+      expect(bank.props.children[1].props.value).toEqual('');
     });
 
     it('has a opening balance field', () => {
@@ -58,8 +58,8 @@ describe('SavingsAccountForm', () => {
       let account = form.state.account;
 
       expect(account.accountType).toEqual('savings');
-      expect(account.name).toEqual(null);
-      expect(account.bank).toEqual(null);
+      expect(account.name).toEqual('');
+      expect(account.bank).toEqual('');
       expect(account.openingBalance).toEqual(0);
       expect(account.openingBalanceDate).toEqual(moment().format('YYYY-MM-DD'));
     });
@@ -74,7 +74,7 @@ describe('SavingsAccountForm', () => {
       expect(formGroup.className).toMatch(/has-error/);
       expect(helpBlock.textContent).toEqual('Name is required');
 
-      name.value = 'giraffe'
+      name.value = 'giraffe';
       TestUtils.Simulate.change(name);
       expect(form.state.account.name).toEqual('giraffe');
       expect(formGroup.className).toMatch(/has-success/);

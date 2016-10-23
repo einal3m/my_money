@@ -12,10 +12,10 @@ export default class ShareAccountForm extends React.Component {
     this.state = {
       account: {
         accountType: 'share',
-        name: null,
-        ticker: null
+        name: '',
+        ticker: ''
       }
-    }
+    };
 
     this.validator = new FormValidator(this.validationSchema());
   }

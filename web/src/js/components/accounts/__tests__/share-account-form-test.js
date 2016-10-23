@@ -14,13 +14,13 @@ describe('ShareAccountForm', () => {
     it('has a ticker field', () => {
       expect(ticker.props.children[0].props.children).toEqual('Ticker');
       expect(ticker.props.children[1].type).toEqual('input');
-      expect(ticker.props.children[1].props.value).toEqual(null);
+      expect(ticker.props.children[1].props.value).toEqual('');
     });
 
     it('has a name field', () => {
       expect(name.props.children[0].props.children).toEqual('Name');
       expect(name.props.children[1].type).toEqual('input');
-      expect(name.props.children[1].props.value).toEqual(null);
+      expect(name.props.children[1].props.value).toEqual('');
     });
   });
 
@@ -44,8 +44,8 @@ describe('ShareAccountForm', () => {
       let account = form.state.account;
 
       expect(account.accountType).toEqual('share');
-      expect(account.name).toEqual(null);
-      expect(account.ticker).toEqual(null);
+      expect(account.name).toEqual('');
+      expect(account.ticker).toEqual('');
     });
 
     it('updates state and validates ticker is required', () => {
@@ -58,7 +58,7 @@ describe('ShareAccountForm', () => {
       expect(formGroup.className).toMatch(/has-error/);
       expect(helpBlock.textContent).toEqual('Ticker is required');
 
-      ticker.value = 'giraffe'
+      ticker.value = 'giraffe';
       TestUtils.Simulate.change(ticker);
       expect(form.state.account.ticker).toEqual('giraffe');
       expect(formGroup.className).toMatch(/has-success/);
@@ -75,7 +75,7 @@ describe('ShareAccountForm', () => {
       expect(formGroup.className).toMatch(/has-error/);
       expect(helpBlock.textContent).toEqual('Name is required');
 
-      name.value = 'giraffe'
+      name.value = 'giraffe';
       TestUtils.Simulate.change(name);
       expect(form.state.account.name).toEqual('giraffe');
       expect(formGroup.className).toMatch(/has-success/);

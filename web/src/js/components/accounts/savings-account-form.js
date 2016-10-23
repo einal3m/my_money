@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { Input } from 'react-bootstrap';
 import DatePicker from 'react-bootstrap-datetimepicker'
 import moment from 'moment';
 import FormValidator from '../../util/form-validator';
@@ -12,12 +11,12 @@ export default class SavingsAccountForm extends React.Component {
     this.state = {
       account: {
         accountType: 'savings',
-        name: null,
-        bank: null,
+        name: '',
+        bank: '',
         openingBalance: 0,
         openingBalanceDate: moment().format('YYYY-MM-DD')
       }
-    }
+    };
 
     this.validator = new FormValidator(this.validationSchema());
   }

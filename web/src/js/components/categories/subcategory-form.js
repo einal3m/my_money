@@ -47,7 +47,7 @@ export default class SubcategoryForm extends React.Component {
         </div>
         <div className={`form-group ${this.validator.errorState('name')}`}>
           <label className='control-label'>Name</label>
-          <input className='form-control' name='name' type='text' value={this.state.subcategory.name} 
+          <input className='form-control' name='name' type='text' value={this.state.subcategory.name || ''}
             onChange={this.handleChange.bind(this)} ref='nameField' />
           <div className='help-block'>{this.validator.errorFor('name')}</div>
         </div>
