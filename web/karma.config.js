@@ -1,30 +1,34 @@
 // Karma configuration
 // Generated on Sun Nov 15 2015 17:37:19 GMT+1100 (AEDT)
 
-module.exports = function(config) {
+module.exports = function exports(config) {
   config.set({
     browsers: ['PhantomJS'],
 
     files: [
-      'src/test-index.js'
+      'src/test-index.js',
     ],
 
     frameworks: ['jasmine-ajax', 'jasmine', 'phantomjs-shim'],
 
     preprocessors: {
-        'src/test-index.js': ['webpack', 'sourcemap']
+      'src/test-index.js': ['webpack', 'sourcemap'],
     },
 
     webpack: {
       devtool: 'inline-source-map',
       module: {
         loaders: [
-          { test: /\.js$/, exclude: /node_modules/, loader: "babel", query: {presets: ['es2015', 'react']} },
-          { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass'  },
-          { test: /\.gif$/, loader: 'url-loader?limit=8192'}
-        ]
+          { test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: { presets: ['es2015', 'react', 'stage-0'] },
+          },
+          { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass' },
+          { test: /\.gif$/, loader: 'url-loader?limit=8192' },
+        ],
       },
-      watch: true
+      watch: true,
     },
 
     autoWatch: true,
@@ -32,11 +36,11 @@ module.exports = function(config) {
     reporters: ['progress'],
 
     webpackMiddlewareServer: {
-      noInfo: true
+      noInfo: true,
     },
 
     webpackServer: {
-      quiet: true
+      quiet: true,
     },
 
     plugins: [
@@ -46,7 +50,7 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-sourcemap-loader',
       'karma-jasmine-ajax',
-      'karma-spec-reporter'
-    ]
-  })
-}
+      'karma-spec-reporter',
+    ],
+  });
+};

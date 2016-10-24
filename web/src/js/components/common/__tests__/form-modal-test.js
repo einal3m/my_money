@@ -1,23 +1,16 @@
 import React from 'react';
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
+import { Modal } from 'react-bootstrap';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import FormModal from '../form-modal';
-import { Modal, Button } from 'react-bootstrap';
 
 describe('FormModal', () => {
-  let modelName,
-    onCloseSpy,
-    onSaveSpy,
-    onDeleteSpy,
-    modal,
-    child;
-  beforeEach(() => {
-    modelName = 'ModelName';
-    onCloseSpy = jasmine.createSpy('onCloseSpy');
-    onSaveSpy = jasmine.createSpy('onSaveSpy');
-    onDeleteSpy = jasmine.createSpy('onDeleteSpy');
-    child = <div id="testChild" />;
-  });
+  const modelName = 'ModelName';
+  const onCloseSpy = jasmine.createSpy('onCloseSpy');
+  const onSaveSpy = jasmine.createSpy('onSaveSpy');
+  const onDeleteSpy = jasmine.createSpy('onDeleteSpy');
+  const child = <div id="testChild" />;
+  let modal;
 
   describe('render', () => {
     beforeEach(() => {
@@ -36,19 +29,12 @@ describe('FormModal', () => {
       expect(header.props.children.props.children).toEqual('ModelName');
     });
 
-    it('adds a form ref to the child', () => {
-      const body = modal.props.children[1];
-
-      expect(body.props.children.props.id).toEqual('testChild');
-      expect(body.props.children.ref).toEqual('form');
-    });
-
     it('has a footer with cancel and save buttons', () => {
       const footer = modal.props.children[2];
 
       expect(footer.type).toEqual(Modal.Footer);
 
-      let [deleteButton, cancelButton, saveButton] = footer.props.children;
+      const [deleteButton, cancelButton, saveButton] = footer.props.children;
 
       expect(deleteButton.props.children).toEqual('Delete');
       expect(cancelButton.props.children).toEqual('Cancel');
@@ -58,10 +44,16 @@ describe('FormModal', () => {
 
     it('has no delete button if allowDelete not set', () => {
       modal = shallowRenderer(
-        <FormModal show allowDelete={false} modelName={modelName} onClose={onCloseSpy} onSave={onSaveSpy}>{child}</FormModal>
+        <FormModal
+          show
+          allowDelete={false}
+          modelName={modelName}
+          onClose={onCloseSpy}
+          onSave={onSaveSpy}
+        >{child}</FormModal>
       );
       const footer = modal.props.children[2];
-      let [deleteButton, cancelButton, saveButton] = footer.props.children;
+      const [deleteButton, cancelButton, saveButton] = footer.props.children;
       expect(deleteButton).toBeUndefined();
       expect(cancelButton.props.children).toEqual('Cancel');
       expect(saveButton.props.children).toEqual('Save');
@@ -71,23 +63,29 @@ describe('FormModal', () => {
   describe('events', () => {
     beforeEach(() => {
       modal = TestUtils.renderIntoDocument(
-        <FormModal show modelName={modelName} allowDelete onClose={onCloseSpy} onSave={onSaveSpy}
+        <FormModal
+          show
+          modelName={modelName}
+          allowDelete
+          onClose={onCloseSpy}
+          onSave={onSaveSpy}
           onDelete={onDeleteSpy}
         >{child}</FormModal>
       );
-      modal.refs.form = jasmine.createSpyObj('form', ['isValid', 'getModel']);
+      modal.form = jasmine.createSpyObj('form', ['isValid', 'getModel']);
     });
 
     describe('onSave', () => {
       it('calls the onSave prop if form is valid', () => {
-        modal.refs.form.isValid.and.returnValue(true);
-        modal.refs.form.getModel.and.returnValue('model');
+        modal.form.isValid.and.returnValue(true);
+        modal.form.getModel.and.returnValue({ id: 13 });
         modal.onSave();
 
-        expect(onSaveSpy).toHaveBeenCalledWith('model');
+        expect(onSaveSpy).toHaveBeenCalledWith({ id: 13 });
       });
-      it('does not call the onSave prop if form is valid', () => {
-        modal.refs.form.isValid.and.returnValue(false);
+      it('does not call the onSave prop if form is invalid', () => {
+        onSaveSpy.calls.reset(); // TODO: shouldn't need to do this
+        modal.form.isValid.and.returnValue(false);
         modal.onSave();
 
         expect(onSaveSpy).not.toHaveBeenCalled();
@@ -96,9 +94,12 @@ describe('FormModal', () => {
 
     describe('onDelete success', () => {
       it('calls the onDelete prop with the form models id', () => {
-        modal.refs.form.getModel.and.returnValue({ id: 13 });
-        modal.refs.deleteButton1.props.onClick();
-        modal.refs.deleteButton2.props.onClick();
+        modal.deleteButton1.props.onClick();
+
+        // need to reset form as modal has re-rendered.
+        modal.form = jasmine.createSpyObj('form', ['getModel']);
+        modal.form.getModel.and.returnValue({ id: 13 });
+        modal.deleteButton2.props.onClick();
 
         expect(onDeleteSpy).toHaveBeenCalledWith(13);
       });
@@ -106,8 +107,9 @@ describe('FormModal', () => {
 
     describe('onDelete cancel', () => {
       it('doesnt call the onDelete prop', () => {
-        modal.refs.deleteButton1.props.onClick();
-        modal.refs.cancelDeleteButton.props.onClick();
+        onDeleteSpy.calls.reset(); // TODO: shouldn't need to do this
+        modal.deleteButton1.props.onClick();
+        modal.cancelDeleteButton.props.onClick();
 
         expect(onDeleteSpy).not.toHaveBeenCalled();
       });

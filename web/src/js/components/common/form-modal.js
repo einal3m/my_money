@@ -1,33 +1,31 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-
 export default class FormModal extends React.Component {
   constructor() {
     super();
     this.state = { deleteMode: false };
   }
 
-  onSave() {
-    const form = this.refs.form;
-    if (form.isValid()) {
-      this.props.onSave(form.getModel());
+  onSave = () => {
+    if (this.form.isValid()) {
+      this.props.onSave(this.form.getModel());
       this.props.onClose();
     }
-  }
+  };
 
-  firstDelete() {
+  firstDelete = () => {
     this.setState({ deleteMode: true });
-  }
+  };
 
-  cancelDelete() {
+  cancelDelete = () => {
     this.setState({ deleteMode: false });
-  }
+  };
 
-  secondDelete() {
-    this.props.onDelete(this.refs.form.getModel().id);
+  secondDelete = () => {
+    this.props.onDelete(this.form.getModel().id);
     this.props.onClose();
-  }
+  };
 
   renderTitle() {
     return this.props.modelName;
@@ -36,27 +34,38 @@ export default class FormModal extends React.Component {
   deleteButton() {
     if (this.props.allowDelete) {
       return (
-        <Button key="delete1" className="pull-left" bsStyle="danger" ref="deleteButton1" onClick={this.firstDelete.bind(this)}>
+        <Button
+          key="delete1"
+          className="pull-left"
+          bsStyle="danger"
+          ref={(button) => { this.deleteButton1 = button; }}
+          onClick={this.firstDelete}
+        >
           Delete
         </Button>
       );
     }
+    return undefined;
   }
 
   renderButtons() {
     if (this.state.deleteMode) {
       return [
         <span key="check" className="pull-left">Are you sure?</span>,
-        <Button key="cancel2" ref="cancelDeleteButton" onClick={this.cancelDelete.bind(this)}>Cancel</Button>,
-        <Button key="delete2" bsStyle="danger" ref="deleteButton2" onClick={this.secondDelete.bind(this)}>Yes, Delete</Button>,
-      ];
-    } else {
-      return [
-        this.deleteButton(),
-        <Button key="cancel1" ref="cancelButton" onClick={this.props.onClose}>Cancel</Button>,
-        <Button key="save" bsStyle="success" ref="saveButton" onClick={this.onSave.bind(this)}>Save</Button>,
+        <Button key="cancel2" ref={(b) => { this.cancelDeleteButton = b; }} onClick={this.cancelDelete}>
+          Cancel
+        </Button>,
+        <Button key="delete2" bsStyle="danger" ref={(b) => { this.deleteButton2 = b; }} onClick={this.secondDelete}>
+          Yes, Delete
+        </Button>,
       ];
     }
+
+    return [
+      this.deleteButton(),
+      <Button key="cancel1" ref={(b) => { this.cancelButton = b; }} onClick={this.props.onClose}>Cancel</Button>,
+      <Button key="save" bsStyle="success" ref={(b) => { this.saveButton = b; }} onClick={this.onSave}>Save</Button>,
+    ];
   }
 
   render() {
@@ -66,7 +75,7 @@ export default class FormModal extends React.Component {
           <Modal.Title>{this.renderTitle()}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {React.cloneElement(this.props.children, { ref: 'form' })}
+          {React.cloneElement(this.props.children, { ref: (form) => { this.form = form; } })}
         </Modal.Body>
         <Modal.Footer>
           {this.renderButtons()}
@@ -77,6 +86,7 @@ export default class FormModal extends React.Component {
 }
 
 FormModal.propTypes = {
+  children: React.PropTypes.node.isRequired,
   modelName: React.PropTypes.string.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func,
