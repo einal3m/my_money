@@ -1,13 +1,13 @@
 import React from 'react';
+import { DropdownButton } from 'react-bootstrap';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
-
 import Picker from '../picker';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 describe('Picker', () => {
-  let picker,
-    options,
-    onChangeSpy;
+  let picker;
+  let options;
+  let onChangeSpy;
+
   beforeEach(() => {
     options = [
       { id: 1, name: 'One' },
@@ -63,7 +63,7 @@ describe('Picker', () => {
       );
 
       const dropdown = picker.props.children;
-      dropdown.props.onSelect({}, '4');
+      dropdown.props.onSelect('4');
 
       expect(onChangeSpy).toHaveBeenCalledWith(4);
     });

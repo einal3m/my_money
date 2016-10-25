@@ -3,10 +3,10 @@ import TestUtils from 'react-addons-test-utils';
 import { Modal } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import FormModal from '../form-modal';
+import * as formActions from '../../../actions/form-actions';
 
 describe('FormModal', () => {
   const modelName = 'ModelName';
-  const onCloseSpy = jasmine.createSpy('onCloseSpy');
   const onSaveSpy = jasmine.createSpy('onSaveSpy');
   const onDeleteSpy = jasmine.createSpy('onDeleteSpy');
   const child = <div id="testChild" />;
@@ -15,7 +15,7 @@ describe('FormModal', () => {
   describe('render', () => {
     beforeEach(() => {
       modal = shallowRenderer(
-        <FormModal show allowDelete modelName={modelName} onClose={onCloseSpy} onSave={onSaveSpy}>{child}</FormModal>
+        <FormModal show allowDelete modelName={modelName} onSave={onSaveSpy}>{child}</FormModal>
       );
     });
 
@@ -38,7 +38,7 @@ describe('FormModal', () => {
 
       expect(deleteButton.props.children).toEqual('Delete');
       expect(cancelButton.props.children).toEqual('Cancel');
-      expect(cancelButton.props.onClick).toEqual(onCloseSpy);
+      expect(cancelButton.props.onClick).toEqual(formActions.hideFormModal);
       expect(saveButton.props.children).toEqual('Save');
     });
 
@@ -48,7 +48,6 @@ describe('FormModal', () => {
           show
           allowDelete={false}
           modelName={modelName}
-          onClose={onCloseSpy}
           onSave={onSaveSpy}
         >{child}</FormModal>
       );
@@ -67,7 +66,6 @@ describe('FormModal', () => {
           show
           modelName={modelName}
           allowDelete
-          onClose={onCloseSpy}
           onSave={onSaveSpy}
           onDelete={onDeleteSpy}
         >{child}</FormModal>

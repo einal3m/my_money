@@ -1,13 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { MenuItem, DropdownButton } from 'react-bootstrap';
+
 require('../../../../css/picker.scss');
 
 export default class Picker extends React.Component {
 
-  onSelect(_event, key) {
+  onSelect = (key) => {
     this.props.onChange(Number(key));
-  }
+  };
 
   renderOptionName(option) {
     const selected = (this.props.value === option.id);
@@ -16,13 +16,11 @@ export default class Picker extends React.Component {
   }
 
   renderOptions() {
-    return this.props.options.map((option) => {
-      return (
-        <MenuItem key={option.id} eventKey={option.id}>
-          {this.renderOptionName(option)}
-        </MenuItem>
-      );
-    });
+    return this.props.options.map(option => (
+      <MenuItem key={option.id} eventKey={option.id}>
+        {this.renderOptionName(option)}
+      </MenuItem>
+    ));
   }
 
   renderTitle() {
@@ -43,9 +41,7 @@ export default class Picker extends React.Component {
   render() {
     return (
       <div className="picker form-horizontal">
-        <DropdownButton title={this.renderTitle()} pullRight id="dropdown"
-          onSelect={this.onSelect.bind(this)}
-        >
+        <DropdownButton title={this.renderTitle()} pullRight id="dropdown" onSelect={this.onSelect}>
           {this.renderOptions()}
         </DropdownButton>
       </div>

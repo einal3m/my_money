@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { hideFormModal } from '../../actions/form-actions';
 
 export default class FormModal extends React.Component {
   constructor() {
@@ -10,7 +11,7 @@ export default class FormModal extends React.Component {
   onSave = () => {
     if (this.form.isValid()) {
       this.props.onSave(this.form.getModel());
-      this.props.onClose();
+      hideFormModal();
     }
   };
 
@@ -24,7 +25,7 @@ export default class FormModal extends React.Component {
 
   secondDelete = () => {
     this.props.onDelete(this.form.getModel().id);
-    this.props.onClose();
+    hideFormModal();
   };
 
   renderTitle() {
@@ -63,14 +64,14 @@ export default class FormModal extends React.Component {
 
     return [
       this.deleteButton(),
-      <Button key="cancel1" ref={(b) => { this.cancelButton = b; }} onClick={this.props.onClose}>Cancel</Button>,
+      <Button key="cancel1" ref={(b) => { this.cancelButton = b; }} onClick={hideFormModal}>Cancel</Button>,
       <Button key="save" bsStyle="success" ref={(b) => { this.saveButton = b; }} onClick={this.onSave}>Save</Button>,
     ];
   }
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.props.onClose} bsSize="small">
+      <Modal show={this.props.show} onHide={hideFormModal} bsSize="small">
         <Modal.Header>
           <Modal.Title>{this.renderTitle()}</Modal.Title>
         </Modal.Header>
@@ -90,7 +91,6 @@ FormModal.propTypes = {
   modelName: React.PropTypes.string.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func,
-  onClose: React.PropTypes.func.isRequired,
   show: React.PropTypes.bool.isRequired,
   allowDelete: React.PropTypes.bool.isRequired,
 };

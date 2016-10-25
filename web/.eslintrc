@@ -17,6 +17,7 @@
   },
   "extends": "airbnb",
   "rules": {
+    "react/no-unused-prop-types": ["error", { "skipShapeProps": true }],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "max-len": ["error", 120],

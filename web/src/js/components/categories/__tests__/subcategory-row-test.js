@@ -1,30 +1,35 @@
 import React from 'react';
 import SubcategoryRow from '../subcategory-row';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import * as formActions from '../../../actions/form-actions';
 
 describe('SubcategoryRow', () => {
-  let subcategory,
-    clickHandlerSpy,
-    row;
-  beforeEach(() => {
-    subcategory = { name: 'Phone', categoryId: 3 };
-    clickHandlerSpy = jasmine.createSpy('clickHandler');
+  const subcategory = { name: 'Phone', categoryId: 3 };
+  let row;
 
-    row = shallowRenderer(
-      <SubcategoryRow subcategory={subcategory} onClickHandler={clickHandlerSpy} />
-    );
+  beforeEach(() => {
+    row = shallowRenderer(<SubcategoryRow subcategory={subcategory} />);
   });
 
   describe('render', () => {
     it('displays the subcategory', () => {
-      expect(row.props.children.props.children).toEqual('Phone');
+      expect(row.type).toEqual('tr');
+
+      const button = row.props.children.props.children;
+
+      expect(button.type).toEqual('button');
+      expect(button.props.children).toEqual('Phone');
     });
   });
 
   describe('on click', () => {
     it('calls the handler prop when row is clicked', () => {
-      row.props.onClick();
-      expect(clickHandlerSpy).toHaveBeenCalledWith(subcategory);
+      spyOn(formActions, 'showFormModal');
+
+      const button = row.props.children.props.children;
+      button.props.onClick();
+
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Subcategory', subcategory, true);
     });
   });
 });
