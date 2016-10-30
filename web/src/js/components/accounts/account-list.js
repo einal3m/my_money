@@ -28,7 +28,7 @@ export class AccountListComponent extends React.Component {
     return (
       <div>
         <PageHeader title="my accounts">
-          <NewModelButtons modelTypes={['Savings Account', 'Share Account']} />
+          <NewModelButtons modelTypes={['Savings Account', 'Share Account', 'Loan Account']} />
         </PageHeader>
 
         <div className="container">

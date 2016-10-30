@@ -34,7 +34,7 @@ describe('AccountList', () => {
 
       const newButtons = header.props.children;
       expect(newButtons.type).toEqual(NewModelButtons);
-      expect(newButtons.props.modelTypes).toEqual(['Savings Account', 'Share Account']);
+      expect(newButtons.props.modelTypes).toEqual(['Savings Account', 'Share Account', 'Loan Account']);
     });
 
     it('has a list of accountGroups', () => {

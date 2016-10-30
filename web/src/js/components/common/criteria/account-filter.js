@@ -7,7 +7,7 @@ import AccountPicker from '../controls/account-picker';
 export class AccountFilter extends React.Component {
   constructor() {
     super();
-    getAccounts();
+    getAccounts({ useStore: true });
   }
 
   onChange(accountId) {

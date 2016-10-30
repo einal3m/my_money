@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import FormModal from '../common/form-modal';
 import SavingsAccountForm from './savings-account-form';
 import ShareAccountForm from './share-account-form';
+import HomeLoanAccountForm from './home-loan-account-form';
 import { saveAccount, deleteAccount } from '../../actions/account-actions';
 
 export class AccountModalComponent extends React.Component {
@@ -16,10 +17,14 @@ export class AccountModalComponent extends React.Component {
   };
 
   renderForm() {
-    if (this.props.modelType === 'Share Account') {
-      return <ShareAccountForm account={this.props.model} />;
+    switch (this.props.modelType) {
+      case 'Share Account':
+        return <ShareAccountForm account={this.props.model} />;
+      case 'Loan Account':
+        return <HomeLoanAccountForm account={this.props.model} />;
+      default:
+        return <SavingsAccountForm account={this.props.model} />;
     }
-    return <SavingsAccountForm account={this.props.model} />;
   }
 
   render() {
