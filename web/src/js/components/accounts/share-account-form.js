@@ -1,66 +1,68 @@
-
-
-import React from 'react';
-import { Input } from 'react-bootstrap';
-import DatePicker from 'react-bootstrap-datetimepicker';
+import React, { PropTypes } from 'react';
 import FormValidator from '../../util/form-validator';
-import moment from 'moment';
+import FormControl from '../common/controls/form-control';
 
 export default class ShareAccountForm extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
-    this.state = {
-      account: {
-        accountType: 'share',
-        name: '',
-        ticker: '',
-      },
-    };
-
-    this.validator = new FormValidator(this.validationSchema());
+    this.state = { account: Object.assign(this.defaultModelProperties, props.account) };
+    this.validator = new FormValidator(this.validationSchema);
   }
 
-  validationSchema() {
-    return {
-      ticker: { presence: true },
-      name: { presence: true },
-    };
-  }
+  defaultModelProperties = {
+    accountType: 'share',
+  };
 
-  handleChange(event) {
+  validationSchema = {
+    ticker: { presence: true },
+    name: { presence: true },
+  };
+
+  handleChange = (event) => {
     const account = this.state.account;
     account[event.target.name] = event.target.value;
     this.setState({ account });
-
     this.validator.validateField(event.target.name, event.target.value);
-  }
+  };
 
   isValid() {
     return !this.validator.validateAll(this.state.account);
   }
 
-  getAccount() {
+  getModel() {
     return this.state.account;
   }
 
   render() {
     return (
       <div>
-        <div className={`form-group ${this.validator.errorState('ticker')}`}>
-          <label className="control-label">Ticker</label>
-          <input className="form-control" name="ticker" type="text" value={this.state.account.ticker}
-            onChange={this.handleChange.bind(this)} ref="tickerField"
+        <FormControl name="ticker" validator={this.validator} label="Ticker">
+          <input
+            className="form-control"
+            name="ticker"
+            type="text"
+            value={this.state.account.ticker || ''}
+            onChange={this.handleChange}
           />
-          <div className="help-block">{this.validator.errorFor('ticker')}</div>
-        </div>
-        <div className={`form-group ${this.validator.errorState('name')}`}>
-          <label className="control-label">Name</label>
-          <input className="form-control" name="name" type="text" value={this.state.account.name}
-            onChange={this.handleChange.bind(this)} ref="nameField"
+        </FormControl>
+        <FormControl name="name" validator={this.validator} label="Name">
+          <input
+            className="form-control"
+            name="name"
+            type="text"
+            value={this.state.account.name || ''}
+            onChange={this.handleChange}
           />
-          <div className="help-block">{this.validator.errorFor('name')}</div>
-        </div>
+        </FormControl>
       </div>
     );
   }
 }
+
+ShareAccountForm.propTypes = {
+  account: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    ticker: PropTypes.string,
+  }).isRequired,
+};
