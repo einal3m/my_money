@@ -1,12 +1,12 @@
 import apiUtil from '../util/api-util';
 import store from '../stores/store';
-import accountActions from './account-actions';
+import { getAccounts } from './account-actions';
 import dateRangeActions from './date-range-actions';
 import transactionTransformer from '../transformers/transaction-transformer';
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
 export function getTransactions() {
-  accountActions.getAccounts().then(() => {
+  getAccounts({ useStore: true }).then(() => {
     dateRangeActions.getDateRanges().then(() => {
       const accountId = store.getState().accountStore.get('currentAccount').get('id');
       const dateRange = store.getState().dateRangeStore.get('currentDateRange');

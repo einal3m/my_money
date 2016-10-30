@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import accountActions from '../../actions/account-actions';
+import { getAccounts } from '../../actions/account-actions';
 import accountSelector from '../../selectors/account-selector';
 import PageHeader from '../common/page-header';
 import NewModelButtons from '../common/controls/new-model-buttons';
@@ -12,7 +12,7 @@ require('../../../css/common.scss');
 export class AccountListComponent extends React.Component {
   constructor() {
     super();
-    accountActions.getAccounts(true);
+    getAccounts();
   }
 
   renderAccountGroups() {

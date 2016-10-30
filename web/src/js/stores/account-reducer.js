@@ -1,4 +1,9 @@
 import { Map, List, fromJS } from 'immutable';
+import {
+  SET_ACCOUNTS,
+  SET_CURRENT_ACCOUNT,
+  TOGGLE_SELECTED_ACCOUNT,
+} from '../actions/account-actions';
 
 const INITIAL_STATE = Map({
   loaded: false,
@@ -13,18 +18,15 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-    case 'SET_ACCOUNTS':
+    case SET_ACCOUNTS:
       return setAccounts(state, action.accounts);
-    case 'ADD_ACCOUNT':
-      return addAccount(state, action.account);
-    case 'REMOVE_ACCOUNT':
-      return removeAccount(state, action.id);
-    case 'SET_CURRENT_ACCOUNT':
+    case SET_CURRENT_ACCOUNT:
       return setCurrentAccount(state, action.id);
-    case 'TOGGLE_SELECTED_ACCOUNT':
+    case TOGGLE_SELECTED_ACCOUNT:
       return toggleSelectedAccount(state, action.accountId);
+    default:
+      return state;
   }
-  return state;
 }
 
 function setAccounts(state, accounts) {
@@ -35,27 +37,14 @@ function setAccounts(state, accounts) {
 }
 
 function currentAccount(state, accounts) {
-  if (state.get('currentAccount').get('id')) {
+  if (state.get('currentAccount').get('id') && currentAccountExists(state, accounts)) {
     return state.get('currentAccount');
   }
   return Map(accounts[0]);
 }
 
-function addAccount(state, account) {
-  const accounts = state.get('accounts').push(fromJS(account));
-  return state.set('currentAccount', fromJS(account))
-              .set('accounts', accounts);
-}
-
-function removeAccount(state, id) {
-  const accounts = state.get('accounts').filter(account => account.get('id') !== id);
-  let currentAccount = state.get('currentAccount');
-  if (state.get('currentAccount').get('id') === id) {
-    currentAccount = accounts.first() || null;
-  }
-
-  return state.set('accounts', accounts)
-              .set('currentAccount', currentAccount);
+function currentAccountExists(state, accounts) {
+  return accounts.filter(account => account.id == state.get('currentAccount').get('id')).length > 0;
 }
 
 function setCurrentAccount(state, id) {

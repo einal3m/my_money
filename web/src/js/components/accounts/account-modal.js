@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import FormModal from '../common/form-modal';
 import SavingsAccountForm from './savings-account-form';
 import ShareAccountForm from './share-account-form';
-import accountActions from '../../actions/account-actions';
+import { saveAccount, deleteAccount } from '../../actions/account-actions';
 
 export class AccountModalComponent extends React.Component {
 
   handleSave = (model) => {
-    accountActions.createAccount(model);
+    saveAccount(model);
   };
 
   handleDelete = (modelId) => {
-    console.log('delete account not supported');
+    deleteAccount(modelId);
   };
 
   renderForm() {

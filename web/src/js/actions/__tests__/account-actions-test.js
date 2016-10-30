@@ -1,8 +1,8 @@
-import accountActions from '../account-actions';
+import { fromJS } from 'immutable';
+import * as accountActions from '../account-actions';
 import accountTransformer from '../../transformers/account-transformer';
 import store from '../../stores/store';
 import apiUtil from '../../util/api-util';
-import { fromJS } from 'immutable';
 
 describe('AccountActions', () => {
   let dispatcherSpy;
@@ -14,106 +14,93 @@ describe('AccountActions', () => {
     it('makes an ajax request to GET/accounts and calls callback on success', () => {
       spyOn(apiUtil, 'get').and.returnValue(Promise.resolve());
       spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: false }) });
+
       const promise = accountActions.getAccounts();
+
       expect(apiUtil.get).toHaveBeenCalled();
       expect(promise.then).toBeDefined();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_ACCOUNTS' });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.GET_ACCOUNTS });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts');
 
       spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
-      spyOn(accountActions, 'storeAccounts');
       const successCallback = getArgs.onSuccess;
       successCallback({ accounts: ['account'] });
 
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
-      expect(accountActions.storeAccounts).toHaveBeenCalledWith(['transformedFromApi']);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: accountActions.SET_ACCOUNTS,
+        accounts: ['transformedFromApi'],
+      });
     });
 
-    it('doesnt call the api if accounts already loaded', () => {
+    it('doesnt call the api if accounts already loaded and useStoredAccounts is true', () => {
       spyOn(apiUtil, 'get');
       spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: true }) });
-      const promise = accountActions.getAccounts();
+
+      const promise = accountActions.getAccounts({ useStore: true });
       expect(apiUtil.get).not.toHaveBeenCalled();
+
       expect(promise.then).toBeDefined();
     });
 
-    it('does call the api if forceReload already loaded', () => {
+    it('does call the api if already loaded and useStoredAccounts is false', () => {
       spyOn(apiUtil, 'get');
       spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: true }) });
-      accountActions.getAccounts(true);
+
+      accountActions.getAccounts();
+
       expect(apiUtil.get).toHaveBeenCalled();
     });
   });
 
-  describe('storeAccounts', () => {
-    it('it dispatches accounts to the store', () => {
-      accountActions.storeAccounts(['account']);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_ACCOUNTS',
-        accounts: ['account'],
-      });
-    });
-  });
-
-  describe('createAccount', () => {
-    it('calls the api to create the account', () => {
+  describe('saveAccount', () => {
+    it('calls the api to create the account if id not present', () => {
       spyOn(apiUtil, 'post');
       spyOn(accountTransformer, 'transformToApi').and.returnValue('transformedAccount');
-      accountActions.createAccount('account');
+
+      accountActions.saveAccount({ name: 'my account' });
+
       expect(apiUtil.post).toHaveBeenCalled();
-      expect(accountTransformer.transformToApi).toHaveBeenCalledWith('account');
-      expect(store.dispatch).toHaveBeenCalledWith({ type: 'SAVE_ACCOUNT' });
+      expect(accountTransformer.transformToApi).toHaveBeenCalledWith({ name: 'my account' });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.SAVE_ACCOUNT });
 
       const postArgs = apiUtil.post.calls.argsFor(0)[0];
       expect(postArgs.url).toEqual('accounts');
       expect(postArgs.body).toEqual({ account: 'transformedAccount' });
-
-      spyOn(accountTransformer, 'transformFromApi').and.returnValue('transformedFromApi');
-      spyOn(accountActions, 'storeAccount');
-      const successCallback = postArgs.onSuccess;
-      successCallback({ account: 'account' });
-
-      expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
-      expect(accountActions.storeAccount).toHaveBeenCalledWith('transformedFromApi');
+      expect(postArgs.onSuccess).toEqual(accountActions.getAccounts);
     });
-  });
 
-  describe('storeAccount', () => {
-    it('dispatches the account to the store', () => {
-      accountActions.storeAccount('account');
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'ADD_ACCOUNT',
-        account: 'account',
-      });
+    it('calls the api to update the account if id is present', () => {
+      spyOn(apiUtil, 'put');
+      spyOn(accountTransformer, 'transformToApi').and.returnValue('transformedAccount');
+
+      accountActions.saveAccount({ id: 2, name: 'my account' });
+
+      expect(apiUtil.put).toHaveBeenCalled();
+      expect(accountTransformer.transformToApi).toHaveBeenCalledWith({ id: 2, name: 'my account' });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.SAVE_ACCOUNT });
+
+      const putArgs = apiUtil.put.calls.argsFor(0)[0];
+      expect(putArgs.url).toEqual('accounts/2');
+      expect(putArgs.body).toEqual({ account: 'transformedAccount' });
+      expect(putArgs.onSuccess).toEqual(accountActions.getAccounts);
     });
   });
 
   describe('deleteAccount', () => {
     it('calls the account api to delete the account', () => {
       spyOn(apiUtil, 'delete');
+
       accountActions.deleteAccount(34);
+
       expect(apiUtil.delete).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_ACCOUNT' });
 
       const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
       expect(deleteArgs.url).toEqual('accounts/34');
-
-      spyOn(accountActions, 'removeAccount');
-      const successCallback = deleteArgs.onSuccess;
-      successCallback();
-      expect(accountActions.removeAccount).toHaveBeenCalled();
-    });
-  });
-
-  describe('removeAccount', () => {
-    it('dispatches store with account id', () => {
-      accountActions.removeAccount(34);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'REMOVE_ACCOUNT',
-        id: 34,
-      });
+      expect(deleteArgs.onSuccess).toEqual(accountActions.getAccounts);
     });
   });
 
@@ -121,7 +108,7 @@ describe('AccountActions', () => {
     it('setCurrentAccount dispatches the id to the store', () => {
       accountActions.setCurrentAccount(45);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_CURRENT_ACCOUNT',
+        type: accountActions.SET_CURRENT_ACCOUNT,
         id: 45,
       });
     });
@@ -129,7 +116,7 @@ describe('AccountActions', () => {
     it('toggleSelectedAccount', () => {
       accountActions.toggleSelectedAccount(45);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'TOGGLE_SELECTED_ACCOUNT',
+        type: accountActions.TOGGLE_SELECTED_ACCOUNT,
         accountId: 45,
       });
     });

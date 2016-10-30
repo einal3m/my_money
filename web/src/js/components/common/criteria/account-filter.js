@@ -1,20 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import accountActions from '../../../actions/account-actions';
+import { getAccounts, setCurrentAccount, toggleSelectedAccount } from '../../../actions/account-actions';
 import accountSelector from '../../../selectors/account-selector';
-import { Input, MenuItem, DropdownButton } from 'react-bootstrap';
 import AccountPicker from '../controls/account-picker';
 
 export class AccountFilter extends React.Component {
   constructor() {
     super();
-    accountActions.getAccounts();
+    getAccounts();
   }
 
   onChange(accountId) {
-    accountActions.setCurrentAccount(accountId);
+    setCurrentAccount(accountId);
     if (this.props.multiple) {
-      accountActions.toggleSelectedAccount(accountId);
+      toggleSelectedAccount(accountId);
     }
     this.props.fetch();
   }

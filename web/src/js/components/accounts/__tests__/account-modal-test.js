@@ -4,7 +4,7 @@ import { AccountModalComponent as AccountModal } from '../account-modal';
 import FormModal from '../../common/form-modal';
 import SavingsAccountForm from '../savings-account-form';
 import ShareAccountForm from '../share-account-form';
-import accountActions from '../../../actions/account-actions';
+import * as accountActions from '../../../actions/account-actions';
 
 describe('AccountModal', () => {
   it('does not display modal if show is false', () => {
@@ -56,7 +56,7 @@ describe('AccountModal', () => {
 
   describe('events', () => {
     it('saves the account', () => {
-      spyOn(accountActions, 'createAccount');
+      spyOn(accountActions, 'saveAccount');
 
       const accountModal = shallowRenderer(
         <AccountModal
@@ -68,10 +68,10 @@ describe('AccountModal', () => {
       );
 
       accountModal.props.onSave({ id: 34 });
-      expect(accountActions.createAccount).toHaveBeenCalledWith({ id: 34 });
+      expect(accountActions.saveAccount).toHaveBeenCalledWith({ id: 34 });
     });
 
-    xit('deletes the account', () => {
+    it('deletes the account', () => {
       spyOn(accountActions, 'deleteAccount');
 
       const accountModal = shallowRenderer(
@@ -84,7 +84,7 @@ describe('AccountModal', () => {
       );
 
       accountModal.props.onDelete(34);
-      expect(accountActions.deleteAccount).toHaveBeenCalledWith({ id: 34 });
+      expect(accountActions.deleteAccount).toHaveBeenCalledWith(34);
     });
   });
 });

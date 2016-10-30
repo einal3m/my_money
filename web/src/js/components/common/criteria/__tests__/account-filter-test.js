@@ -1,10 +1,8 @@
 import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
-import accountActions from '../../../../actions/account-actions';
+import * as accountActions from '../../../../actions/account-actions';
 import { AccountFilter } from '../account-filter';
 import AccountPicker from '../../controls/account-picker';
-import TestUtils from 'react-addons-test-utils';
-import { Input } from 'react-bootstrap';
 
 describe('AccountFilter', () => {
   let accountTypes,

@@ -5,7 +5,7 @@ import PageHeader from '../../common/page-header';
 import NewModelButtons from '../../common/controls/new-model-buttons';
 import AccountGroup from '../account-group';
 import AccountModal from '../account-modal';
-import accountActions from '../../../actions/account-actions';
+import * as accountActions from '../../../actions/account-actions';
 
 describe('AccountList', () => {
   let accountList;

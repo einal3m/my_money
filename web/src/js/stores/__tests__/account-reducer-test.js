@@ -1,14 +1,14 @@
-import { List, Map, fromJS } from 'immutable';
+import { List } from 'immutable';
 import reducer from '../account-reducer';
-import { toEqualImmutable } from 'jasmine-immutablejs-matchers';
+import {
+  SET_ACCOUNTS,
+  SET_CURRENT_ACCOUNT,
+  TOGGLE_SELECTED_ACCOUNT,
+} from '../../actions/account-actions';
 
 describe('reducer', () => {
-  let account1,
-    account2;
-  beforeEach(() => {
-    account1 = { id: 11, name: 'account1', accountType: 'share' };
-    account2 = { id: 12, name: 'account2', accountType: 'savings' };
-  });
+  const account1 = { id: 11, name: 'account1', accountType: 'share' };
+  const account2 = { id: 12, name: 'account2', accountType: 'savings' };
 
   it('has a default state', () => {
     const state = reducer();
@@ -26,7 +26,7 @@ describe('reducer', () => {
     let nextState;
     beforeEach(() => {
       const initialState = reducer();
-      const action = { type: 'SET_ACCOUNTS', accounts: [account1, account2] };
+      const action = { type: SET_ACCOUNTS, accounts: [account1, account2] };
       nextState = reducer(initialState, action);
     });
 
@@ -47,89 +47,18 @@ describe('reducer', () => {
     });
 
     it('does not reset currentAccount if already set', () => {
-      const newState = reducer(nextState, { type: 'SET_CURRENT_ACCOUNT', id: account2.id });
-      const reloadedState = reducer(newState, { type: 'SET_ACCOUNTS', accounts: [account1, account2] });
+      const newState = reducer(nextState, { type: SET_CURRENT_ACCOUNT, id: account2.id });
+      const reloadedState = reducer(newState, { type: SET_ACCOUNTS, accounts: [account1, account2] });
       expect(reloadedState.get('currentAccount').toJS()).toEqual(account2);
     });
-  });
 
-  describe('ADD_ACCOUNT', () => {
-    describe('with empty initialState', () => {
-      let nextState;
-      beforeEach(() => {
-        const initialState = reducer();
-        const action = { type: 'ADD_ACCOUNT', account: account2 };
-        nextState = reducer(initialState, action);
-      });
+    it('does reset currentAccount if it has been removed', () => {
+      expect(nextState.get('currentAccount').toJS()).toEqual(account1);
 
-      it('sets accounts state', () => {
-        expect(nextState.get('accounts').toJS()).toEqual([account2]);
-      });
+      const action = { type: SET_ACCOUNTS, accounts: [account2] };
+      const newState = reducer(nextState, action);
 
-      it('sets currentAccount to this account', () => {
-        expect(nextState.get('currentAccount').toJS()).toEqual(account2);
-      });
-    });
-
-    describe('with initialState', () => {
-      let nextState,
-        account3;
-      beforeEach(() => {
-        account3 = { id: 13, name: 'account3', accountType: 'savings' };
-
-        const initialState = reducer();
-        const action1 = { type: 'SET_ACCOUNTS', accounts: [account1, account2] };
-        const action2 = { type: 'ADD_ACCOUNT', account: account3 };
-        const midState = reducer(initialState, action1);
-        nextState = reducer(midState, action2);
-      });
-
-      it('sets accounts state', () => {
-        expect(nextState.get('accounts').toJS()).toEqual([account1, account2, account3]);
-      });
-
-      it('sets currentAccount to this account', () => {
-        expect(nextState.get('currentAccount').toJS()).toEqual(account3);
-      });
-    });
-  });
-
-  describe('REMOVE_ACCOUNT', () => {
-    let nextState;
-    describe('with two accounts', () => {
-      beforeEach(() => {
-        const initialState = reducer();
-        const action1 = { type: 'SET_ACCOUNTS', accounts: [account1, account2] };
-        const action2 = { type: 'REMOVE_ACCOUNT', id: account1.id };
-        const midState = reducer(initialState, action1);
-        nextState = reducer(midState, action2);
-      });
-
-      it('sets accounts state', () => {
-        expect(nextState.get('accounts').toJS()).toEqual([account2]);
-      });
-
-      it('resets currentAccount', () => {
-        expect(nextState.get('currentAccount').toJS()).toEqual(account2);
-      });
-    });
-
-    describe('with last account', () => {
-      beforeEach(() => {
-        const initialState = reducer();
-        const action1 = { type: 'SET_ACCOUNTS', accounts: [account1] };
-        const action2 = { type: 'REMOVE_ACCOUNT', id: account1.id };
-        const midState = reducer(initialState, action1);
-        nextState = reducer(midState, action2);
-      });
-
-      it('sets accounts state', () => {
-        expect(nextState.get('accounts').toJS()).toEqual([]);
-      });
-
-      it('sets currentAccount null', () => {
-        expect(nextState.get('currentAccount')).toEqual(null);
-      });
+      expect(newState.get('currentAccount').toJS()).toEqual(account2);
     });
   });
 
@@ -137,8 +66,8 @@ describe('reducer', () => {
     let nextState;
     beforeEach(() => {
       const initialState = reducer();
-      const action1 = { type: 'SET_ACCOUNTS', accounts: [account1, account2] };
-      const action2 = { type: 'SET_CURRENT_ACCOUNT', id: account2.id };
+      const action1 = { type: SET_ACCOUNTS, accounts: [account1, account2] };
+      const action2 = { type: SET_CURRENT_ACCOUNT, id: account2.id };
       const midState = reducer(initialState, action1);
       nextState = reducer(midState, action2);
     });
@@ -151,17 +80,17 @@ describe('reducer', () => {
   describe('account filter selected accounts', () => {
     describe('TOGGLE_SELECTED_ACCOUNT', () => {
       it('toggles the selected account in the list', () => {
-        let action = { type: 'TOGGLE_SELECTED_ACCOUNT', accountId: 4 };
+        let action = { type: TOGGLE_SELECTED_ACCOUNT, accountId: 4 };
         const state = reducer(undefined, action);
 
         expect(state.get('selectedAccounts').toJS()).toEqual([4]);
 
-        action = { type: 'TOGGLE_SELECTED_ACCOUNT', accountId: 1 };
+        action = { type: TOGGLE_SELECTED_ACCOUNT, accountId: 1 };
         const nextState = reducer(state, action);
 
         expect(nextState.get('selectedAccounts').toJS()).toEqual([4, 1]);
 
-        action = { type: 'TOGGLE_SELECTED_ACCOUNT', accountId: 4 };
+        action = { type: TOGGLE_SELECTED_ACCOUNT, accountId: 4 };
         const anotherState = reducer(nextState, action);
 
         expect(anotherState.get('selectedAccounts').toJS()).toEqual([1]);

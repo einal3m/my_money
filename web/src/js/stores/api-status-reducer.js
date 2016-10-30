@@ -1,10 +1,15 @@
 import { Map } from 'immutable';
 import ApiStatus from '../util/api-status';
 import {
-  SAVE_TRANSACTION,
   GET_TRANSACTIONS,
   SET_TRANSACTIONS,
+  SAVE_TRANSACTION,
   DELETE_TRANSACTION } from '../actions/transaction-actions';
+import {
+  GET_ACCOUNTS,
+  SET_ACCOUNTS,
+  SAVE_ACCOUNT,
+  DELETE_ACCOUNT } from '../actions/account-actions';
 
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
@@ -13,7 +18,7 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-    case 'GET_ACCOUNTS':
+    case GET_ACCOUNTS:
     case 'GET_DATE_RANGES':
     case GET_TRANSACTIONS:
     case 'GET_CATEGORIES':
@@ -21,9 +26,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'UPLOAD_OFX':
       return setLoading(state);
 
-    case 'SET_ACCOUNTS':
-    case 'ADD_ACCOUNT':
-    case 'REMOVE_ACCOUNT':
+    case SET_ACCOUNTS:
     case SET_TRANSACTIONS:
     case 'SET_DATE_RANGES':
     case 'CLEAR_API_ERROR':
@@ -38,13 +41,13 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'SET_ACCOUNT_BALANCE_REPORT':
       return setDone(state);
 
-    case 'SAVE_ACCOUNT':
+    case SAVE_ACCOUNT:
     case SAVE_TRANSACTION:
     case 'SAVE_CATEGORY':
     case 'SAVE_SUBCATEGORY':
       return setSaving(state);
 
-    case 'DELETE_ACCOUNT':
+    case DELETE_ACCOUNT:
     case DELETE_TRANSACTION:
     case 'DELETE_CATEGORY':
     case 'DELETE_SUBCATEGORY':

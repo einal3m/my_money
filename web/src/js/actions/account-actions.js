@@ -2,58 +2,69 @@ import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import accountTransformer from '../transformers/account-transformer';
 
-export class AccountActions {
+export const GET_ACCOUNTS = 'GET_ACCOUNTS';
+export function getAccounts(options) {
+  const accountsLoaded = store.getState().accountStore.get('loaded');
 
-  getAccounts(forceReload = false) {
-    const accountsLoaded = store.getState().accountStore.get('loaded');
-
-    if (accountsLoaded && !forceReload) {
-      return Promise.resolve();
-    } else {
-      store.dispatch({ type: 'GET_ACCOUNTS' });
-      return apiUtil.get({
-        url: 'accounts',
-        onSuccess: response => this.storeAccounts(response.accounts.map(account => accountTransformer.transformFromApi(account))),
-      });
-    }
+  if (accountsLoaded && options && options.useStore) {
+    return Promise.resolve();
   }
 
-  storeAccounts(accounts) {
-    store.dispatch({ type: 'SET_ACCOUNTS', accounts });
-  }
+  store.dispatch({ type: GET_ACCOUNTS });
+  return apiUtil.get({
+    url: 'accounts',
+    onSuccess: response => storeAccounts(
+      response.accounts.map(account => accountTransformer.transformFromApi(account))
+    ),
+  });
+}
 
-  createAccount(account) {
-    store.dispatch({ type: 'SAVE_ACCOUNT' });
-    return apiUtil.post({
-      url: 'accounts',
-      body: { account: accountTransformer.transformToApi(account) },
-      onSuccess: response => this.storeAccount(accountTransformer.transformFromApi(response.account)),
-    });
-  }
+export const SET_ACCOUNTS = 'SET_ACCOUNTS';
+function storeAccounts(accounts) {
+  store.dispatch({ type: SET_ACCOUNTS, accounts });
+}
 
-  storeAccount(account) {
-    store.dispatch({ type: 'ADD_ACCOUNT', account });
-  }
+export const SET_CURRENT_ACCOUNT = 'SET_CURRENT_ACCOUNT';
+export function setCurrentAccount(id) {
+  store.dispatch({ type: SET_CURRENT_ACCOUNT, id });
+}
 
-  deleteAccount(id) {
-    store.dispatch({ type: 'DELETE_ACCOUNT' });
-    return apiUtil.delete({
-      url: `accounts/${id}`,
-      onSuccess: () => this.removeAccount(id),
-    });
-  }
+export const TOGGLE_SELECTED_ACCOUNT = 'TOGGLE_SELECTED_ACCOUNT';
+export function toggleSelectedAccount(accountId) {
+  store.dispatch({ type: TOGGLE_SELECTED_ACCOUNT, accountId });
+}
 
-  removeAccount(id) {
-    store.dispatch({ type: 'REMOVE_ACCOUNT', id });
-  }
-
-  setCurrentAccount(id) {
-    store.dispatch({ type: 'SET_CURRENT_ACCOUNT', id });
-  }
-
-  toggleSelectedAccount(accountId) {
-    store.dispatch({ type: 'TOGGLE_SELECTED_ACCOUNT', accountId });
+export const SAVE_ACCOUNT = 'SAVE_ACCOUNT';
+export function saveAccount(account) {
+  store.dispatch({ type: SAVE_ACCOUNT });
+  if (account.id) {
+    updateAccount(account);
+  } else {
+    createAccount(account);
   }
 }
 
-export default new AccountActions();
+function createAccount(account) {
+  return apiUtil.post({
+    url: 'accounts',
+    body: { account: accountTransformer.transformToApi(account) },
+    onSuccess: getAccounts,
+  });
+}
+
+function updateAccount(account) {
+  return apiUtil.put({
+    url: `accounts/${account.id}`,
+    body: { account: accountTransformer.transformToApi(account) },
+    onSuccess: getAccounts,
+  });
+}
+
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export function deleteAccount(id) {
+  store.dispatch({ type: DELETE_ACCOUNT });
+  return apiUtil.delete({
+    url: `accounts/${id}`,
+    onSuccess: getAccounts,
+  });
+}

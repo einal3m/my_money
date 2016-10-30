@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import AccountSlat from '../account-slat';
 import Balance from '../../common/balance';
-import accountActions from '../../../actions/account-actions';
+import * as accountActions from '../../../actions/account-actions';
 
 describe('AccountSlat', () => {
   const account = { id: 22, accountType: 'savings', name: 'myAccount', bank: 'myBank', currentBalance: 6070 };
@@ -33,7 +33,7 @@ describe('AccountSlat', () => {
     describe('delete account', () => {
       it('calls the delete account service', () => {
         spyOn(accountActions, 'deleteAccount');
-        accountSlat.refs.accountActionsButton.props.onSelect(null, '3');
+        accountSlat.refs.accountActionsButton.props.onSelect('3');
         expect(accountActions.deleteAccount).toHaveBeenCalledWith(22);
       });
     });
@@ -44,7 +44,7 @@ describe('AccountSlat', () => {
         spyOn(hashHistory, 'push');
       });
       it('from dropdown - sets the current account account and navigates to transaction page', () => {
-        accountSlat.refs.accountActionsButton.props.onSelect(null, '1');
+        accountSlat.refs.accountActionsButton.props.onSelect('1');
         expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(22);
         expect(hashHistory.push).toHaveBeenCalledWith('/transactions');
       });

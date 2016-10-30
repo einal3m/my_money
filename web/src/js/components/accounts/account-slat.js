@@ -4,25 +4,25 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { hashHistory } from 'react-router';
 import moneyUtil from '../../util/money-util';
 import Balance from '../common/balance';
-import accountActions from '../../actions/account-actions';
+import { setCurrentAccount, deleteAccount } from '../../actions/account-actions';
 
 require('../../../css/common.scss');
 require('../../../images/piggy-bank.gif');
 
 export default class AccountSlat extends React.Component {
-  accountActions(event, eventKey) {
+  accountActions = (eventKey) => {
     if (eventKey === '1') {
       this.viewTransactions();
     }
     if (eventKey === '3') {
-      accountActions.deleteAccount(this.props.account.id);
+      deleteAccount(this.props.account.id);
     }
-  }
+  };
 
-  viewTransactions() {
-    accountActions.setCurrentAccount(this.props.account.id);
+  viewTransactions = () => {
+    setCurrentAccount(this.props.account.id);
     hashHistory.push('/transactions');
-  }
+  };
 
   renderSlatImage(accountType) {
     if (accountType === 'savings') {
@@ -42,7 +42,7 @@ export default class AccountSlat extends React.Component {
   renderButtonGroup() {
     return (
       <DropdownButton title="..." pullRight noCaret id={`action-button-${this.props.account.id}`}
-        ref="accountActionsButton" onSelect={this.accountActions.bind(this)}
+        ref="accountActionsButton" onSelect={this.accountActions}
       >
         <LinkContainer to="/transactions"><MenuItem eventKey="1">View Transactions</MenuItem></LinkContainer>
         <MenuItem eventKey="2">Edit Account Details</MenuItem>
