@@ -9,9 +9,10 @@ RSpec.describe AccountTypesController, type: :controller do
       expect(response).to be_success
       json = JSON.parse(response.body)
 
-      expect(json['account_types'].length).to eq(2)
+      expect(json['account_types'].length).to eq(3)
       expect(json['account_types'][0]).to eq({ 'id' => 1, 'code' => 'savings', 'name' => 'Savings' })
       expect(json['account_types'][1]).to eq({ 'id' => 2, 'code' => 'share', 'name' => 'Share' })
+      expect(json['account_types'][2]).to eq({ 'id' => 3, 'code' => 'home_loan', 'name' => 'Home Loan' })
     end
   end
 end

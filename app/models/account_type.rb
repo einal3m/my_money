@@ -20,4 +20,14 @@ class AccountType < ClassyEnum::Base
       2
     end
   end
+
+  class HomeLoan < AccountType
+    def id
+      3
+    end
+
+    def name
+      'Home Loan'
+    end
+  end
 end
