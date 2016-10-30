@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150907104007) do
+ActiveRecord::Schema.define(version: 20161030105359) do
 
   create_table "accounts", force: true do |t|
     t.string   "name"
@@ -23,6 +23,9 @@ ActiveRecord::Schema.define(version: 20150907104007) do
     t.integer  "reconciliation_id"
     t.string   "ticker"
     t.string   "account_type"
+    t.integer  "limit"
+    t.integer  "term"
+    t.decimal  "interest_rate"
   end
 
   create_table "bank_statements", force: true do |t|

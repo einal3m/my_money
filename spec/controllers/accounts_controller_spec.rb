@@ -61,6 +61,33 @@ RSpec.describe AccountsController, type: :controller do
           expect(json['account']).to eq(serialize_account(account))
         end
       end
+
+      context 'Loan account' do
+        it 'creates a new Loan Account' do
+          expect {
+            post :create, { account: {
+              account_type: 'loan', name: 'Name', limit: 3000, term: 30, interest_rate: 3.45, starting_date: '2016-12-31'
+            } }, valid_session
+          }.to change(Account, :count).by(1)
+        end
+
+        it 'sends the account' do
+          post :create, { account: {
+            account_type: 'loan', name: 'Name', limit: 3000, term: 30, interest_rate: 3.45, starting_date: '2016-12-31'
+          } }, valid_session
+          account = Account.first
+
+          # expect(account.name).to eq('Name')
+          # expect(account.limit).to eq(3000)
+          # expect(account.term).to eq(30)
+          # expect(account.interest_rate).to eq(3.45)
+
+          json = JSON.parse(response.body)
+          p json
+          expect(json['account']['id']).to eq(account.id)
+          expect(json['account']['limit']).to eq(3000)
+        end
+      end
     end
 
     context 'with invalid params' do

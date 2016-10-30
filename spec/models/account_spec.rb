@@ -60,6 +60,36 @@ RSpec.describe Account, type: :model do
       end
     end
 
+    context 'loan' do
+      it 'is invalid without a limit' do
+        expect(FactoryGirl.build(:account, limit: nil, account_type: 'loan')).not_to be_valid
+      end
+
+      it 'is invalid if limit is not a number' do
+        expect(FactoryGirl.build(:account, limit: 'a', account_type: 'loan')).not_to be_valid
+      end
+
+      it 'is invalid without a term' do
+        expect(FactoryGirl.build(:account, term: nil, account_type: 'loan')).not_to be_valid
+      end
+
+      it 'is invalid if term is not a number' do
+        expect(FactoryGirl.build(:account, term: 'a', account_type: 'loan')).not_to be_valid
+      end
+
+      it 'is invalid without an interest_rate' do
+        expect(FactoryGirl.build(:account, interest_rate: nil, account_type: 'loan')).not_to be_valid
+      end
+
+      it 'is invalid if limit is not a number' do
+        expect(FactoryGirl.build(:account, interest_rate: 'a', account_type: 'loan')).not_to be_valid
+      end
+
+      it 'is invalid without a starting date' do
+        expect(FactoryGirl.build(:account, starting_date: nil, account_type: 'loan')).not_to be_valid
+      end
+    end
+
     it 'is valid without a bank' do
       expect(FactoryGirl.build(:account, bank: nil)).to be_valid
     end

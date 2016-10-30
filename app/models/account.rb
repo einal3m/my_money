@@ -23,8 +23,11 @@ class Account < ActiveRecord::Base
   validates :account_type, presence: true
   validates :name, presence: true
   validates :starting_balance, presence: true, numericality: true, if: :savings?
-  validates :starting_date, presence: true, if: :savings?
+  validates :starting_date, presence: true, if: :savings_or_loan?
   validates :ticker, presence: true, if: :share?
+  validates :limit, presence: true, numericality: true, if: :loan?
+  validates :term, presence: true, numericality: true, if: :loan?
+  validates :interest_rate, presence: true, numericality: true, if: :loan?
 
   def savings?
     account_type == AccountType::Savings
@@ -32,6 +35,14 @@ class Account < ActiveRecord::Base
 
   def share?
     account_type == AccountType::Share
+  end
+
+  def loan?
+    account_type == AccountType::Loan
+  end
+
+  def savings_or_loan?
+    savings? || loan?
   end
 
   # defaults
