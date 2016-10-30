@@ -13,10 +13,10 @@ RSpec.describe AccountType, type: :model do
     expect(account_type.name).to eq('Share')
     expect(account_type.code).to eq('share')
   end
-  it 'Home Loan' do
-    account_type = AccountType::HomeLoan.new
+  it 'Loan' do
+    account_type = AccountType::Loan.new
     expect(account_type.id).to eq(3)
-    expect(account_type.name).to eq('Home Loan')
-    expect(account_type.code).to eq('home_loan')
+    expect(account_type.name).to eq('Loan')
+    expect(account_type.code).to eq('loan')
   end
 end
