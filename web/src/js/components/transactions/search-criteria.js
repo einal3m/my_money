@@ -1,11 +1,8 @@
-
-
 import React from 'react';
 import { connect } from 'react-redux';
-import { toJS } from 'immutable';
 
 import accountActions from '../../actions/account-actions';
-import transactionActions from '../../actions/transaction-actions';
+import { getTransactions, setSearchDescription, toggleMoreOrLess } from '../../actions/transaction-actions';
 import dateRangeActions from '../../actions/date-range-actions';
 import accountSelector from '../../selectors/account-selector';
 
@@ -41,19 +38,19 @@ export class SearchCriteria extends React.Component {
     }
   }
 
-  onDescriptionChange(description) {
-    transactionActions.setSearchDescription(description);
+  onDescriptionChange = (description) => {
+    setSearchDescription(description);
     this.fetch();
-  }
+  };
 
-  onToggleMoreOrLess() {
-    transactionActions.toggleMoreOrLess();
+  onToggleMoreOrLess = () => {
+    toggleMoreOrLess();
     this.fetch();
-  }
+  };
 
-  fetch() {
-    transactionActions.getTransactions();
-  }
+  fetch = () => {
+    getTransactions();
+  };
 
   renderStaticCriteria() {
     return [

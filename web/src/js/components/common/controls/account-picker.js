@@ -6,7 +6,7 @@ require('../../../../css/picker.scss');
 
 export default class AccountPicker extends React.Component {
 
-  onSelect(event, key) {
+  onSelect(key) {
     this.props.onChange(Number(key));
   }
 

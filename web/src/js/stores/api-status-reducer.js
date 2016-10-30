@@ -1,5 +1,10 @@
 import { Map } from 'immutable';
 import ApiStatus from '../util/api-status';
+import {
+  SAVE_TRANSACTION,
+  GET_TRANSACTIONS,
+  SET_TRANSACTIONS,
+  DELETE_TRANSACTION } from '../actions/transaction-actions';
 
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
@@ -10,6 +15,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
   switch (action.type) {
     case 'GET_ACCOUNTS':
     case 'GET_DATE_RANGES':
+    case GET_TRANSACTIONS:
     case 'GET_CATEGORIES':
     case 'GET_REPORT':
     case 'UPLOAD_OFX':
@@ -18,6 +24,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'SET_ACCOUNTS':
     case 'ADD_ACCOUNT':
     case 'REMOVE_ACCOUNT':
+    case SET_TRANSACTIONS:
     case 'SET_DATE_RANGES':
     case 'CLEAR_API_ERROR':
     case 'SET_CATEGORY_TYPES':
@@ -32,20 +39,23 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setDone(state);
 
     case 'SAVE_ACCOUNT':
+    case SAVE_TRANSACTION:
     case 'SAVE_CATEGORY':
     case 'SAVE_SUBCATEGORY':
-    case 'SAVE_TRANSACTIONS':
       return setSaving(state);
 
     case 'DELETE_ACCOUNT':
+    case DELETE_TRANSACTION:
     case 'DELETE_CATEGORY':
     case 'DELETE_SUBCATEGORY':
       return setDeleting(state);
 
     case 'SET_API_ERROR':
       return setError(state, action.message);
+
+    default:
+      return state;
   }
-  return state;
 }
 
 function setDone(state) {

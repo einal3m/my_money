@@ -7,7 +7,7 @@ import AccountFilter from '../../common/criteria/account-filter';
 import DescriptionFilter from '../../common/description-filter';
 import DateRangeFilter from '../../common/criteria/date-range-filter';
 import accountActions from '../../../actions/account-actions';
-import transactionActions from '../../../actions/transaction-actions';
+import * as transactionActions from '../../../actions/transaction-actions';
 import staticDataActions from '../../../actions/date-range-actions';
 
 describe('SearchCriteria', () => {

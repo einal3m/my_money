@@ -12,6 +12,7 @@ describe('transactionTransformer', () => {
         subcategoryId: 11,
         notes: 'a note',
         memo: 'a memo',
+        transactionType: 'bank_transaction',
       };
 
       const transformedTransaction = transactionTransformer.transformToApi(transaction);
@@ -24,6 +25,7 @@ describe('transactionTransformer', () => {
       expect(transformedTransaction.subcategory_id).toEqual(11);
       expect(transformedTransaction.notes).toEqual('a note');
       expect(transformedTransaction.memo).toEqual('a memo');
+      expect(transformedTransaction.transaction_type).toEqual('bank_transaction');
     });
   });
 
@@ -39,6 +41,7 @@ describe('transactionTransformer', () => {
         notes: 'a note',
         memo: 'a memo',
         balance: 3000,
+        transaction_type: 'bank_transaction',
       };
 
       const transformedTransaction = transactionTransformer.transformFromApi(transaction);
@@ -52,6 +55,7 @@ describe('transactionTransformer', () => {
       expect(transformedTransaction.notes).toEqual('a note');
       expect(transformedTransaction.memo).toEqual('a memo');
       expect(transformedTransaction.balance).toEqual(3000);
+      expect(transformedTransaction.transactionType).toEqual('bank_transaction');
     });
   });
 

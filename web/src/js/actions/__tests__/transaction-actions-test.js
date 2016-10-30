@@ -1,8 +1,7 @@
-import transactionActions from '../transaction-actions';
-import accountActions from '../account-actions';
-import dateRangeActions from '../date-range-actions';
+import * as transactionActions from '../transaction-actions';
+import transactionTransformer from '../../transformers/transaction-transformer';
 import store from '../../stores/store';
-import { fromJS } from 'immutable';
+import apiUtil from '../../util/api-util';
 
 describe('TransactionActions', () => {
   let dispatcherSpy;
@@ -11,29 +10,62 @@ describe('TransactionActions', () => {
   });
 
   describe('getTransactions', () => {
-    xit('calls the api for accounts, date ranges and transactions', () => {
-      spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({ loaded: true, currentAccount: { id: 45 } }),
-        dateRangeStore: fromJS({ loaded: true, currentDateRange: { fromDate: '2015-01-01', toDate: '2015-02-02' } }),
-        transactionStore: fromJS({ moreOptions: true, searchDescription: 'my String' }),
-      });
-      spyOn(accountActions, 'getAccounts').and.returnValue(Promise.resolve());
-      spyOn(dateRangeActions, 'getDateRanges').and.returnValue(Promise.resolve());
-      spyOn(transactionApi, 'index');
 
-      transactionActions.getTransactions();
-
-      expect(transactionApi.index).toHaveBeenCalled();
-    });
   });
 
   describe('storeTransactions', () => {
     it('dispatches the transactions to the store', () => {
       transactionActions.storeTransactions(['transactions']);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_TRANSACTIONS',
+        type: transactionActions.SET_TRANSACTIONS,
         transactions: ['transactions'],
       });
+    });
+  });
+
+  describe('saveTransaction', () => {
+    it('makes post request with callback when id is not present', () => {
+      const transaction = { notes: 'Cat', accountId: 4 };
+      spyOn(apiUtil, 'post');
+      spyOn(transactionTransformer, 'transformToApi').and.returnValue('transformedTransaction');
+
+      transactionActions.saveTransaction(transaction);
+
+      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith(transaction);
+      expect(apiUtil.post).toHaveBeenCalled();
+
+      const postArgs = apiUtil.post.calls.argsFor(0)[0];
+      expect(postArgs.url).toEqual('accounts/4/transactions');
+      expect(postArgs.body).toEqual({ transaction: 'transformedTransaction' });
+    });
+
+    it('makes put request with callback when id is present', () => {
+      const transaction = { id: 23, notes: 'Cat', accountId: 4 };
+      spyOn(apiUtil, 'put');
+      spyOn(transactionTransformer, 'transformToApi').and.returnValue('transformedTransaction');
+
+      transactionActions.saveTransaction(transaction);
+
+      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith(transaction);
+      expect(apiUtil.put).toHaveBeenCalled();
+
+      const putArgs = apiUtil.put.calls.argsFor(0)[0];
+      expect(putArgs.url).toEqual('accounts/4/transactions/23');
+      expect(putArgs.body).toEqual({ transaction: 'transformedTransaction' });
+    });
+  });
+
+  describe('deleteTransaction', () => {
+    it('makes delete request', () => {
+      const transaction = { id: 23, accountId: 4 };
+      spyOn(apiUtil, 'delete');
+
+      transactionActions.deleteTransaction(transaction);
+
+      expect(apiUtil.delete).toHaveBeenCalled();
+
+      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
+      expect(deleteArgs.url).toEqual('accounts/4/transactions/23');
     });
   });
 
@@ -41,7 +73,7 @@ describe('TransactionActions', () => {
     it('dispatches the description to the store', () => {
       transactionActions.setSearchDescription('my String');
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_SEARCH_DESCRIPTION',
+        type: transactionActions.SET_SEARCH_DESCRIPTION,
         description: 'my String',
       });
     });
@@ -51,7 +83,7 @@ describe('TransactionActions', () => {
     it('dispatches the toggle actions', () => {
       transactionActions.toggleMoreOrLess();
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'TOGGLE_MORE_OR_LESS',
+        type: transactionActions.TOGGLE_MORE_OR_LESS,
       });
     });
   });

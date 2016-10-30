@@ -1,4 +1,10 @@
 import { Map, List, fromJS } from 'immutable';
+import {
+  TOGGLE_MORE_OR_LESS,
+  SET_SEARCH_DESCRIPTION,
+  SET_TRANSACTIONS,
+  GET_TRANSACTIONS,
+} from '../actions/transaction-actions';
 
 const INITIAL_STATE = Map({
   loading: false,
@@ -8,16 +14,17 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-    case 'SET_TRANSACTIONS':
+    case SET_TRANSACTIONS:
       return setTransactions(state, action.transactions);
-    case 'FETCHING_TRANSACTIONS':
+    case GET_TRANSACTIONS:
       return setLoadingState(state);
-    case 'SET_SEARCH_DESCRIPTION':
+    case SET_SEARCH_DESCRIPTION:
       return setSearchDescription(state, action.description);
-    case 'TOGGLE_MORE_OR_LESS':
+    case TOGGLE_MORE_OR_LESS:
       return toggleMoreOrLess(state);
+    default:
+      return state;
   }
-  return state;
 }
 
 function setTransactions(state, transactions) {

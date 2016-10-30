@@ -88,7 +88,7 @@ describe('AccountPicker', () => {
         />
       );
 
-      accountPicker.refs.dropdown.props.onSelect({}, '4');
+      accountPicker.refs.dropdown.props.onSelect('4');
       expect(onChangeSpy).toHaveBeenCalledWith(4);
     });
   });

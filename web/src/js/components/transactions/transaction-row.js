@@ -1,20 +1,17 @@
-
-
-import React from 'react';
-import moment from 'moment';
-import moneyUtil from '../../util/money-util';
+import React, { PropTypes } from 'react';
 import Amount from '../common/amount';
 import Date from '../common/date';
 import Balance from '../common/balance';
+import { showFormModal } from '../../actions/form-actions';
 
 export default class TransactionRow extends React.Component {
 
-  renderMemoNotes(memo, notes) {
-    let text = memo ? memo : '';
+  renderMemoNotes = (memo, notes) => {
+    let text = memo || '';
     text += memo && notes ? '/' : '';
-    text += notes ? notes : '';
+    text += notes || '';
     return text;
-  }
+  };
 
   selectedCategory(categoryId) {
     return this.props.groupedCategories.map(categoryType =>
@@ -22,9 +19,9 @@ export default class TransactionRow extends React.Component {
     ).filter(c => c.length > 0)[0][0];
   }
 
-  selectedSubcategory(subcategoryId, category) {
-    return category.subcategories.filter(subcategory => subcategory.id === subcategoryId)[0];
-  }
+  selectedSubcategory = (subcategoryId, category) => (
+    category.subcategories.filter(subcategory => subcategory.id === subcategoryId)[0]
+  );
 
   renderCategory(categoryId, subcategoryId) {
     if (!categoryId && !subcategoryId) return '';
@@ -40,13 +37,19 @@ export default class TransactionRow extends React.Component {
     return text;
   }
 
+  onClickHandler = () => {
+    showFormModal('Transaction', this.props.transaction, true);
+  };
+
   render() {
     return (
-      <tr>
+      <tr onClick={this.onClickHandler}>
         <td><Date date={this.props.transaction.date} /></td>
         <td>
           <div>{this.renderMemoNotes(this.props.transaction.memo, this.props.transaction.notes)}</div>
-          <div className="category">{this.renderCategory(this.props.transaction.categoryId, this.props.transaction.subcategoryId)}</div>
+          <div className="category">
+            {this.renderCategory(this.props.transaction.categoryId, this.props.transaction.subcategoryId)}
+          </div>
         </td>
         <td className="currency"><Amount amount={this.props.transaction.amount} /></td>
         <td className="currency"><Balance balance={this.props.transaction.balance} /></td>
@@ -56,16 +59,16 @@ export default class TransactionRow extends React.Component {
 }
 
 TransactionRow.propTypes = {
-  transaction: React.PropTypes.shape({
-    id: React.PropTypes.number.isRequired,
-    date: React.PropTypes.string.isRequired,
-    memo: React.PropTypes.string,
-    notes: React.PropTypes.string,
-    amount: React.PropTypes.number.isRequired,
-    balance: React.PropTypes.number.isRequired,
-    categoryId: React.PropTypes.number,
-    subcategoryId: React.PropTypes.number,
+  transaction: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+    memo: PropTypes.string,
+    notes: PropTypes.string,
+    amount: PropTypes.number.isRequired,
+    balance: PropTypes.number.isRequired,
+    categoryId: PropTypes.number,
+    subcategoryId: PropTypes.number,
   }).isRequired,
-  groupedCategories: React.PropTypes.array.isRequired,
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

@@ -10,6 +10,7 @@ const transactionTransformer = {
       subcategory_id: transaction.subcategoryId,
       notes: transaction.notes,
       memo: transaction.memo,
+      transaction_type: transaction.transactionType,
     };
   },
 
@@ -24,6 +25,7 @@ const transactionTransformer = {
       notes: transaction.notes,
       memo: transaction.memo,
       balance: transaction.balance,
+      transactionType: transaction.transaction_type,
     };
   },
 

@@ -1,5 +1,10 @@
-import { List, Map, toJS } from 'immutable';
 import transactionReducer from '../transaction-reducer';
+import {
+  TOGGLE_MORE_OR_LESS,
+  SET_SEARCH_DESCRIPTION,
+  SET_TRANSACTIONS,
+  GET_TRANSACTIONS,
+} from '../../actions/transaction-actions';
 
 describe('TransactionReducer', () => {
   let transactions;
@@ -18,11 +23,11 @@ describe('TransactionReducer', () => {
     expect(state.get('moreOptions')).toEqual(false);
   });
 
-  describe('FETCHING_TRANSACTIONS', () => {
+  describe('GET_TRANSACTIONS', () => {
     it('sets loading to true and resets transactions array', () => {
       const initialState = transactionReducer();
-      const action1 = { type: 'SET_TRANSACTIONS', transactions };
-      const action2 = { type: 'FETCHING_TRANSACTIONS' };
+      const action1 = { type: SET_TRANSACTIONS, transactions };
+      const action2 = { type: GET_TRANSACTIONS };
       const midState = transactionReducer(initialState, action1);
       const nextState = transactionReducer(midState, action2);
 
@@ -34,7 +39,7 @@ describe('TransactionReducer', () => {
   describe('SET_TRANSACTIONS', () => {
     it('sets loading to false and fills transactions array with transactions', () => {
       const initialState = transactionReducer();
-      const action = { type: 'SET_TRANSACTIONS', transactions };
+      const action = { type: SET_TRANSACTIONS, transactions };
       const nextState = transactionReducer(initialState, action);
 
       expect(nextState.get('transactions').get(0).toJS()).toEqual(transactions[0]);
@@ -45,7 +50,7 @@ describe('TransactionReducer', () => {
 
   describe('SET_SEARCH_DESCRIPTION', () => {
     it('sets the search descriptin string', () => {
-      const action = { type: 'SET_SEARCH_DESCRIPTION', description: 'my String' };
+      const action = { type: SET_SEARCH_DESCRIPTION, description: 'my String' };
       const state = transactionReducer(undefined, action);
 
       expect(state.get('searchDescription')).toEqual('my String');
@@ -54,7 +59,7 @@ describe('TransactionReducer', () => {
 
   describe('TOGGLE_MORE_OR_LESS', () => {
     it('sets the search descriptin string', () => {
-      const action = { type: 'TOGGLE_MORE_OR_LESS' };
+      const action = { type: TOGGLE_MORE_OR_LESS };
       const state = transactionReducer(undefined, action);
 
       expect(state.get('moreOptions')).toEqual(true);
