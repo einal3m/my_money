@@ -11,11 +11,15 @@ describe('AccountActions', () => {
   });
 
   describe('getAccounts', () => {
+    // figure out how to test promises :)
+  });
+
+  describe('fetchAccounts', () => {
     it('makes an ajax request to GET/accounts and calls callback on success', () => {
       spyOn(apiUtil, 'get').and.returnValue(Promise.resolve());
       spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: false }) });
 
-      const promise = accountActions.getAccounts();
+      const promise = accountActions.fetchAccounts();
 
       expect(apiUtil.get).toHaveBeenCalled();
       expect(promise.then).toBeDefined();
@@ -39,7 +43,7 @@ describe('AccountActions', () => {
       spyOn(apiUtil, 'get');
       spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: true }) });
 
-      const promise = accountActions.getAccounts({ useStore: true });
+      const promise = accountActions.fetchAccounts({ useStore: true });
       expect(apiUtil.get).not.toHaveBeenCalled();
 
       expect(promise.then).toBeDefined();
@@ -49,9 +53,43 @@ describe('AccountActions', () => {
       spyOn(apiUtil, 'get');
       spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ loaded: true }) });
 
-      accountActions.getAccounts();
+      accountActions.fetchAccounts();
 
       expect(apiUtil.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('getAccountTypes', () => {
+    it('makes an ajax request to GET/account_types and calls callback on success', () => {
+      spyOn(apiUtil, 'get').and.returnValue(Promise.resolve());
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ accountTypesLoaded: false }) });
+
+      const promise = accountActions.getAccountTypes();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(promise.then).toBeDefined();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.GET_ACCOUNT_TYPES });
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('account_types');
+
+      const successCallback = getArgs.onSuccess;
+      successCallback({ account_types: ['account_type'] });
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: accountActions.SET_ACCOUNT_TYPES,
+        accountTypes: ['account_type'],
+      });
+    });
+
+    it('doesnt call the api if account types already loaded', () => {
+      spyOn(apiUtil, 'get');
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ accountTypesLoaded: true }) });
+
+      const promise = accountActions.getAccountTypes();
+      expect(apiUtil.get).not.toHaveBeenCalled();
+
+      expect(promise.then).toBeDefined();
     });
   });
 

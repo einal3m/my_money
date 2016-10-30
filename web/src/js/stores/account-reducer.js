@@ -3,15 +3,14 @@ import {
   SET_ACCOUNTS,
   SET_CURRENT_ACCOUNT,
   TOGGLE_SELECTED_ACCOUNT,
+  SET_ACCOUNT_TYPES,
 } from '../actions/account-actions';
 
 const INITIAL_STATE = Map({
   loaded: false,
+  accountTypesLoaded: false,
   accounts: List(),
-  accountTypes: List([
-    Map({ id: 1, code: 'savings', name: 'Savings' }),
-    Map({ id: 2, code: 'share', name: 'Share' }),
-  ]),
+  accountTypes: List([]),
   currentAccount: Map({}),
   selectedAccounts: List([]),
 });
@@ -20,6 +19,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
   switch (action.type) {
     case SET_ACCOUNTS:
       return setAccounts(state, action.accounts);
+    case SET_ACCOUNT_TYPES:
+      return setAccountTypes(state, action.accountTypes);
     case SET_CURRENT_ACCOUNT:
       return setCurrentAccount(state, action.id);
     case TOGGLE_SELECTED_ACCOUNT:
@@ -36,6 +37,11 @@ function setAccounts(state, accounts) {
               .set('selectedAccounts', List([accounts[0].id]));
 }
 
+function setAccountTypes(state, accountTypes) {
+  return state.set('accountTypesLoaded', true)
+              .set('accountTypes', fromJS(accountTypes));
+}
+
 function currentAccount(state, accounts) {
   if (state.get('currentAccount').get('id') && currentAccountExists(state, accounts)) {
     return state.get('currentAccount');
@@ -44,7 +50,7 @@ function currentAccount(state, accounts) {
 }
 
 function currentAccountExists(state, accounts) {
-  return accounts.filter(account => account.id == state.get('currentAccount').get('id')).length > 0;
+  return accounts.filter(account => account.id === state.get('currentAccount').get('id')).length > 0;
 }
 
 function setCurrentAccount(state, id) {

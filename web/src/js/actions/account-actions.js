@@ -4,6 +4,12 @@ import accountTransformer from '../transformers/account-transformer';
 
 export const GET_ACCOUNTS = 'GET_ACCOUNTS';
 export function getAccounts(options) {
+  return getAccountTypes().then(() => {
+    fetchAccounts(options);
+  });
+}
+
+export function fetchAccounts(options) {
   const accountsLoaded = store.getState().accountStore.get('loaded');
 
   if (accountsLoaded && options && options.useStore) {
@@ -22,6 +28,25 @@ export function getAccounts(options) {
 export const SET_ACCOUNTS = 'SET_ACCOUNTS';
 function storeAccounts(accounts) {
   store.dispatch({ type: SET_ACCOUNTS, accounts });
+}
+
+export const GET_ACCOUNT_TYPES = 'GET_ACCOUNT_TYPES';
+export function getAccountTypes() {
+  const accountTypesLoaded = store.getState().accountStore.get('accountTypesLoaded');
+  if (accountTypesLoaded) {
+    return Promise.resolve();
+  }
+
+  store.dispatch({ type: GET_ACCOUNT_TYPES });
+  return apiUtil.get({
+    url: 'account_types',
+    onSuccess: response => storeAccountTypes(response.account_types),
+  });
+}
+
+export const SET_ACCOUNT_TYPES = 'SET_ACCOUNT_TYPES';
+function storeAccountTypes(accountTypes) {
+  store.dispatch({ type: SET_ACCOUNT_TYPES, accountTypes });
 }
 
 export const SET_CURRENT_ACCOUNT = 'SET_CURRENT_ACCOUNT';
