@@ -2,6 +2,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import AccountSlat from '../account-slat';
+import AccountIcon from '../account-icon';
 import AccountActionButtons from '../account-action-buttons';
 import Balance from '../../common/balance';
 import * as routingActions from '../../../actions/routing-actions';
@@ -13,10 +14,12 @@ describe('AccountSlat', () => {
   describe('render', () => {
     it('has the account information', () => {
       accountSlat = shallowRenderer(<AccountSlat account={account} />);
+      const icon = accountSlat.props.children.props.children[0];
       const [info, balance, buttonGroup] = accountSlat.props.children.props.children[1].props.children.props.children;
       const [name, bank] = info.props.children;
       const currentBalance = balance.props.children;
 
+      expect(icon.props.children.type).toEqual(AccountIcon);
       expect(name.props.children.props.children).toEqual('myAccount');
       expect(bank.props.children).toEqual('myBank');
       expect(currentBalance.type).toEqual(Balance);

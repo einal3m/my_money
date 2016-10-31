@@ -1,27 +1,12 @@
 import React, { PropTypes } from 'react';
 import Balance from '../common/balance';
+import AccountIcon from './account-icon';
 import AccountActionButtons from './account-action-buttons';
 import { routeToTransactions } from '../../actions/routing-actions';
 
 require('../../../css/common.scss');
-require('../../../images/piggy-bank.gif');
 
 export default class AccountSlat extends React.Component {
-
-  renderSlatImage = (accountType) => {
-    if (accountType === 'savings') {
-      return (
-        <img src={require('../../../images/piggy-bank.gif')} height={35} width={35} />
-      );
-    } else {
-      return (
-        <span className="fa-stack fa-lg">
-          <i className="fa fa-circle fa-stack-2x" />
-          <i className="fa fa-bank fa-stack-1x fa-inverse" />
-        </span>
-      );
-    }
-  };
 
   viewTransactions = () => {
     routeToTransactions(this.props.account.id);
@@ -36,7 +21,7 @@ export default class AccountSlat extends React.Component {
       <li className="slat-item">
         <div className="row">
           <div className="slat-icon col-sm-1 col-xs-2">
-            {this.renderSlatImage(this.props.account.accountType)}
+            <AccountIcon accountType={this.props.account.accountType} />
           </div>
           <div className="slat-detail col-sm-11 col-xs-10">
             <div className="row">
