@@ -1,9 +1,9 @@
+import { fromJS } from 'immutable';
 import importActions from '../import-actions';
 import transactionTransformer from '../../transformers/transaction-transformer';
 import apiUtil from '../../util/api-util';
 import store from '../../stores/store';
-import { hashHistory } from 'react-router';
-import { fromJS } from 'immutable';
+import * as routingActions from '../routing-actions';
 
 describe('ImportActions', () => {
   let dispatcherSpy;
@@ -15,13 +15,13 @@ describe('ImportActions', () => {
     it('calls the ofx api with the file and accountId', () => {
       const file = { name: 'file.ofx' };
       spyOn(apiUtil, 'upload');
-      spyOn(hashHistory, 'push');
+      spyOn(routingActions, 'routeToImportTransactions');
 
       importActions.uploadOFX(45, file);
 
       expect(apiUtil.upload).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: 'UPLOAD_OFX', fileName: 'file.ofx' });
-      expect(hashHistory.push).toHaveBeenCalledWith('/import');
+      expect(routingActions.routeToImportTransactions).toHaveBeenCalled();
 
       const uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
       expect(uploadArgs.url).toEqual('accounts/45/transactions/import');
@@ -80,14 +80,14 @@ describe('ImportActions', () => {
 
   describe('importComplete', () => {
     it('dispatches an empty array to the store, and changes route', () => {
-      spyOn(hashHistory, 'push');
+      spyOn(routingActions, 'routeToTransactions');
       importActions.importComplete();
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'SET_OFX_TRANSACTIONS',
         transactions: [],
       });
-      expect(hashHistory.push).toHaveBeenCalledWith('/transactions');
+      expect(routingActions.routeToTransactions).toHaveBeenCalled();
     });
   });
 

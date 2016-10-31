@@ -1,30 +1,14 @@
 import React, { PropTypes } from 'react';
-import { MenuItem, DropdownButton } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { hashHistory } from 'react-router';
-import moneyUtil from '../../util/money-util';
 import Balance from '../common/balance';
-import { setCurrentAccount, deleteAccount } from '../../actions/account-actions';
+import AccountActionButtons from './account-action-buttons';
+import { routeToTransactions } from '../../actions/routing-actions';
 
 require('../../../css/common.scss');
 require('../../../images/piggy-bank.gif');
 
 export default class AccountSlat extends React.Component {
-  accountActions = (eventKey) => {
-    if (eventKey === '1') {
-      this.viewTransactions();
-    }
-    if (eventKey === '3') {
-      deleteAccount(this.props.account.id);
-    }
-  };
 
-  viewTransactions = () => {
-    setCurrentAccount(this.props.account.id);
-    hashHistory.push('/transactions');
-  };
-
-  renderSlatImage(accountType) {
+  renderSlatImage = (accountType) => {
     if (accountType === 'savings') {
       return (
         <img src={require('../../../images/piggy-bank.gif')} height={35} width={35} />
@@ -37,24 +21,11 @@ export default class AccountSlat extends React.Component {
         </span>
       );
     }
-  }
+  };
 
-  renderButtonGroup() {
-    return (
-      <DropdownButton title="..." pullRight noCaret id={`action-button-${this.props.account.id}`}
-        ref="accountActionsButton" onSelect={this.accountActions}
-      >
-        <LinkContainer to="/transactions"><MenuItem eventKey="1">View Transactions</MenuItem></LinkContainer>
-        <MenuItem eventKey="2">Edit Account Details</MenuItem>
-        <MenuItem eventKey="3">Delete Account</MenuItem>
-      </DropdownButton>
-    );
-  }
-
-  renderCurrentBalance() {
-    const currentBalanceDollars = moneyUtil.centsToDollars(this.props.account.currentBalance);
-    return moneyUtil.moneyFormat(currentBalanceDollars);
-  }
+  viewTransactions = () => {
+    routeToTransactions(this.props.account.id);
+  };
 
   renderName() {
     return <a className="name-link" onClick={this.viewTransactions.bind(this)}><h4>{this.props.account.name}</h4></a>;
@@ -77,7 +48,7 @@ export default class AccountSlat extends React.Component {
                 <Balance balance={this.props.account.currentBalance} />
               </div>
               <div className="slat-icon col-xs-4 col-sm-1">
-                {this.renderButtonGroup()}
+                <AccountActionButtons account={this.props.account} />
               </div>
             </div>
           </div>

@@ -1,13 +1,13 @@
 import apiUtil from '../util/api-util';
 import transactionTransformer from '../transformers/transaction-transformer';
 import store from '../stores/store';
-import { hashHistory } from 'react-router';
+import { routeToTransactions, routeToImportTransactions } from './routing-actions';
 
 class ImportActions {
 
   uploadOFX(accountId, file) {
     store.dispatch({ type: 'UPLOAD_OFX', fileName: file.name });
-    hashHistory.push('/import');
+    routeToImportTransactions();
     return apiUtil.upload({
       url: `accounts/${accountId}/transactions/import`,
       file,
@@ -38,7 +38,7 @@ class ImportActions {
 
   importComplete() {
     store.dispatch({ type: 'SET_OFX_TRANSACTIONS', transactions: [] });
-    hashHistory.push('/transactions');
+    routeToTransactions();
   }
 
   setNotes(index, notes) {
