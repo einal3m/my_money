@@ -7,6 +7,7 @@ import importReducer from './import-reducer';
 import apiReducer from './api-status-reducer';
 import reportReducer from './report-reducer';
 import formReducer from './form-reducer';
+import patternReducer from './pattern-reducer';
 
 export default createStore(
   combineReducers({
@@ -18,5 +19,6 @@ export default createStore(
     apiStatusStore: apiReducer,
     reportStore: reportReducer,
     formStore: formReducer,
+    patternStore: patternReducer,
   })
 );

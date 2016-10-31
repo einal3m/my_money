@@ -11,7 +11,7 @@ describe('AccountActions', () => {
   });
 
   describe('getAccounts', () => {
-    // figure out how to test promises :)
+    // TODO: figure out how to test promises :)
   });
 
   describe('fetchAccounts', () => {

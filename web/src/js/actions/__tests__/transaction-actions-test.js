@@ -10,7 +10,7 @@ describe('TransactionActions', () => {
   });
 
   describe('getTransactions', () => {
-
+    // TODO: learn how to test promises
   });
 
   describe('storeTransactions', () => {

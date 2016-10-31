@@ -8,6 +8,7 @@ import apiUtil from './util/api-util';
 import AccountList from './components/accounts/account-list';
 import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
+import PatternList from './components/patterns/pattern-list';
 import ImportPage from './components/import/import-page';
 import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
 import AccountBalanceChart from './components/reports/account-balance-chart';
@@ -38,6 +39,7 @@ render((
       <Route path="accounts" component={AccountList} />
       <Route path="transactions" component={TransactionList} />
       <Route path="categories" component={CategoryList} />
+      <Route path="patterns" component={PatternList} />
       <Route path="import" component={ImportPage} />
       <Route path="reports">
         <Route path="accountBalance" component={AccountBalanceChart} />

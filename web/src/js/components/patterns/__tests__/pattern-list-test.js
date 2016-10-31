@@ -1,0 +1,30 @@
+import React from 'react';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import { PatternList } from '../pattern-list';
+import PageHeader from '../../common/page-header';
+import * as patternActions from '../../../actions/pattern-actions';
+
+describe('PatternList', () => {
+  let patternList;
+  beforeEach(() => {
+    spyOn(patternActions, 'getPatterns');
+    patternList = shallowRenderer(
+      <PatternList loaded />
+    );
+  });
+
+  describe('render', () => {
+    it('has a header with buttons', () => {
+      const header = patternList.props.children;
+
+      expect(header.type).toEqual(PageHeader);
+      expect(header.props.title).toEqual('my patterns');
+    });
+  });
+
+  describe('initialise', () => {
+    it('calls get patterns', () => {
+      expect(patternActions.getPatterns).toHaveBeenCalled();
+    });
+  });
+});

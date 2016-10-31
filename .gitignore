@@ -27,5 +27,8 @@ npm-debug.log
 
 .idea*
 
-web/public/bootstrap.min.css
+bootstrap.min.css
+font-awesome.min.css
 public/assets
+web/fonts
+
