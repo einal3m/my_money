@@ -8,8 +8,8 @@ export default class CategoryRow extends React.Component {
 
   render() {
     return (
-      <tr className="category">
-        <td><button className="btn btn-link" onClick={this.handleClick}>{this.props.category.name}</button></td>
+      <tr className="category" onClick={this.handleClick}>
+        <td>{this.props.category.name}</td>
       </tr>
     );
   }

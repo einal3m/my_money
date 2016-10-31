@@ -15,20 +15,14 @@ describe('CategoryRow', () => {
     it('displays the category', () => {
       expect(row.type).toEqual('tr');
 
-      const button = row.props.children.props.children;
-
-      expect(button.type).toEqual('button');
-      expect(button.props.children).toEqual('Category One');
+      expect(row.props.children.props.children).toEqual('Category One');
     });
   });
 
   describe('on click', () => {
     it('calls the handler prop when row is clicked', () => {
       spyOn(formActions, 'showFormModal');
-
-      const button = row.props.children.props.children;
-      button.props.onClick();
-
+      row.props.onClick();
       expect(formActions.showFormModal).toHaveBeenCalledWith('Category', category, true);
     });
   });

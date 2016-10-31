@@ -7,22 +7,14 @@
 
     .subcategory td{
       border: none;
-      padding-left: 25px;
+      padding-left: 20px;
 
       &::before {
         content: "- ";
       }
     }
 
-    .btn:focus,.btn:active {
-      outline: none !important;
-    }
-
-    button {
-      color: black;
-    }
-
-    .category button {
+    .category {
       font-size: larger;
     }
   }

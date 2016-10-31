@@ -14,21 +14,14 @@ describe('SubcategoryRow', () => {
   describe('render', () => {
     it('displays the subcategory', () => {
       expect(row.type).toEqual('tr');
-
-      const button = row.props.children.props.children;
-
-      expect(button.type).toEqual('button');
-      expect(button.props.children).toEqual('Phone');
+      expect(row.props.children.props.children).toEqual('Phone');
     });
   });
 
   describe('on click', () => {
     it('calls the handler prop when row is clicked', () => {
       spyOn(formActions, 'showFormModal');
-
-      const button = row.props.children.props.children;
-      button.props.onClick();
-
+      row.props.onClick();
       expect(formActions.showFormModal).toHaveBeenCalledWith('Subcategory', subcategory, true);
     });
   });

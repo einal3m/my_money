@@ -29,7 +29,7 @@ export default class CategoryTypeTable extends React.Component {
 
   renderTable() {
     return (
-      <Table id="category-table">
+      <Table hover id="category-table">
         <tbody>
           {this.renderCategories()}
         </tbody>
