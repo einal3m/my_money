@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import moment from 'moment';
 import DatePicker from 'react-bootstrap-datetimepicker';
 import FormControl from '../common/controls/form-control';
+import MoneyInput from '../common/controls/money-input';
 import FormValidator from '../../util/form-validator';
 
 export default class SavingsAccountForm extends React.Component {
@@ -69,16 +70,11 @@ export default class SavingsAccountForm extends React.Component {
           />
         </FormControl>
         <FormControl name="openingBalance" validator={this.validator} label="Opening Balance">
-          <div className="input-group">
-            <div className="input-group-addon">$</div>
-            <input
-              className="form-control"
-              name="openingBalance"
-              type="text"
-              value={this.state.account.openingBalance}
-              onChange={this.handleChange}
-            />
-          </div>
+          <MoneyInput
+            name="openingBalance"
+            value={this.state.account.openingBalance}
+            onChange={this.handleChange}
+          />
         </FormControl>
         <FormControl name="openingBalanceDate" validator={this.validator} label="Opening Balance Date">
           <DatePicker

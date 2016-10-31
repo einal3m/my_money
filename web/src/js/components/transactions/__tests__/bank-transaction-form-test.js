@@ -7,8 +7,9 @@ import DatePicker from '../../common/date-picker/DateTimeField';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
 import FormControl from '../../common/controls/form-control';
+import MoneyInput from '../../common/controls/money-input';
 
-describe('CategoryForm', () => {
+describe('BankTransactionForm', () => {
   const groupedCategories = [
     { categoryType: { id: 1, name: 'Expense' },
       categories: [{ id: 3, name: 'Cat', subcategories: [{ id: 5, name: 'Dog' }] }],
@@ -42,8 +43,8 @@ describe('CategoryForm', () => {
       expect(amount.type).toEqual(FormControl);
       expect(amount.props.name).toEqual('amount');
       expect(amount.props.label).toEqual('Amount');
-      expect(amount.props.children.props.children[1].type).toEqual('input');
-      expect(amount.props.children.props.children[1].props.value).toEqual(300);
+      expect(amount.props.children.type).toEqual(MoneyInput);
+      expect(amount.props.children.props.value).toEqual(300);
 
       expect(notes.type).toEqual(FormControl);
       expect(notes.props.name).toEqual('notes');
@@ -103,6 +104,18 @@ describe('CategoryForm', () => {
       expect(form.forceUpdate).toHaveBeenCalled();
     });
 
+    it('returns false if date field is not a date', () => {
+      const form = TestUtils.renderIntoDocument(
+        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
+      );
+      spyOn(form, 'forceUpdate');
+      form.state.transaction.date = 'blah';
+      expect(form.isValid()).toEqual(false);
+      expect(form.validator.errorState('date')).toEqual('has-error');
+      expect(form.validator.errorFor('date')).toEqual('Date must be a valid date');
+      expect(form.forceUpdate).toHaveBeenCalled();
+    });
+
     it('returns false if amount field is missing', () => {
       const form = TestUtils.renderIntoDocument(
         <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
@@ -112,6 +125,18 @@ describe('CategoryForm', () => {
       expect(form.isValid()).toEqual(false);
       expect(form.validator.errorState('amount')).toEqual('has-error');
       expect(form.validator.errorFor('amount')).toEqual('Amount is required');
+      expect(form.forceUpdate).toHaveBeenCalled();
+    });
+
+    it('returns false if amount field is not a number', () => {
+      const form = TestUtils.renderIntoDocument(
+        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
+      );
+      spyOn(form, 'forceUpdate');
+      form.state.transaction.amount = 'dddd';
+      expect(form.isValid()).toEqual(false);
+      expect(form.validator.errorState('amount')).toEqual('has-error');
+      expect(form.validator.errorFor('amount')).toEqual('Amount is not a number');
       expect(form.forceUpdate).toHaveBeenCalled();
     });
   });

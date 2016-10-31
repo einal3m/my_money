@@ -7,6 +7,12 @@ describe('moneyUtil', () => {
     });
   });
 
+  describe('dollarsToCents', () => {
+    it('converts dollars to cents', () => {
+      expect(moneyUtil.dollarsToCents(12.34)).toEqual(1234);
+    });
+  });
+
   describe('moneyFormat', () => {
     it('converts dollar values into money format', () => {
       expect(moneyUtil.moneyFormat(67.97)).toEqual('$ 67.97');

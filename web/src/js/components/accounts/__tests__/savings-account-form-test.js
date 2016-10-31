@@ -4,6 +4,7 @@ import moment from 'moment';
 import DatePicker from 'react-bootstrap-datetimepicker';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import SavingsAccountForm from '../savings-account-form';
+import MoneyInput from '../../common/controls/money-input';
 import FormControl from '../../common/controls/form-control';
 
 describe('SavingsAccountForm', () => {
@@ -30,8 +31,8 @@ describe('SavingsAccountForm', () => {
       expect(openingBalance.type).toEqual(FormControl);
       expect(openingBalance.props.name).toEqual('openingBalance');
       expect(openingBalance.props.label).toEqual('Opening Balance');
-      expect(openingBalance.props.children.props.children[1].type).toEqual('input');
-      expect(openingBalance.props.children.props.children[1].props.value).toEqual(100);
+      expect(openingBalance.props.children.type).toEqual(MoneyInput);
+      expect(openingBalance.props.children.props.value).toEqual(100);
 
       expect(openingBalanceDate.type).toEqual(FormControl);
       expect(openingBalanceDate.props.name).toEqual('openingBalanceDate');
@@ -46,7 +47,7 @@ describe('SavingsAccountForm', () => {
 
       expect(name.props.children.props.value).toEqual('');
       expect(bank.props.children.props.value).toEqual('');
-      expect(openingBalance.props.children.props.children[1].props.value).toEqual(0);
+      expect(openingBalance.props.children.props.value).toEqual(0);
       expect(openingBalanceDate.props.children.props.dateTime).toEqual(moment().format('YYYY-MM-DD'));
     });
   });
@@ -108,20 +109,20 @@ describe('SavingsAccountForm', () => {
       const openingBalance = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[2];
 
       openingBalance.value = '';
-      TestUtils.Simulate.change(openingBalance);
+      TestUtils.Simulate.blur(openingBalance);
       expect(form.state.account.openingBalance).toEqual('');
       expect(form.validator.errorState('openingBalance')).toEqual('has-error');
       expect(form.validator.errorFor('openingBalance')).toEqual('Opening balance is required');
 
       openingBalance.value = '8giraffe';
-      TestUtils.Simulate.change(openingBalance);
+      TestUtils.Simulate.blur(openingBalance);
       expect(form.state.account.openingBalance).toEqual('8giraffe');
       expect(form.validator.errorState('openingBalance')).toEqual('has-error');
       expect(form.validator.errorFor('openingBalance')).toEqual('Opening balance is not a number');
 
       openingBalance.value = '9.76';
-      TestUtils.Simulate.change(openingBalance);
-      expect(form.state.account.openingBalance).toEqual('9.76');
+      TestUtils.Simulate.blur(openingBalance);
+      expect(form.state.account.openingBalance).toEqual(976);
       expect(form.validator.errorState('openingBalance')).toEqual('has-success');
       expect(form.validator.errorFor('openingBalance')).toBeUndefined();
     });

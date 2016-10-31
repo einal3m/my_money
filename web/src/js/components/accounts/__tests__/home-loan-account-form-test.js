@@ -5,6 +5,7 @@ import DatePicker from 'react-bootstrap-datetimepicker';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import HomeLoanAccountForm from '../home-loan-account-form';
 import FormControl from '../../common/controls/form-control';
+import MoneyInput from '../../common/controls/money-input';
 
 describe('HomeLoanAccountForm', () => {
   const account = {
@@ -38,8 +39,8 @@ describe('HomeLoanAccountForm', () => {
       expect(limit.type).toEqual(FormControl);
       expect(limit.props.name).toEqual('limit');
       expect(limit.props.label).toEqual('Amount Borrowed');
-      expect(limit.props.children.props.children[1].type).toEqual('input');
-      expect(limit.props.children.props.children[1].props.value).toEqual(1000);
+      expect(limit.props.children.type).toEqual(MoneyInput);
+      expect(limit.props.children.props.value).toEqual(1000);
 
       expect(term.props.children.type).toEqual(FormControl);
       expect(term.props.children.props.name).toEqual('term');
@@ -67,7 +68,7 @@ describe('HomeLoanAccountForm', () => {
 
       expect(name.props.children.props.value).toEqual('');
       expect(bank.props.children.props.value).toEqual('');
-      expect(limit.props.children.props.children[1].props.value).toEqual('');
+      expect(limit.props.children.props.value).toEqual('');
       expect(term.props.children.props.children.props.children[0].props.value).toEqual('');
       expect(interestRate.props.children.props.children.props.children[0].props.value).toEqual('');
       expect(openingBalanceDate.props.children.props.dateTime).toEqual(moment().format('YYYY-MM-DD'));
@@ -131,20 +132,20 @@ describe('HomeLoanAccountForm', () => {
       const limit = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[2];
 
       limit.value = '';
-      TestUtils.Simulate.change(limit);
+      TestUtils.Simulate.blur(limit);
       expect(form.state.account.limit).toEqual('');
       expect(form.validator.errorState('limit')).toEqual('has-error');
       expect(form.validator.errorFor('limit')).toEqual('Limit is required');
 
       limit.value = '8giraffe';
-      TestUtils.Simulate.change(limit);
+      TestUtils.Simulate.blur(limit);
       expect(form.state.account.limit).toEqual('8giraffe');
       expect(form.validator.errorState('limit')).toEqual('has-error');
       expect(form.validator.errorFor('limit')).toEqual('Limit is not a number');
 
       limit.value = '9.76';
-      TestUtils.Simulate.change(limit);
-      expect(form.state.account.limit).toEqual('9.76');
+      TestUtils.Simulate.blur(limit);
+      expect(form.state.account.limit).toEqual(976);
       expect(form.validator.errorState('limit')).toEqual('has-success');
       expect(form.validator.errorFor('limit')).toBeUndefined();
     });
@@ -172,7 +173,7 @@ describe('HomeLoanAccountForm', () => {
       expect(form.validator.errorFor('term')).toBeUndefined();
     });
 
-    it('updates state and validates term is required and is a number', () => {
+    it('updates state and validates interest rate is required and is a number', () => {
       const form = TestUtils.renderIntoDocument(<HomeLoanAccountForm account={account} />);
       const interestRate = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[4];
 

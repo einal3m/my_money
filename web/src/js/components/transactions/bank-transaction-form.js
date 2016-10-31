@@ -5,6 +5,7 @@ import FormValidator from '../../util/form-validator';
 import FormControl from '../common/controls/form-control';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
 import SubcategoryPicker from '../common/controls/subcategory-picker';
+import MoneyInput from '../common/controls/money-input';
 
 export default class BankTransactionForm extends React.Component {
 
@@ -20,8 +21,8 @@ export default class BankTransactionForm extends React.Component {
   }
 
   validationSchema = {
-    date: { presence: true },
-    amount: { presence: true },
+    date: { presence: true, datetime: { dateOnly: true } },
+    amount: { presence: true, numericality: true },
   };
 
   handleDateChange = (date) => {
@@ -84,16 +85,11 @@ export default class BankTransactionForm extends React.Component {
           />
         </FormControl>
         <FormControl name="amount" validator={this.validator} label="Amount">
-          <div className="input-group">
-            <div className="input-group-addon">$</div>
-            <input
-              className="form-control"
-              name="amount"
-              type="text"
-              value={this.state.transaction.amount || ''}
-              onChange={this.handleChange}
-            />
-          </div>
+          <MoneyInput
+            name="amount"
+            value={this.state.transaction.amount || ''}
+            onChange={this.handleChange}
+          />
         </FormControl>
         <FormControl name="notes" validator={this.validator} label="Notes">
           <input

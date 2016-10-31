@@ -5,6 +5,10 @@ const moneyUtil = {
     return cents / 100;
   },
 
+  dollarsToCents(dollars) {
+    return dollars * 100;
+  },
+
   moneyFormat(dollars) {
     return accounting.formatMoney(dollars,
       { precision: 2, format: { pos: '%s %v', neg: '%s (%v)', zero: '%s  --' } });
