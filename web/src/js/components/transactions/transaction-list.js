@@ -62,7 +62,7 @@ export class TransactionList extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title="my transactions">
+        <PageHeader title="my transactions" apiStatus={this.props.apiStatus}>
           <Button onClick={this.showModal}><i className="fa fa-file-text-o" /> Import</Button>
           <Button onClick={this.newTransaction}><Glyphicon glyph="plus" /> New</Button>
         </PageHeader>
@@ -82,12 +82,14 @@ export class TransactionList extends React.Component {
 TransactionList.propTypes = {
   loaded: React.PropTypes.bool.isRequired,
   currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
+  apiStatus: React.PropTypes.shape({}),
 };
 
 function mapStateToProps(state) {
   return {
     loaded: state.accountStore.get('loaded'),
     currentAccount: state.accountStore.get('currentAccount').toJS(),
+    apiStatus: state.apiStatusStore.toJS(),
   };
 }
 

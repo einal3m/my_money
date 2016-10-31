@@ -27,7 +27,7 @@ export class ImportPage extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title="import transactions">
+        <PageHeader title="import transactions" apiStatus={this.props.apiStatus}>
           <Button onClick={this.importTransactions.bind(this)}><i className="fa fa-file-text-o" /> Import</Button>
         </PageHeader>
         <div className="container import">
@@ -48,6 +48,7 @@ function mapStateToProps(state) {
     ofxTransactions: state.importStore.get('transactions').toJS(),
     groupedCategories: groupedCategories(state).toJS(),
     subcategories: state.categoryStore.get('subcategories').toJS(),
+    apiStatus: state.apiStatusStore.toJS(),
   };
 }
 

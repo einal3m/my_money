@@ -27,7 +27,7 @@ export class AccountListComponent extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title="my accounts">
+        <PageHeader title="my accounts" apiStatus={this.props.apiStatus}>
           <NewModelButtons modelTypes={['Savings Account', 'Share Account', 'Loan Account']} />
         </PageHeader>
 
@@ -44,12 +44,14 @@ export class AccountListComponent extends React.Component {
 AccountListComponent.propTypes = {
   accountGroups: PropTypes.shape({}).isRequired,
   accountTypes: PropTypes.arrayOf(PropTypes.shape({ code: PropTypes.string.isRequired })).isRequired,
+  apiStatus: PropTypes.shape({}),
 };
 
 function mapStateToProps(state) {
   return {
     accountGroups: accountSelector(state).toJS(),
     accountTypes: state.accountStore.get('accountTypes').toJS(),
+    apiStatus: state.apiStatusStore.toJS(),
   };
 }
 
