@@ -4,9 +4,7 @@ import accountTransformer from '../transformers/account-transformer';
 
 export const GET_ACCOUNTS = 'GET_ACCOUNTS';
 export function getAccounts(options) {
-  return getAccountTypes().then(() => {
-    fetchAccounts(options);
-  });
+  return getAccountTypes().then(() => fetchAccounts(options));
 }
 
 export function fetchAccounts(options) {

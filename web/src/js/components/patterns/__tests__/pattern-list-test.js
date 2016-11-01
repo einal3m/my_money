@@ -2,6 +2,7 @@ import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import { PatternList } from '../pattern-list';
 import PageHeader from '../../common/page-header';
+import PatternModal from '../pattern-modal';
 import * as patternActions from '../../../actions/pattern-actions';
 
 describe('PatternList', () => {
@@ -15,10 +16,12 @@ describe('PatternList', () => {
 
   describe('render', () => {
     it('has a header with buttons', () => {
-      const header = patternList.props.children;
+      const [header, modal] = patternList.props.children;
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('my patterns');
+
+      expect(modal.type).toEqual(PatternModal);
     });
   });
 

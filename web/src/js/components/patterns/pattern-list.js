@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Glyphicon, Button } from 'react-bootstrap';
 import PageHeader from '../common/page-header';
-import NewModelButtons from '../common/controls/new-model-buttons';
+import PatternModal from './pattern-modal';
 import { getPatterns } from '../../actions/pattern-actions';
+import { showFormModal } from '../../actions/form-actions';
 
 require('../../../css/common.scss');
 
@@ -12,19 +14,24 @@ export class PatternList extends React.Component {
     getPatterns();
   }
 
+  newPattern = () => {
+    showFormModal('Pattern', { accountId: this.props.currentAccount.id }, false);
+  };
+
   render() {
-    console.log(this.props.patterns);
     return (
       <div>
-        <PageHeader title="my patterns" apiStatus={this.props.apiStatus} />
+        <PageHeader title="my patterns" apiStatus={this.props.apiStatus}>
+          <Button onClick={this.newPattern}><Glyphicon glyph="plus" /> New</Button>
+        </PageHeader>
+        <PatternModal />
       </div>
     );
   }
 }
 
 PatternList.propTypes = {
-  loaded: PropTypes.bool.isRequired,
-  patterns: PropTypes.arrayOf(PropTypes.shape({})),
+  currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
   apiStatus: PropTypes.shape({}),
 };
 
@@ -32,6 +39,7 @@ function mapStateToProps(state) {
   return {
     loaded: state.patternStore.get('loaded'),
     patterns: state.patternStore.get('patterns').toJS(),
+    currentAccount: state.accountStore.get('currentAccount').toJS(),
     apiStatus: state.apiStatusStore.toJS(),
   };
 }
