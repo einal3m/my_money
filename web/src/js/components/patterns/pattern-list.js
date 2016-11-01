@@ -18,12 +18,24 @@ export class PatternList extends React.Component {
     showFormModal('Pattern', { accountId: this.props.currentAccount.id }, false);
   };
 
+  renderPatterns() {
+    if (!this.props.patterns) return;
+
+    return this.props.patterns.map(
+      pattern => (
+        <div key={pattern.id}>
+        {`${pattern.matchText}, ${pattern.notes}, ${pattern.categoryId}, ${pattern.subcategoryId}`}
+        </div>
+      ));
+  }
+
   render() {
     return (
       <div>
         <PageHeader title="my patterns" apiStatus={this.props.apiStatus}>
           <Button onClick={this.newPattern}><Glyphicon glyph="plus" /> New</Button>
         </PageHeader>
+        {this.renderPatterns()}
         <PatternModal />
       </div>
     );

@@ -16,7 +16,7 @@ describe('PatternList', () => {
 
   describe('render', () => {
     it('has a header with buttons', () => {
-      const [header, modal] = patternList.props.children;
+      const [header, body, modal] = patternList.props.children;
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('my patterns');
