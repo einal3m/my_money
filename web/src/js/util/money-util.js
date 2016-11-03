@@ -6,7 +6,7 @@ const moneyUtil = {
   },
 
   dollarsToCents(dollars) {
-    return dollars * 100;
+    return Math.round(dollars * 100);
   },
 
   moneyFormat(dollars) {

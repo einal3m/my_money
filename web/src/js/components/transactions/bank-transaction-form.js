@@ -30,11 +30,16 @@ export default class BankTransactionForm extends React.Component {
     if (date === 'Invalid date') {
       changedDate = '';
     }
-    this.handleChange({ target: { name: 'openingBalanceDate', value: changedDate } });
+    this.handleChange({ target: { name: 'date', value: changedDate } });
   };
 
   handleSubcategoryChange = (subcategoryId) => {
     this.handleChange({ target: { name: 'subcategoryId', value: subcategoryId } });
+  };
+
+  handleCategoryChange = (event) => {
+    this.handleSubcategoryChange(null);
+    this.handleChange(event);
   };
 
   handleChange = (event) => {
@@ -105,7 +110,7 @@ export default class BankTransactionForm extends React.Component {
             name="categoryId"
             value={this.state.transaction.categoryId}
             groupedCategories={this.props.groupedCategories}
-            onChange={this.handleChange}
+            onChange={this.handleCategoryChange}
           />
         </FormControl>
         {this.renderSubcategoryPicker()}

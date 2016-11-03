@@ -11,8 +11,12 @@ import MoneyInput from '../../common/controls/money-input';
 
 describe('BankTransactionForm', () => {
   const groupedCategories = [
-    { categoryType: { id: 1, name: 'Expense' },
-      categories: [{ id: 3, name: 'Cat', subcategories: [{ id: 5, name: 'Dog' }] }],
+    {
+      categoryType: { id: 1, name: 'Expense' },
+      categories: [
+        { id: 3, name: 'Cat', subcategories: [{ id: 5, name: 'Dog' }, { id: 6, name: 'Horse' }] },
+        { id: 4, name: 'Mouse', subcategories: [{ id: 5, name: 'Cow' }] },
+      ],
     },
   ];
 
@@ -83,61 +87,103 @@ describe('BankTransactionForm', () => {
   });
 
   describe('isValid', () => {
-    it('returns true if all fields are valid', () => {
-      const form = TestUtils.renderIntoDocument(
+    let form;
+    beforeEach(() => {
+      form = TestUtils.renderIntoDocument(
         <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
       );
+    });
+
+    it('returns true if all fields are valid', () => {
       spyOn(form, 'forceUpdate');
       expect(form.isValid()).toEqual(true);
       expect(form.forceUpdate).toHaveBeenCalled();
     });
 
-    it('returns false if date field is missing', () => {
-      const form = TestUtils.renderIntoDocument(
+    it('returns false if any fields are invalid', () => {
+      form.state.transaction.date = 'giraffe';
+      expect(form.isValid()).toEqual(false);
+    });
+  });
+
+  describe('updating state and validation', () => {
+    let form;
+    beforeEach(() => {
+      form = TestUtils.renderIntoDocument(
         <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
       );
-      spyOn(form, 'forceUpdate');
-      form.state.transaction.date = '';
-      expect(form.isValid()).toEqual(false);
+    });
+
+    it('sets the transaction type to bank_transaction', () => {
+      expect(form.state.transaction.transactionType).toEqual('bank_transaction');
+    });
+
+    it('updates state and validates date is required and is a date', () => {
+      const date = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[0];
+
+      date.value = 'dd';
+      TestUtils.Simulate.change(date);
+      expect(form.state.transaction.date).toEqual('');
       expect(form.validator.errorState('date')).toEqual('has-error');
       expect(form.validator.errorFor('date')).toEqual('Date is required');
-      expect(form.forceUpdate).toHaveBeenCalled();
+
+      date.value = '19-Dec-2015';
+      TestUtils.Simulate.change(date);
+      expect(form.state.transaction.date).toEqual('2015-12-19');
+      expect(form.validator.errorState('date')).toEqual('has-success');
+      expect(form.validator.errorFor('date')).toBeUndefined();
     });
 
-    it('returns false if date field is not a date', () => {
-      const form = TestUtils.renderIntoDocument(
-        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
-      );
-      spyOn(form, 'forceUpdate');
-      form.state.transaction.date = 'blah';
-      expect(form.isValid()).toEqual(false);
-      expect(form.validator.errorState('date')).toEqual('has-error');
-      expect(form.validator.errorFor('date')).toEqual('Date must be a valid date');
-      expect(form.forceUpdate).toHaveBeenCalled();
-    });
+    it('updates state and validates amount is required and is a number', () => {
+      const amount = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[1];
 
-    it('returns false if amount field is missing', () => {
-      const form = TestUtils.renderIntoDocument(
-        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
-      );
-      spyOn(form, 'forceUpdate');
-      form.state.transaction.amount = null;
-      expect(form.isValid()).toEqual(false);
+      amount.value = '';
+      TestUtils.Simulate.blur(amount);
+      expect(form.state.transaction.amount).toEqual('');
       expect(form.validator.errorState('amount')).toEqual('has-error');
       expect(form.validator.errorFor('amount')).toEqual('Amount is required');
-      expect(form.forceUpdate).toHaveBeenCalled();
-    });
 
-    it('returns false if amount field is not a number', () => {
-      const form = TestUtils.renderIntoDocument(
-        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
-      );
-      spyOn(form, 'forceUpdate');
-      form.state.transaction.amount = 'dddd';
-      expect(form.isValid()).toEqual(false);
+      amount.value = 'dd';
+      TestUtils.Simulate.blur(amount);
+      expect(form.state.transaction.amount).toEqual('dd');
       expect(form.validator.errorState('amount')).toEqual('has-error');
       expect(form.validator.errorFor('amount')).toEqual('Amount is not a number');
-      expect(form.forceUpdate).toHaveBeenCalled();
+
+      amount.value = '19.15';
+      TestUtils.Simulate.blur(amount);
+      expect(form.state.transaction.amount).toEqual(1915);
+      expect(form.validator.errorState('amount')).toEqual('has-success');
+      expect(form.validator.errorFor('amount')).toBeUndefined();
+    });
+
+    it('updates notes in state', () => {
+      const notes = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[2];
+
+      notes.value = 'this is a note';
+      TestUtils.Simulate.change(notes);
+      expect(form.state.transaction.notes).toEqual('this is a note');
+      expect(form.validator.errorState('notes')).toEqual('has-success');
+      expect(form.validator.errorFor('notes')).toBeUndefined();
+    });
+
+    it('updates category in state, sets subcategory to null', () => {
+      const category = TestUtils.scryRenderedDOMComponentsWithTag(form, 'select')[0];
+
+      category.value = 4;
+      TestUtils.Simulate.change(category);
+      expect(form.state.transaction.categoryId).toEqual(4);
+      expect(form.state.transaction.subcategoryId).toEqual(null);
+      expect(form.validator.errorState('categoryId')).toEqual('has-success');
+      expect(form.validator.errorFor('categoryId')).toBeUndefined();
+    });
+
+    it('updates subcategory in state', () => {
+      const subcategoryPicker = TestUtils.findRenderedComponentWithType(form, SubcategoryPicker);
+
+      subcategoryPicker.props.onChange(6);
+      expect(form.state.transaction.subcategoryId).toEqual(6);
+      expect(form.validator.errorState('subcategoryId')).toEqual('has-success');
+      expect(form.validator.errorFor('subcategoryId')).toBeUndefined();
     });
   });
 });

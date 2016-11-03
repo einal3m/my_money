@@ -10,6 +10,8 @@ describe('moneyUtil', () => {
   describe('dollarsToCents', () => {
     it('converts dollars to cents', () => {
       expect(moneyUtil.dollarsToCents(12.34)).toEqual(1234);
+      expect(moneyUtil.dollarsToCents(12.342)).toEqual(1234);
+      expect(moneyUtil.dollarsToCents(12.347)).toEqual(1235);
     });
   });
 
