@@ -19,7 +19,7 @@ module Lib
         transaction = ImportedTransaction.new
         transaction.date = parse_date row[:date]
         transaction.memo = row[:description]
-        transaction.amount = parse_amount(row[:debit] || row[:credit])
+        transaction.amount = parse_debit(row[:debit]) || parse_credit(row[:credit])
         txn_array << transaction
       end
 

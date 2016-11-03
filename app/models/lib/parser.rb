@@ -11,7 +11,15 @@ module Lib
     end
 
     def parse_amount(amount)
-      ((amount.tr('$', '').gsub(/\s+/, '').to_f) * 100).round
+      ((amount.tr('$,', '').gsub(/\s+/, '').to_f) * 100).round
+    end
+
+    def parse_debit(amount)
+      -parse_amount(amount).abs if amount
+    end
+
+    def parse_credit(amount)
+      parse_amount(amount).abs if amount
     end
   end
 end
