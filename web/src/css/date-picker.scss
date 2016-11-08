@@ -1,0 +1,92 @@
+@import 'colours';
+
+#date-picker {
+  min-width: 220px;
+
+  .popover-content {
+    padding: 0;
+  }
+
+  .popover-title {
+    .title {
+      font-weight: bold;
+      display: inline-block;
+      width: 159px;
+      text-align: center;
+
+      &:not(.no-hover) {
+        &:hover {
+          text-decoration: underline;
+          color: $main-color;
+          cursor: pointer;
+        }
+      }
+    }
+    .previous {
+      width: 15px;
+      padding: -3px 0 0 0;
+      text-align: left;
+
+      &:hover {
+        font-size: large;
+        padding-top: 0;
+        color: $main-color;
+        cursor: pointer;
+      }
+    }
+    .next {
+      width: 15px;
+      padding: -3px 0 0 0;
+      text-align: right;
+
+      &:hover {
+        font-size: large;
+        padding-top: 0;
+        color: $main-color;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .day-table, .month-table, .year-table {
+    td {
+      text-align: center;
+
+      button {
+        color: $main-color;
+
+        &.text-muted {
+          color: $main-color-half-strength;
+        }
+      }
+
+      &:hover {
+        background: $main-color-very-light;
+      }
+    }
+  }
+
+  .day-table {
+    thead tr {
+      border-bottom: 1px solid silver;
+    }
+
+    th {
+      padding: 6px;
+    }
+
+    button {
+      padding: 6px;
+    }
+  }
+
+  .month-table, .year-table {
+    td {
+      width: 54px;
+
+      button {
+        padding: 12px 6px;
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
-import DatePicker from 'react-bootstrap-datetimepicker';
+import DatePicker from '../common/date-picker/date-picker';
 import FormControl from '../common/controls/form-control';
 import MoneyInput from '../common/controls/money-input';
 import FormValidator from '../../util/form-validator';
@@ -14,7 +14,6 @@ export default class HomeLoanAccountForm extends React.Component {
 
   defaultModelProperties = {
     accountType: 'loan',
-    openingBalanceDate: moment().format('YYYY-MM-DD'),
   };
 
   validationSchema = {
@@ -110,11 +109,7 @@ export default class HomeLoanAccountForm extends React.Component {
         <FormControl name="openingBalanceDate" validator={this.validator} label="Opening Date">
           <DatePicker
             name="openingBalanceDate"
-            dateTime={this.state.account.openingBalanceDate}
-            format="YYYY-MM-DD"
-            inputFormat="DD-MMM-YYYY"
-            showToday
-            mode="date"
+            value={this.state.account.openingBalanceDate}
             onChange={this.handleDateChange}
           />
         </FormControl>

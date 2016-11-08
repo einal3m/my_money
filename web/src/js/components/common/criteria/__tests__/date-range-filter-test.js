@@ -3,11 +3,11 @@ import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import dateRangeActions from '../../../../actions/date-range-actions';
 import { DateRangeFilter } from '../date-range-filter';
-import DatePicker from '../../date-picker/DateTimeField';
+import DatePicker from '../../date-picker/date-picker';
 
 describe('DateRangeFilter', () => {
-  let dateRanges,
-    fetchSpy;
+  let dateRanges;
+  let fetchSpy;
   beforeEach(() => {
     spyOn(dateRangeActions, 'getDateRanges');
 
@@ -34,7 +34,7 @@ describe('DateRangeFilter', () => {
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
 
-      let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
+      const [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
       const selectGroup = dateRange.props.children.props.children;
       const label = selectGroup.props.children[0];
@@ -52,16 +52,16 @@ describe('DateRangeFilter', () => {
       const dateRangeFilter = shallowRenderer(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
-      let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
+      const [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
       const fromDateInput = fromDate.props.children.props.children.props.children[1].props.children[0];
       expect(fromDateInput.type).toEqual(DatePicker);
-      expect(fromDateInput.props.dateTime).toEqual('2014-06-23');
+      expect(fromDateInput.props.value).toEqual('2014-06-23');
       expect(fromDateInput.props.disabled).toEqual(true);
 
       const toDateInput = toDate.props.children.props.children.props.children[1].props.children[0];
       expect(toDateInput.type).toEqual(DatePicker);
-      expect(toDateInput.props.dateTime).toEqual('2014-09-03');
+      expect(toDateInput.props.value).toEqual('2014-09-03');
       expect(fromDateInput.props.disabled).toEqual(true);
     });
 
@@ -69,16 +69,16 @@ describe('DateRangeFilter', () => {
       const dateRangeFilter = shallowRenderer(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[0]} fetch={fetchSpy} />
       );
-      let [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
+      const [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
 
       const fromDateInput = fromDate.props.children.props.children.props.children[1].props.children[0];
       expect(fromDateInput.type).toEqual(DatePicker);
-      expect(fromDateInput.props.dateTime).toEqual('2015-07-01');
+      expect(fromDateInput.props.value).toEqual('2015-07-01');
       expect(fromDateInput.props.disabled).toEqual(false);
 
       const toDateInput = toDate.props.children.props.children.props.children[1].props.children[0];
       expect(toDateInput.type).toEqual(DatePicker);
-      expect(toDateInput.props.dateTime).toEqual('2015-08-03');
+      expect(toDateInput.props.value).toEqual('2015-08-03');
       expect(fromDateInput.props.disabled).toEqual(false);
     });
   });

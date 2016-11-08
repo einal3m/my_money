@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import dateRangeActions from '../../../actions/date-range-actions';
-import DatePicker from '../date-picker/DateTimeField';
+import DatePicker from '../date-picker/date-picker';
+
 require('../../../../css/bootstrap-datetimepicker.scss');
 
 export class DateRangeFilter extends React.Component {
@@ -56,10 +57,12 @@ export class DateRangeFilter extends React.Component {
             <div className="form-group">
               <label htmlFor="from_date" className="col-sm-3 control-label">From</label>
               <div className="col-sm-9">
-                <DatePicker name="fromDate" dateTime={this.props.currentDateRange.fromDate}
-                  format="YYYY-MM-DD" inputFormat="DD-MMM-YYYY" showToday mode="date"
+                <DatePicker
+                  name="fromDate"
+                  value={this.props.currentDateRange.fromDate}
                   onChange={this.onFromDateChange.bind(this)}
-                  disabled={!this.props.currentDateRange.custom} ref="fromDate"
+                  disabled={!this.props.currentDateRange.custom}
+                  ref="fromDate"
                 />
                 <span className="help-block hidden" />
               </div>
@@ -71,10 +74,12 @@ export class DateRangeFilter extends React.Component {
             <div className="form-group">
               <label htmlFor="to_date" className="col-sm-3 control-label">To</label>
               <div className="col-sm-9">
-                <DatePicker name="toDate" dateTime={this.props.currentDateRange.toDate}
-                  format="YYYY-MM-DD" inputFormat="DD-MMM-YYYY" showToday
+                <DatePicker
+                  name="toDate"
+                  value={this.props.currentDateRange.toDate}
                   onChange={this.onToDateChange.bind(this)}
-                  disabled={!this.props.currentDateRange.custom} ref="toDate"
+                  disabled={!this.props.currentDateRange.custom}
+                  ref="toDate"
                 />
                 <span className="help-block hidden" />
               </div>

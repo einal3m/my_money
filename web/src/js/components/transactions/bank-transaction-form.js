@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
-import DatePicker from '../common/date-picker/DateTimeField';
+import DatePicker from '../common/date-picker/date-picker';
 import FormValidator from '../../util/form-validator';
 import FormControl from '../common/controls/form-control';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
@@ -81,11 +81,7 @@ export default class BankTransactionForm extends React.Component {
         <FormControl name="date" validator={this.validator} label="Date">
           <DatePicker
             name="date"
-            dateTime={this.state.transaction.date}
-            format="YYYY-MM-DD"
-            inputFormat="DD-MMM-YYYY"
-            showToday
-            mode="date"
+            value={this.state.transaction.date}
             onChange={this.handleDateChange}
           />
         </FormControl>

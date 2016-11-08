@@ -1,7 +1,6 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import moment from 'moment';
-import DatePicker from 'react-bootstrap-datetimepicker';
+import DatePicker from '../../common/date-picker/date-picker';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import SavingsAccountForm from '../savings-account-form';
 import MoneyInput from '../../common/controls/money-input';
@@ -38,7 +37,7 @@ describe('SavingsAccountForm', () => {
       expect(openingBalanceDate.props.name).toEqual('openingBalanceDate');
       expect(openingBalanceDate.props.label).toEqual('Opening Balance Date');
       expect(openingBalanceDate.props.children.type).toEqual(DatePicker);
-      expect(openingBalanceDate.props.children.props.dateTime).toEqual('2016-01-03');
+      expect(openingBalanceDate.props.children.props.value).toEqual('2016-01-03');
     });
 
     it('has default values for an account', () => {
@@ -48,7 +47,7 @@ describe('SavingsAccountForm', () => {
       expect(name.props.children.props.value).toEqual('');
       expect(bank.props.children.props.value).toEqual('');
       expect(openingBalance.props.children.props.value).toEqual(0);
-      expect(openingBalanceDate.props.children.props.dateTime).toEqual(moment().format('YYYY-MM-DD'));
+      expect(openingBalanceDate.props.children.props.value).toEqual('');
     });
   });
 
@@ -133,12 +132,14 @@ describe('SavingsAccountForm', () => {
 
       openingBalanceDate.value = 'dd';
       TestUtils.Simulate.change(openingBalanceDate);
-      expect(form.state.account.openingBalanceDate).toEqual('');
+      TestUtils.Simulate.blur(openingBalanceDate);
+      expect(form.state.account.openingBalanceDate).toEqual(null);
       expect(form.validator.errorState('openingBalanceDate')).toEqual('has-error');
       expect(form.validator.errorFor('openingBalanceDate')).toEqual('Opening balance date is required');
 
       openingBalanceDate.value = '19-Dec-2015';
       TestUtils.Simulate.change(openingBalanceDate);
+      TestUtils.Simulate.blur(openingBalanceDate);
       expect(form.state.account.openingBalanceDate).toEqual('2015-12-19');
       expect(form.validator.errorState('openingBalanceDate')).toEqual('has-success');
       expect(form.validator.errorFor('openingBalanceDate')).toBeUndefined();

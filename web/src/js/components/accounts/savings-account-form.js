@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
-import DatePicker from 'react-bootstrap-datetimepicker';
+import DatePicker from '../common/date-picker/date-picker';
 import FormControl from '../common/controls/form-control';
 import MoneyInput from '../common/controls/money-input';
 import FormValidator from '../../util/form-validator';
@@ -15,7 +15,7 @@ export default class SavingsAccountForm extends React.Component {
   defaultModelProperties = {
     accountType: 'savings',
     openingBalance: 0,
-    openingBalanceDate: moment().format('YYYY-MM-DD'),
+    openingBalanceDate: '',
   };
 
   validationSchema = {
@@ -25,11 +25,7 @@ export default class SavingsAccountForm extends React.Component {
   };
 
   handleDateChange = (date) => {
-    let changedDate = date;
-    if (date === 'Invalid date') {
-      changedDate = '';
-    }
-    this.handleChange({ target: { name: 'openingBalanceDate', value: changedDate } });
+    this.handleChange({ target: { name: 'openingBalanceDate', value: date } });
   };
 
   handleChange = (event) => {
@@ -79,11 +75,7 @@ export default class SavingsAccountForm extends React.Component {
         <FormControl name="openingBalanceDate" validator={this.validator} label="Opening Balance Date">
           <DatePicker
             name="openingBalanceDate"
-            dateTime={this.state.account.openingBalanceDate}
-            format="YYYY-MM-DD"
-            inputFormat="DD-MMM-YYYY"
-            showToday
-            mode="date"
+            value={this.state.account.openingBalanceDate}
             onChange={this.handleDateChange}
           />
         </FormControl>

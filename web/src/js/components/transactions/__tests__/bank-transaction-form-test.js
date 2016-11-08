@@ -3,7 +3,7 @@ import TestUtils from 'react-addons-test-utils';
 import moment from 'moment';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import BankTransactionForm from '../bank-transaction-form';
-import DatePicker from '../../common/date-picker/DateTimeField';
+import DatePicker from '../../common/date-picker/date-picker';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
 import FormControl from '../../common/controls/form-control';
@@ -42,7 +42,7 @@ describe('BankTransactionForm', () => {
       expect(date.props.name).toEqual('date');
       expect(date.props.label).toEqual('Date');
       expect(date.props.children.type).toEqual(DatePicker);
-      expect(date.props.children.props.dateTime).toEqual(moment('2015-12-19').format('YYYY-MM-DD'));
+      expect(date.props.children.props.value).toEqual(moment('2015-12-19').format('YYYY-MM-DD'));
 
       expect(amount.type).toEqual(FormControl);
       expect(amount.props.name).toEqual('amount');
@@ -121,14 +121,16 @@ describe('BankTransactionForm', () => {
     it('updates state and validates date is required and is a date', () => {
       const date = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[0];
 
-      date.value = 'dd';
+      date.value = 'something';
       TestUtils.Simulate.change(date);
-      expect(form.state.transaction.date).toEqual('');
+      TestUtils.Simulate.blur(date);
+      expect(form.state.transaction.date).toEqual(null);
       expect(form.validator.errorState('date')).toEqual('has-error');
       expect(form.validator.errorFor('date')).toEqual('Date is required');
 
       date.value = '19-Dec-2015';
       TestUtils.Simulate.change(date);
+      TestUtils.Simulate.blur(date);
       expect(form.state.transaction.date).toEqual('2015-12-19');
       expect(form.validator.errorState('date')).toEqual('has-success');
       expect(form.validator.errorFor('date')).toBeUndefined();
