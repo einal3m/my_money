@@ -1,7 +1,26 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 
 module.exports = {
-  entry: './src/js/my-money.js',
+  entry: {
+    app: './src/js/my-money.js',
+    vendor: [
+      'accounting',
+      'd3',
+      'immutable',
+      'moment',
+      'react',
+      'react-bootstrap',
+      'react-dom',
+      'react-redux',
+      'react-router',
+      'react-router-bootstrap',
+      'react-stickydiv',
+      'redux',
+      'reselect',
+      'validate.js',
+    ],
+  },
   output: {
     filename: '../public/bundle.js',
   },
@@ -19,6 +38,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('../public/bundle.css'),
+    new CommonsChunkPlugin('vendor', '../public/vendor.bundle.js'),
   ],
   resolve: {
     modulesDirectories: ['./node_modules'],
