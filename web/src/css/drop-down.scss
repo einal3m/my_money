@@ -1,0 +1,59 @@
+
+.dropdown-wrapper {
+  position: relative; /* Enable absolute positionning for children and pseudo elements */
+  margin: 0 auto;
+  padding: 0;
+
+  &:hover, .open {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+  }
+
+  .btn {
+    text-align: left;
+    color: black;
+    text-decoration: none;
+
+
+    &:focus, &:active {
+      outline: none !important;
+      text-decoration: none;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    list-style: none;
+
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+
+    li {
+      margin-left: -40px;
+      padding: 3px 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+  &.open .dropdown {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
