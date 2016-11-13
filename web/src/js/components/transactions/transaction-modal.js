@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import FormModal from '../common/form-modal';
 import BankTransactionForm from './bank-transaction-form';
-import { editableGroupedCategories } from '../../selectors/category-selector';
+import { groupedCategories } from '../../selectors/category-selector';
 import { saveTransaction, deleteTransaction } from '../../actions/transaction-actions';
 
 export class TransactionModalComponent extends React.Component {
@@ -44,7 +44,7 @@ TransactionModalComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    groupedCategories: editableGroupedCategories(state).toJS(),
+    groupedCategories: groupedCategories(state).toJS(),
     show: state.formStore.get('show'),
     modelType: state.formStore.get('modelType'),
     model: state.formStore.get('model').toJS(),
