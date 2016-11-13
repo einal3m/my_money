@@ -5,7 +5,7 @@ import SubcategoryForm from '../subcategory-form';
 import FormControl from '../../common/controls/form-control';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 
-fdescribe('SubcategoryForm', () => {
+describe('SubcategoryForm', () => {
   const subcategory = { id: 11, name: 'myName', categoryId: 3 };
   const category1 = { id: 1, name: 'category1' };
   const category3 = { id: 3, name: 'category3' };
