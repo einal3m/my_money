@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import dateRangeActions from '../../../actions/date-range-actions';
 import DatePicker from '../date-picker/date-picker';
-
-require('../../../../css/bootstrap-datetimepicker.scss');
+import DropDown from '../../common/controls/drop-down';
 
 export class DateRangeFilter extends React.Component {
 
@@ -12,26 +11,20 @@ export class DateRangeFilter extends React.Component {
     dateRangeActions.getDateRanges();
   }
 
-  onSelectDateRange(event) {
-    dateRangeActions.setCurrentDateRange(Number(event.target.value));
+  onSelectDateRange = (id) => {
+    dateRangeActions.setCurrentDateRange(id);
     this.props.fetch();
-  }
+  };
 
-  onFromDateChange(date) {
+  onFromDateChange = (date) => {
     dateRangeActions.updateCurrentDateRange({ fromDate: date });
     this.props.fetch();
-  }
+  };
 
-  onToDateChange(date) {
+  onToDateChange = (date) => {
     dateRangeActions.updateCurrentDateRange({ toDate: date });
     this.props.fetch();
-  }
-
-  renderDateRanges() {
-    return this.props.dateRanges.map((dateRange) => {
-      return <option key={dateRange.id} value={dateRange.id}>{dateRange.name}</option>;
-    });
-  }
+  };
 
   renderDateRangeFilter() {
     if (this.props.loaded) {
@@ -41,13 +34,11 @@ export class DateRangeFilter extends React.Component {
             <div className="form-group">
               <label htmlFor="date_range" className="col-xs-4 control-label">Date Range</label>
               <div className="col-xs-8">
-                <select className="form-control"
+                <DropDown
                   value={this.props.currentDateRange.id}
-                  onChange={this.onSelectDateRange.bind(this)}
-                  ref="dateRangeSelect"
-                >
-                  {this.renderDateRanges()}
-                </select>
+                  options={this.props.dateRanges}
+                  onChange={this.onSelectDateRange}
+                />
               </div>
             </div>
           </div>
@@ -60,9 +51,8 @@ export class DateRangeFilter extends React.Component {
                 <DatePicker
                   name="fromDate"
                   value={this.props.currentDateRange.fromDate}
-                  onChange={this.onFromDateChange.bind(this)}
+                  onChange={this.onFromDateChange}
                   disabled={!this.props.currentDateRange.custom}
-                  ref="fromDate"
                 />
                 <span className="help-block hidden" />
               </div>
@@ -77,9 +67,8 @@ export class DateRangeFilter extends React.Component {
                 <DatePicker
                   name="toDate"
                   value={this.props.currentDateRange.toDate}
-                  onChange={this.onToDateChange.bind(this)}
+                  onChange={this.onToDateChange}
                   disabled={!this.props.currentDateRange.custom}
-                  ref="toDate"
                 />
                 <span className="help-block hidden" />
               </div>
@@ -88,6 +77,7 @@ export class DateRangeFilter extends React.Component {
         </div>,
       ]);
     }
+    return <div />;
   }
 
   render() {
@@ -100,10 +90,15 @@ export class DateRangeFilter extends React.Component {
 }
 
 DateRangeFilter.propTypes = {
-  loaded: React.PropTypes.bool.isRequired,
-  dateRanges: React.PropTypes.array.isRequired,
-  currentDateRange: React.PropTypes.object.isRequired,
-  fetch: React.PropTypes.func.isRequired,
+  loaded: PropTypes.bool.isRequired,
+  dateRanges: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  currentDateRange: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    fromDate: PropTypes.string.isRequired,
+    toDate: PropTypes.string.isRequired,
+    custom: PropTypes.bool.isRequired,
+  }).isRequired,
+  fetch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

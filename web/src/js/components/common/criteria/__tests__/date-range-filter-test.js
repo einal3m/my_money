@@ -4,6 +4,7 @@ import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import dateRangeActions from '../../../../actions/date-range-actions';
 import { DateRangeFilter } from '../date-range-filter';
 import DatePicker from '../../date-picker/date-picker';
+import DropDown from '../../controls/drop-down';
 
 describe('DateRangeFilter', () => {
   let dateRanges;
@@ -20,13 +21,13 @@ describe('DateRangeFilter', () => {
   });
 
   describe('render', () => {
-    it('does not render when date ranges not loaded', () => {
+    it('renders empty div when date ranges not loaded', () => {
       const dateRangeFilter = shallowRenderer(
         <DateRangeFilter loaded={false} dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
 
       expect(dateRangeActions.getDateRanges).toHaveBeenCalled();
-      expect(dateRangeFilter.props.children).toBeUndefined();
+      expect(dateRangeFilter.props.children).toEqual(<div />);
     });
 
     it('has a select with date range options', () => {
@@ -34,25 +35,23 @@ describe('DateRangeFilter', () => {
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
 
-      const [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
+      const dateRange = dateRangeFilter.props.children[0];
 
       const selectGroup = dateRange.props.children.props.children;
       const label = selectGroup.props.children[0];
       const select = selectGroup.props.children[1].props.children;
       expect(label.props.children).toEqual('Date Range');
-      expect(select.type).toEqual('select');
+      expect(select.type).toEqual(DropDown);
       expect(select.props.value).toEqual(22);
-      expect(select.props.children[0].type).toEqual('option');
-      expect(select.props.children[0].props.children).toEqual('Name1');
-      expect(select.props.children[1].type).toEqual('option');
-      expect(select.props.children[1].props.children).toEqual('Name2');
+      expect(select.props.options).toEqual(dateRanges);
     });
 
     it('disables the from and to date if date range is not custom', () => {
       const dateRangeFilter = shallowRenderer(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
-      const [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
+      const fromDate = dateRangeFilter.props.children[1];
+      const toDate = dateRangeFilter.props.children[2];
 
       const fromDateInput = fromDate.props.children.props.children.props.children[1].props.children[0];
       expect(fromDateInput.type).toEqual(DatePicker);
@@ -69,7 +68,8 @@ describe('DateRangeFilter', () => {
       const dateRangeFilter = shallowRenderer(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[0]} fetch={fetchSpy} />
       );
-      const [dateRange, fromDate, toDate] = dateRangeFilter.props.children;
+      const fromDate = dateRangeFilter.props.children[1];
+      const toDate = dateRangeFilter.props.children[2];
 
       const fromDateInput = fromDate.props.children.props.children.props.children[1].props.children[0];
       expect(fromDateInput.type).toEqual(DatePicker);
@@ -86,11 +86,12 @@ describe('DateRangeFilter', () => {
   describe('select date range', () => {
     it('calls an action', () => {
       spyOn(dateRangeActions, 'setCurrentDateRange');
-
       const dateRangeFilter = TestUtils.renderIntoDocument(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
-      TestUtils.Simulate.change(dateRangeFilter.refs.dateRangeSelect, { target: { value: '11' } });
+      const dateRangeDropDown = TestUtils.findRenderedComponentWithType(dateRangeFilter, DropDown);
+
+      dateRangeDropDown.props.onChange(11);
 
       expect(dateRangeActions.setCurrentDateRange).toHaveBeenCalledWith(11);
       expect(fetchSpy).toHaveBeenCalled();
@@ -104,7 +105,9 @@ describe('DateRangeFilter', () => {
       const dateRangeFilter = TestUtils.renderIntoDocument(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[0]} fetch={fetchSpy} />
       );
-      dateRangeFilter.refs.fromDate.props.onChange('2000-07-14');
+      const fromDatePicker = TestUtils.scryRenderedComponentsWithType(dateRangeFilter, DatePicker)[0];
+
+      fromDatePicker.props.onChange('2000-07-14');
 
       expect(dateRangeActions.updateCurrentDateRange).toHaveBeenCalledWith({ fromDate: '2000-07-14' });
       expect(fetchSpy).toHaveBeenCalled();
@@ -118,7 +121,9 @@ describe('DateRangeFilter', () => {
       const dateRangeFilter = TestUtils.renderIntoDocument(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[0]} fetch={fetchSpy} />
       );
-      dateRangeFilter.refs.toDate.props.onChange('2000-07-15');
+      const toDatePicker = TestUtils.scryRenderedComponentsWithType(dateRangeFilter, DatePicker)[1];
+
+      toDatePicker.props.onChange('2000-07-15');
 
       expect(dateRangeActions.updateCurrentDateRange).toHaveBeenCalledWith({ toDate: '2000-07-15' });
       expect(fetchSpy).toHaveBeenCalledWith();
