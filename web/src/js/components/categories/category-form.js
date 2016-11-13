@@ -1,34 +1,30 @@
-
-
-import React from 'react';
-import { Input } from 'react-bootstrap';
+import React, { PropTypes } from 'react';
 import FormValidator from '../../util/form-validator';
-import Picker from '../common/controls/picker';
+import FormControl from '../common/controls/form-control';
+import DropDown from '../common/controls/drop-down';
 
 export default class CategoryForm extends React.Component {
   constructor(props) {
     super();
     this.state = { category: Object.assign({}, props.category) };
-    this.validator = new FormValidator(this.validationSchema());
+    this.validator = new FormValidator(this.validationSchema);
   }
 
-  validationSchema() {
-    return {
-      categoryTypeId: { presence: true },
-      name: { presence: true },
-    };
-  }
+  validationSchema = {
+    categoryTypeId: { presence: true },
+    name: { presence: true },
+  };
 
-  handleCategoryTypeChange(categoryTypeId) {
+  handleCategoryTypeChange = (categoryTypeId) => {
     this.handleChange({ target: { name: 'categoryTypeId', value: categoryTypeId } });
-  }
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     const category = this.state.category;
     category[event.target.name] = event.target.value;
     this.setState({ category });
     this.validator.validateField(event.target.name, event.target.value);
-  }
+  };
 
   isValid() {
     this.forceUpdate();
@@ -42,21 +38,22 @@ export default class CategoryForm extends React.Component {
   render() {
     return (
       <div>
-        <div className={`form-group ${this.validator.errorState('categoryTypeId')}`}>
-          <label className="control-label">Category Type</label>
-          <Picker name="categoryTypeId" value={this.state.category.categoryTypeId}
-            options={this.props.categoryTypes} ref="categoryTypeIdField"
-            onChange={this.handleCategoryTypeChange.bind(this)}
+        <FormControl name="categoryTypeId" validator={this.validator} label="Category Type">
+          <DropDown
+            value={this.state.category.categoryTypeId}
+            options={this.props.categoryTypes}
+            onChange={this.handleCategoryTypeChange}
           />
-          <div className="help-block">{this.validator.errorFor('categoryTypeId')}</div>
-        </div>
-        <div className={`form-group ${this.validator.errorState('name')}`}>
-          <label className="control-label">Name</label>
-          <input className="form-control" name="name" type="text" value={this.state.category.name || ''}
-            onChange={this.handleChange.bind(this)} ref="nameField"
+        </FormControl>
+        <FormControl name="name" validator={this.validator} label="Name">
+          <input
+            className="form-control"
+            name="name"
+            type="text"
+            value={this.state.category.name || ''}
+            onChange={this.handleChange}
           />
-          <div className="help-block">{this.validator.errorFor('name')}</div>
-        </div>
+        </FormControl>
       </div>
     );
   }
@@ -67,6 +64,6 @@ CategoryForm.propTypes = {
     name: React.PropTypes.string,
     categoryTypeId: React.PropTypes.number,
   }).isRequired,
-  categoryTypes: React.PropTypes.array.isRequired,
+  categoryTypes: React.PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
