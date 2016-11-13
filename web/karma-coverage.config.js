@@ -1,37 +1,39 @@
 // Karma configuration
 // Generated on Sun Nov 15 2015 17:37:19 GMT+1100 (AEDT)
 
-module.exports = function(config) {
+module.exports = function exports(config) {
   config.set({
     browsers: ['PhantomJS'],
 
     files: [
-      'src/test-index.js'
+      'src/test-index.js',
     ],
-    
+
     singleRun: true,
 
     frameworks: ['jasmine-ajax', 'jasmine', 'phantomjs-shim'],
 
     preprocessors: {
-        'src/test-index.js': ['webpack', 'sourcemap']
+      'src/test-index.js': ['webpack', 'sourcemap'],
     },
 
     webpack: {
       devtool: 'inline-source-map',
       module: {
         loaders: [
-          { test: /\.js$/, exclude: /node_modules/, loader: "babel" },
-          { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass'  },
-          { test: /\.gif$/, loader: 'url-loader?limit=8192'}
-        ]
-        ,
-        postLoaders: [ 
-          { test: /\.js$/, exclude: /(node_modules|__tests__)/, loader: "isparta" }
-          // { test: /\.js$/, exclude: /(__tests__|node_modules)/, loader: ‘isparta’ }
-        ]
+          { test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: { presets: ['es2015', 'react', 'stage-0'] },
+          },
+          { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass' },
+          { test: /\.gif$/, loader: 'url-loader?limit=8192' },
+        ],
+        postLoaders: [
+          { test: /\.js$/, exclude: /(node_modules|__tests__)/, loader: 'isparta' },
+        ],
       },
-      watch: true
+      watch: true,
     },
 
     autoWatch: true,
@@ -39,23 +41,23 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage', 'threshold'],
 
     coverageReporter: {
-     type: 'html', //produces a html document after code is run
-     dir: 'coverage/' //path to created html doc
+      type: 'html', // produces a html document after code is run
+      dir: 'coverage/', // path to created html doc
     },
 
     thresholdReporter: {
       statements: 90,
       branches: 90,
       functions: 90,
-      lines: 90
+      lines: 90,
     },
 
     webpackMiddlewareServer: {
-      noInfo: true
+      noInfo: true,
     },
 
     webpackServer: {
-      quiet: true
+      quiet: true,
     },
 
     plugins: [
@@ -67,7 +69,7 @@ module.exports = function(config) {
       'karma-threshold-reporter',
       'karma-sourcemap-loader',
       'karma-jasmine-ajax',
-      'karma-spec-reporter'
-    ]
-  })
-}
+      'karma-spec-reporter',
+    ],
+  });
+};
