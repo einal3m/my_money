@@ -1,31 +1,27 @@
-
-
-import React from 'react';
-import { Input } from 'react-bootstrap';
+import React, { PropTypes } from 'react';
 import FormValidator from '../../util/form-validator';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
+import FormControl from '../common/controls/form-control';
 
 export default class SubcategoryForm extends React.Component {
 
   constructor(props) {
     super();
     this.state = { subcategory: Object.assign({}, props.subcategory) };
-    this.validator = new FormValidator(this.validationSchema());
+    this.validator = new FormValidator(this.validationSchema);
   }
 
-  validationSchema() {
-    return {
-      name: { presence: true },
-      categoryId: { presence: true },
-    };
-  }
+  validationSchema = {
+    name: { presence: true },
+    categoryId: { presence: true },
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     const subcategory = this.state.subcategory;
     subcategory[event.target.name] = event.target.value;
     this.setState({ subcategory });
     this.validator.validateField(event.target.name, event.target.value);
-  }
+  };
 
   isValid() {
     this.forceUpdate();
@@ -39,29 +35,32 @@ export default class SubcategoryForm extends React.Component {
   render() {
     return (
       <div>
-        <div className={`form-group ${this.validator.errorState('categoryId')}`}>
-          <label className="control-label">Category</label>
-          <GroupedCategorySelect name="categoryId" value={this.state.subcategory.categoryId}
-            ref="categoryIdField" groupedCategories={this.props.groupedCategories} onChange={this.handleChange.bind(this)}
+        <FormControl name="categoryId" validator={this.validator} label="Category">
+          <GroupedCategorySelect
+            name="categoryId"
+            value={this.state.subcategory.categoryId}
+            groupedCategories={this.props.groupedCategories}
+            onChange={this.handleChange}
           />
-          <div className="help-block">{this.validator.errorFor('categoryId')}</div>
-        </div>
-        <div className={`form-group ${this.validator.errorState('name')}`}>
-          <label className="control-label">Name</label>
-          <input className="form-control" name="name" type="text" value={this.state.subcategory.name || ''}
-            onChange={this.handleChange.bind(this)} ref="nameField"
+        </FormControl>
+        <FormControl name="name" validator={this.validator} label="Name">
+          <input
+            className="form-control"
+            name="name"
+            type="text"
+            value={this.state.subcategory.name || ''}
+            onChange={this.handleChange}
           />
-          <div className="help-block">{this.validator.errorFor('name')}</div>
-        </div>
+        </FormControl>
       </div>
     );
   }
 }
 
 SubcategoryForm.propTypes = {
-  subcategory: React.PropTypes.shape({
-    name: React.PropTypes.string,
-    categoryId: React.PropTypes.number,
+  subcategory: PropTypes.shape({
+    name: PropTypes.string,
+    categoryId: PropTypes.number,
   }).isRequired,
-  groupedCategories: React.PropTypes.array.isRequired,
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
