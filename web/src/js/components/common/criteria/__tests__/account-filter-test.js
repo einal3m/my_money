@@ -1,46 +1,52 @@
 import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import * as accountActions from '../../../../actions/account-actions';
-import { AccountFilter } from '../account-filter';
+import { AccountFilterComponent as AccountFilter } from '../account-filter';
 import AccountPicker from '../../controls/account-picker';
 
 describe('AccountFilter', () => {
-  let accountTypes,
-    accountGroups,
-    currentAccount,
-    fetchSpy;
+  const accountTypes = [
+    { id: 1, code: 'savings', name: 'Savings' },
+    { id: 3, code: 'other', name: 'Other' },
+    { id: 2, code: 'share', name: 'Share' },
+  ];
+  const currentAccount = { id: 1, name: 'Account 1' };
+  const accountGroups = {
+    savings: [{ id: 2, name: 'Account 2' }],
+    share: [currentAccount, { id: 3, name: 'Account 3' }],
+  };
+
+  let fetchSpy;
+
   beforeEach(() => {
-    accountTypes = [
-      { id: 1, code: 'savings', name: 'Savings' },
-      { id: 3, code: 'other', name: 'Other' },
-      { id: 2, code: 'share', name: 'Share' },
-    ];
-
-    currentAccount = { id: 1, name: 'Account 1' };
-    accountGroups = {
-      savings: [{ id: 2, name: 'Account 2' }],
-      share: [currentAccount, { id: 3, name: 'Account 3' }],
-    };
-
     fetchSpy = jasmine.createSpy('fetchSpy');
     spyOn(accountActions, 'getAccounts');
   });
 
   describe('render', () => {
     it('does not render if accounts are not loaded', () => {
-      const accountFilter = shallowRenderer(<AccountFilter loaded={false} accountTypes={accountTypes}
-        fetch={fetchSpy} accountGroups={accountGroups}
-        currentAccount={currentAccount}
-      />);
+      const accountFilter = shallowRenderer(
+        <AccountFilter
+          loaded={false}
+          accountTypes={accountTypes}
+          fetch={fetchSpy}
+          accountGroups={accountGroups}
+          currentAccount={currentAccount}
+        />
+      );
       const dropdown = accountFilter.props.children.props.children;
-      expect(dropdown).toBeUndefined();
+      expect(dropdown).toEqual(<div />);
       expect(accountActions.getAccounts).toHaveBeenCalled();
     });
 
     it('has a select with single value', () => {
       const accountFilter = shallowRenderer(
-        <AccountFilter loaded accountTypes={accountTypes} accountGroups={accountGroups}
-          fetch={fetchSpy} currentAccount={currentAccount}
+        <AccountFilter
+          loaded
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          fetch={fetchSpy}
+          currentAccount={currentAccount}
         />
       );
       const dropdown = accountFilter.props.children.props.children;
@@ -53,8 +59,13 @@ describe('AccountFilter', () => {
 
     it('has a select with multiple values', () => {
       const accountFilter = shallowRenderer(
-        <AccountFilter loaded multiple accountTypes={accountTypes} accountGroups={accountGroups}
-          fetch={fetchSpy} selectedAccounts={[1, 2]}
+        <AccountFilter
+          loaded
+          multiple
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          fetch={fetchSpy}
+          selectedAccounts={[1, 2]}
         />
       );
       const dropdown = accountFilter.props.children.props.children;
@@ -71,8 +82,12 @@ describe('AccountFilter', () => {
         spyOn(accountActions, 'toggleSelectedAccount');
 
         const accountFilter = shallowRenderer(
-          <AccountFilter loaded accountTypes={accountTypes} accountGroups={accountGroups}
-            fetch={fetchSpy} currentAccount={currentAccount}
+          <AccountFilter
+            loaded
+            accountTypes={accountTypes}
+            accountGroups={accountGroups}
+            fetch={fetchSpy}
+            currentAccount={currentAccount}
           />
         );
         const dropdown = accountFilter.props.children.props.children;
@@ -88,8 +103,13 @@ describe('AccountFilter', () => {
         spyOn(accountActions, 'toggleSelectedAccount');
 
         const accountFilter = shallowRenderer(
-          <AccountFilter loaded multiple accountTypes={accountTypes} accountGroups={accountGroups}
-            fetch={fetchSpy} selectedAccounts={[1, 2]}
+          <AccountFilter
+            loaded
+            multiple
+            accountTypes={accountTypes}
+            accountGroups={accountGroups}
+            fetch={fetchSpy}
+            selectedAccounts={[1, 2]}
           />
         );
         const dropdown = accountFilter.props.children.props.children;

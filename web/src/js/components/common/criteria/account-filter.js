@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { getAccounts, setCurrentAccount, toggleSelectedAccount } from '../../../actions/account-actions';
 import accountSelector from '../../../selectors/account-selector';
 import AccountPicker from '../controls/account-picker';
 
-export class AccountFilter extends React.Component {
+export class AccountFilterComponent extends React.Component {
   constructor() {
     super();
     getAccounts({ useStore: true });
   }
 
-  onChange(accountId) {
+  onChange = (accountId) => {
     setCurrentAccount(accountId);
     if (this.props.multiple) {
       toggleSelectedAccount(accountId);
     }
     this.props.fetch();
-  }
+  };
 
   renderAccountPicker() {
     if (this.props.loaded) {
       const value = this.props.multiple ? this.props.selectedAccounts : this.props.currentAccount.id;
       return (
-        <AccountPicker multiple={this.props.multiple} accountTypes={this.props.accountTypes}
+        <AccountPicker
+          multiple={this.props.multiple}
+          accountTypes={this.props.accountTypes}
           accountGroups={this.props.accountGroups}
-          value={value} onChange={this.onChange.bind(this)}
+          value={value}
+          onChange={this.onChange}
         />
       );
     }
+    return <div />;
   }
 
   render() {
@@ -41,14 +45,16 @@ export class AccountFilter extends React.Component {
   }
 }
 
-AccountFilter.propTypes = {
-  loaded: React.PropTypes.bool.isRequired,
-  accountGroups: React.PropTypes.object.isRequired,
-  accountTypes: React.PropTypes.array.isRequired,
-  currentAccount: React.PropTypes.object,
-  selectedAccounts: React.PropTypes.arrayOf(React.PropTypes.number),
-  fetch: React.PropTypes.func.isRequired,
-  multiple: React.PropTypes.bool,
+AccountFilterComponent.propTypes = {
+  loaded: PropTypes.bool.isRequired,
+  accountGroups: PropTypes.shape({}).isRequired,
+  accountTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  currentAccount: PropTypes.shape({
+    id: PropTypes.number,
+  }),
+  selectedAccounts: PropTypes.arrayOf(PropTypes.number),
+  fetch: PropTypes.func.isRequired,
+  multiple: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -61,4 +67,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AccountFilter);
+export default connect(mapStateToProps)(AccountFilterComponent);
