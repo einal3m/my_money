@@ -4,7 +4,7 @@ import dateRangeActions from '../../../actions/date-range-actions';
 import DatePicker from '../date-picker/date-picker';
 import DropDown from '../../common/controls/drop-down';
 
-export class DateRangeFilter extends React.Component {
+export class DateRangeFilterComponent extends React.Component {
 
   constructor() {
     super();
@@ -89,14 +89,14 @@ export class DateRangeFilter extends React.Component {
   }
 }
 
-DateRangeFilter.propTypes = {
+DateRangeFilterComponent.propTypes = {
   loaded: PropTypes.bool.isRequired,
   dateRanges: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentDateRange: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    fromDate: PropTypes.string.isRequired,
-    toDate: PropTypes.string.isRequired,
-    custom: PropTypes.bool.isRequired,
+    id: PropTypes.number,
+    fromDate: PropTypes.string,
+    toDate: PropTypes.string,
+    custom: PropTypes.bool,
   }).isRequired,
   fetch: PropTypes.func.isRequired,
 };
@@ -109,4 +109,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(DateRangeFilter);
+export default connect(mapStateToProps)(DateRangeFilterComponent);
