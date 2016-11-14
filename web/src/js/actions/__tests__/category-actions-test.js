@@ -1,9 +1,10 @@
-import categoryActions from '../category-actions';
+import categoryActions, {
+  setCurrentCategory, setCurrentSubcategory, SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY,
+} from '../category-actions';
 import categoryTransformer from '../../transformers/category-transformer';
 import subcategoryTransformer from '../../transformers/subcategory-transformer';
 import apiUtil from '../../util/api-util';
 import store from '../../stores/store';
-import { fromJS } from 'immutable';
 
 describe('CategoryActions', () => {
   let dispatcherSpy;
@@ -225,6 +226,26 @@ describe('CategoryActions', () => {
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: 'REMOVE_SUBCATEGORY',
         subcategoryId: 14,
+      });
+    });
+  });
+
+  describe('setCurrentCategory', () => {
+    it('dispatches the id to the store', () => {
+      setCurrentCategory(11);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: SET_CURRENT_CATEGORY,
+        categoryId: 11,
+      });
+    });
+  });
+
+  describe('setCurrentSubcategory', () => {
+    it('dispatches the id to the store', () => {
+      setCurrentSubcategory(13);
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: SET_CURRENT_SUBCATEGORY,
+        subcategoryId: 13,
       });
     });
   });

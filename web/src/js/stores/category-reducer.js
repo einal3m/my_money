@@ -1,4 +1,5 @@
 import { Map, List, fromJS } from 'immutable';
+import { SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY } from '../actions/category-actions';
 
 const INITIAL_STATE = Map({
   categoryTypesLoaded: false,
@@ -7,6 +8,8 @@ const INITIAL_STATE = Map({
   categoryTypes: List(),
   categories: List(),
   subcategories: List(),
+  currentCategoryId: null,
+  currentSubcategoryId: null,
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -25,8 +28,13 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setSubcategory(state, action.subcategory);
     case 'REMOVE_SUBCATEGORY':
       return removeSubcategory(state, action.subcategoryId);
+    case SET_CURRENT_CATEGORY:
+      return setCurrentCategory(state, action.categoryId);
+    case SET_CURRENT_SUBCATEGORY:
+      return setCurrentSubcategory(state, action.subcategoryId);
+    default:
+      return state;
   }
-  return state;
 }
 
 function setCategoryTypes(state, categoryTypes) {
@@ -76,4 +84,12 @@ function removeCategory(state, categoryId) {
 function removeSubcategory(state, subcategoryId) {
   const index = state.get('subcategories').findIndex(subcategory => subcategory.get('id') === subcategoryId);
   return state.set('subcategories', state.get('subcategories').delete(index));
+}
+
+function setCurrentCategory(state, categoryId) {
+  return state.set('currentCategoryId', categoryId);
+}
+
+function setCurrentSubcategory(state, subcategoryId) {
+  return state.set('currentSubcategoryId', subcategoryId);
 }

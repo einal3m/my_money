@@ -1,26 +1,21 @@
-import { List, Map, toJS } from 'immutable';
 import categoryReducer from '../category-reducer';
+import { SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY } from '../../actions/category-actions';
 
 describe('CategoryReducer', () => {
-  let categoryTypes,
-    categories,
-    subcategories;
-  beforeEach(() => {
-    categories = [
-      { id: 11, name: 'Expense1', categoryTypeId: 3 },
-      { id: 12, name: 'Income1', categoryTypeId: 2 },
-    ];
-    categoryTypes = [
-      { id: 2, name: 'Income', code: 'income', editable: true },
-      { id: 1, name: 'Transfer', code: 'transfer', editable: false },
-      { id: 3, name: 'Expense', code: 'expense', editable: true },
-    ];
+  const categories = [
+    { id: 11, name: 'Expense1', categoryTypeId: 3 },
+    { id: 12, name: 'Income1', categoryTypeId: 2 },
+  ];
+  const categoryTypes = [
+    { id: 2, name: 'Income', code: 'income', editable: true },
+    { id: 1, name: 'Transfer', code: 'transfer', editable: false },
+    { id: 3, name: 'Expense', code: 'expense', editable: true },
+  ];
 
-    subcategories = [
-      { id: 22, name: 'Sub2', categoryId: 11 },
-      { id: 21, name: 'Sub1', categoryId: 12 },
-    ];
-  });
+  const subcategories = [
+    { id: 22, name: 'Sub2', categoryId: 11 },
+    { id: 21, name: 'Sub1', categoryId: 12 },
+  ];
 
   it('has a default state', () => {
     const state = categoryReducer();
@@ -30,6 +25,8 @@ describe('CategoryReducer', () => {
     expect(state.get('categoryTypes').toJS()).toEqual([]);
     expect(state.get('categories').toJS()).toEqual([]);
     expect(state.get('subcategories').toJS()).toEqual([]);
+    expect(state.get('currentCategoryId')).toEqual(null);
+    expect(state.get('currentSubcategoryId')).toEqual(null);
   });
 
   describe('SET_CATEGORY_TYPES', () => {
@@ -130,6 +127,24 @@ describe('CategoryReducer', () => {
         expect(state.get('subcategories').size).toEqual(1);
         expect(state.get('subcategories').first().toJS()).toEqual(subcategories[0]);
       });
+    });
+  });
+
+  describe('SET_CURRENT_CATEGORY', () => {
+    it('sets the currentCategoryId in the store', () => {
+      const action = { type: SET_CURRENT_CATEGORY, categoryId: 21 };
+      const state = categoryReducer(undefined, action);
+
+      expect(state.get('currentCategoryId')).toEqual(21);
+    });
+  });
+
+  describe('SET_CURRENT_SUBCATEGORY', () => {
+    it('sets the currentSubcategoryId in the store', () => {
+      const action = { type: SET_CURRENT_SUBCATEGORY, subcategoryId: 14 };
+      const state = categoryReducer(undefined, action);
+
+      expect(state.get('currentSubcategoryId')).toEqual(14);
     });
   });
 });

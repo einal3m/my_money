@@ -139,4 +139,14 @@ class CategoryActions {
   }
 }
 
+export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY';
+export function setCurrentCategory(categoryId) {
+  store.dispatch({ type: SET_CURRENT_CATEGORY, categoryId });
+}
+
+export const SET_CURRENT_SUBCATEGORY = 'SET_CURRENT_SUBCATEGORY';
+export function setCurrentSubcategory(subcategoryId) {
+  store.dispatch({ type: SET_CURRENT_SUBCATEGORY, subcategoryId });
+}
+
 export default new CategoryActions();
