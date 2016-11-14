@@ -18,7 +18,11 @@ module Lib
     end
 
     def base_query
-      Transaction.for_account_type(AccountType::Savings).where(category: @category).find_by_date(@date_range).reverse_date_order
+      Transaction
+        .for_banking_accounts
+        .where(category: @category)
+        .find_by_date(@date_range)
+        .reverse_date_order
     end
 
     def set_factor

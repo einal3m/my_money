@@ -128,6 +128,17 @@ RSpec.describe Transaction, type: :model do
       expect(Transaction.for_account_type(AccountType::Share)).to eq([t1])
     end
 
+    it 'finds transactions for banking type accounts' do
+      @share_account = FactoryGirl.create(:account, account_type: AccountType::Share)
+      @loan_account = FactoryGirl.create(:account, account_type: AccountType::Loan)
+      @savings_account = FactoryGirl.create(:account, account_type: AccountType::Savings)
+      FactoryGirl.create(:transaction, account: @share_account)
+      t2 = FactoryGirl.create(:transaction, account: @loan_account)
+      t3 = FactoryGirl.create(:transaction, account: @savings_account)
+
+      expect(Transaction.for_banking_accounts).to eq([t2, t3])
+    end
+
     it 'finds transactions with given string in notes or memo' do
       FactoryGirl.create(:transaction, notes: 'anything', memo: '')
       t2 = FactoryGirl.create(:transaction, notes: 'for Mel', memo: 'melanie')

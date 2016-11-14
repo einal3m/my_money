@@ -4,6 +4,7 @@ require 'lib/date_range'
 RSpec.describe Lib::SubcategorySearch, type: :class do
   before :each do
     @share_account = FactoryGirl.create(:account, account_type: AccountType::Share.new)
+    @loan_account = FactoryGirl.create(:account, account_type: AccountType::Loan.new)
     @sc = FactoryGirl.create(:subcategory)
 
     @c = @sc.category
@@ -11,7 +12,7 @@ RSpec.describe Lib::SubcategorySearch, type: :class do
     @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c, subcategory: nil, amount: 10)
     @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 12)
     @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @c, subcategory: nil, amount: 15)
-    @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: @c, subcategory: @sc, amount: 5)
+    @t5 = FactoryGirl.create(:transaction, account: @loan_account, date: '2014-01-03', category: @c, subcategory: @sc, amount: 5)
     @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @c, subcategory: nil)
     @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: @c, subcategory: @sc)
     @t8 = FactoryGirl.create(:transaction, account: @share_account, date: '2014-01-13', category: @c, subcategory: @sc)
