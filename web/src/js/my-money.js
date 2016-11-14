@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Provider } from 'react-redux';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
-import { Provider } from 'react-redux';
 import store from './stores/store';
 import apiUtil from './util/api-util';
 import AccountList from './components/accounts/account-list';
@@ -13,7 +14,8 @@ import ImportPage from './components/import/import-page';
 import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
 import AccountBalanceChart from './components/reports/account-balance-chart';
 import IncomeVsExpensesReport from './components/reports/income-vs-expenses-report';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import SubcategoryReport from './components/reports/subcategory-report';
+
 require('babel-polyfill');
 
 const App = React.createClass({
@@ -45,6 +47,7 @@ render((
         <Route path="accountBalance" component={AccountBalanceChart} />
         <Route path="incomeVsExpenseBar" component={IncomeVsExpenseBarChart} />
         <Route path="incomeVsExpenses" component={IncomeVsExpensesReport} />
+        <Route path="subcategoryReport" component={SubcategoryReport} />
       </Route>
       <IndexRoute component={AccountList} />
     </Route>
