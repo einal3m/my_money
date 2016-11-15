@@ -1,3 +1,4 @@
+import { Map } from 'immutable';
 import categoryReducer from '../category-reducer';
 import { SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY } from '../../actions/category-actions';
 
@@ -131,11 +132,12 @@ describe('CategoryReducer', () => {
   });
 
   describe('SET_CURRENT_CATEGORY', () => {
-    it('sets the currentCategoryId in the store', () => {
+    it('sets the currentCategoryId in the store, and sets currentSubcategoryId to null', () => {
       const action = { type: SET_CURRENT_CATEGORY, categoryId: 21 };
-      const state = categoryReducer(undefined, action);
+      const state = categoryReducer(Map({ currentSubcategoryId: 23 }), action);
 
       expect(state.get('currentCategoryId')).toEqual(21);
+      expect(state.get('currentSubcategoryId')).toEqual(null);
     });
   });
 

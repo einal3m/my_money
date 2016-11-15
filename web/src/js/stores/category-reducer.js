@@ -87,7 +87,7 @@ function removeSubcategory(state, subcategoryId) {
 }
 
 function setCurrentCategory(state, categoryId) {
-  return state.set('currentCategoryId', categoryId);
+  return state.set('currentCategoryId', categoryId).set('currentSubcategoryId', null);
 }
 
 function setCurrentSubcategory(state, subcategoryId) {
