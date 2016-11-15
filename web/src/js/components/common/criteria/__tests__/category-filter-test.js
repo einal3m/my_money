@@ -27,6 +27,7 @@ describe('CategoryFilter', () => {
       const filter = shallowRenderer(
         <CategoryFilter
           loaded={false}
+          showSubcategories
           currentCategoryId={4}
           currentSubcategoryId={7}
           fetch={fetchSpy}
@@ -45,6 +46,7 @@ describe('CategoryFilter', () => {
       const filter = shallowRenderer(
         <CategoryFilter
           loaded
+          showSubcategories
           currentCategoryId={4}
           currentSubcategoryId={7}
           fetch={fetchSpy}
@@ -75,6 +77,25 @@ describe('CategoryFilter', () => {
       const filter = shallowRenderer(
         <CategoryFilter
           loaded
+          showSubcategories
+          fetch={fetchSpy}
+          groupedCategories={groupedCategories}
+        />
+      );
+      const categoryGroup = filter.props.children[0].props.children;
+      const subcategoryGroup = filter.props.children[1].props.children;
+
+      expect(categoryGroup.props.label).toEqual('Category');
+      expect(subcategoryGroup).toBeUndefined();
+    });
+
+    it('does not display subcategory picker if showSubcategories is false', () => {
+      const filter = shallowRenderer(
+        <CategoryFilter
+          loaded
+          showSubcategories={false}
+          currentCategoryId={4}
+          currentSubcategoryId={7}
           fetch={fetchSpy}
           groupedCategories={groupedCategories}
         />
@@ -92,6 +113,7 @@ describe('CategoryFilter', () => {
       const filter = shallowRenderer(
         <CategoryFilter
           loaded
+          showSubcategories
           currentCategoryId={4}
           currentSubcategoryId={7}
           fetch={fetchSpy}
@@ -112,6 +134,7 @@ describe('CategoryFilter', () => {
       const filter = shallowRenderer(
         <CategoryFilter
           loaded
+          showSubcategories
           currentCategoryId={4}
           currentSubcategoryId={7}
           fetch={fetchSpy}

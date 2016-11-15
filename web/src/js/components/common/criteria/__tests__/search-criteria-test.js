@@ -8,7 +8,11 @@ import CategoryFilter from '../category-filter';
 describe('SearchCriteria', () => {
   describe('render', () => {
     it('renders date range, category and account filters', () => {
-      const filters = [{ name: CATEGORY_FILTER }, { name: DATE_RANGE_FILTER }, { name: ACCOUNT_FILTER }];
+      const filters = [
+        { name: CATEGORY_FILTER, options: { showSubcategories: true } },
+        { name: DATE_RANGE_FILTER },
+        { name: ACCOUNT_FILTER },
+      ];
       const onFetchHandler = jasmine.createSpy('onFetchHandler');
       const criteria = shallowRenderer(<SearchCriteria filters={filters} fetch={onFetchHandler} />);
 
@@ -16,6 +20,7 @@ describe('SearchCriteria', () => {
 
       expect(categoryFilter.type).toEqual(CategoryFilter);
       expect(categoryFilter.props.fetch).toEqual(onFetchHandler);
+      expect(categoryFilter.props.showSubcategories).toEqual(true);
 
       expect(dateFilter.type).toEqual(DateRangeFilter);
       expect(dateFilter.props.fetch).toEqual(onFetchHandler);

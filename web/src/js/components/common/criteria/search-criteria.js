@@ -9,21 +9,27 @@ export const CATEGORY_FILTER = 'CATEGORY_FILTER';
 
 export default class SearchCriteria extends React.Component {
 
-  renderFilter(name) {
+  renderFilter(name, options) {
     switch (name) {
       case DATE_RANGE_FILTER:
         return <DateRangeFilter key={DATE_RANGE_FILTER} fetch={this.props.fetch} />;
       case ACCOUNT_FILTER:
         return <AccountFilter key={ACCOUNT_FILTER} multiple fetch={this.props.fetch} />;
       case CATEGORY_FILTER:
-        return <CategoryFilter key={CATEGORY_FILTER} fetch={this.props.fetch} />;
+        return (
+          <CategoryFilter
+            key={CATEGORY_FILTER}
+            fetch={this.props.fetch}
+            showSubcategories={options.showSubcategories}
+          />
+        );
       default:
         return <div />;
     }
   }
 
   renderCriteria() {
-    return this.props.filters.map(filter => this.renderFilter(filter.name));
+    return this.props.filters.map(filter => this.renderFilter(filter.name, filter.options));
   }
 
   render() {
@@ -38,6 +44,7 @@ export default class SearchCriteria extends React.Component {
 SearchCriteria.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
+    options: PropTypes.shape({}),
   })).isRequired,
   fetch: PropTypes.func.isRequired,
 };

@@ -39,7 +39,7 @@ export class CategoryFilterComponent extends React.Component {
   }
 
   renderSubcategoryPicker() {
-    if (this.props.loaded && this.props.currentCategoryId) {
+    if (this.props.showSubcategories && this.props.loaded && this.props.currentCategoryId) {
       return (
         <HorizontalFormControl name="currentSubcategoryId" label="Subcategory" labelCol="4" controlCol="8">
           <SubcategoryPicker
@@ -74,6 +74,7 @@ CategoryFilterComponent.propTypes = {
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentCategoryId: PropTypes.number,
   currentSubcategoryId: PropTypes.number,
+  showSubcategories: PropTypes.bool,
   fetch: PropTypes.func.isRequired,
 };
 
