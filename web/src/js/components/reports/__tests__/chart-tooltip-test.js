@@ -13,16 +13,18 @@ describe('ChartTooltip', () => {
     };
 
     const chartTooltip = shallowRenderer(<ChartTooltip show tooltipData={tooltipData} />);
-    let [title, tooltipItems] = chartTooltip.props.children.props.children;
+    const [title, tooltipItems] = chartTooltip.props.children.props.children;
 
     expect(title.props.children).toEqual('Tooltip Title');
-    let [seriesOne, seriesTwo] = tooltipItems.props.children;
+    const [seriesOne, seriesTwo] = tooltipItems.props.children;
 
     let [point, seriesLabel, value] = seriesOne.props.children;
+    expect(point.props.children.props.className).toMatch(/circle/);
     expect(seriesLabel.props.children).toEqual('Series One');
     expect(value.props.children).toEqual('32');
 
     [point, seriesLabel, value] = seriesTwo.props.children;
+    expect(point.props.children.props.className).toMatch(/circle/);
     expect(seriesLabel.props.children).toEqual('Series Two');
     expect(value.props.children).toEqual('45');
   });

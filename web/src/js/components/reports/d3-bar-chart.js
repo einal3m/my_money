@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import barChart from './bar-chart';
 import moneyUtil from '../../util/money-util';
 import ChartTooltip from './chart-tooltip';
@@ -7,42 +7,53 @@ export default class D3BarChart extends React.Component {
 
   constructor() {
     super();
-    this.state = { tooltipData: null };
-    this.callBacks = {
-      showTooltip: this.showTooltip.bind(this),
-      hideTooltip: this.hideTooltip.bind(this),
-      formatYLabels: this.formatMoney.bind(this),
-    };
+    this.state = { tooltipData: null, showTooltip: false };
   }
 
   componentDidMount() {
-    const options = {
-      height: 450,
-      width: this.refs.chartContainer.getDOMNode().offsetWidth - 20,
-    };
-
-    barChart(this.props.chartData.xAxisLabels, this.props.chartData.seriesData, '#d3-chart', options, this.callBacks);
+    barChart(
+      this.props.chartData.xAxisLabels,
+      this.props.chartData.seriesData,
+      '#d3-chart',
+      this.chartOptions(),
+      this.chartCallbacks
+    );
   }
 
-  showTooltip(tooltipData) {
-    this.setState({ tooltipData });
-    this.refs.tooltip.show();
-  }
+  chartOptions = () => ({
+    height: 450,
+    width: this.chartContainer.offsetWidth - 20,
+  });
 
-  hideTooltip() {
-    this.refs.tooltip.hide();
-  }
+  showTooltip = (tooltipData) => {
+    this.setState({ tooltipData, showTooltip: true });
+  };
 
-  formatMoney(amount) {
-    return moneyUtil.numberFormatWithSign(amount);
-  }
+  hideTooltip = () => {
+    this.setState({ showTooltip: false });
+  };
+
+  formatMoney = amount => moneyUtil.numberFormatWithSign(amount);
+
+  chartCallbacks = {
+    showTooltip: this.showTooltip,
+    hideTooltip: this.hideTooltip,
+    formatYLabels: this.formatMoney,
+  };
 
   render() {
     return (
-      <div className="text-center" ref="chartContainer" className="chart-container">
-        <ChartTooltip ref="tooltip" tooltipData={this.state.tooltipData} chartWidth={1000} />
+      <div className="chart-container" ref={(container) => { this.chartContainer = container; }}>
+        <ChartTooltip tooltipData={this.state.tooltipData} show={this.state.showTooltip} />
         <div id="d3-chart" />
       </div>
     );
   }
 }
+
+D3BarChart.propTypes = {
+  chartData: PropTypes.shape({
+    xAxisLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
+    seriesData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  }).isRequired,
+};
