@@ -1,7 +1,10 @@
-import reportActions from '../report-actions';
+import { fromJS } from 'immutable';
+import reportActions, {
+  getCategoryReport, getSubcategoryReport, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT,
+} from '../report-actions';
+import transactionTransformer from '../../transformers/transaction-transformer';
 import apiUtil from '../../util/api-util';
 import store from '../../stores/store';
-import { fromJS } from 'immutable';
 
 describe('ReportActions', () => {
   let dispatcherSpy;
@@ -38,6 +41,62 @@ describe('ReportActions', () => {
       type: 'SET_ACCOUNT_BALANCE_REPORT',
       accountId: 34,
       report: ['balances'],
+    });
+  });
+
+  describe('getCategoryReport', () => {
+    it('calls the report/category api and dispatches response to the store', () => {
+      spyOn(apiUtil, 'get');
+      spyOn(transactionTransformer, 'transformFromApi').and.returnValue('transformedTransaction');
+      spyOn(store, 'getState').and.returnValue({
+        categoryStore: fromJS({ currentCategoryId: 34 }),
+        dateRangeStore: fromJS({ currentDateRange: { fromDate: '2016-03-01', toDate: '2016-03-31' } }),
+      });
+
+      getCategoryReport();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_REPORT' });
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('report/category?category_id=34&from_date=2016-03-01&to_date=2016-03-31');
+
+      const successCallback = getArgs.onSuccess;
+      successCallback({ transactions: ['transaction'], month_totals: ['totals'] });
+
+      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
+      expect(store.dispatch).toHaveBeenCalledWith(
+        { type: SET_TRANSACTION_REPORT, transactions: ['transformedTransaction'], totals: ['totals'] }
+      );
+    });
+  });
+
+  describe('getSubcategoryReport', () => {
+    it('calls the report/subcategory api and dispatches response to the store', () => {
+      spyOn(apiUtil, 'get');
+      spyOn(transactionTransformer, 'transformFromApi').and.returnValue('transformedTransaction');
+      spyOn(store, 'getState').and.returnValue({
+        categoryStore: fromJS({ currentCategoryId: 34, currentSubcategoryId: 12 }),
+        dateRangeStore: fromJS({ currentDateRange: { fromDate: '2016-03-01', toDate: '2016-03-31' } }),
+      });
+
+      getSubcategoryReport();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_REPORT' });
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual(
+        'report/subcategory?category_id=34&subcategory_id=12&from_date=2016-03-01&to_date=2016-03-31'
+      );
+
+      const successCallback = getArgs.onSuccess;
+      successCallback({ transactions: ['transaction'], month_totals: ['totals'] });
+
+      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
+      expect(store.dispatch).toHaveBeenCalledWith(
+        { type: SET_TRANSACTION_REPORT, transactions: ['transformedTransaction'], totals: ['totals'] }
+      );
     });
   });
 });

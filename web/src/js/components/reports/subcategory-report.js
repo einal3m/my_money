@@ -1,11 +1,12 @@
 import React from 'react';
 import PageHeader from '../common/page-header';
 import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../common/criteria/search-criteria';
+import { getSubcategoryReport } from '../../actions/report-actions';
 
 export default class SubcategoryReport extends React.Component {
 
   fetchReport = () => {
-    console.log('fetch subcategory report data');
+    getSubcategoryReport();
   };
 
   render() {
