@@ -20,13 +20,13 @@ const Header = () => (
         <LinkContainer to="/reports/incomeVsExpenses">
           <MenuItem eventKey={2}>Income vs Expenses</MenuItem>
         </LinkContainer>
-        <LinkContainer to="/reports"><MenuItem eventKey={3}>Category Report</MenuItem></LinkContainer>
+        <LinkContainer to="/reports/categoryReport"><MenuItem eventKey={3}>Category Report</MenuItem></LinkContainer>
         <LinkContainer to="/reports/subcategoryReport">
           <MenuItem eventKey={4}>Subcategory Report</MenuItem>
         </LinkContainer>
         <MenuItem divider />
         <LinkContainer to="/reports/accountBalance">
-          <MenuItem eventKey={4}>Account Balance Line Chart</MenuItem>
+          <MenuItem eventKey={5}>Account Balance Line Chart</MenuItem>
         </LinkContainer>
       </NavDropdown>
     </Nav>

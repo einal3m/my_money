@@ -14,6 +14,7 @@ import ImportPage from './components/import/import-page';
 import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
 import AccountBalanceChart from './components/reports/account-balance-chart';
 import IncomeVsExpensesReport from './components/reports/income-vs-expenses-report';
+import CategoryReport from './components/reports/category-report';
 import SubcategoryReport from './components/reports/subcategory-report';
 
 require('babel-polyfill');
@@ -47,6 +48,7 @@ render((
         <Route path="accountBalance" component={AccountBalanceChart} />
         <Route path="incomeVsExpenseBar" component={IncomeVsExpenseBarChart} />
         <Route path="incomeVsExpenses" component={IncomeVsExpensesReport} />
+        <Route path="categoryReport" component={CategoryReport} />
         <Route path="subcategoryReport" component={SubcategoryReport} />
       </Route>
       <IndexRoute component={AccountList} />
