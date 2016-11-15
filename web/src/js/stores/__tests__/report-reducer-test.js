@@ -1,6 +1,8 @@
 import { Map } from 'immutable';
 import reportReducer from '../report-reducer';
-import { GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT } from '../../actions/report-actions';
+import {
+  GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, TOGGLE_REPORT_VIEW,
+} from '../../actions/report-actions';
 
 describe('ReportReducer', () => {
   it('has a default state', () => {
@@ -9,6 +11,7 @@ describe('ReportReducer', () => {
     expect(state.get('transactions').toJS()).toEqual([]);
     expect(state.get('totals').toJS()).toEqual([]);
     expect(state.get('loaded')).toEqual(false);
+    expect(state.get('viewType')).toEqual('table');
   });
 
   describe('GET_REPORT', () => {
@@ -41,6 +44,14 @@ describe('ReportReducer', () => {
       expect(state.get('transactions').toJS()).toEqual(['transaction']);
       expect(state.get('totals').toJS()).toEqual(['total']);
       expect(state.get('loaded')).toEqual(true);
+    });
+  });
+
+  describe('TOGGLE_REPORT_VIEW', () => {
+    it('toggles the view from chart to table', () => {
+      const action = { type: TOGGLE_REPORT_VIEW };
+      const state = reportReducer(undefined, action);
+      expect(state.get('viewType')).toEqual('chart');
     });
   });
 });

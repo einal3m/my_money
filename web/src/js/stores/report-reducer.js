@@ -1,11 +1,14 @@
 import { Map, List, fromJS } from 'immutable';
-import { GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT } from '../actions/report-actions';
+import {
+  GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, TOGGLE_REPORT_VIEW,
+} from '../actions/report-actions';
 
 const INITIAL_STATE = Map({
   accountBalances: Map({}),
   transactions: List(),
   totals: List(),
   loaded: false,
+  viewType: 'table',
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
@@ -16,6 +19,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setAccountBalances(state, action.accountId, action.report);
     case SET_TRANSACTION_REPORT:
       return setTransactionReport(state, action.transactions, action.totals);
+    case TOGGLE_REPORT_VIEW:
+      return toggleReportView(state);
     default:
       return state;
   }
@@ -27,4 +32,9 @@ function setAccountBalances(state, accountId, report) {
 
 function setTransactionReport(state, transactions, totals) {
   return state.set('loaded', true).set('transactions', fromJS(transactions)).set('totals', fromJS(totals));
+}
+
+function toggleReportView(state) {
+  const view = state.get('viewType') === 'chart' ? 'table' : 'chart';
+  return state.set('viewType', view);
 }

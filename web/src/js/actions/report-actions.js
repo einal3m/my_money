@@ -24,6 +24,11 @@ class ReportActions {
   }
 }
 
+export const TOGGLE_REPORT_VIEW = 'TOGGLE_REPORT_VIEW';
+export function toggleReportView() {
+  store.dispatch({ type: TOGGLE_REPORT_VIEW });
+}
+
 export function getSubcategoryReport() {
   const currentCategoryId = store.getState().categoryStore.get('currentCategoryId');
   const currentSubcategoryId = store.getState().categoryStore.get('currentSubcategoryId');

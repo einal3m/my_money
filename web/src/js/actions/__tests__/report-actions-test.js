@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import reportActions, {
-  getCategoryReport, getSubcategoryReport, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT,
+  getCategoryReport, getSubcategoryReport, toggleReportView,
+  SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW,
 } from '../report-actions';
 import transactionTransformer from '../../transformers/transaction-transformer';
 import apiUtil from '../../util/api-util';
@@ -97,6 +98,14 @@ describe('ReportActions', () => {
       expect(store.dispatch).toHaveBeenCalledWith(
         { type: SET_TRANSACTION_REPORT, transactions: ['transformedTransaction'], totals: ['totals'] }
       );
+    });
+  });
+
+  describe('toggleReportView', () => {
+    it('dispatches the action to the store', () => {
+      toggleReportView();
+
+      expect(store.dispatch).toHaveBeenCalledWith({ type: TOGGLE_REPORT_VIEW });
     });
   });
 });
