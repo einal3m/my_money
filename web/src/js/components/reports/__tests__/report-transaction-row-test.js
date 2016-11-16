@@ -34,6 +34,7 @@ describe('ReportTransactionRow', () => {
           transaction={transaction}
           account={account}
           groupedCategories={groupedCategories}
+          source="mySource"
         />
       );
 
@@ -62,13 +63,16 @@ describe('ReportTransactionRow', () => {
           transaction={transaction}
           account={account}
           groupedCategories={groupedCategories}
+          source="mySource"
         />
       );
       spyOn(formActions, 'showFormModal');
 
       row.props.onClick();
 
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', transaction, { allowDelete: true });
+      expect(formActions.showFormModal).toHaveBeenCalledWith(
+        'Transaction', transaction, { allowDelete: true, source: 'mySource' }
+      );
     });
   });
 });

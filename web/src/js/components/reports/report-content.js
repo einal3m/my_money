@@ -6,7 +6,7 @@ import chartDataForMonthTotals from '../../selectors/report-selector';
 
 export class ReportContentComponent extends React.Component {
 
-  renderTable = () => <ReportTransactionTable />;
+  renderTable = () => <ReportTransactionTable source={this.props.source} />;
 
   renderChart = () => <D3BarChart chartData={this.props.chartData} />;
 
@@ -30,6 +30,7 @@ ReportContentComponent.propTypes = {
   viewType: PropTypes.string.isRequired,
   chartData: PropTypes.shape({}),
   transactions: PropTypes.arrayOf(PropTypes.shape({})),
+  source: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {

@@ -15,6 +15,7 @@ export class ReportTransactionTableComponent extends React.Component {
         account={this.props.accounts.filter(account => account.id === transaction.accountId)[0]}
         transaction={transaction}
         groupedCategories={this.props.groupedCategories}
+        source={this.props.source}
       />
     ));
   }
@@ -63,6 +64,7 @@ ReportTransactionTableComponent.propTypes = {
   accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired })),
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  source: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {

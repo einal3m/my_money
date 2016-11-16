@@ -1,7 +1,10 @@
+import { Map } from 'immutable';
 import * as transactionActions from '../transaction-actions';
 import transactionTransformer from '../../transformers/transaction-transformer';
 import store from '../../stores/store';
 import apiUtil from '../../util/api-util';
+import * as reportActions from '../report-actions';
+import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from '../form-actions';
 
 describe('TransactionActions', () => {
   let dispatcherSpy;
@@ -52,6 +55,26 @@ describe('TransactionActions', () => {
       const putArgs = apiUtil.put.calls.argsFor(0)[0];
       expect(putArgs.url).toEqual('accounts/4/transactions/23');
       expect(putArgs.body).toEqual({ transaction: 'transformedTransaction' });
+    });
+  });
+
+  describe('onSuccessCallback', () => {
+    it('calls the getCategoryReport action if source is category report', () => {
+      spyOn(store, 'getState').and.returnValue({ formStore: Map({ source: SOURCE_CATEGORY_REPORT }) });
+      spyOn(reportActions, 'getCategoryReport');
+
+      transactionActions.onSuccess();
+
+      expect(reportActions.getCategoryReport).toHaveBeenCalled();
+    });
+
+    it('calls the getSubcategoryReport action if source is subcategory report', () => {
+      spyOn(store, 'getState').and.returnValue({ formStore: Map({ source: SOURCE_SUBCATEGORY_REPORT }) });
+      spyOn(reportActions, 'getSubcategoryReport');
+
+      transactionActions.onSuccess();
+
+      expect(reportActions.getSubcategoryReport).toHaveBeenCalled();
     });
   });
 

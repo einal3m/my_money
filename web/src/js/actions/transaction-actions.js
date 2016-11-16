@@ -3,6 +3,8 @@ import store from '../stores/store';
 import { getAccounts } from './account-actions';
 import dateRangeActions from './date-range-actions';
 import transactionTransformer from '../transformers/transaction-transformer';
+import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from './form-actions';
+import { getCategoryReport, getSubcategoryReport } from './report-actions';
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
 export function getTransactions() {
@@ -55,8 +57,24 @@ function updateTransaction(transaction) {
   return apiUtil.put({
     url: `accounts/${transaction.accountId}/transactions/${transaction.id}`,
     body: { transaction: transactionTransformer.transformToApi(transaction) },
-    onSuccess: () => { getTransactions(); },
+    onSuccess: () => { onSuccess(); },
   });
+}
+
+export function onSuccess() {
+  const source = store.getState().formStore.get('source');
+
+  switch (source) {
+    case SOURCE_CATEGORY_REPORT:
+      getCategoryReport();
+      return;
+    case SOURCE_SUBCATEGORY_REPORT:
+      getSubcategoryReport();
+      return;
+    default:
+      getTransactions();
+      return;
+  }
 }
 
 export const DELETE_TRANSACTION = 'DELETE_TRANSACTION';
@@ -64,7 +82,7 @@ export function deleteTransaction(transaction) {
   store.dispatch({ type: DELETE_TRANSACTION });
   return apiUtil.delete({
     url: `accounts/${transaction.accountId}/transactions/${transaction.id}`,
-    onSuccess: () => { getTransactions(); },
+    onSuccess: () => { onSuccess(); },
   });
 }
 

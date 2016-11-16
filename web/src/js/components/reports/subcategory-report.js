@@ -5,6 +5,7 @@ import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../common/cr
 import ReportContent from './report-content';
 import { getSubcategoryReport } from '../../actions/report-actions';
 import { getAccounts } from '../../actions/account-actions';
+import { SOURCE_SUBCATEGORY_REPORT } from '../../actions/form-actions'
 
 export default class SubcategoryReport extends React.Component {
 
@@ -29,7 +30,7 @@ export default class SubcategoryReport extends React.Component {
           fetch={this.fetchReport}
         />
         <div className="container">
-          <ReportContent />
+          <ReportContent source={SOURCE_SUBCATEGORY_REPORT} />
         </div>
       </div>
     );

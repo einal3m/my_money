@@ -10,7 +10,7 @@ describe('ReportContent', () => {
   describe('render', () => {
     it('displays a chart if viewType is chart', () => {
       const content = shallowRenderer(
-        <ReportContent viewType="chart" chartData={chartData} transactions={transactions} />
+        <ReportContent viewType="chart" chartData={chartData} transactions={transactions} source="mySource" />
       );
 
       expect(content.type).toEqual(D3BarChart);
@@ -19,10 +19,11 @@ describe('ReportContent', () => {
 
     it('displays a table if viewType is table', () => {
       const content = shallowRenderer(
-        <ReportContent viewType="table" chartData={chartData} transactions={transactions} />
+        <ReportContent viewType="table" chartData={chartData} transactions={transactions} source="mySource" />
       );
 
       expect(content.type).toEqual(ReportTransactionTable);
+      expect(content.props.source).toEqual('mySource');
     });
   });
 });

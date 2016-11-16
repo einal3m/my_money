@@ -25,6 +25,7 @@ describe('ReportTransactionTable', () => {
           transactions={transactions}
           accounts={accounts}
           groupedCategories={groupedCategories}
+          source="mySource"
         />
       );
 
@@ -41,6 +42,7 @@ describe('ReportTransactionTable', () => {
           transactions={transactions}
           accounts={accounts}
           groupedCategories={groupedCategories}
+          source="mySource"
         />
       );
 

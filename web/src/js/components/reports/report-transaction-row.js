@@ -4,10 +4,10 @@ import Date from '../common/date';
 import { showFormModal } from '../../actions/form-actions';
 import { memoAndNotes, categoryAndSubcategory } from '../../util/transaction-util';
 
-export default class TransactionRow extends React.Component {
+export default class ReportTransactionRow extends React.Component {
 
   onClickHandler = () => {
-    showFormModal('Transaction', this.props.transaction, { allowDelete: true });
+    showFormModal('Transaction', this.props.transaction, { allowDelete: true, source: this.props.source });
   };
 
   renderAccount() {
@@ -35,7 +35,7 @@ export default class TransactionRow extends React.Component {
   }
 }
 
-TransactionRow.propTypes = {
+ReportTransactionRow.propTypes = {
   transaction: PropTypes.shape({
     id: PropTypes.number.isRequired,
     accountId: PropTypes.number.isRequired,
@@ -51,5 +51,6 @@ TransactionRow.propTypes = {
     bank: PropTypes.string,
   }).isRequired,
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  source: PropTypes.string.isRequired,
 };
 

@@ -6,12 +6,13 @@ const INITIAL_STATE = Map({
   modelType: null,
   model: Map({}),
   allowDelete: false,
+  source: null,
 });
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
     case 'SHOW_FORM_MODAL':
-      return showModal(state, action.modelType, action.model, action.allowDelete);
+      return showModal(state, action.modelType, action.model, action.allowDelete, action.source);
     case 'HIDE_FORM_MODAL':
       return hideModal(state);
     default:
@@ -19,11 +20,12 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
   }
 }
 
-function showModal(state, modelType, model, allowDelete) {
+function showModal(state, modelType, model, allowDelete, source) {
   return state.set('show', true)
     .set('modelType', modelType)
     .set('model', fromJS(model))
-    .set('allowDelete', allowDelete);
+    .set('allowDelete', allowDelete)
+    .set('source', source);
 }
 
 function hideModal(state) {
