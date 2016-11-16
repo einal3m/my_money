@@ -1,9 +1,5 @@
 @import 'colours';
 
-.chart-container {
-  border-top: 2px solid $main-color;
-}
-
 #d3-chart svg {
   margin: 10px;
   position: relative;

@@ -11,6 +11,7 @@ export default class CategoryReport extends React.Component {
   constructor() {
     super();
     getAccounts({ useStore: true });
+    this.fetchReport();
   }
 
   fetchReport = () => {

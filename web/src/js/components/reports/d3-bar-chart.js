@@ -20,8 +20,20 @@ export default class D3BarChart extends React.Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.chart.removeChild(this.chart.firstChild);
+
+    barChart(
+      nextProps.chartData.xAxisLabels,
+      nextProps.chartData.seriesData,
+      '#d3-chart',
+      this.chartOptions(),
+      this.chartCallbacks
+    );
+  }
+
   chartOptions = () => ({
-    height: 450,
+    height: 350,
     width: this.chartContainer.offsetWidth - 20,
   });
 
@@ -33,7 +45,7 @@ export default class D3BarChart extends React.Component {
     this.setState({ showTooltip: false });
   };
 
-  formatMoney = amount => moneyUtil.numberFormatWithSign(amount);
+  formatMoney = amount => moneyUtil.numberFormatWithSign(moneyUtil.centsToDollars(amount));
 
   chartCallbacks = {
     showTooltip: this.showTooltip,
@@ -45,7 +57,7 @@ export default class D3BarChart extends React.Component {
     return (
       <div className="chart-container" ref={(container) => { this.chartContainer = container; }}>
         <ChartTooltip tooltipData={this.state.tooltipData} show={this.state.showTooltip} />
-        <div id="d3-chart" />
+        <div id="d3-chart" ref={(chart) => { this.chart = chart; }} />
       </div>
     );
   }

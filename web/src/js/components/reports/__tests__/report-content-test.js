@@ -1,19 +1,27 @@
 import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import D3BarChart from '../d3-bar-chart';
 import { ReportContentComponent as ReportContent } from '../report-content';
 
 describe('ReportContent', () => {
+  const transactions = [{ id: 1 }];
+  const chartData = { xAxisLabels: [], seriesData: [] };
   describe('render', () => {
     it('displays a chart if viewType is chart', () => {
-      const content = shallowRenderer(<ReportContent viewType="chart" />);
+      const content = shallowRenderer(
+        <ReportContent viewType="chart" chartData={chartData} transactions={transactions} />
+      );
 
-      expect(content.props.children.props.children).toMatch(/chart/);
+      expect(content.type).toEqual(D3BarChart);
+      expect(content.props.chartData).toEqual(chartData);
     });
 
     it('displays a table if viewType is table', () => {
-      const content = shallowRenderer(<ReportContent viewType="table" />);
+      const content = shallowRenderer(
+        <ReportContent viewType="table" chartData={chartData} transactions={transactions} />
+      );
 
-      expect(content.props.children.props.children).toMatch(/table/);
+      expect(content.props.children).toMatch(/table/);
     });
   });
 });

@@ -53,7 +53,7 @@ ChartTooltip.propTypes = {
     tooltipPosition: PropTypes.oneOf(['right', 'left']),
     periodLabel: PropTypes.string.isRequired,
     seriesLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
-    values: PropTypes.arrayOf(PropTypes.number).isRequired,
+    values: PropTypes.arrayOf(PropTypes.string).isRequired,
     colours: PropTypes.arrayOf(PropTypes.string).isRequired,
   }),
 };

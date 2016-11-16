@@ -63,7 +63,7 @@ function createHover(vis, xAxisLabels, seriesData, dim, callbacks) {
       periodLabel: label,
       seriesLabel: seriesData.map(series => series.name),
       colours: seriesData.map(series => series.backgroundColour),
-      values: seriesData.map(series => series.data[periodIndex]),
+      values: seriesData.map(series => callbacks.formatYLabels(series.data[periodIndex])),
       tooltipPosition: (periodIndex / dim.noOfPeriods) < 0.5 ? 'right' : 'left',
     };
 

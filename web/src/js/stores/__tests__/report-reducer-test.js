@@ -15,10 +15,13 @@ describe('ReportReducer', () => {
   });
 
   describe('GET_REPORT', () => {
-    it('sets loading to true', () => {
+    it('sets loading to true, and resets report objects', () => {
       const action = { type: GET_REPORT };
       const state = reportReducer(Map({ loaded: true }), action);
       expect(state.get('loaded')).toEqual(false);
+      expect(state.get('accountBalances').toJS()).toEqual({});
+      expect(state.get('transactions').toJS()).toEqual([]);
+      expect(state.get('totals').toJS()).toEqual([]);
     });
   });
 
