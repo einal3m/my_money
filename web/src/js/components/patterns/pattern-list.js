@@ -15,7 +15,7 @@ export class PatternList extends React.Component {
   }
 
   newPattern = () => {
-    showFormModal('Pattern', { accountId: this.props.currentAccount.id }, false);
+    showFormModal('Pattern', { accountId: this.props.currentAccount.id }, { allowDelete: false });
   };
 
   renderPatterns() {

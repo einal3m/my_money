@@ -38,7 +38,7 @@ export default class TransactionRow extends React.Component {
   }
 
   onClickHandler = () => {
-    showFormModal('Transaction', this.props.transaction, true);
+    showFormModal('Transaction', this.props.transaction, { allowDelete: true });
   };
 
   render() {

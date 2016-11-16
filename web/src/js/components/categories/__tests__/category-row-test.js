@@ -23,7 +23,7 @@ describe('CategoryRow', () => {
     it('calls the handler prop when row is clicked', () => {
       spyOn(formActions, 'showFormModal');
       row.props.onClick();
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Category', category, true);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Category', category, { allowDelete: true });
     });
   });
 });

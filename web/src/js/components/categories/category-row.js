@@ -3,7 +3,7 @@ import { showFormModal } from '../../actions/form-actions';
 
 export default class CategoryRow extends React.Component {
   handleClick = () => {
-    showFormModal('Category', this.props.category, true);
+    showFormModal('Category', this.props.category, { allowDelete: true });
   };
 
   render() {

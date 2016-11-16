@@ -14,7 +14,7 @@ describe('FormActions', () => {
 
   describe('showForm', () => {
     it('dispatches the action to the store', () => {
-      showFormModal('Transaction', 'model', true);
+      showFormModal('Transaction', 'model', { allowDelete: true });
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SHOW_FORM_MODAL,
         modelType: 'Transaction',

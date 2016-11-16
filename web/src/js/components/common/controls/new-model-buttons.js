@@ -14,7 +14,7 @@ const NewModelButtons = props => (
 );
 
 function newModel(eventKey) {
-  showFormModal(eventKey, {}, false);
+  showFormModal(eventKey, {}, { allowDelete: false });
 }
 
 function renderModelTypes(modelTypes) {

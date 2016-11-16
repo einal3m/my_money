@@ -22,7 +22,7 @@ describe('SubcategoryRow', () => {
     it('calls the handler prop when row is clicked', () => {
       spyOn(formActions, 'showFormModal');
       row.props.onClick();
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Subcategory', subcategory, true);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Subcategory', subcategory, { allowDelete: true });
     });
   });
 });

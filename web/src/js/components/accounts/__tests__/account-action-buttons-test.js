@@ -34,7 +34,7 @@ describe('AccountActionButtons', () => {
     it('edit accounts, opens the form modal', () => {
       spyOn(formActions, 'showFormModal');
       actionButtons.props.onSelect('edit');
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Savings Account', account, true);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Savings Account', account, { allowDelete: true });
     });
   });
 });

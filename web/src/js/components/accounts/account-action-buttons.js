@@ -7,7 +7,7 @@ const AccountActionButtons = (props) => {
   const editAccount = () => {
     const accountType = props.account.accountType;
     const modelType = `${accountType[0].toUpperCase()}${accountType.slice(1)} Account`;
-    showFormModal(modelType, props.account, true);
+    showFormModal(modelType, props.account, { allowDelete: true });
   };
 
   const viewTransactions = () => {

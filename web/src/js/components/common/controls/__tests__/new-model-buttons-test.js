@@ -27,7 +27,7 @@ describe('NewModelButtons', () => {
       const dropdown = shallowRenderer(<NewModelButtons modelTypes={['One', 'Two']} />);
       dropdown.props.onSelect('One');
 
-      expect(formActions.showFormModal).toHaveBeenCalledWith('One', {}, false);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('One', {}, { allowDelete: false });
     });
   });
 });

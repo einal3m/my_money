@@ -57,7 +57,7 @@ describe('TransactionRow', () => {
 
       transactionRow.props.onClick();
 
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', transaction, true);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', transaction, { allowDelete: true });
     });
   });
 });

@@ -39,7 +39,7 @@ describe('TransactionList', () => {
 
       newButton.props.onClick();
 
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', { accountId: 12 }, false);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', { accountId: 12 }, { allowDelete: false });
     });
   });
 });

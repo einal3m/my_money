@@ -31,7 +31,7 @@ export class TransactionList extends React.Component {
   };
 
   newTransaction = () => {
-    showFormModal('Transaction', { accountId: this.props.currentAccount.id }, false);
+    showFormModal('Transaction', { accountId: this.props.currentAccount.id }, { allowDelete: false });
   };
 
   formData = (file) => {

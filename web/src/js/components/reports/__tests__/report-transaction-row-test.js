@@ -68,7 +68,7 @@ describe('ReportTransactionRow', () => {
 
       row.props.onClick();
 
-      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', transaction, true);
+      expect(formActions.showFormModal).toHaveBeenCalledWith('Transaction', transaction, { allowDelete: true });
     });
   });
 });
