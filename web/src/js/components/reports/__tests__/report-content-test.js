@@ -1,6 +1,7 @@
 import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import D3BarChart from '../d3-bar-chart';
+import ReportTransactionTable from '../report-transaction-table';
 import { ReportContentComponent as ReportContent } from '../report-content';
 
 describe('ReportContent', () => {
@@ -21,7 +22,7 @@ describe('ReportContent', () => {
         <ReportContent viewType="table" chartData={chartData} transactions={transactions} />
       );
 
-      expect(content.props.children).toMatch(/table/);
+      expect(content.type).toEqual(ReportTransactionTable);
     });
   });
 });
