@@ -169,10 +169,9 @@ describe('BankTransactionForm', () => {
     });
 
     it('updates category in state, sets subcategory to null', () => {
-      const category = TestUtils.scryRenderedDOMComponentsWithTag(form, 'select')[0];
+      const category = TestUtils.findRenderedComponentWithType(form, GroupedCategorySelect);
 
-      category.value = 4;
-      TestUtils.Simulate.change(category);
+      category.props.onChange({ target: { name: 'categoryId', value: 4 } });
       expect(form.state.transaction.categoryId).toEqual(4);
       expect(form.state.transaction.subcategoryId).toEqual(null);
       expect(form.validator.errorState('categoryId')).toEqual('has-success');

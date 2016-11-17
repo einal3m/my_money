@@ -2,6 +2,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import DropDown from '../drop-down';
+import DropDownItem from '../drop-down-item';
 
 describe('DropDown', () => {
   const options = [
@@ -22,23 +23,6 @@ describe('DropDown', () => {
       expect(dropdown.props.className).not.toMatch(/open/);
     });
 
-    it('renders a button with selected value, and a list of options', () => {
-      dropdown = shallowRenderer(<DropDown value={2} options={options} onChange={onChangeSpy} />);
-      const [button, list] = dropdown.props.children;
-      expect(button.props.children[0].props.children).toEqual('Chocolate');
-
-      const [option1, option2, option3] = list.props.children;
-      expect(option1.props.value).toEqual(1);
-      expect(option1.props.label).toEqual('Honey');
-      expect(option1.props.selected).toEqual(false);
-      expect(option2.props.value).toEqual(2);
-      expect(option2.props.label).toEqual('Chocolate');
-      expect(option2.props.selected).toEqual(true);
-      expect(option3.props.value).toEqual(3);
-      expect(option3.props.label).toEqual('Cake');
-      expect(option3.props.selected).toEqual(false);
-    });
-
     it('renders "please select" if no value is provided and allowUnassigned is false', () => {
       dropdown = shallowRenderer(<DropDown options={options} onChange={onChangeSpy} />);
 
@@ -57,6 +41,58 @@ describe('DropDown', () => {
       expect(unassignedOption.props.value).toEqual(null);
       expect(unassignedOption.props.label).toEqual('Un-assigned');
       expect(unassignedOption.props.selected).toBeTruthy();
+    });
+
+    describe('basic dropdown', () => {
+      it('renders a button with selected value, and a list of options', () => {
+        dropdown = shallowRenderer(<DropDown value={2} options={options} onChange={onChangeSpy} />);
+        const [button, list] = dropdown.props.children;
+        expect(button.props.children[0].props.children).toEqual('Chocolate');
+
+        const [option1, option2, option3] = list.props.children;
+        expect(option1.type).toEqual(DropDownItem);
+        expect(option1.props.value).toEqual(1);
+        expect(option1.props.label).toEqual('Honey');
+        expect(option1.props.selected).toEqual(false);
+        expect(option2.type).toEqual(DropDownItem);
+        expect(option2.props.value).toEqual(2);
+        expect(option2.props.label).toEqual('Chocolate');
+        expect(option2.props.selected).toEqual(true);
+        expect(option3.type).toEqual(DropDownItem);
+        expect(option3.props.value).toEqual(3);
+        expect(option3.props.label).toEqual('Cake');
+        expect(option3.props.selected).toEqual(false);
+      });
+    });
+
+    describe('grouped dropdown', () => {
+      it('renders a button with selected value, and a grouped list of options', () => {
+        const groupedOptions = [
+          { name: 'Group One', options: [{ id: 1, name: 'Honey' }] },
+          { name: 'Group Two', options: [{ id: 2, name: 'Chocolate' }, { id: 3, name: 'Cake' }] },
+        ];
+        dropdown = shallowRenderer(<DropDown value={2} groupedOptions={groupedOptions} onChange={onChangeSpy} />);
+        const [button, list] = dropdown.props.children;
+        expect(button.props.children[0].props.children).toEqual('Chocolate');
+
+        const [group1, option1, group2, option2, option3] = list.props.children;
+        expect(group1.type).toEqual('li');
+        expect(group1.props.children).toEqual('Group One');
+        expect(option1.type).toEqual(DropDownItem);
+        expect(option1.props.value).toEqual(1);
+        expect(option1.props.label).toEqual('Honey');
+        expect(option1.props.selected).toEqual(false);
+        expect(group2.type).toEqual('li');
+        expect(group2.props.children).toEqual('Group Two');
+        expect(option2.type).toEqual(DropDownItem);
+        expect(option2.props.value).toEqual(2);
+        expect(option2.props.label).toEqual('Chocolate');
+        expect(option2.props.selected).toEqual(true);
+        expect(option3.type).toEqual(DropDownItem);
+        expect(option3.props.value).toEqual(3);
+        expect(option3.props.label).toEqual('Cake');
+        expect(option3.props.selected).toEqual(false);
+      });
     });
   });
 

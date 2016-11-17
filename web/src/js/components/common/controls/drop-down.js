@@ -7,20 +7,33 @@ export default class DropDown extends React.Component {
 
   constructor(props) {
     super();
-    this.state = { open: false, id: props.value, name: this.nameForId(props.value, props.options) };
+    this.state = {
+      open: false, id: props.value, name: this.nameForId(props.value, props.options, props.groupedOptions),
+    };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.props.value) {
-      this.setState({ id: nextProps.value, name: this.nameForId(nextProps.value, nextProps.options) });
+      this.setState({
+        id: nextProps.value, name: this.nameForId(nextProps.value, nextProps.options, nextProps.groupedOptions),
+      });
     }
   }
 
-  nameForId = (id, options) => {
+  nameForId = (id, options, groupedOptions) => {
     if (id && options) {
       const match = options.filter(option => id === option.id);
       if (match.length >= 1) return match[0].name;
       return null;
+    }
+    if (id && groupedOptions) {
+      let name = null;
+      groupedOptions.forEach((group) => {
+        group.options.forEach((option) => {
+          if (id === option.id) name = option.name;
+        });
+      });
+      return name;
     }
     return null;
   };
@@ -44,32 +57,53 @@ export default class DropDown extends React.Component {
     return this.props.allowUnassigned ? 'Un-assigned' : 'Please select...';
   }
 
-  renderOptions() {
-    if (this.props.options) {
-      const options = this.props.options.map(option =>
-        <DropDownItem
-          key={option.id}
-          label={option.name}
-          value={option.id}
-          selected={this.state.id === option.id}
-          onClick={this.onSelect}
-        />
-      );
+  renderUnassignedOption = () => (
+    <DropDownItem
+      key="unassigned"
+      label={'Un-assigned'}
+      value={null}
+      selected={this.state.id == null}
+      onClick={this.onSelect}
+    />
+  );
 
-      if (this.props.allowUnassigned) {
-        options.unshift(
-          <DropDownItem
-            key="unassigned"
-            label={'Un-assigned'}
-            value={null}
-            selected={this.state.id == null}
-            onClick={this.onSelect}
-          />
-        );
-      }
-      return options;
+  renderOptionGroup = optionGroup => (
+    optionGroup.map(option =>
+      <DropDownItem
+        key={option.id}
+        label={option.name}
+        value={option.id}
+        selected={this.state.id === option.id}
+        onClick={this.onSelect}
+      />
+    )
+  );
+
+  renderGroupName = group => <li key={group.name} className="group">{group.name}</li>;
+
+  renderGroups() {
+    let rows = [];
+    this.props.groupedOptions.forEach((group) => {
+      rows.push(this.renderGroupName(group));
+      rows = rows.concat(this.renderOptionGroup(group.options));
+    });
+    return rows;
+  }
+
+  renderOptions() {
+    let options;
+    if (this.props.options) {
+      options = this.renderOptionGroup(this.props.options);
     }
-    return <div />;
+
+    if (this.props.groupedOptions) {
+      options = this.renderGroups();
+    }
+
+    if (this.props.allowUnassigned) {
+      options.unshift(this.renderUnassignedOption());
+    }
+    return options;
   }
 
   render() {
@@ -92,12 +126,18 @@ export default class DropDown extends React.Component {
   }
 }
 
+const optionsProp = PropTypes.arrayOf(PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+}));
+
 DropDown.propTypes = {
   value: PropTypes.number,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+  options: optionsProp,
+  groupedOptions: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
-  })).isRequired,
+    options: optionsProp,
+  })),
   allowUnassigned: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
 };

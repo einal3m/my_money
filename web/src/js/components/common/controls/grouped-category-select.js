@@ -1,47 +1,28 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import DropDown from './drop-down';
 
 export default class GroupedCategorySelect extends React.Component {
 
-  handleChange(event) {
-    this.props.onChange({ target: { name: event.target.name, value: Number(event.target.value) } });
-  }
+  handleChange = (id) => {
+    this.props.onChange({ target: { name: 'categoryId', value: id } });
+  };
 
-  renderBlankOption() {
-    if (!this.props.value) {
-      return <option value="0" disabled>Please select...</option>;
-    }
-  }
-
-  renderCategories(categories) {
-    return categories.map((category) => {
-      return <option key={`cat_${category.id}`} value={category.id}>{category.name}</option>;
-    });
-  }
-
-  renderCategoryTypes() {
-    return this.props.groupedCategories.map((categoryType) => {
-      return (
-        <optgroup key={`catType_${categoryType.categoryType.id}`} label={categoryType.categoryType.name}>
-          {this.renderCategories(categoryType.categories)}
-        </optgroup>
-      );
-    });
+  groupedOptions() {
+    return this.props.groupedCategories.map(group => ({
+      name: group.categoryType.name,
+      options: group.categories,
+    }));
   }
 
   render() {
     return (
-      <select ref="select" className="form-control" name="categoryId" value={this.props.value || '0'}
-        onChange={this.handleChange.bind(this)}
-      >
-        {this.renderBlankOption()}
-        {this.renderCategoryTypes()}
-      </select>
+      <DropDown value={this.props.value} groupedOptions={this.groupedOptions()} onChange={this.handleChange} />
     );
   }
 }
 
 GroupedCategorySelect.propTypes = {
-  value: React.PropTypes.number,
-  onChange: React.PropTypes.func.isRequired,
-  groupedCategories: React.PropTypes.array.isRequired,
+  value: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
