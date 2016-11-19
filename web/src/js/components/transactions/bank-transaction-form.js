@@ -105,6 +105,7 @@ export default class BankTransactionForm extends React.Component {
           <GroupedCategorySelect
             name="categoryId"
             value={this.state.transaction.categoryId}
+            allowUnassigned
             groupedCategories={this.props.groupedCategories}
             onChange={this.handleCategoryChange}
           />

@@ -63,6 +63,7 @@ describe('CategoryFilter', () => {
       expect(categoryGroup.props.children.type).toEqual(GroupedCategorySelect);
       expect(categoryGroup.props.children.props.groupedCategories).toEqual(groupedCategories);
       expect(categoryGroup.props.children.props.value).toEqual(4);
+      expect(categoryGroup.props.children.props.allowUnassigned).toEqual(true);
 
       expect(subcategoryGroup.type).toEqual(HorizontalFormControl);
       expect(subcategoryGroup.props.name).toEqual('currentSubcategoryId');

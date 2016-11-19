@@ -16,13 +16,19 @@ export default class GroupedCategorySelect extends React.Component {
 
   render() {
     return (
-      <DropDown value={this.props.value} groupedOptions={this.groupedOptions()} onChange={this.handleChange} />
+      <DropDown
+        value={this.props.value}
+        allowUnassigned={this.props.allowUnassigned}
+        groupedOptions={this.groupedOptions()}
+        onChange={this.handleChange}
+      />
     );
   }
 }
 
 GroupedCategorySelect.propTypes = {
   value: PropTypes.number,
+  allowUnassigned: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

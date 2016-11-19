@@ -62,6 +62,7 @@ describe('BankTransactionForm', () => {
       expect(category.props.children.type).toEqual(GroupedCategorySelect);
       expect(category.props.children.props.groupedCategories).toEqual(groupedCategories);
       expect(category.props.children.props.value).toEqual(3);
+      expect(category.props.children.props.allowUnassigned).toEqual(true);
 
       expect(subcategory.type).toEqual(FormControl);
       expect(subcategory.props.name).toEqual('subcategoryId');

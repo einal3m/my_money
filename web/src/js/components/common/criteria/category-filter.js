@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import categoryActions, { setCurrentCategory, setCurrentSubcategory } from '../../../actions/category-actions';
-import { editableGroupedCategories } from '../../../selectors/category-selector';
+import { groupedCategories } from '../../../selectors/category-selector';
 import HorizontalFormControl from '../controls/horizontal-form-control';
 import GroupedCategorySelect from '../controls/grouped-category-select';
 import SubcategoryPicker from '../controls/subcategory-picker';
@@ -28,6 +28,7 @@ export class CategoryFilterComponent extends React.Component {
         <HorizontalFormControl name="currentCategoryId" label="Category" labelCol="4" controlCol="8">
           <GroupedCategorySelect
             name="currentCategoryId"
+            allowUnassigned
             value={this.props.currentCategoryId}
             groupedCategories={this.props.groupedCategories}
             onChange={this.handleCategoryChange}
@@ -83,7 +84,7 @@ function mapStateToProps(state) {
     loaded: state.categoryStore.get('categoriesLoaded') &&
       state.categoryStore.get('categoryTypesLoaded') &&
       state.categoryStore.get('subcategoriesLoaded'),
-    groupedCategories: editableGroupedCategories(state).toJS(),
+    groupedCategories: groupedCategories(state).toJS(),
     currentCategoryId: state.categoryStore.get('currentCategoryId'),
     currentSubcategoryId: state.categoryStore.get('currentSubcategoryId'),
   };

@@ -1,5 +1,5 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import ImportRow from '../import-row';
 import Amount from '../../common/amount';
 import Date from '../../common/date';
@@ -8,12 +8,14 @@ import SubcategoryPicker from '../../common/controls/subcategory-picker';
 import importActions from '../../../actions/import-actions';
 
 describe('ImportRow', () => {
-  let importRow,
-    transaction,
-    groupedCategories,
-    subcategories,
-    sub1,
-    sub3;
+  let importRow;
+  let transaction;
+
+  const sub1 = { id: 1, categoryId: 14, name: 'One' };
+  const sub3 = { id: 2, categoryId: 14, name: 'Two' };
+  const subcategories = [sub1, { id: 3, categoryId: 3, name: 'Three' }, sub3];
+  const groupedCategories = [];
+
   beforeEach(() => {
     transaction = {
       import: false,
@@ -24,16 +26,15 @@ describe('ImportRow', () => {
       amount: 250,
       notes: 'myNotes',
     };
-    groupedCategories = [];
-    sub1 = { id: 1, categoryId: 14, name: 'One' };
-    sub3 = { id: 2, categoryId: 14, name: 'Two' };
-    subcategories = [sub1, { id: 3, categoryId: 3, name: 'Three' }, sub3];
   });
 
   describe('render', () => {
     it('is a table row with transaction details', () => {
       importRow = shallowRenderer(
-        <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
+        <ImportRow
+          index={4}
+          transaction={transaction}
+          groupedCategories={groupedCategories}
           subcategories={subcategories}
         />
       );
@@ -52,6 +53,7 @@ describe('ImportRow', () => {
       const categorySelect = importRow.props.children[3].props.children;
       expect(categorySelect.type).toEqual(GroupedCategorySelect);
       expect(categorySelect.props.value).toEqual(14);
+      expect(categorySelect.props.allowUnassigned).toEqual(true);
       expect(categorySelect.props.groupedCategories).toEqual(groupedCategories);
 
       const subcategorySelect = importRow.props.children[4].props.children;
@@ -72,7 +74,10 @@ describe('ImportRow', () => {
     it('has a danger class if transaction is a duplicate', () => {
       transaction.duplicate = true;
       importRow = shallowRenderer(
-        <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
+        <ImportRow
+          index={4}
+          transaction={transaction}
+          groupedCategories={groupedCategories}
           subcategories={subcategories}
         />
       );
@@ -84,7 +89,10 @@ describe('ImportRow', () => {
   describe('events', () => {
     beforeEach(() => {
       importRow = shallowRenderer(
-        <ImportRow index={4} transaction={transaction} groupedCategories={groupedCategories}
+        <ImportRow
+          index={4}
+          transaction={transaction}
+          groupedCategories={groupedCategories}
           subcategories={subcategories}
         />
       );

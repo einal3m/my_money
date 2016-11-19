@@ -27,11 +27,17 @@ describe('GroupedCategorySelect', () => {
   describe('render', () => {
     it('is a dropdown with grouped options', () => {
       select = shallowRenderer(
-        <GroupedCategorySelect value={2} groupedCategories={groupedCategories} onChange={onChangeSpy} />
+        <GroupedCategorySelect
+          value={2}
+          allowUnassigned={false}
+          groupedCategories={groupedCategories}
+          onChange={onChangeSpy}
+        />
       );
 
       expect(select.type).toEqual(DropDown);
       expect(select.props.value).toEqual(2);
+      expect(select.props.allowUnassigned).toEqual(false);
       expect(select.props.groupedOptions).toEqual(groupedOptions);
     });
   });
