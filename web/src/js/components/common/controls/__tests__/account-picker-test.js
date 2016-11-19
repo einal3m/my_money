@@ -27,8 +27,12 @@ describe('AccountPicker', () => {
   describe('render', () => {
     it('multiple has a dropdown button with some menu items selected', () => {
       accountPicker = shallowRenderer(
-        <AccountPicker multiple accountTypes={accountTypes} accountGroups={accountGroups}
-          value={[2, 1]} onChange={onChangeSpy}
+        <AccountPicker
+          multiple
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          value={[2, 1]}
+          onChange={onChangeSpy}
         />
       );
 
@@ -53,8 +57,11 @@ describe('AccountPicker', () => {
 
     it('multiple false has a dropdown button with one menu item selected', () => {
       accountPicker = shallowRenderer(
-        <AccountPicker accountTypes={accountTypes} accountGroups={accountGroups}
-          value={1} onChange={onChangeSpy}
+        <AccountPicker
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          value={1}
+          onChange={onChangeSpy}
         />
       );
 
@@ -81,8 +88,12 @@ describe('AccountPicker', () => {
   describe('events', () => {
     it('selecting menuitem calls the onChange prop', () => {
       accountPicker = TestUtils.renderIntoDocument(
-        <AccountPicker multiple accountTypes={accountTypes} accountGroups={accountGroups}
-          value={[2, 1]} onChange={onChangeSpy}
+        <AccountPicker
+          multiple
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          value={[2, 1]}
+          onChange={onChangeSpy}
         />
       );
 

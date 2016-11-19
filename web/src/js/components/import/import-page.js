@@ -32,7 +32,8 @@ export class ImportPage extends React.Component {
         </PageHeader>
         <div className="container import">
           {this.renderTitle()}
-          <ImportTable transactions={this.props.ofxTransactions}
+          <ImportTable
+            transactions={this.props.ofxTransactions}
             groupedCategories={this.props.groupedCategories}
             subcategories={this.props.subcategories}
           />

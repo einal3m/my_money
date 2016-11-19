@@ -10,7 +10,10 @@ export default class ImportTable extends React.Component {
   renderTransactions() {
     return this.props.transactions.map((transaction, index) => {
       return (
-        <ImportRow key={index} index={index} transaction={transaction}
+        <ImportRow
+          key={index}
+          index={index}
+          transaction={transaction}
           groupedCategories={this.props.groupedCategories}
           subcategories={this.props.subcategories}
         />

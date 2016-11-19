@@ -80,7 +80,9 @@ export class SearchCriteria extends React.Component {
   renderMoreCriteria() {
     if (this.props.moreOptions) {
       return (
-        <DescriptionFilter key="4" description={this.props.searchDescription}
+        <DescriptionFilter
+          key="4"
+          description={this.props.searchDescription}
           onChange={this.onDescriptionChange.bind(this)}
         />
       );

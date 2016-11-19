@@ -45,8 +45,14 @@ describe('SearchCriteria', () => {
 
     it('does render filters if data has loaded', () => {
       const searchCriteria = shallowRenderer(
-        <SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
-          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions={false}
+        <SearchCriteria
+          loaded
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          currentAccount={fromJS(account)}
+          dateRanges={dateRanges}
+          currentDateRange={dateRanges.get(1)}
+          moreOptions={false}
         />
       );
       const [staticFilters, showMore] = searchCriteria.props.children;
@@ -59,8 +65,15 @@ describe('SearchCriteria', () => {
 
     it('renders extra filters if more options is true', () => {
       const searchCriteria = shallowRenderer(
-        <SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups} currentAccount={fromJS(account)}
-          dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions searchDescription={'Melanie'}
+        <SearchCriteria
+          loaded
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          currentAccount={fromJS(account)}
+          dateRanges={dateRanges}
+          currentDateRange={dateRanges.get(1)}
+          moreOptions
+          searchDescription={'Melanie'}
         />
       );
       const [staticFilters, showLess, searchFilter] = searchCriteria.props.children;
@@ -75,9 +88,16 @@ describe('SearchCriteria', () => {
   xdescribe('events', () => {
     let searchCriteria;
     beforeEach(() => {
-      searchCriteria = TestUtils.renderIntoDocument(<SearchCriteria loaded accountTypes={accountTypes} accountGroups={accountGroups}
-        currentAccount={fromJS(account)} dateRanges={dateRanges} currentDateRange={dateRanges.get(1)}
-      />);
+      searchCriteria = TestUtils.renderIntoDocument(
+        <SearchCriteria
+          loaded
+          accountTypes={accountTypes}
+          accountGroups={accountGroups}
+          currentAccount={fromJS(account)}
+          dateRanges={dateRanges}
+          currentDateRange={dateRanges.get(1)}
+        />
+      );
     });
 
     describe('onToggleMoreOrLess', () => {

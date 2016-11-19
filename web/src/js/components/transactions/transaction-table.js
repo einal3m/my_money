@@ -13,8 +13,11 @@ export class TransactionTable extends React.Component {
   renderTransactions() {
     return this.props.transactions.map((transaction) => {
       return (
-        <TransactionRow key={transaction.id} transaction={transaction}
-          groupedCategories={this.props.groupedCategories} subcategories={this.props.subcategories}
+        <TransactionRow
+          key={transaction.id}
+          transaction={transaction}
+          groupedCategories={this.props.groupedCategories}
+          subcategories={this.props.subcategories}
         />
       );
     });

@@ -24,7 +24,7 @@ export class PatternList extends React.Component {
     return this.props.patterns.map(
       pattern => (
         <div key={pattern.id}>
-        {`${pattern.matchText}, ${pattern.notes}, ${pattern.categoryId}, ${pattern.subcategoryId}`}
+          {`${pattern.matchText}, ${pattern.notes}, ${pattern.categoryId}, ${pattern.subcategoryId}`}
         </div>
       ));
   }

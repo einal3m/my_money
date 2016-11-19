@@ -21,7 +21,10 @@ describe('TransactionTable', () => {
 
     it('when criteria not loaded', () => {
       transactionTable = shallowRenderer(
-        <TransactionTable searchCriteriaLoaded={false} transactions={[]} account={null}
+        <TransactionTable
+          searchCriteriaLoaded={false}
+          transactions={[]}
+          account={null}
           groupedCategories={groupedCategories}
         />
       );
@@ -32,7 +35,10 @@ describe('TransactionTable', () => {
 
     it('when criteria loaded and no transactions', () => {
       transactionTable = shallowRenderer(
-        <TransactionTable searchCriteriaLoaded transactions={[]} account={account}
+        <TransactionTable
+          searchCriteriaLoaded
+          transactions={[]}
+          account={account}
           groupedCategories={groupedCategories}
         />
       );
@@ -44,7 +50,10 @@ describe('TransactionTable', () => {
 
     it('when criteria loaded and has transactions', () => {
       transactionTable = shallowRenderer(
-        <TransactionTable searchCriteriaLoaded transactions={transactions} account={account}
+        <TransactionTable
+          searchCriteriaLoaded
+          transactions={transactions}
+          account={account}
           groupedCategories={groupedCategories}
         />
       );

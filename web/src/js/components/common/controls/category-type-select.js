@@ -20,7 +20,11 @@ export default class CategoryTypeSelect extends React.Component {
 
   render() {
     return (
-      <select ref="select" className="form-control" name="categoryTypeId" value={this.props.value || '0'}
+      <select
+        ref="select"
+        className="form-control"
+        name="categoryTypeId"
+        value={this.props.value || '0'}
         onChange={this.handleChange.bind(this)}
       >
         {this.renderBlankOption()}

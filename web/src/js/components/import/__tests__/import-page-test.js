@@ -19,8 +19,11 @@ describe('ImportPage', () => {
     subcategories = ['subcategories'];
 
     importPage = shallowRenderer(
-      <ImportPage account={account} ofxTransactions={transactions}
-        groupedCategories={groupedCategories} subcategories={subcategories}
+      <ImportPage
+        account={account}
+        ofxTransactions={transactions}
+        groupedCategories={groupedCategories}
+        subcategories={subcategories}
       />
     );
   });
