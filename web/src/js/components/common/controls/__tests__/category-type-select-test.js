@@ -1,12 +1,11 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import CategoryTypeSelect from '../category-type-select';
 
 describe('CategoryTypeSelect', () => {
-  let select,
-    categoryTypes,
-    onChangeSpy;
+  let select;
+  let categoryTypes;
+  let onChangeSpy;
   beforeEach(() => {
     onChangeSpy = jasmine.createSpy('onChangeSpy');
     categoryTypes = [
@@ -46,10 +45,11 @@ describe('CategoryTypeSelect', () => {
 
   describe('onChange', () => {
     it('calls the onChange prop', () => {
-      select = TestUtils.renderIntoDocument(
+      select = shallowRenderer(
         <CategoryTypeSelect value={2} categoryTypes={categoryTypes} onChange={onChangeSpy} />
       );
-      TestUtils.Simulate.change(select.refs.select, { target: { name: 'categoryTypeId', value: '2' } });
+
+      select.props.onChange({ target: { name: 'categoryTypeId', value: '2' } });
 
       expect(onChangeSpy).toHaveBeenCalledWith({ target: { name: 'categoryTypeId', value: 2 } });
     });

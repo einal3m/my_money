@@ -1,16 +1,15 @@
-
-
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Sticky from 'react-stickydiv';
 import ApiStatus from '../../util/api-status';
 import apiStatusActions from '../../actions/api-status-actions';
+
 require('../../../css/common.scss');
 
 export default class PageTitle extends React.Component {
 
-  clearError() {
+  clearError = () => {
     apiStatusActions.clearApiError();
-  }
+  };
 
   renderStatus() {
     if (this.props.apiStatus) {
@@ -28,8 +27,11 @@ export default class PageTitle extends React.Component {
               <i className="fa fa-times-circle" ref="clearError" onClick={this.clearError} />
             </span>
           );
+        default:
+          return undefined;
       }
     }
+    return '';
   }
 
   render() {
@@ -54,3 +56,12 @@ export default class PageTitle extends React.Component {
     );
   }
 }
+
+PageTitle.propTypes = {
+  apiStatus: PropTypes.shape({
+    status: PropTypes.string,
+    message: PropTypes.string,
+  }),
+  title: PropTypes.string,
+  children: PropTypes.node,
+};

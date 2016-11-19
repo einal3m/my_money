@@ -1,25 +1,23 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { MenuItem, DropdownButton } from 'react-bootstrap';
 
 require('../../../../css/picker.scss');
 
 export default class AccountPicker extends React.Component {
 
-  onSelect(key) {
+  onSelect = (key) => {
     this.props.onChange(Number(key));
-  }
+  };
 
-  sortedAccounts(accounts) {
-    return accounts.sort((a, b) => {
+  sortedAccounts = accounts => (
+    accounts.sort((a, b) => {
       const nameA = a.name.toLowerCase();
       const nameB = b.name.toLowerCase();
-      if (nameA < nameB)
-        { return -1; }
-      if (nameA > nameB)
-        { return 1; }
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
       return 0;
-    });
-  }
+    })
+  );
 
   renderAccountName(account) {
     let selected;
@@ -37,8 +35,10 @@ export default class AccountPicker extends React.Component {
     this.props.accountTypes.forEach((accountType) => {
       if (this.props.accountGroups[accountType.code]) {
         menuItems.push(<MenuItem key={`account_type_${accountType.code}`} header>{accountType.name}</MenuItem>);
-        this.sortedAccounts(this.props.accountGroups[accountType.code]).map((account) => {
-          menuItems.push(<MenuItem key={`account_${account.id}`} eventKey={account.id}>{this.renderAccountName(account)}</MenuItem>);
+        this.sortedAccounts(this.props.accountGroups[accountType.code]).forEach((account) => {
+          menuItems.push(
+            <MenuItem key={`account_${account.id}`} eventKey={account.id}>{this.renderAccountName(account)}</MenuItem>
+          );
         });
         menuItems.push(<MenuItem key={`divider_${accountType.code}`} divider />);
       }
@@ -71,9 +71,14 @@ export default class AccountPicker extends React.Component {
     return (
       <div className="picker form-horizontal">
         <div className="form-group">
-          <label className="control-label col-xs-4">Accounts</label>
+          <label htmlFor="account-dropdown" className="control-label col-xs-4">Accounts</label>
           <div className="col-xs-8">
-            <DropdownButton ref="dropdown" title={this.renderTitle()} pullRight id="account-dropdown" onSelect={this.onSelect.bind(this)}>
+            <DropdownButton
+              title={this.renderTitle()}
+              pullRight
+              id="account-dropdown"
+              onSelect={this.onSelect}
+            >
               {this.renderMultiAccounts()}
             </DropdownButton>
           </div>
@@ -84,12 +89,12 @@ export default class AccountPicker extends React.Component {
 }
 
 AccountPicker.propTypes = {
-  multiple: React.PropTypes.bool,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.number,
-    React.PropTypes.arrayOf(React.PropTypes.number),
+  multiple: PropTypes.bool,
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
   ]).isRequired,
-  accountGroups: React.PropTypes.object.isRequired,
-  accountTypes: React.PropTypes.array.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  accountGroups: PropTypes.shape({}).isRequired,
+  accountTypes: PropTypes.arrayOf(PropTypes.shape({ code: PropTypes.string.isRequired })).isRequired,
+  onChange: PropTypes.func.isRequired,
 };

@@ -1,24 +1,21 @@
-
-
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import ImportRow from './import-row';
+
 require('../../../css/transaction.scss');
 
 export default class ImportTable extends React.Component {
 
   renderTransactions() {
-    return this.props.transactions.map((transaction, index) => {
-      return (
-        <ImportRow
-          key={index}
-          index={index}
-          transaction={transaction}
-          groupedCategories={this.props.groupedCategories}
-          subcategories={this.props.subcategories}
-        />
-      );
-    });
+    return this.props.transactions.map((transaction, index) => (
+      <ImportRow
+        key={index}
+        index={index}
+        transaction={transaction}
+        groupedCategories={this.props.groupedCategories}
+        subcategories={this.props.subcategories}
+      />
+    ));
   }
 
   renderTable() {
@@ -41,9 +38,8 @@ export default class ImportTable extends React.Component {
           </tbody>
         </Table>
       );
-    } else {
-      return <div>No transactions to import</div>;
     }
+    return <div>No transactions to import</div>;
   }
 
   render() {
@@ -56,7 +52,7 @@ export default class ImportTable extends React.Component {
 }
 
 ImportTable.propTypes = {
-  transactions: React.PropTypes.array.isRequired,
-  groupedCategories: React.PropTypes.array.isRequired,
-  subcategories: React.PropTypes.array.isRequired,
+  transactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subcategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

@@ -1,14 +1,13 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
 import { DropdownButton } from 'react-bootstrap';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import AccountPicker from '../account-picker';
 
 describe('AccountPicker', () => {
-  let accountPicker,
-    accountTypes,
-    accountGroups,
-    onChangeSpy;
+  let accountPicker;
+  let accountTypes;
+  let accountGroups;
+  let onChangeSpy;
   beforeEach(() => {
     accountTypes = [
       { id: 1, code: 'savings', name: 'Savings' },
@@ -87,7 +86,7 @@ describe('AccountPicker', () => {
 
   describe('events', () => {
     it('selecting menuitem calls the onChange prop', () => {
-      accountPicker = TestUtils.renderIntoDocument(
+      accountPicker = shallowRenderer(
         <AccountPicker
           multiple
           accountTypes={accountTypes}
@@ -97,7 +96,8 @@ describe('AccountPicker', () => {
         />
       );
 
-      accountPicker.refs.dropdown.props.onSelect('4');
+      const dropdown = accountPicker.props.children.props.children[1].props.children;
+      dropdown.props.onSelect('4');
       expect(onChangeSpy).toHaveBeenCalledWith(4);
     });
   });

@@ -6,14 +6,9 @@ import ImportRow from '../import-row';
 
 describe('ImportTable', () => {
   let importTable;
-  let transactions;
-  let groupedCategories;
-  let subcategories;
-  beforeEach(() => {
-    transactions = [{ amount: 50 }, { amount: 250 }];
-    groupedCategories = ['categories'];
-    subcategories = ['subcategories'];
-  });
+  const transactions = [{ date: '2016-08-14', amount: 50 }, { date: '2016-09-01', amount: 250 }];
+  const groupedCategories = [{ categoryType: {} }];
+  const subcategories = [{ id: 1, name: 'sub' }];
 
   describe('render', () => {
     it('has a table with row for each transaction', () => {

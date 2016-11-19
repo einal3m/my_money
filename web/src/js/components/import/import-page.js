@@ -1,20 +1,19 @@
-
-
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import PageHeader from '../common/page-header';
 import ImportTable from './import-table';
-import { Button } from 'react-bootstrap';
 import importActions from '../../actions/import-actions';
-import React from 'react';
 import { groupedCategories } from '../../selectors/category-selector';
+
 require('../../../css/common.scss');
 require('../../../css/import.scss');
 
 export class ImportPage extends React.Component {
 
-  importTransactions() {
+  importTransactions = () => {
     importActions.importTransactions();
-  }
+  };
 
   renderTitle() {
     return (
@@ -28,7 +27,7 @@ export class ImportPage extends React.Component {
     return (
       <div>
         <PageHeader title="import transactions" apiStatus={this.props.apiStatus}>
-          <Button onClick={this.importTransactions.bind(this)}><i className="fa fa-file-text-o" /> Import</Button>
+          <Button onClick={this.importTransactions}><i className="fa fa-file-text-o" /> Import</Button>
         </PageHeader>
         <div className="container import">
           {this.renderTitle()}
@@ -52,5 +51,15 @@ function mapStateToProps(state) {
     apiStatus: state.apiStatusStore.toJS(),
   };
 }
+
+ImportPage.propTypes = {
+  account: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }),
+  ofxTransactions: PropTypes.arrayOf(PropTypes.shape({})),
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})),
+  subcategories: PropTypes.arrayOf(PropTypes.shape({})),
+  apiStatus: PropTypes.shape({}),
+};
 
 export default connect(mapStateToProps)(ImportPage);

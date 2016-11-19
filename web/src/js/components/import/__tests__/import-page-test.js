@@ -1,23 +1,19 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
+import { Button } from 'react-bootstrap';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import { ImportPage } from '../import-page';
 import PageHeader from '../../common/page-header';
 import ImportTable from '../import-table';
-import { Button } from 'react-bootstrap';
 import importActions from '../../../actions/import-actions';
 
 describe('ImportPage', () => {
-  let importPage,
-    account,
-    transactions,
-    groupedCategories,
-    subcategories;
-  beforeEach(() => {
-    account = { id: 1, name: 'Account1' };
-    transactions = [{ amount: 50 }, { amount: 250 }];
-    groupedCategories = ['categories'];
-    subcategories = ['subcategories'];
+  let importPage;
+  const account = { id: 1, name: 'Account1' };
+  const transactions = [{ amount: 50 }, { amount: 250 }];
+  const groupedCategories = [{ categoryType: {} }];
+  const subcategories = [{ id: 1, name: 'sub' }];
 
+  beforeEach(() => {
     importPage = shallowRenderer(
       <ImportPage
         account={account}
