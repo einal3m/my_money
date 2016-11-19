@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import { ImportPage } from '../import-page';
+import { ImportPageComponent as ImportPage } from '../import-page';
 import PageHeader from '../../common/page-header';
 import ImportTable from '../import-table';
 import importActions from '../../../actions/import-actions';

@@ -1,6 +1,6 @@
 import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import { CategoryList } from '../category-list';
+import { CategoryListComponent as CategoryList } from '../category-list';
 import PageHeader from '../../common/page-header';
 import NewModelButton from '../../common/controls/new-model-buttons';
 import CategoryTypeTable from '../category-type-table';

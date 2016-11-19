@@ -1,6 +1,6 @@
 import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import { PatternList } from '../pattern-list';
+import { PatternListComponent as PatternList } from '../pattern-list';
 import PageHeader from '../../common/page-header';
 import PatternModal from '../pattern-modal';
 import * as patternActions from '../../../actions/pattern-actions';

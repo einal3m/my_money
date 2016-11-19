@@ -6,7 +6,7 @@ import { groupedCategories } from '../../selectors/category-selector';
 
 require('../../../css/transaction.scss');
 
-export class TransactionTable extends React.Component {
+export class TransactionTableComponent extends React.Component {
 
   renderTransactions() {
     return this.props.transactions.map((transaction) => {
@@ -62,7 +62,7 @@ export class TransactionTable extends React.Component {
   }
 }
 
-TransactionTable.propTypes = {
+TransactionTableComponent.propTypes = {
   account: React.PropTypes.shape({ name: React.PropTypes.string }),
   searchCriteriaLoaded: React.PropTypes.bool.isRequired,
   transactions: React.PropTypes.arrayOf(React.PropTypes.shape({ id: React.PropTypes.number.isRequired })),
@@ -78,4 +78,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TransactionTable);
+export default connect(mapStateToProps)(TransactionTableComponent);

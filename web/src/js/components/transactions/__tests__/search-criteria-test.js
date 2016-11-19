@@ -1,43 +1,22 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
-import { fromJS } from 'immutable';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import { SearchCriteria } from '../search-criteria';
+import { SearchCriteriaComponent as SearchCriteria } from '../search-criteria';
 import AccountFilter from '../../common/criteria/account-filter';
 import DescriptionFilter from '../../common/description-filter';
 import DateRangeFilter from '../../common/criteria/date-range-filter';
 import * as transactionActions from '../../../actions/transaction-actions';
 
-describe('SearchCriteria', () => {
-  let dateRanges,
-    account,
-    accountGroups,
-    accountTypes;
+describe('TransactionSearchCriteria', () => {
   beforeEach(() => {
     spyOn(transactionActions, 'getTransactions');
-
-    dateRanges = fromJS([
-      { id: 11, name: 'Name1', custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
-      { id: 22, name: 'Name2', custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' },
-    ]);
-
-    accountTypes = fromJS([
-      { id: 1, code: 'savings', name: 'Savings' },
-      { id: 3, code: 'other', name: 'Other' },
-      { id: 2, code: 'share', name: 'Share' },
-    ]);
-
-    account = { id: 1, name: 'Account 1' };
-    accountGroups = fromJS({
-      savings: [{ id: 2, name: 'Account 2' }],
-      share: [account, { id: 3, name: 'Account 3' }],
-    });
   });
 
   describe('render', () => {
     it('does not render filters if data has not loaded', () => {
       const searchCriteria = shallowRenderer(
-        <SearchCriteria loaded={false} accountGroups={{}} accountTypes={[]} currentAccount={null} dateRanges={[]} currentDateRange={''} />
+        <SearchCriteria
+          loaded={false}
+        />
       );
 
       expect(searchCriteria.props.children).toBeUndefined();
@@ -47,11 +26,6 @@ describe('SearchCriteria', () => {
       const searchCriteria = shallowRenderer(
         <SearchCriteria
           loaded
-          accountTypes={accountTypes}
-          accountGroups={accountGroups}
-          currentAccount={fromJS(account)}
-          dateRanges={dateRanges}
-          currentDateRange={dateRanges.get(1)}
           moreOptions={false}
         />
       );
@@ -67,11 +41,6 @@ describe('SearchCriteria', () => {
       const searchCriteria = shallowRenderer(
         <SearchCriteria
           loaded
-          accountTypes={accountTypes}
-          accountGroups={accountGroups}
-          currentAccount={fromJS(account)}
-          dateRanges={dateRanges}
-          currentDateRange={dateRanges.get(1)}
           moreOptions
           searchDescription={'Melanie'}
         />
@@ -85,25 +54,15 @@ describe('SearchCriteria', () => {
     });
   });
 
-  xdescribe('events', () => {
-    let searchCriteria;
-    beforeEach(() => {
-      searchCriteria = TestUtils.renderIntoDocument(
-        <SearchCriteria
-          loaded
-          accountTypes={accountTypes}
-          accountGroups={accountGroups}
-          currentAccount={fromJS(account)}
-          dateRanges={dateRanges}
-          currentDateRange={dateRanges.get(1)}
-        />
-      );
-    });
-
+  describe('events', () => {
     describe('onToggleMoreOrLess', () => {
       it('calls the toggle action and fetches transactions', () => {
+        const searchCriteria = shallowRenderer(<SearchCriteria loaded />);
+        const showMore = searchCriteria.props.children[1].props.children;
         spyOn(transactionActions, 'toggleMoreOrLess');
-        TestUtils.Simulate.click(searchCriteria.refs.optionToggle);
+
+        showMore.props.onClick();
+
         expect(transactionActions.toggleMoreOrLess).toHaveBeenCalled();
         expect(transactionActions.getTransactions).toHaveBeenCalled();
       });
@@ -111,8 +70,12 @@ describe('SearchCriteria', () => {
 
     describe('onDescriptionChange', () => {
       it('calls the description change action and fetches transactions', () => {
+        const searchCriteria = shallowRenderer(<SearchCriteria loaded moreOptions searchDescription={'Melanie'} />);
+        const descriptionFilter = searchCriteria.props.children[2];
         spyOn(transactionActions, 'setSearchDescription');
-        searchCriteria.onDescriptionChange('new String');
+
+        descriptionFilter.props.onChange('new String');
+
         expect(transactionActions.setSearchDescription).toHaveBeenCalledWith('new String');
         expect(transactionActions.getTransactions).toHaveBeenCalled();
       });

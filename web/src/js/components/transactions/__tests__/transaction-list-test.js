@@ -1,6 +1,6 @@
 import React from 'react';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import { TransactionList } from '../transaction-list';
+import { TransactionListComponent as TransactionList } from '../transaction-list';
 import SearchCriteria from '../search-criteria';
 import PageHeader from '../../common/page-header';
 import TransactionTable from '../transaction-table';

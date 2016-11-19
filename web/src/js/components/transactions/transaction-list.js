@@ -12,7 +12,7 @@ import { showFormModal } from '../../actions/form-actions';
 
 require('../../../css/common.scss');
 
-export class TransactionList extends React.Component {
+export class TransactionListComponent extends React.Component {
   constructor() {
     super();
     categoryActions.getCategories();
@@ -79,7 +79,7 @@ export class TransactionList extends React.Component {
   }
 }
 
-TransactionList.propTypes = {
+TransactionListComponent.propTypes = {
   loaded: React.PropTypes.bool.isRequired,
   currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
   apiStatus: React.PropTypes.shape({}),
@@ -93,4 +93,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TransactionList);
+export default connect(mapStateToProps)(TransactionListComponent);

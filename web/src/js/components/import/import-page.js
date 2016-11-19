@@ -9,7 +9,7 @@ import { groupedCategories } from '../../selectors/category-selector';
 require('../../../css/common.scss');
 require('../../../css/import.scss');
 
-export class ImportPage extends React.Component {
+export class ImportPageComponent extends React.Component {
 
   importTransactions = () => {
     importActions.importTransactions();
@@ -52,7 +52,7 @@ function mapStateToProps(state) {
   };
 }
 
-ImportPage.propTypes = {
+ImportPageComponent.propTypes = {
   account: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }),
@@ -62,4 +62,4 @@ ImportPage.propTypes = {
   apiStatus: PropTypes.shape({}),
 };
 
-export default connect(mapStateToProps)(ImportPage);
+export default connect(mapStateToProps)(ImportPageComponent);

@@ -8,7 +8,7 @@ import { showFormModal } from '../../actions/form-actions';
 
 require('../../../css/common.scss');
 
-export class PatternList extends React.Component {
+export class PatternListComponent extends React.Component {
   constructor() {
     super();
     getPatterns();
@@ -42,7 +42,7 @@ export class PatternList extends React.Component {
   }
 }
 
-PatternList.propTypes = {
+PatternListComponent.propTypes = {
   currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
   apiStatus: PropTypes.shape({}),
 };
@@ -56,4 +56,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(PatternList);
+export default connect(mapStateToProps)(PatternListComponent);

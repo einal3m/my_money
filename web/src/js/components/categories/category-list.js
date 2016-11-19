@@ -10,7 +10,7 @@ import { editableGroupedCategories } from '../../selectors/category-selector';
 require('../../../css/common.scss');
 require('../../../css/categories.scss');
 
-export class CategoryList extends React.Component {
+export class CategoryListComponent extends React.Component {
   constructor() {
     super();
     categoryActions.getCategories();
@@ -52,7 +52,7 @@ export class CategoryList extends React.Component {
   }
 }
 
-CategoryList.propTypes = {
+CategoryListComponent.propTypes = {
   loaded: PropTypes.bool.isRequired,
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   apiStatus: PropTypes.shape({}),
@@ -68,4 +68,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CategoryList);
+export default connect(mapStateToProps)(CategoryListComponent);

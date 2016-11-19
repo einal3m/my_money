@@ -1,17 +1,16 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
-import { TransactionTable } from '../transaction-table';
-import TransactionRow from '../transaction-row';
 import { Table } from 'react-bootstrap';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import { TransactionTableComponent as TransactionTable } from '../transaction-table';
+import TransactionRow from '../transaction-row';
 
 describe('TransactionTable', () => {
   let transactionTable;
 
-
   describe('render', () => {
-    let transactions,
-      account,
-      groupedCategories;
+    let transactions;
+    let account;
+    let groupedCategories;
 
     beforeEach(() => {
       transactions = [{ id: 1, date: '2015-12-19', amount: 300, balance: 400 }];

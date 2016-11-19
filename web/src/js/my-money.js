@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { render } from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
@@ -19,19 +19,19 @@ import SubcategoryReport from './components/reports/subcategory-report';
 
 require('babel-polyfill');
 
-const App = React.createClass({
-  render() {
-    return (
-      <div>
-        <Header />
-        <Provider store={store}>
-          {this.props.children}
-        </Provider>
-        <Footer />
-      </div>
-    );
-  },
-});
+const App = props => (
+  <div>
+    <Header />
+    <Provider store={store}>
+      {props.children}
+    </Provider>
+    <Footer />
+  </div>
+);
+
+App.propTypes = {
+  children: PropTypes.node,
+};
 
 const host = document.getElementById('host').textContent;
 apiUtil.setUrl(host);
