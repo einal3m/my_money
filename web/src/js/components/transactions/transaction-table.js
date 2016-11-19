@@ -1,11 +1,9 @@
-
-
 import React from 'react';
-import { Panel, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { toJS } from 'immutable';
 import TransactionRow from './transaction-row';
 import { groupedCategories } from '../../selectors/category-selector';
+
 require('../../../css/transaction.scss');
 
 export class TransactionTable extends React.Component {

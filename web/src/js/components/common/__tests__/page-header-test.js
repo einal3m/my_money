@@ -6,8 +6,8 @@ import apiStatusActions from '../../../actions/api-status-actions';
 
 describe('PageHeader', () => {
   describe('render', () => {
-    let title,
-      buttonGroup;
+    let title;
+    let buttonGroup;
     beforeEach(() => {
       const apiStatus = { status: 'done' };
       const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={apiStatus}>myChild</PageHeader>);
@@ -29,19 +29,25 @@ describe('PageHeader', () => {
 
   describe('api status', () => {
     it('loading', () => {
-      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{ status: 'loading' }}>myChild</PageHeader>);
+      const pageHeader = shallowRenderer(
+        <PageHeader title="myTitle" apiStatus={{ status: 'loading' }}>myChild</PageHeader>
+      );
       const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       expect(status.props.children).toEqual('Loading...');
     });
 
     it('saving', () => {
-      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{ status: 'saving' }}>myChild</PageHeader>);
+      const pageHeader = shallowRenderer(
+        <PageHeader title="myTitle" apiStatus={{ status: 'saving' }}>myChild</PageHeader>
+      );
       const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       expect(status.props.children).toEqual('Saving...');
     });
 
     it('deleting', () => {
-      const pageHeader = shallowRenderer(<PageHeader title="myTitle" apiStatus={{ status: 'deleting' }}>myChild</PageHeader>);
+      const pageHeader = shallowRenderer(
+        <PageHeader title="myTitle" apiStatus={{ status: 'deleting' }}>myChild</PageHeader>
+      );
       const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
       expect(status.props.children).toEqual('Deleting...');
     });
@@ -51,7 +57,7 @@ describe('PageHeader', () => {
         <PageHeader title="myTitle" apiStatus={{ status: 'error', message: 'myMessage' }}>myChild</PageHeader>
       );
       const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
-      const [error, message, x] = status.props.children.props.children;
+      const [error, message, _x] = status.props.children.props.children;
 
       expect(error).toEqual('Error: ');
       expect(message).toEqual('myMessage');

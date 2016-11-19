@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import moment from 'moment';
 import DatePicker from '../common/date-picker/date-picker';
 import FormControl from '../common/controls/form-control';
 import MoneyInput from '../common/controls/money-input';

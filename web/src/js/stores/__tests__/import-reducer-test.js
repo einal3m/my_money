@@ -1,4 +1,3 @@
-import { List, Map, toJS } from 'immutable';
 import importReducer from '../import-reducer';
 
 describe('ImportReducer', () => {

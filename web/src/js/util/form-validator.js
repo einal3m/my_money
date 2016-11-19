@@ -4,7 +4,7 @@ import moment from 'moment';
 validate.extend(validate.validators.datetime, {
   // The value is guaranteed not to be null or undefined but otherwise it
   // could be anything.
-  parse(value, options) {
+  parse(value) {
     return +moment.utc(value);
   },
   // Input is a unix timestamp

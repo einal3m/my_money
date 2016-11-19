@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { Map, List, fromJS } from 'immutable';
 
 const accountSelector = state => state.accountStore.get('accounts');
 const accountTypeSelector = state => state.accountStore.get('accountTypes');

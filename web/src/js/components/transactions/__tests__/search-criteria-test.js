@@ -76,7 +76,7 @@ describe('SearchCriteria', () => {
           searchDescription={'Melanie'}
         />
       );
-      const [staticFilters, showLess, searchFilter] = searchCriteria.props.children;
+      const [_staticFilters, showLess, searchFilter] = searchCriteria.props.children;
 
       expect(searchFilter.type).toEqual(DescriptionFilter);
       expect(searchFilter.props.description).toEqual('Melanie');

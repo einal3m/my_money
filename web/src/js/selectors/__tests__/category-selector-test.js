@@ -1,11 +1,11 @@
+import { fromJS } from 'immutable';
 import { editableGroupedCategories, groupedCategories } from '../category-selector';
-import { fromJS, toJS } from 'immutable';
 
 describe('CategorySelector', () => {
-  let categories,
-    categoryTypes,
-    subcategories,
-    categoryStore;
+  let categories;
+  let categoryTypes;
+  let subcategories;
+  let categoryStore;
   beforeEach(() => {
     categoryTypes = [
       { id: 1, name: 'Transfer', code: 'transfer', editable: false },

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { Map, List, fromJS } from 'immutable';
+import { Map, List } from 'immutable';
 
 const categorySelector = state => state.categoryStore.get('categories');
 const subcategorySelector = state => state.categoryStore.get('subcategories');

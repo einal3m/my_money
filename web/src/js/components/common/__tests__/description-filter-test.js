@@ -1,12 +1,11 @@
 import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import DescriptionFilter from '../description-filter';
-import TestUtils from 'react-addons-test-utils';
-import { Input } from 'react-bootstrap';
 
 describe('DescriptionFilter', () => {
-  let description,
-    onChangeSpy;
+  let description;
+  let onChangeSpy;
   beforeEach(() => {
     onChangeSpy = jasmine.createSpy('onChange');
     description = 'my String';
@@ -36,7 +35,9 @@ describe('DescriptionFilter', () => {
     });
 
     it('when enter key pressed', () => {
-      TestUtils.Simulate.keyPress(descriptionFilter.refs.descriptionInput, { which: 13, target: { value: 'new String' } });
+      TestUtils.Simulate.keyPress(
+        descriptionFilter.refs.descriptionInput, { which: 13, target: { value: 'new String' } }
+      );
       expect(onChangeSpy).toHaveBeenCalledWith('new String');
     });
   });

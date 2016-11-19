@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControls, Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
 export default class FileChooserModal extends React.Component {
   constructor() {

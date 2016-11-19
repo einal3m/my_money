@@ -42,7 +42,7 @@ function createSeries(vis, seriesData, yScale, dim, noOfSeries) {
       .attr('class', `series${seriesIndex}`)
       .attr('transform', `translate(${dim.leftMargin + dim.periodGap / 2 + seriesIndex * (dim.barWidth + dim.barGap)}, ${dim.topMargin})`);
 
-    const bars = seriesGroup.selectAll('g')
+    seriesGroup.selectAll('g')
       .data(series.data)
       .enter().append('rect')
       .attr('transform', (data, i) => `translate(${i * (noOfSeries * dim.barWidth + dim.periodGap + (noOfSeries - 1) * dim.barGap)}, 0)`)
@@ -73,12 +73,12 @@ function createHover(vis, xAxisLabels, seriesData, dim, callbacks) {
       .attr('height', dim.chartHeight)
       .style({ fill: 'transparent' })
 
-      .on('mouseover', function (d) {
+      .on('mouseover', function () {
         if (callbacks.showTooltip) {
           callbacks.showTooltip(tooltipData);
         }
         d3.select(this).style({ fill: 'grey', opacity: 0.05 });
-      }).on('mouseout', function (d) {
+      }).on('mouseout', function () {
         if (callbacks.hideTooltip) {
           callbacks.hideTooltip();
         }

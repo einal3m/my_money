@@ -1,5 +1,5 @@
-import { Map, List, toJS } from 'immutable';
-import store from '../store.js';
+import { List } from 'immutable';
+import store from '../store';
 
 describe('store', () => {
   it('is a Redux store with reducers', () => {

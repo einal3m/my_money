@@ -27,7 +27,6 @@ export class SearchCriteria extends React.Component {
   onDateRangeChange(data) {
     if (data.id) {
       dateRangeActions.setCurrentDateRange(data.id);
-      const newDateRange = this.props.dateRanges.filter(dateRange => dateRange.id === data.id)[0];
       this.fetch();
     } else if (data.fromDate) {
       dateRangeActions.updateCurrentDateRange({ fromDate: data.fromDate });

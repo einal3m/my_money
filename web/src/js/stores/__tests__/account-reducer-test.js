@@ -1,4 +1,3 @@
-import { List } from 'immutable';
 import reducer from '../account-reducer';
 import {
   SET_ACCOUNTS,
@@ -19,7 +18,7 @@ describe('reducer', () => {
     const state = reducer();
     expect(state.get('loaded')).toEqual(false);
     expect(state.get('accountTypesLoaded')).toEqual(false);
-    expect(state.get('accounts')).toEqualImmutable(List());
+    expect(state.get('accounts').toJS()).toEqual([]);
     expect(state.get('accountTypes').toJS()).toEqual([]);
     expect(state.get('currentAccount').toJS()).toEqual({});
     expect(state.get('selectedAccounts').toJS()).toEqual([]);

@@ -1,6 +1,4 @@
-import { List, Map, toJS } from 'immutable';
 import dateRangeReducer from '../date-range-reducer';
-import { toEqualImmutable } from 'jasmine-immutablejs-matchers';
 
 describe('DateRangeReducer', () => {
   let dateRanges;

@@ -19,7 +19,7 @@ export default function lineChart(seriesData, id, options, callbacks) {
     .attr('width', width)
     .attr('height', height);
 
-  const [xScale, yScale] = createScales(seriesData, dim, callbacks);
+  const [xScale, yScale] = createScales(seriesData, dim);
 
   createYAxis(vis, yScale, dim, callbacks);
   createXAxis(vis, xScale, dim, callbacks);
@@ -29,13 +29,7 @@ export default function lineChart(seriesData, id, options, callbacks) {
   create0Axis(vis, yScale, dim);
 }
 
-function convertDate(dateString) {
-  const newDate = new Date(dateString);
-  newDate.setHours(0);
-  return newDate;
-}
-
-function createScales(seriesData, dim, callbacks) {
+function createScales(seriesData, dim) {
   const xScale = d3.time.scale()
     .domain([
       d3.min(seriesData, series => d3.min(series.data, data => data[0])),

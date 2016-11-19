@@ -1,5 +1,4 @@
 import FormValidator from '../form-validator';
-import moment from 'moment';
 
 describe('FormValidator', () => {
   let validator,

@@ -15,11 +15,15 @@ class CategoryActions {
     }).then(() => {
       apiUtil.get({
         url: 'categories',
-        onSuccess: response => that.storeCategories(response.categories.map(category => categoryTransformer.transformFromApi(category))),
+        onSuccess: response => that.storeCategories(
+          response.categories.map(category => categoryTransformer.transformFromApi(category))
+        ),
       }); }).then(() => {
         apiUtil.get({
           url: 'subcategories',
-          onSuccess: response => that.storeSubcategories(response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))),
+          onSuccess: response => that.storeSubcategories(
+            response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))
+          ),
         }); });
   }
 
@@ -52,7 +56,7 @@ class CategoryActions {
     store.dispatch({ type: 'DELETE_CATEGORY' });
     return apiUtil.delete({
       url: `categories/${categoryId}`,
-      onSuccess: response => this.removeCategory(categoryId),
+      onSuccess: () => this.removeCategory(categoryId),
     });
   }
 
@@ -89,54 +93,54 @@ class CategoryActions {
     });
   }
 
-  storeCategoryTypes(categoryTypes) {
+  storeCategoryTypes = (categoryTypes) => {
     store.dispatch({
       type: 'SET_CATEGORY_TYPES',
       categoryTypes,
     });
-  }
+  };
 
-  storeCategories(categories) {
+  storeCategories = (categories) => {
     store.dispatch({
       type: 'SET_CATEGORIES',
       categories,
     });
-  }
+  };
 
-  storeCategory(category) {
+  storeCategory = (category) => {
     store.dispatch({
       type: 'SET_CATEGORY',
       category,
     });
-  }
+  };
 
-  removeCategory(categoryId) {
+  removeCategory = (categoryId) => {
     store.dispatch({
       type: 'REMOVE_CATEGORY',
       categoryId,
     });
-  }
+  };
 
-  storeSubcategories(subcategories) {
+  storeSubcategories = (subcategories) => {
     store.dispatch({
       type: 'SET_SUBCATEGORIES',
       subcategories,
     });
-  }
+  };
 
-  storeSubcategory(subcategory) {
+  storeSubcategory = (subcategory) => {
     store.dispatch({
       type: 'SET_SUBCATEGORY',
       subcategory,
     });
-  }
+  };
 
-  removeSubcategory(subcategoryId) {
+  removeSubcategory = (subcategoryId) => {
     store.dispatch({
       type: 'REMOVE_SUBCATEGORY',
       subcategoryId,
     });
-  }
+  };
 }
 
 export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY';

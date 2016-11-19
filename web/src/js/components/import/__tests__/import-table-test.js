@@ -1,14 +1,14 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
-import ImportTable from '../import-table';
 import { Table } from 'react-bootstrap';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
+import ImportTable from '../import-table';
 import ImportRow from '../import-row';
 
 describe('ImportTable', () => {
-  let importTable,
-    transactions,
-    groupedCategories,
-    subcategories;
+  let importTable;
+  let transactions;
+  let groupedCategories;
+  let subcategories;
   beforeEach(() => {
     transactions = [{ amount: 50 }, { amount: 250 }];
     groupedCategories = ['categories'];
@@ -27,10 +27,12 @@ describe('ImportTable', () => {
       expect(header.type).toEqual('thead');
 
       expect(table.props.children.length).toEqual(2);
+      expect(table.props.children[0].type).toEqual(ImportRow);
       expect(table.props.children[0].props.transaction).toEqual(transactions[0]);
       expect(table.props.children[0].props.groupedCategories).toEqual(groupedCategories);
       expect(table.props.children[0].props.subcategories).toEqual(subcategories);
       expect(table.props.children[0].props.index).toEqual(0);
+      expect(table.props.children[1].type).toEqual(ImportRow);
       expect(table.props.children[1].props.transaction).toEqual(transactions[1]);
       expect(table.props.children[1].props.groupedCategories).toEqual(groupedCategories);
       expect(table.props.children[1].props.subcategories).toEqual(subcategories);

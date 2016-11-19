@@ -1,5 +1,4 @@
 import React from 'react';
-import AccountPicker from '../common/controls/account-picker';
 
 export default class ChartLegend extends React.Component {
 
