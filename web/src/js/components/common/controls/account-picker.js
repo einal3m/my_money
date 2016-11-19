@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import accountActions from '../../../actions/account-actions';
 import { MenuItem, DropdownButton } from 'react-bootstrap';
+
 require('../../../../css/picker.scss');
 
 export default class AccountPicker extends React.Component {
@@ -12,8 +11,8 @@ export default class AccountPicker extends React.Component {
 
   sortedAccounts(accounts) {
     return accounts.sort((a, b) => {
-      let nameA = a.name.toLowerCase(),
-        nameB = b.name.toLowerCase();
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
       if (nameA < nameB)
         { return -1; }
       if (nameA > nameB)

@@ -27,8 +27,8 @@ describe('ImportPage', () => {
 
   describe('render', () => {
     it('has a header, title and a table', () => {
-      let [header, container] = importPage.props.children;
-      let [title, table] = container.props.children;
+      const [header, container] = importPage.props.children;
+      const [title, table] = container.props.children;
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('import transactions');

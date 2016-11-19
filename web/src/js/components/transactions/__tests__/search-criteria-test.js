@@ -1,14 +1,12 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import TestUtils from 'react-addons-test-utils';
 import React from 'react';
-import { fromJS, toJS } from 'immutable';
+import TestUtils from 'react-addons-test-utils';
+import { fromJS } from 'immutable';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import { SearchCriteria } from '../search-criteria';
 import AccountFilter from '../../common/criteria/account-filter';
 import DescriptionFilter from '../../common/description-filter';
 import DateRangeFilter from '../../common/criteria/date-range-filter';
-import accountActions from '../../../actions/account-actions';
 import * as transactionActions from '../../../actions/transaction-actions';
-import staticDataActions from '../../../actions/date-range-actions';
 
 describe('SearchCriteria', () => {
   let dateRanges,
@@ -51,8 +49,8 @@ describe('SearchCriteria', () => {
           dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions={false}
         />
       );
-      let [staticFilters, showMore] = searchCriteria.props.children;
-      let [accountFilter, dateFilter] = staticFilters;
+      const [staticFilters, showMore] = searchCriteria.props.children;
+      const [accountFilter, dateFilter] = staticFilters;
 
       expect(accountFilter.type).toEqual(AccountFilter);
       expect(dateFilter.type).toEqual(DateRangeFilter);
@@ -65,7 +63,7 @@ describe('SearchCriteria', () => {
           dateRanges={dateRanges} currentDateRange={dateRanges.get(1)} moreOptions searchDescription={'Melanie'}
         />
       );
-      let [staticFilters, showLess, searchFilter] = searchCriteria.props.children;
+      const [staticFilters, showLess, searchFilter] = searchCriteria.props.children;
 
       expect(searchFilter.type).toEqual(DescriptionFilter);
       expect(searchFilter.props.description).toEqual('Melanie');

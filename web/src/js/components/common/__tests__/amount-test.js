@@ -1,5 +1,5 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import Amount from '../amount';
 
 describe('Amount', () => {
@@ -7,7 +7,7 @@ describe('Amount', () => {
     it('with positive amount', () => {
       const amount = shallowRenderer(<Amount amount={670707} />);
 
-      let [sign, space, dollars, dot, cents] = amount.props.children;
+      const [sign, space, dollars, dot, cents] = amount.props.children;
       expect(sign.props.children).toEqual('+');
       expect(space).toEqual(' ');
       expect(dollars.props.children).toEqual('6,707');
@@ -18,7 +18,7 @@ describe('Amount', () => {
     it('with negative amount', () => {
       const amount = shallowRenderer(<Amount amount={-670707} />);
 
-      let [sign, space, dollars, dot, cents] = amount.props.children;
+      const [sign, space, dollars, dot, cents] = amount.props.children;
       expect(sign.props.children).toEqual('-');
       expect(space).toEqual(' ');
       expect(dollars.props.children).toEqual('6,707');
@@ -29,7 +29,7 @@ describe('Amount', () => {
     it('with zero amount', () => {
       const amount = shallowRenderer(<Amount amount={0} />);
 
-      let [sign, space, dollars, dot, cents] = amount.props.children;
+      const [sign, space, dollars, dot, cents] = amount.props.children;
       expect(sign).toBeUndefined();
       expect(space).toEqual(' ');
       expect(dollars.props.children).toEqual('0');

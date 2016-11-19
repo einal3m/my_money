@@ -1,6 +1,6 @@
 import React from 'react';
-import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
+import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import CategoryTypeSelect from '../category-type-select';
 
 describe('CategoryTypeSelect', () => {
@@ -24,7 +24,7 @@ describe('CategoryTypeSelect', () => {
       expect(select.type).toEqual('select');
       expect(select.props.value).toEqual(2);
 
-      let [blank, options] = select.props.children;
+      const [blank, options] = select.props.children;
       expect(blank).toBeUndefined();
       expect(options.length).toEqual(2);
       expect(options[0].props.children).toEqual('One');
@@ -36,7 +36,7 @@ describe('CategoryTypeSelect', () => {
       expect(select.type).toEqual('select');
       expect(select.props.value).toEqual('0');
 
-      let [blank, options] = select.props.children;
+      const [blank, options] = select.props.children;
       expect(blank.props.children).toEqual('Please select...');
       expect(options.length).toEqual(2);
       expect(options[0].props.children).toEqual('One');

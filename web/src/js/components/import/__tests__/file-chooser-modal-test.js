@@ -1,7 +1,7 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import TestUtils from 'react-addons-test-utils';
-import ReactDOM from 'react-dom';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import FileChooserModal from '../file-chooser-modal';
 
 describe('FileChooserModal', () => {
@@ -23,8 +23,8 @@ describe('FileChooserModal', () => {
         <FileChooserModal show account={{ name: 'Melanie' }} onHide={spy} onImport={spy} />
       );
 
-      let [header, body, footer] = modal.props.children;
-      let [cancelButton, importButton] = footer.props.children;
+      const [header, body, footer] = modal.props.children;
+      const [cancelButton, importButton] = footer.props.children;
 
       expect(header.props.children.props.children).toEqual('Import Transactions');
       expect(cancelButton.props.children).toEqual('Cancel');

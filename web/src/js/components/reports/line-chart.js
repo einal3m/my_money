@@ -19,7 +19,7 @@ export default function lineChart(seriesData, id, options, callbacks) {
     .attr('width', width)
     .attr('height', height);
 
-  let [xScale, yScale] = createScales(seriesData, dim, callbacks);
+  const [xScale, yScale] = createScales(seriesData, dim, callbacks);
 
   createYAxis(vis, yScale, dim, callbacks);
   createXAxis(vis, xScale, dim, callbacks);

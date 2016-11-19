@@ -22,7 +22,7 @@ describe('ImportTable', () => {
       );
 
       expect(importTable.props.children.type).toEqual(Table);
-      let [header, table] = importTable.props.children.props.children;
+      const [header, table] = importTable.props.children.props.children;
 
       expect(header.type).toEqual('thead');
 

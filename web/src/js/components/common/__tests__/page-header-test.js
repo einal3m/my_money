@@ -1,6 +1,6 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import TestUtils from 'react-addons-test-utils';
 import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import PageHeader from '../page-header';
 import apiStatusActions from '../../../actions/api-status-actions';
 
@@ -15,7 +15,7 @@ describe('PageHeader', () => {
     });
 
     it('has a title', () => {
-      let [h1, status] = title.props.children;
+      const [h1, status] = title.props.children;
 
       expect(h1.props.children.props.children).toEqual('myTitle');
       expect(h1.props.children.type).toEqual('h1');
@@ -51,7 +51,7 @@ describe('PageHeader', () => {
         <PageHeader title="myTitle" apiStatus={{ status: 'error', message: 'myMessage' }}>myChild</PageHeader>
       );
       const status = pageHeader.props.children.props.children.props.children.props.children[0].props.children[1];
-      let [error, message, x] = status.props.children.props.children;
+      const [error, message, x] = status.props.children.props.children;
 
       expect(error).toEqual('Error: ');
       expect(message).toEqual('myMessage');

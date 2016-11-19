@@ -1,10 +1,8 @@
 import React from 'react';
-import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import TestUtils from 'react-addons-test-utils';
-
-import accountActions from '../../../../actions/account-actions';
+import { DropdownButton } from 'react-bootstrap';
+import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import AccountPicker from '../account-picker';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 describe('AccountPicker', () => {
   let accountPicker,
@@ -34,7 +32,7 @@ describe('AccountPicker', () => {
         />
       );
 
-      let [label, dropdown] = accountPicker.props.children.props.children;
+      const [label, dropdown] = accountPicker.props.children.props.children;
 
       expect(label.props.children).toEqual('Accounts');
 
@@ -60,7 +58,7 @@ describe('AccountPicker', () => {
         />
       );
 
-      let [label, dropdown] = accountPicker.props.children.props.children;
+      const [label, dropdown] = accountPicker.props.children.props.children;
 
       expect(label.props.children).toEqual('Accounts');
 

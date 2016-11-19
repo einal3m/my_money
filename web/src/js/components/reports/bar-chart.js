@@ -27,7 +27,7 @@ export default function bar_chart(xAxisLabels, seriesData, id, options, callback
     .attr('height', height);
 
   // create axes
-  let [xScale, yScale] = createScales(xAxisLabels, seriesData, dim);
+  const [xScale, yScale] = createScales(xAxisLabels, seriesData, dim);
   createYAxis(vis, yScale, dim, callbacks);
   createXAxis(vis, xScale, dim);
 

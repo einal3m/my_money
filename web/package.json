@@ -10,7 +10,8 @@
     "test": "karma start karma.config.js",
     "cov": "karma start karma-coverage.config.js",
     "lint_autofix": "eslint --fix src",
-    "lint": "eslint src",
+    "lint": "eslint --format compact src",
+    "friendly-lint": "eslint --format 'node_modules/eslint-friendly-formatter' src",
     "precheckin": "npm run cov && npm run lint"
   },
   "repository": {
@@ -45,6 +46,7 @@
     "css-loader": "^0.23.0",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
+    "eslint-friendly-formatter": "^2.0.6",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1",

@@ -37,7 +37,7 @@ describe('TransactionTable', () => {
         />
       );
 
-      let [title, message] = transactionTable.props.children;
+      const [title, message] = transactionTable.props.children;
       expect(title.props.children).toEqual(['Transactions for ', 'my Account']);
       expect(message.props.children).toMatch('No transactions');
     });
@@ -49,13 +49,13 @@ describe('TransactionTable', () => {
         />
       );
 
-      let [title, table] = transactionTable.props.children;
+      const [title, table] = transactionTable.props.children;
       expect(title.props.children).toEqual(['Transactions for ', 'my Account']);
 
-      let [thead, tbody] = table.props.children;
+      const [thead, tbody] = table.props.children;
       expect(table.type).toEqual(Table);
 
-      let [date, description, amount, balance] = thead.props.children.props.children;
+      const [date, description, amount, balance] = thead.props.children.props.children;
       expect(date.props.children).toEqual('date');
       expect(description.props.children).toEqual('description');
       expect(amount.props.children).toEqual('amount');
