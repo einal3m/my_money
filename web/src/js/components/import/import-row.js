@@ -3,24 +3,24 @@ import Amount from '../common/amount';
 import Date from '../common/date';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
 import SubcategoryPicker from '../common/controls/subcategory-picker';
-import importActions from '../../actions/import-actions';
+import { setImport, setCategoryId, setSubcategoryId, setNotes } from '../../actions/import-actions';
 
 export default class ImportRow extends React.Component {
 
   onImportChange = (event) => {
-    importActions.setImport(this.props.index, event.target.checked);
+    setImport(this.props.index, event.target.checked);
   };
 
   onCategoryChange = (event) => {
-    importActions.setCategoryId(this.props.index, event.target.value);
+    setCategoryId(this.props.index, event.target.value);
   };
 
   onSubcategoryChange = (subcategoryId) => {
-    importActions.setSubcategoryId(this.props.index, subcategoryId);
+    setSubcategoryId(this.props.index, subcategoryId);
   };
 
   onNotesChange = (event) => {
-    importActions.setNotes(this.props.index, event.target.value);
+    setNotes(this.props.index, event.target.value);
   };
 
   renderImport() {

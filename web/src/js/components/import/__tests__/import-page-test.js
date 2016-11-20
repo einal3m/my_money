@@ -4,7 +4,7 @@ import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import { ImportPageComponent as ImportPage } from '../import-page';
 import PageHeader from '../../common/page-header';
 import ImportTable from '../import-table';
-import importActions from '../../../actions/import-actions';
+import * as importActions from '../../../actions/import-actions';
 
 describe('ImportPage', () => {
   let importPage;

@@ -4,7 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import PageHeader from '../common/page-header';
 import SearchCriteria from './search-criteria';
 import TransactionTable from './transaction-table';
-import importActions from '../../actions/import-actions';
+import { uploadOFX } from '../../actions/import-actions';
 import categoryActions from '../../actions/category-actions';
 import FileChooserModal from '../import/file-chooser-modal';
 import TransactionModal from './transaction-modal';
@@ -42,7 +42,7 @@ export class TransactionListComponent extends React.Component {
 
   importTransactions = (file) => {
     this.hideModal();
-    importActions.uploadOFX(this.props.currentAccount.id, file);
+    uploadOFX(this.props.currentAccount.id, file);
   };
 
   renderImportModal() {

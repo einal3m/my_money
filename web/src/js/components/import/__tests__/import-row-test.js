@@ -5,7 +5,7 @@ import Amount from '../../common/amount';
 import Date from '../../common/date';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
-import importActions from '../../../actions/import-actions';
+import * as importActions from '../../../actions/import-actions';
 
 describe('ImportRow', () => {
   let importRow;

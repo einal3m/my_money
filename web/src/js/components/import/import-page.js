@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import PageHeader from '../common/page-header';
 import ImportTable from './import-table';
-import importActions from '../../actions/import-actions';
+import { importTransactions } from '../../actions/import-actions';
 import { groupedCategories } from '../../selectors/category-selector';
 
 require('../../../css/common.scss');
@@ -12,7 +12,7 @@ require('../../../css/import.scss');
 export class ImportPageComponent extends React.Component {
 
   importTransactions = () => {
-    importActions.importTransactions();
+    importTransactions();
   };
 
   renderTitle() {
