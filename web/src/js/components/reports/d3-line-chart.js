@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import lineChart from './line-chart';
 import moneyUtil from '../../util/money-util';
 import dateUtil from '../../util/date-util';
@@ -9,62 +9,63 @@ export default class D3LineChart extends React.Component {
 
   constructor() {
     super();
-
     this.state = { tooltipData: null, showTooltip: false };
-    this.callbacks = {
-      showTooltip: this.showTooltip.bind(this),
-      hideTooltip: this.hideTooltip.bind(this),
-      formatYLabels: this.formatMoney.bind(this),
-      formatXLabels: this.formatDate.bind(this),
-    };
   }
 
   componentDidMount() {
-    const options = {
-      height: 450,
-      width: this.refs.chartContainer.offsetWidth - 20,
-    };
-
-    lineChart(this.props.chartData.seriesData, '#d3-chart', options, this.callbacks);
+    this.drawLineChart(this.props);
   }
 
-  shouldComponentUpdate(props, state) {
-    if (props != this.props) {
-      const options = {
-        height: 450,
-        width: this.refs.chartContainer.offsetWidth - 20,
-      };
-      const svg = document.getElementsByTagName('svg')[0];
-      svg.parentNode.removeChild(svg);
-      lineChart(props.chartData.seriesData, '#d3-chart', options, this.callbacks);
-    }
-
-    return (state != this.state);
+  componentWillReceiveProps(nextProps) {
+    this.chart.removeChild(this.chart.firstChild);
+    this.drawLineChart(nextProps);
   }
 
-  showTooltip(tooltipData) {
+  drawLineChart(props) {
+    lineChart(
+      props.chartData.seriesData,
+      '#d3-chart',
+      this.chartOptions(),
+      this.chartCallbacks);
+  }
+
+  chartOptions = () => ({
+    height: 450,
+    width: this.chartContainer.offsetWidth - 20,
+  });
+
+  showTooltip = (tooltipData) => {
     this.setState({ tooltipData, showTooltip: true });
-  }
+  };
 
-  hideTooltip() {
+  hideTooltip = () => {
     this.setState({ tooltipData: null, showTooltip: false });
-  }
+  };
 
-  formatMoney(amount) {
-    return moneyUtil.numberFormatWithSign(amount);
-  }
+  formatMoney = amount => moneyUtil.numberFormatWithSign(amount);
 
-  formatDate(date) {
-    return dateUtil.chartFormat(date);
-  }
+  formatDate = date => dateUtil.chartFormat(date);
+
+  chartCallbacks = {
+    showTooltip: this.showTooltip,
+    hideTooltip: this.hideTooltip,
+    formatYLabels: this.formatMoney,
+    formatXLabels: this.formatDate,
+  };
 
   render() {
     return (
-      <div className="text-center" ref="chartContainer" className="chart-container">
-        <ChartTooltip ref="tooltip" show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000} />
+      <div className="chart-container" ref={(container) => { this.chartContainer = container; }}>
+        <ChartTooltip show={this.state.showTooltip} tooltipData={this.state.tooltipData} chartWidth={1000} />
         <ChartLegend chartData={this.props.chartData} />
-        <div id="d3-chart" />
+        <div id="d3-chart" ref={(chart) => { this.chart = chart; }} />
       </div>
     );
   }
 }
+
+D3LineChart.propTypes = {
+  chartData: PropTypes.shape({
+    seriesData: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
+};

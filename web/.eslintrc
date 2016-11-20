@@ -26,7 +26,8 @@
     "no-use-before-define": ["error", "nofunc"],
     "import/no-unresolved": ["error", { "ignore": ["test-helpers"] } ],
     "react/sort-comp": ["off"],
-    "no-unused-vars": ["error", { "varsIgnorePattern": "_+" }]
+    "no-unused-vars": ["error", { "varsIgnorePattern": "_+" }],
+    "jsx-a11y/no-static-element-interactions": ["off"]
   },
   "plugins": [
     "react"

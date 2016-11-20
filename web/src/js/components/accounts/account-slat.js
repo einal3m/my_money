@@ -13,7 +13,7 @@ export default class AccountSlat extends React.Component {
   };
 
   renderName() {
-    return <a className="name-link" onClick={this.viewTransactions.bind(this)}><h4>{this.props.account.name}</h4></a>;
+    return <a className="name-link" onClick={this.viewTransactions}><h4>{this.props.account.name}</h4></a>;
   }
 
   render() {

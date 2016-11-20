@@ -1,5 +1,4 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import DescriptionFilter from '../description-filter';
 
@@ -22,22 +21,19 @@ describe('DescriptionFilter', () => {
   });
 
   describe('onChange event', () => {
-    let descriptionFilter;
+    let input;
     beforeEach(() => {
-      descriptionFilter = TestUtils.renderIntoDocument(
-        <DescriptionFilter description={description} onChange={onChangeSpy} />
-      );
+      const descriptionFilter = shallowRenderer(<DescriptionFilter description={description} onChange={onChangeSpy} />);
+      input = descriptionFilter.props.children.props.children.props.children[1];
     });
 
     it('when blur from input', () => {
-      TestUtils.Simulate.blur(descriptionFilter.refs.descriptionInput, { target: { value: 'new String' } });
+      input.props.onBlur({ target: { value: 'new String' } });
       expect(onChangeSpy).toHaveBeenCalledWith('new String');
     });
 
     it('when enter key pressed', () => {
-      TestUtils.Simulate.keyPress(
-        descriptionFilter.refs.descriptionInput, { which: 13, target: { value: 'new String' } }
-      );
+      input.props.onKeyPress({ which: 13, target: { value: 'new String' } });
       expect(onChangeSpy).toHaveBeenCalledWith('new String');
     });
   });
