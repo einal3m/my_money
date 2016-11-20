@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import dateRangeActions from '../../../actions/date-range-actions';
+import { getDateRanges, setCurrentDateRange, updateCurrentDateRange } from '../../../actions/date-range-actions';
 import DatePicker from '../date-picker/date-picker';
 import DropDown from '../../common/controls/drop-down';
 
@@ -8,21 +8,21 @@ export class DateRangeFilterComponent extends React.Component {
 
   constructor() {
     super();
-    dateRangeActions.getDateRanges();
+    getDateRanges();
   }
 
   onSelectDateRange = (id) => {
-    dateRangeActions.setCurrentDateRange(id);
+    setCurrentDateRange(id);
     this.props.fetch();
   };
 
   onFromDateChange = (date) => {
-    dateRangeActions.updateCurrentDateRange({ fromDate: date });
+    updateCurrentDateRange({ fromDate: date });
     this.props.fetch();
   };
 
   onToDateChange = (date) => {
-    dateRangeActions.updateCurrentDateRange({ toDate: date });
+    updateCurrentDateRange({ toDate: date });
     this.props.fetch();
   };
 

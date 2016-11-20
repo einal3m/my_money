@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
-import dateRangeActions from '../../../../actions/date-range-actions';
+import * as dateRangeActions from '../../../../actions/date-range-actions';
 import { DateRangeFilterComponent as DateRangeFilter } from '../date-range-filter';
 import DatePicker from '../../date-picker/date-picker';
 import DropDown from '../../controls/drop-down';

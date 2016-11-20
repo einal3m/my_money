@@ -11,6 +11,8 @@ import {
   SAVE_ACCOUNT,
   DELETE_ACCOUNT } from '../actions/account-actions';
 
+import { GET_DATE_RANGES, SET_DATE_RANGES } from '../actions/date-range-actions';
+
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
   message: null,
@@ -19,7 +21,7 @@ const INITIAL_STATE = Map({
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
     case GET_ACCOUNTS:
-    case 'GET_DATE_RANGES':
+    case GET_DATE_RANGES:
     case GET_TRANSACTIONS:
     case 'GET_CATEGORIES':
     case 'GET_REPORT':
@@ -28,7 +30,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 
     case SET_ACCOUNTS:
     case SET_TRANSACTIONS:
-    case 'SET_DATE_RANGES':
+    case SET_DATE_RANGES:
     case 'CLEAR_API_ERROR':
     case 'SET_CATEGORY_TYPES':
     case 'SET_CATEGORIES':

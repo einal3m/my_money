@@ -1,7 +1,7 @@
 import apiUtil from '../util/api-util';
 import store from '../stores/store';
 import { getAccounts } from './account-actions';
-import dateRangeActions from './date-range-actions';
+import { getDateRanges } from './date-range-actions';
 import transactionTransformer from '../transformers/transaction-transformer';
 import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from './form-actions';
 import { getCategoryReport, getSubcategoryReport } from './report-actions';
@@ -9,7 +9,7 @@ import { getCategoryReport, getSubcategoryReport } from './report-actions';
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
 export function getTransactions() {
   getAccounts({ useStore: true }).then(() => {
-    dateRangeActions.getDateRanges().then(() => {
+    getDateRanges().then(() => {
       const accountId = store.getState().accountStore.get('currentAccount').get('id');
       const dateRange = store.getState().dateRangeStore.get('currentDateRange');
       const fromDate = dateRange.get('fromDate');
