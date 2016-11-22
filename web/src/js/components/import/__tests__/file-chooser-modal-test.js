@@ -1,17 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import FileChooserModal from '../file-chooser-modal';
+import FileChooser from '../../common/controls/file-chooser';
+import HorizontalFormControl from '../../common/controls/horizontal-form-control';
 
 describe('FileChooserModal', () => {
-  let account;
+  const account = { name: 'My Account' };
+  const file = { name: 'myFile.ofx' };
   let onImportSpy;
   let onHideSpy;
-  let file;
+
   beforeEach(() => {
-    account = { name: 'Melanie' };
-    file = { name: 'myFile.ofx' };
     onImportSpy = jasmine.createSpy('onImportSpy');
     onHideSpy = jasmine.createSpy('onHideSpy');
   });
@@ -20,13 +20,21 @@ describe('FileChooserModal', () => {
     it('has a title, file chooser and buttons', () => {
       const spy = jasmine.createSpy('spy');
       const modal = shallowRenderer(
-        <FileChooserModal show account={{ name: 'Melanie' }} onHide={spy} onImport={spy} />
+        <FileChooserModal show account={account} onHide={spy} onImport={spy} />
       );
 
-      const [header, _body, footer] = modal.props.children;
-      const [cancelButton, importButton] = footer.props.children;
-
+      const [header, body, footer] = modal.props.children;
       expect(header.props.children.props.children).toEqual('Import Transactions');
+
+      const [info, formControl] = body.props.children;
+      expect(info.props.children[0]).toMatch(/Please select/);
+      expect(info.props.children[1].props.children).toEqual('My Account');
+
+      expect(formControl.type).toEqual(HorizontalFormControl);
+      expect(formControl.props.label).toEqual('Choose File:');
+      expect(formControl.props.children.type).toEqual(FileChooser);
+
+      const [cancelButton, importButton] = footer.props.children;
       expect(cancelButton.props.children).toEqual('Cancel');
       expect(importButton.props.children).toEqual('Import');
     });
@@ -44,44 +52,28 @@ describe('FileChooserModal', () => {
       it('updates the state', () => {
         expect(modal.state).toEqual({ file: null });
 
-        const fileInput = ReactDOM.findDOMNode(modal.refs.fileChooser);
-        TestUtils.Simulate.change(fileInput, { target: { files: ['myFile'] } });
+        modal.fileChooser.props.onChoose('myFile');
         expect(modal.state).toEqual({ file: 'myFile' });
-      });
-    });
-
-    describe('clear file', () => {
-      it('resets the selected file', () => {
-        expect(modal.refs.clearFile).not.toBeDefined();
-
-        modal.setState({ file });
-        expect(modal.refs.clearFile).toBeDefined();
-
-        const clearFile = ReactDOM.findDOMNode(modal.refs.clearFile);
-        TestUtils.Simulate.click(clearFile);
-        expect(modal.state).toEqual({ file: null });
       });
     });
 
     describe('onImport', () => {
       it('is disabled when state is empty', () => {
-        expect(modal.refs.importButton.props.disabled).toEqual(true);
+        expect(modal.importButton.props.disabled).toEqual(true);
       });
 
       it('calls the onImport prop with the selected file', () => {
         modal.setState({ file });
-        expect(modal.refs.importButton.props.disabled).toEqual(false);
+        expect(modal.importButton.props.disabled).toEqual(false);
 
-        const importButton = ReactDOM.findDOMNode(modal.refs.importButton);
-        TestUtils.Simulate.click(importButton);
+        modal.importButton.props.onClick();
         expect(onImportSpy).toHaveBeenCalledWith(file);
       });
     });
 
     describe('onHide', () => {
       it('calls the onHide prop when cancel button clicked', () => {
-        const cancelButton = ReactDOM.findDOMNode(modal.refs.cancelButton);
-        TestUtils.Simulate.click(cancelButton);
+        modal.cancelButton.props.onClick();
 
         expect(onHideSpy).toHaveBeenCalled();
       });
