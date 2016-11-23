@@ -27,7 +27,7 @@ const accountTransformer = {
           starting_date: account.openingBalanceDate,
         };
       default:
-        throw ('Unknown account type');
+        throw new Error('Unknown account type');
     }
   },
 
@@ -64,7 +64,7 @@ const accountTransformer = {
           currentBalance: account.current_balance,
         };
       default:
-        throw ('Unknown account type');
+        throw new Error('Unknown account type');
     }
   },
 };

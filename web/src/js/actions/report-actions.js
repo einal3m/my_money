@@ -19,9 +19,9 @@ class ReportActions {
     });
   }
 
-  storeAccountBalanceReport(accountId, report) {
+  storeAccountBalanceReport = (accountId, report) => {
     store.dispatch({ type: SET_ACCOUNT_BALANCE_REPORT, accountId, report });
-  }
+  };
 }
 
 export const TOGGLE_REPORT_VIEW = 'TOGGLE_REPORT_VIEW';

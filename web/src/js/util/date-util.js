@@ -1,7 +1,7 @@
 
 const dateUtil = {
   chartFormat(date) {
-    return (`${dd(date)}-${MMM(date)}-${YY(date)}`);
+    return (`${dd(date)}-${mmm(date)}-${yy(date)}`);
   },
 };
 
@@ -13,13 +13,13 @@ function dd(date) {
   return day;
 }
 
-function MMM(date) {
+function mmm(date) {
   const month = date.getMonth();
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return monthNames[month];
 }
 
-function YY(date) {
+function yy(date) {
   const yearString = `${date.getFullYear()}`;
   return yearString.slice(-2);
 }

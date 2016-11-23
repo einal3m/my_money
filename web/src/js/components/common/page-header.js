@@ -24,7 +24,7 @@ export default class PageTitle extends React.Component {
           return (
             <span className="error">
               Error: {this.props.apiStatus.message}
-              <i className="fa fa-times-circle" ref="clearError" onClick={this.clearError} />
+              <i className="fa fa-times-circle" onClick={this.clearError} />
             </span>
           );
         default:

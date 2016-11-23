@@ -3,11 +3,21 @@ import React from 'react';
 export default class ChartLegend extends React.Component {
 
   renderLegendItems() {
-    return this.props.chartData.seriesData.map((series, i) => (
-      <div key={i} className="legend-item" style={{ borderTop: `2px solid ${series.backgroundColour}`, borderLeft: `2px solid ${series.backgroundColour}` }}>
-        {series.name}
-      </div>
-    ));
+    let style;
+    return this.props.chartData.seriesData.map((series, i) => {
+      style = {
+        borderTop: `2px solid ${series.backgroundColour}`, borderLeft: `2px solid ${series.backgroundColour}`,
+      };
+      return (
+        <div
+          key={i}
+          className="legend-item"
+          style={style}
+        >
+          {series.name}
+        </div>
+      );
+    });
   }
 
   renderLegend() {

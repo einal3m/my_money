@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import TransactionRow from './transaction-row';
@@ -9,27 +9,25 @@ require('../../../css/transaction.scss');
 export class TransactionTableComponent extends React.Component {
 
   renderTransactions() {
-    return this.props.transactions.map((transaction) => {
-      return (
-        <TransactionRow
-          key={transaction.id}
-          transaction={transaction}
-          groupedCategories={this.props.groupedCategories}
-          subcategories={this.props.subcategories}
-        />
-      );
-    });
+    return this.props.transactions.map(transaction => (
+      <TransactionRow
+        key={transaction.id}
+        transaction={transaction}
+        groupedCategories={this.props.groupedCategories}
+      />
+    ));
   }
 
   renderTitle() {
     if (this.props.searchCriteriaLoaded) {
       return <h3>Transactions for {this.props.account.name}</h3>;
     }
+    return undefined;
   }
 
   renderTable() {
     if (!this.props.searchCriteriaLoaded) {
-      return;
+      return undefined;
     }
     if (this.props.transactions.length > 0) {
       return (
@@ -47,9 +45,8 @@ export class TransactionTableComponent extends React.Component {
           </tbody>
         </Table>
       );
-    } else {
-      return <div>No transactions match the search criteria</div>;
     }
+    return <div>No transactions match the search criteria</div>;
   }
 
   render() {
@@ -63,10 +60,10 @@ export class TransactionTableComponent extends React.Component {
 }
 
 TransactionTableComponent.propTypes = {
-  account: React.PropTypes.shape({ name: React.PropTypes.string }),
-  searchCriteriaLoaded: React.PropTypes.bool.isRequired,
-  transactions: React.PropTypes.arrayOf(React.PropTypes.shape({ id: React.PropTypes.number.isRequired })),
-  groupedCategories: React.PropTypes.array.isRequired,
+  account: PropTypes.shape({ name: PropTypes.string }),
+  searchCriteriaLoaded: PropTypes.bool.isRequired,
+  transactions: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired })),
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 function mapStateToProps(state) {

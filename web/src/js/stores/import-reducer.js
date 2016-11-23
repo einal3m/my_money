@@ -19,8 +19,9 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setSubcategoryId(state, action.index, action.subcategoryId);
     case 'SET_IMPORT':
       return setImport(state, action.index, action.import);
+    default:
+      return state;
   }
-  return state;
 }
 
 function setOfxTransactions(state, transactions) {

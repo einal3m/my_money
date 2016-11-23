@@ -71,7 +71,7 @@ describe('PageHeader', () => {
       );
       spyOn(apiStatusActions, 'clearApiError');
 
-      const clearError = pageHeader.refs.clearError;
+      const clearError = TestUtils.findRenderedDOMComponentWithTag(pageHeader, 'i');
       TestUtils.Simulate.click(clearError);
 
       expect(apiStatusActions.clearApiError).toHaveBeenCalled();

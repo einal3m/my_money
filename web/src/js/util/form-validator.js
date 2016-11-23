@@ -31,10 +31,10 @@ export default class FormValidator {
     const validationField = {};
     validationField[field] = value;
 
-    const validationRule = this._ruleForField(field);
+    const validationRule = this.ruleForField(field);
     const error = validate.validate(validationField, validationRule);
 
-    this._reconcileErrors(field, error);
+    this.reconcileErrors(field, error);
     return error;
   }
 
@@ -42,6 +42,7 @@ export default class FormValidator {
     if (this.errors[field]) {
       return this.errors[field][0];
     }
+    return undefined;
   }
 
   errorState(field) {
@@ -51,7 +52,7 @@ export default class FormValidator {
     return 'has-success';
   }
 
-  _ruleForField(field) {
+  ruleForField(field) {
     if (field) {
       const singleRule = {};
       singleRule[field] = this.schema[field];
@@ -60,7 +61,7 @@ export default class FormValidator {
     return this.schema;
   }
 
-  _reconcileErrors(field, error) {
+  reconcileErrors(field, error) {
     if (error) {
       this.errors[field] = error[field];
     } else {

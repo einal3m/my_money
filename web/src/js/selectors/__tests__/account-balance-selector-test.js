@@ -1,5 +1,5 @@
-import accountBalanceSelector from '../account-balance-selector';
 import { List, fromJS } from 'immutable';
+import accountBalanceSelector from '../account-balance-selector';
 
 describe('AccountBalanceSelector', () => {
   it('converts account balance into line chart form', () => {
@@ -9,7 +9,7 @@ describe('AccountBalanceSelector', () => {
       5: [['03 Mar, 2016', -3333], ['14 Mar, 2016', -6666]],
     };
 
-    const selectedAccounts = List(['5', '3']);
+    const selectedAccounts = List([5, 3]);
     const accounts = [{ id: 3, name: 'Account3' }, { id: 5, name: 'Account5' }];
 
     const seriesData = accountBalanceSelector({

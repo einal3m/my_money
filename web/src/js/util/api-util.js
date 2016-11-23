@@ -60,22 +60,21 @@ class ApiUtil {
         request.setRequestHeader('Content-type', contentType);
       }
 
-      request.onload = function () {
+      request.onload = () => {
         if (request.status === 200 || request.status === 201 || request.status === 204) {
           let response;
           if (request.response) {
             response = JSON.parse(request.response);
           }
           resolve(response);
-        }
-        else if (request.status === 422) {
+        } else if (request.status === 422) {
           reject(Error(JSON.parse(request.response).message));
         } else {
           reject(Error('Unknown Error'));
         }
       };
 
-      request.onerror = function () {
+      request.onerror = () => {
         reject(Error('Network Error'));
       };
 

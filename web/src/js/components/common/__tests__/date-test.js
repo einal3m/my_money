@@ -1,5 +1,5 @@
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import React from 'react';
+import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import Date from '../date';
 
 describe('Date', () => {

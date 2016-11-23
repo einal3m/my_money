@@ -1,13 +1,13 @@
 import FormValidator from '../form-validator';
 
 describe('FormValidator', () => {
-  let validator,
-    schema;
+  let validator;
+  const schema = {
+    name: { presence: true },
+    number: { presence: true, numericality: true },
+  };
+
   beforeEach(() => {
-    schema = {
-      name: { presence: true },
-      number: { presence: true, numericality: true },
-    };
     validator = new FormValidator(schema);
   });
 

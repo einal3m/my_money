@@ -14,8 +14,9 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setCurrentDateRange(state, action.id);
     case 'UPDATE_CURRENT_DATE_RANGE':
       return updateCurrentDateRange(state, action.dateChange);
+    default:
+      return state;
   }
-  return state;
 }
 
 function setDateRanges(state, dateRanges) {

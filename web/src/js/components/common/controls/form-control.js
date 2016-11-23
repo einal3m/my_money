@@ -15,6 +15,7 @@ FormControl.propTypes = {
     errorState: PropTypes.func.isRequired,
     errorFor: PropTypes.func.isRequired,
   }).isRequired,
+  children: PropTypes.node,
 };
 
 export default FormControl;

@@ -1,5 +1,5 @@
-import accountSelector from '../account-selector';
 import { fromJS } from 'immutable';
+import accountSelector from '../account-selector';
 
 describe('AccountSelector', () => {
   it('groups accounts in account groups', () => {

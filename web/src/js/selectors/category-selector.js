@@ -25,6 +25,7 @@ function groupCategories(categoryTypes, categories, subcategories, editableOnly 
       });
       return Map({ categoryType, categories: categoriesWithSubcategories });
     }
+    return undefined;
   });
 }
 

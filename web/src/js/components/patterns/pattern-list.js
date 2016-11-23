@@ -19,7 +19,7 @@ export class PatternListComponent extends React.Component {
   };
 
   renderPatterns() {
-    if (!this.props.patterns) return;
+    if (!this.props.patterns) return undefined;
 
     return this.props.patterns.map(
       pattern => (
@@ -43,7 +43,8 @@ export class PatternListComponent extends React.Component {
 }
 
 PatternListComponent.propTypes = {
-  currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
+  currentAccount: PropTypes.shape({ id: PropTypes.number }),
+  patterns: PropTypes.arrayOf(PropTypes.shape({})),
   apiStatus: PropTypes.shape({}),
 };
 

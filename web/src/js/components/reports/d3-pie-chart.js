@@ -16,7 +16,7 @@ export default class D3PieChart extends React.Component {
 
   render() {
     return (
-      <div ref="chartContainer" className="chart-container">
+      <div className="chart-container" ref={(container) => { this.chartContainer = container; }}>
         <div id="d3-chart" />
       </div>
     );
