@@ -1,6 +1,6 @@
 import d3 from 'd3';
 
-export default function pie_chart(data, labels, chartSelector, options) {
+export default function pieChart(data, labels, chartSelector, options) {
   const chartSize = {
     width: options.width || 500,
     height: options.height || 500,
@@ -73,7 +73,7 @@ function createTicks(vis, chartSize, pie, data) {
     .attr('y1', -chartSize.outerRadius - 3)
     .attr('y2', -chartSize.outerRadius - 8)
     .attr('stroke', 'gray')
-    .attr('transform', d => `rotate(${(d.startAngle + d.endAngle) / 2 * (180 / Math.PI)})`);
+    .attr('transform', d => `rotate(${((d.startAngle + d.endAngle) / 2) * (180 / Math.PI)})`);
 }
 
 function createTotal(vis, chartSize, data) {

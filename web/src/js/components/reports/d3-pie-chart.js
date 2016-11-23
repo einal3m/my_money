@@ -1,5 +1,5 @@
 import React from 'react';
-import pieChart from './pie-chart';
+import pieChart from './d3/pie-chart';
 
 export default class D3PieChart extends React.Component {
 

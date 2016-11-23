@@ -1,6 +1,6 @@
 import d3 from 'd3';
 
-export default function bar_chart(xAxisLabels, seriesData, id, options, callbacks) {
+export default function barChart(xAxisLabels, seriesData, id, options, callbacks) {
   const noOfSeries = seriesData.length;
   const noOfPeriods = xAxisLabels.length;
 
@@ -19,7 +19,7 @@ export default function bar_chart(xAxisLabels, seriesData, id, options, callback
   dim.chartHeight = height - dim.topMargin - dim.xAxisHeight;
   dim.chartWidth = width - dim.leftMargin;
   dim.periodWidth = dim.chartWidth / noOfPeriods;
-  dim.barWidth = (dim.periodWidth - dim.periodGap - (noOfSeries - 1) * dim.barGap) / noOfSeries;
+  dim.barWidth = (dim.periodWidth - dim.periodGap - ((noOfSeries - 1) * dim.barGap)) / noOfSeries;
 
   // main svg container
   const vis = d3.select(id).append('svg')
@@ -36,16 +36,22 @@ export default function bar_chart(xAxisLabels, seriesData, id, options, callback
   createHover(vis, xAxisLabels, seriesData, dim, callbacks);
   create0Axis(vis, yScale, dim);
 }
+
 function createSeries(vis, seriesData, yScale, dim, noOfSeries) {
-  seriesData.forEach((series, seriesIndex) => {
+  seriesData.forEach((series, index) => {
     const seriesGroup = vis.append('g')
-      .attr('class', `series${seriesIndex}`)
-      .attr('transform', `translate(${dim.leftMargin + dim.periodGap / 2 + seriesIndex * (dim.barWidth + dim.barGap)}, ${dim.topMargin})`);
+      .attr('class', `series${index}`)
+      .attr(
+        'transform',
+        `translate(${dim.leftMargin + (dim.periodGap / 2) + (index * (dim.barWidth + dim.barGap))}, ${dim.topMargin})`
+      );
 
     seriesGroup.selectAll('g')
       .data(series.data)
       .enter().append('rect')
-      .attr('transform', (data, i) => `translate(${i * (noOfSeries * dim.barWidth + dim.periodGap + (noOfSeries - 1) * dim.barGap)}, 0)`)
+      .attr('transform', (data, i) => (
+        `translate(${i * ((noOfSeries * dim.barWidth) + dim.periodGap + ((noOfSeries - 1) * dim.barGap))}, 0)`
+      ))
       .attr('width', dim.barWidth)
       .attr('height', data => Math.abs(yScale(data) - yScale(0)))
       .attr('y', data => data > 0 ? yScale(data) : yScale(0))
@@ -73,12 +79,13 @@ function createHover(vis, xAxisLabels, seriesData, dim, callbacks) {
       .attr('height', dim.chartHeight)
       .style({ fill: 'transparent' })
 
-      .on('mouseover', function () {
+      .on('mouseover', () => {
         if (callbacks.showTooltip) {
           callbacks.showTooltip(tooltipData);
         }
         d3.select(this).style({ fill: 'grey', opacity: 0.05 });
-      }).on('mouseout', function () {
+      })
+      .on('mouseout', () => {
         if (callbacks.hideTooltip) {
           callbacks.hideTooltip();
         }
@@ -157,4 +164,3 @@ function create0Axis(vis, yScale, dim) {
       .attr('stroke', '#aaa');
   }
 }
-

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import barChart from './bar-chart';
+import barChart from './d3/bar-chart';
 import moneyUtil from '../../util/money-util';
 import ChartTooltip from './chart-tooltip';
 

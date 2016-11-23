@@ -138,9 +138,8 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     const points = series.data.filter(data => date >= data[0]);
     if (points.length > 0) {
       return points.slice(-1)[0][1];
-    } else {
-      return;
     }
+    return undefined;
   };
 
   const roundedDate = (date) => {

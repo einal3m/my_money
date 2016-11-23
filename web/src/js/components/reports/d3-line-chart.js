@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import lineChart from './line-chart';
+import lineChart from './d3/line-chart';
 import moneyUtil from '../../util/money-util';
 import dateUtil from '../../util/date-util';
 import ChartTooltip from './chart-tooltip';
@@ -26,7 +26,8 @@ export default class D3LineChart extends React.Component {
       props.chartData.seriesData,
       '#d3-chart',
       this.chartOptions(),
-      this.chartCallbacks);
+      this.chartCallbacks
+    );
   }
 
   chartOptions = () => ({
