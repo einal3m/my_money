@@ -15,12 +15,13 @@ export default class DropDownItem extends React.Component {
   };
 
   render() {
-    const className = this.props.selected ? 'selected' : '';
+    let className = 'btn btn-link';
+    className += this.props.selected ? ' selected' : '';
 
     return (
-      <li className={className} onClick={this.onClickHandler} onMouseDown={this.onMouseDownHandler}>
+      <button className={className} onClick={this.onClickHandler} onMouseDown={this.onMouseDownHandler}>
         {this.renderOptionName()}
-      </li>
+      </button>
     );
   }
 }

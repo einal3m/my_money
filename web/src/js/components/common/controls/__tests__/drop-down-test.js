@@ -76,13 +76,11 @@ describe('DropDown', () => {
         expect(button.props.children[0].props.children).toEqual('Chocolate');
 
         const [group1, option1, group2, option2, option3] = list.props.children;
-        expect(group1.type).toEqual('li');
         expect(group1.props.children).toEqual('Group One');
         expect(option1.type).toEqual(DropDownItem);
         expect(option1.props.value).toEqual(1);
         expect(option1.props.label).toEqual('Honey');
         expect(option1.props.selected).toEqual(false);
-        expect(group2.type).toEqual('li');
         expect(group2.props.children).toEqual('Group Two');
         expect(option2.type).toEqual(DropDownItem);
         expect(option2.props.value).toEqual(2);
@@ -101,7 +99,7 @@ describe('DropDown', () => {
       dropdown = TestUtils.renderIntoDocument(<DropDown value={2} options={options} onChange={onChangeSpy} />);
       spyOn(dropdown, 'setState');
 
-      const button = TestUtils.findRenderedDOMComponentWithTag(dropdown, 'button');
+      const button = TestUtils.scryRenderedDOMComponentsWithTag(dropdown, 'button')[0];
 
       TestUtils.Simulate.click(button);
 
@@ -110,7 +108,7 @@ describe('DropDown', () => {
 
     it('calls onChange prop when option clicked', () => {
       dropdown = TestUtils.renderIntoDocument(<DropDown value={2} options={options} onChange={onChangeSpy} />);
-      const option3 = TestUtils.scryRenderedDOMComponentsWithTag(dropdown, 'li')[2];
+      const option3 = TestUtils.scryRenderedDOMComponentsWithTag(dropdown, 'button')[3];
 
       TestUtils.Simulate.click(option3);
 

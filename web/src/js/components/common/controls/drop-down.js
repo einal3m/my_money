@@ -79,7 +79,7 @@ export default class DropDown extends React.Component {
     )
   );
 
-  renderGroupName = group => <li key={group.name} className="group">{group.name}</li>;
+  renderGroupName = group => <div key={group.name} className="group">{group.name}</div>;
 
   renderGroups() {
     let rows = [];
@@ -118,9 +118,9 @@ export default class DropDown extends React.Component {
           <span>{this.renderSelectedOption()}</span>
           <i className="fa fa-caret-down pull-right" />
         </button>
-        <ul className="dropdown">
+        <div className="dropdown">
           {this.renderOptions()}
-        </ul>
+        </div>
       </div>
     );
   }
