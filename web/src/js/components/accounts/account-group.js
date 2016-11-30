@@ -17,7 +17,7 @@ export default class AccountGroup extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="account-group">
         <h3>{this.accountGroupTitle()}</h3>
         <ul className="slats">
           {this.renderAccounts()}

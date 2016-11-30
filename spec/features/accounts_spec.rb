@@ -1,17 +1,12 @@
 require 'rails_helper'
 
 feature 'Accounts', type: :feature do
-  before :each do
-    FactoryGirl.create(:category_type, name: 'Expense')
-    FactoryGirl.create(:category_type, name: 'Income')
-  end
-
   after :all  do
     DatabaseCleaner.clean
   end
 
-  scenario 'User creates a new Savings account', js: true do
-    start_my_money
+  scenario 'User creates a Savings account, edits and deletes it', js: true do
+    visit_accounts
 
     create_account('Savings', {
       name: 'New Account Name',
@@ -19,37 +14,44 @@ feature 'Accounts', type: :feature do
       starting_date: '9-Sep-2000',
       starting_balance: '10.00'
     })
-    expect(page).to have_content('my accounts')
 
-    show_account('New Account Name')
-    verify_account(['New Account Name', 'New Account Bank', '9-Sep-2000', '$10.00'])
+    verify_account('Savings', 'New Account Name', ['New Account Bank', '$10.00'])
+
+    edit_account('New Account Name', {
+      name: 'Edited Account Name',
+      bank: 'Edited Account Bank',
+      starting_balance: '2.00'
+    })
+
+    verify_account('Savings', 'Edited Account Name', ['Edited Account Bank', '$2.00'])
+
+    delete_account('Edited Account Name')
+    verify_account_deleted('Edited Account Name')
   end
 
   scenario 'User creates a new Share account', js: true do
-    start_my_money
+    visit_accounts
 
     create_account('Share', {
       name: 'New Account Name',
       ticker: 'TCK'
     })
-    expect(page).to have_content('my accounts')
-    verify_account(['New Account Name', 'TCK', '$ --'])
 
-    show_account('New Account Name')
-    verify_account(['New Account Name', 'TCK'])
+    verify_account('Share', 'New Account Name', ['$0.00'])
   end
 
-  scenario 'User edits an account', js: true do
-    start_my_money
-    create_account('Savings', {name: 'Edit Account'})
+  scenario 'User creates a new Loan account', js: true do
+    visit_accounts
 
-    show_account('Edit Account')
-    edit_account('Savings', {
-      name: 'New Edit Name',
-      bank: 'New Edit Bank',
-      starting_date: '1-Jan-2014',
-      starting_balance: '30.00'
+    create_account('Loan', {
+      name: 'New Account Name',
+      bank: 'New Account Bank',
+      limit: '10000.00',
+      term: '20',
+      interest_rate: '3.59',
+      starting_date: '9-Sep-2000',
     })
-    verify_account(['New Edit Name', 'New Edit Bank', '1-Jan-2014', '$30.00'])
+
+    verify_account('Loan', 'New Account Name', ['New Account Bank', '$0.00'])
   end
 end
