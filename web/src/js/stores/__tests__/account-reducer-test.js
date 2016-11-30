@@ -73,6 +73,14 @@ describe('reducer', () => {
 
       expect(newState.get('currentAccount').toJS()).toEqual(account2);
     });
+
+    it('does not set current account or selected accounts if there are no accounts', () => {
+      const action = { type: SET_ACCOUNTS, accounts: [] };
+      nextState = reducer(undefined, action);
+      expect(nextState.get('accounts').toJS()).toEqual([]);
+      expect(nextState.get('currentAccount').toJS()).toEqual({});
+      expect(nextState.get('selectedAccounts').toJS()).toEqual([]);
+    });
   });
 
   describe('SET_CURRENT_ACCOUNT', () => {

@@ -34,7 +34,7 @@ function setAccounts(state, accounts) {
   return state.set('loaded', true)
               .set('accounts', fromJS(accounts))
               .set('currentAccount', currentAccount(state, accounts))
-              .set('selectedAccounts', List([accounts[0].id]));
+              .set('selectedAccounts', defaultSelectedAccount(accounts));
 }
 
 function setAccountTypes(state, accountTypes) {
@@ -46,7 +46,17 @@ function currentAccount(state, accounts) {
   if (state.get('currentAccount').get('id') && currentAccountExists(state, accounts)) {
     return state.get('currentAccount');
   }
-  return Map(accounts[0]);
+  return Map(firstAccount(accounts));
+}
+
+function defaultSelectedAccount(accounts) {
+  if (accounts.length > 0) return List([accounts[0].id]);
+  return List([]);
+}
+
+function firstAccount(accounts) {
+  if (accounts.length > 0) return accounts[0];
+  return {};
 }
 
 function currentAccountExists(state, accounts) {
