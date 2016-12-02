@@ -22,7 +22,8 @@ module CategoryHelper
     click_on 'New'
     click_on 'New Subcategory'
 
-    select subcategory[:category], from: 'categoryId'
+    click_on 'Please select...'
+    click_on subcategory[:category]
     fill_in 'name', with: subcategory[:name]
     click_on 'Save'
   end
@@ -73,9 +74,5 @@ module CategoryHelper
     within 'div.category-group', text: subcategory[:category_type] do
       expect(page).not_to have_text(subcategory[:name])
     end
-  end
-
-  def wait_for_finished_loading
-    expect(page).not_to have_text('Loading...')
   end
 end
