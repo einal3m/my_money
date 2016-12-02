@@ -19,19 +19,20 @@ describe('DropDown', () => {
     });
 
     it('is a closed dropdown by default', () => {
-      dropdown = shallowRenderer(<DropDown value={2} options={options} onChange={onChangeSpy} />);
+      dropdown = shallowRenderer(<DropDown name="dropDown" value={2} options={options} onChange={onChangeSpy} />);
       expect(dropdown.props.className).not.toMatch(/open/);
+      expect(dropdown.props.name).toEqual('dropDown');
     });
 
     it('renders "please select" if no value is provided and allowUnassigned is false', () => {
-      dropdown = shallowRenderer(<DropDown options={options} onChange={onChangeSpy} />);
+      dropdown = shallowRenderer(<DropDown name="dropDown" options={options} onChange={onChangeSpy} />);
 
       const button = dropdown.props.children[0];
       expect(button.props.children[0].props.children).toEqual('Please select...');
     });
 
     it('renders "Un-assigned" option if no value is provided and allowUnassigned is true', () => {
-      dropdown = shallowRenderer(<DropDown options={options} allowUnassigned onChange={onChangeSpy} />);
+      dropdown = shallowRenderer(<DropDown name="dropDown" options={options} allowUnassigned onChange={onChangeSpy} />);
 
       const [button, list] = dropdown.props.children;
       expect(button.props.children[0].props.children).toEqual('Un-assigned');
@@ -45,7 +46,7 @@ describe('DropDown', () => {
 
     describe('basic dropdown', () => {
       it('renders a button with selected value, and a list of options', () => {
-        dropdown = shallowRenderer(<DropDown value={2} options={options} onChange={onChangeSpy} />);
+        dropdown = shallowRenderer(<DropDown name="dropDown" value={2} options={options} onChange={onChangeSpy} />);
         const [button, list] = dropdown.props.children;
         expect(button.props.children[0].props.children).toEqual('Chocolate');
 
@@ -71,7 +72,9 @@ describe('DropDown', () => {
           { name: 'Group One', options: [{ id: 1, name: 'Honey' }] },
           { name: 'Group Two', options: [{ id: 2, name: 'Chocolate' }, { id: 3, name: 'Cake' }] },
         ];
-        dropdown = shallowRenderer(<DropDown value={2} groupedOptions={groupedOptions} onChange={onChangeSpy} />);
+        dropdown = shallowRenderer(
+          <DropDown name="dropDown" value={2} groupedOptions={groupedOptions} onChange={onChangeSpy} />
+        );
         const [button, list] = dropdown.props.children;
         expect(button.props.children[0].props.children).toEqual('Chocolate');
 
@@ -96,7 +99,9 @@ describe('DropDown', () => {
 
   describe('events', () => {
     it('click on button opens drop down list', () => {
-      dropdown = TestUtils.renderIntoDocument(<DropDown value={2} options={options} onChange={onChangeSpy} />);
+      dropdown = TestUtils.renderIntoDocument(
+        <DropDown name="dropDown" value={2} options={options} onChange={onChangeSpy} />
+      );
       spyOn(dropdown, 'setState');
 
       const button = TestUtils.scryRenderedDOMComponentsWithTag(dropdown, 'button')[0];
@@ -107,7 +112,9 @@ describe('DropDown', () => {
     });
 
     it('calls onChange prop when option clicked', () => {
-      dropdown = TestUtils.renderIntoDocument(<DropDown value={2} options={options} onChange={onChangeSpy} />);
+      dropdown = TestUtils.renderIntoDocument(
+        <DropDown name="dropDown" value={2} options={options} onChange={onChangeSpy} />
+      );
       const option3 = TestUtils.scryRenderedDOMComponentsWithTag(dropdown, 'button')[3];
 
       TestUtils.Simulate.click(option3);

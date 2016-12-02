@@ -17,6 +17,7 @@ export default class GroupedCategorySelect extends React.Component {
   render() {
     return (
       <DropDown
+        name="categoryId"
         value={this.props.value}
         allowUnassigned={this.props.allowUnassigned}
         groupedOptions={this.groupedOptions()}

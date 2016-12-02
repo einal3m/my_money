@@ -32,9 +32,10 @@ export class DateRangeFilterComponent extends React.Component {
         <div key="date-range-select" className="col-xs-4">
           <div className="form-horizontal">
             <div className="form-group">
-              <label htmlFor="date_range" className="col-xs-4 control-label">Date Range</label>
+              <label htmlFor="dateRangeSelect" className="col-xs-4 control-label">Date Range</label>
               <div className="col-xs-8">
                 <DropDown
+                  name="dateRangeId"
                   value={this.props.currentDateRange.id}
                   options={this.props.dateRanges}
                   onChange={this.onSelectDateRange}
@@ -46,7 +47,7 @@ export class DateRangeFilterComponent extends React.Component {
         <div key="from-date" className="col-xs-4">
           <div className="form-horizontal">
             <div className="form-group">
-              <label htmlFor="from_date" className="col-sm-3 control-label">From</label>
+              <label htmlFor="fromDate" className="col-sm-3 control-label">From</label>
               <div className="col-sm-9">
                 <DatePicker
                   name="fromDate"
@@ -62,7 +63,7 @@ export class DateRangeFilterComponent extends React.Component {
         <div key="to-date" className="col-xs-4">
           <div className="form-horizontal">
             <div className="form-group">
-              <label htmlFor="to_date" className="col-sm-3 control-label">To</label>
+              <label htmlFor="toDate" className="col-sm-3 control-label">To</label>
               <div className="col-sm-9">
                 <DatePicker
                   name="toDate"

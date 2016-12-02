@@ -113,7 +113,7 @@ export default class DropDown extends React.Component {
     }
 
     return (
-      <div className={className}>
+      <div className={className} name={this.props.name}>
         <button className="btn btn-link btn-block" onClick={this.dropdown} onBlur={this.onBlur}>
           <span>{this.renderSelectedOption()}</span>
           <i className="fa fa-caret-down pull-right" />
@@ -132,6 +132,7 @@ const optionsProp = PropTypes.arrayOf(PropTypes.shape({
 }));
 
 DropDown.propTypes = {
+  name: PropTypes.string.isRequired,
   value: PropTypes.number,
   options: optionsProp,
   groupedOptions: PropTypes.arrayOf(PropTypes.shape({

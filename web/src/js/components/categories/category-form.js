@@ -40,6 +40,7 @@ export default class CategoryForm extends React.Component {
       <div>
         <FormControl name="categoryTypeId" validator={this.validator} label="Category Type">
           <DropDown
+            name="categoryTypeId"
             value={this.state.category.categoryTypeId}
             options={this.props.categoryTypes}
             onChange={this.handleCategoryTypeChange}

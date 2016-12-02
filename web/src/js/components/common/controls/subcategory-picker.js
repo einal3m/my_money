@@ -13,7 +13,13 @@ export default class SubcategoryPicker extends React.Component {
     const subcategories = this.subcategoriesForCategory();
 
     return (
-      <DropDown value={this.props.value} options={subcategories} allowUnassigned onChange={this.props.onChange} />
+      <DropDown
+        name="subcategoryId"
+        value={this.props.value}
+        options={subcategories}
+        allowUnassigned
+        onChange={this.props.onChange}
+      />
     );
   }
 }
