@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
-import SearchCriteria from '../common/criteria/search-criteria';
+import SearchCriteria, { DATE_RANGE_FILTER, ACCOUNT_FILTER } from '../common/criteria/search-criteria';
 import D3LineChart from './d3-line-chart';
 import reportActions from '../../actions/report-actions';
 import accountBalanceSelector from '../../selectors/account-balance-selector';
@@ -33,7 +33,7 @@ export class AccountBalanceReport extends React.Component {
       <div>
         <PageHeader title="EOD Balance Report" />
         <SearchCriteria
-          filters={[{ name: 'DATE_RANGE_FILTER' }, { name: 'ACCOUNT_FILTER' }]}
+          filters={[{ name: DATE_RANGE_FILTER }, { name: ACCOUNT_FILTER, options: { multiple: true } }]}
           fetch={this.fetchReport}
         />
         <div id="report" className="container">

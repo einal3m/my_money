@@ -9,18 +9,28 @@ export const CATEGORY_FILTER = 'CATEGORY_FILTER';
 
 export default class SearchCriteria extends React.Component {
 
+  allowMultipleAccounts = options => options ? options.multiple : false;
+
+  showSubcategories = options => options ? options.showSubcategories : false;
+
   renderFilter(name, options) {
     switch (name) {
       case DATE_RANGE_FILTER:
         return <DateRangeFilter key={DATE_RANGE_FILTER} fetch={this.props.fetch} />;
       case ACCOUNT_FILTER:
-        return <AccountFilter key={ACCOUNT_FILTER} multiple fetch={this.props.fetch} />;
+        return (
+          <AccountFilter
+            key={ACCOUNT_FILTER}
+            multiple={this.allowMultipleAccounts(options)}
+            fetch={this.props.fetch}
+          />
+        );
       case CATEGORY_FILTER:
         return (
           <CategoryFilter
             key={CATEGORY_FILTER}
             fetch={this.props.fetch}
-            showSubcategories={options.showSubcategories}
+            showSubcategories={this.showSubcategories(options)}
           />
         );
       default:
