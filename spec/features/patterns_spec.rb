@@ -1,67 +1,51 @@
 require 'rails_helper'
 
-feature 'Patterns', type: :feature, js: true do
-  before :each do
-    # create_accounts
-    a1 = FactoryGirl.create(:account, name: 'My First Account')
-    FactoryGirl.create(:pattern, account: a1, match_text: 'Pattern Spec Match 1')
-    a2 = FactoryGirl.create(:account, name: 'My Second Account')
-    FactoryGirl.create(:pattern, account: a2, match_text: 'Pattern Spec Match 2')
-    c1 = FactoryGirl.create(:category, name: 'My Test Category')
-    FactoryGirl.create(:subcategory, name: 'My Test Subcategory', category: c1)
-    c2 = FactoryGirl.create(:category, name: 'Another Test Category')
-    FactoryGirl.create(:subcategory, name: 'Another Test Subcategory', category: c2)
-  end
+feature 'Patterns', type: :feature do
+  let(:c1) { { name: 'First Category', category_type: 'Income' } }
+  let(:c2) { { name: 'Second Category', category_type: 'Expense' } }
+  let(:s1) { { name: 'First Subcategory', category_type: 'Income', category: 'First Category' } }
+  let(:s2) { { name: 'Second Subcategory', category_type: 'Expense', category: 'Second Category' } }
 
   after :all  do
     DatabaseCleaner.clean
   end
 
-  scenario 'User views the patterns list for an account' do
-    start_my_money
-    visit_patterns
+  scenario 'User creates, edits and deletes a pattern for a savings account', js: true  do
+    visit_categories
+    create_category(c1)
+    create_category(c2)
+    create_subcategory(s1)
+    create_subcategory(s2)
 
-    expect(page).to have_select('account_id', selected: 'My First Account')
-    expect(page).to have_text('Pattern Spec Match 1')
+    visit_accounts
+    create_account 'Savings', {
+      name: 'My New Account',
+      bank: 'My Bank',
+      starting_balance: '10',
+      starting_date: format_date(Date.today)
+    }
 
-    select('My Second Account', from: 'account_id')
-    expect(page).to have_text('Pattern Spec Match 2')
-  end
-
-  scenario 'User creates a new Pattern', js: true do
-    start_my_money
     visit_patterns
 
     pattern_params = {
       match_text: 'My Match Text',
       notes: 'New Note',
-      category: 'My Test Category',
-      subcategory: 'My Test Subcategory'
+      category: 'First Category',
+      subcategory: 'First Subcategory'
     }
-
     create_pattern(pattern_params)
     verify_pattern(pattern_params)
-  end
 
-  scenario 'User deletes a Pattern', js: true do
-    start_my_money
-    visit_patterns
-
-    delete_pattern('Pattern Spec Match 1')
-  end
-
-  scenario 'User edits a pattern', js: true do
-    start_my_money
-    visit_patterns
-
-    text = 'Pattern Spec Match 1'
-    pattern_params = {
-      match_text: 'Edit Match Text',
-      notes: 'Edit Notes',
-      category: 'Another Test Category',
-      subcategory: 'Another Test Subcategory'
+    edited_pattern_params = {
+      match_text: 'My Edited Match Text',
+      notes: 'Edited Note',
+      category: 'Second Category',
+      subcategory: 'Second Subcategory'
     }
-    edit_pattern(text, pattern_params)
-    verify_pattern(pattern_params)
+    edit_pattern('My Match Text', edited_pattern_params)
+    verify_pattern(edited_pattern_params)
+
+    delete_pattern('My Edited Match Text')
+    verify_pattern_deleted('My Edited Match Text');
   end
 end
