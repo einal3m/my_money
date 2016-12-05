@@ -5,6 +5,10 @@ const categorySelector = state => state.categoryStore.get('categories');
 const subcategorySelector = state => state.categoryStore.get('subcategories');
 const categoryTypeSelector = state => state.categoryStore.get('categoryTypes');
 
+const categoryTypesLoadedSelector = state => state.categoryStore.get('categoryTypesLoaded');
+const categoriesLoadedSelector = state => state.categoryStore.get('categoriesLoaded');
+const subcategoriesLoadedSelector = state => state.categoryStore.get('subcategoriesLoaded');
+
 function filteredCategoryGroups(categoryTypes, editableOnly = false) {
   if (editableOnly) {
     return categoryTypes.filter(categoryType => categoryType.get('editable'));
@@ -50,3 +54,14 @@ export const editableGroupedCategories = createSelector(
   (categoryTypes, categories, subcategories) => groupCategories(categoryTypes, categories, subcategories, true)
 );
 
+function loaded(categoryTypesLoaded, categoriesLoaded, subcategoriesLoaded) {
+  return categoryTypesLoaded && categoriesLoaded && subcategoriesLoaded;
+}
+
+export const categoryDataLoaded = createSelector(
+  categoryTypesLoadedSelector,
+  categoriesLoadedSelector,
+  subcategoriesLoadedSelector,
+  (categoryTypesLoaded, categoriesLoaded, subcategoriesLoaded) =>
+    loaded(categoryTypesLoaded, categoriesLoaded, subcategoriesLoaded)
+);

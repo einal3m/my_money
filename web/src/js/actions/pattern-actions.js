@@ -6,7 +6,9 @@ import patternTransformer from '../transformers/pattern-transformer';
 
 export const GET_PATTERNS = 'GET_PATTERNS';
 export function getPatterns() {
-  return getAccounts({ useStore: true }).then(() => categoryActions.getCategories()).then(() => fetchPatterns());
+  return getAccounts({ useStore: true })
+    .then(() => categoryActions.getCategories({ useStore: true }))
+    .then(() => fetchPatterns());
 }
 
 export function fetchPatterns() {

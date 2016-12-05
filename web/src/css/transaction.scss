@@ -14,7 +14,7 @@ $panel-default-heading-bg: $main-color;
   }
 }
 
-table#transaction-table {
+table#transaction-table, table#pattern-table {
   thead {
     border-top: 2px solid $main-color;
     th {

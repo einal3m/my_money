@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Glyphicon, Button } from 'react-bootstrap';
 import PageHeader from '../common/page-header';
+import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/search-criteria';
+import PatternTable from './pattern-table';
 import PatternModal from './pattern-modal';
 import { getPatterns } from '../../actions/pattern-actions';
 import { showFormModal } from '../../actions/form-actions';
@@ -35,7 +37,13 @@ export class PatternListComponent extends React.Component {
         <PageHeader title="my patterns" apiStatus={this.props.apiStatus}>
           <Button onClick={this.newPattern}><Glyphicon glyph="plus" /> New</Button>
         </PageHeader>
-        {this.renderPatterns()}
+        <SearchCriteria
+          filters={[{ name: ACCOUNT_FILTER, options: { multiple: false } }]}
+          fetch={getPatterns}
+        />
+        <div className="container">
+          <PatternTable />
+        </div>
         <PatternModal />
       </div>
     );

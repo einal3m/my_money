@@ -1,5 +1,5 @@
-import { fromJS } from 'immutable';
-import { editableGroupedCategories, groupedCategories } from '../category-selector';
+import { Map, fromJS } from 'immutable';
+import { editableGroupedCategories, groupedCategories, categoryDataLoaded } from '../category-selector';
 
 describe('CategorySelector', () => {
   let categories;
@@ -30,6 +30,56 @@ describe('CategorySelector', () => {
     categoryStore = {
       categoryStore: fromJS({ categories, categoryTypes, subcategories }),
     };
+  });
+
+  describe('categoriesLoaded', () => {
+    it('returns true if category types, categories and subcategories are all loaded', () => {
+      const store = {
+        categoryStore: Map({
+          categoryTypesLoaded: true,
+          categoriesLoaded: true,
+          subcategoriesLoaded: true,
+        }),
+      };
+
+      expect(categoryDataLoaded(store)).toEqual(true);
+    });
+
+    it('returns false if category types are not loaded', () => {
+      const store = {
+        categoryStore: Map({
+          categoryTypesLoaded: false,
+          categoriesLoaded: true,
+          subcategoriesLoaded: true,
+        }),
+      };
+
+      expect(categoryDataLoaded(store)).toEqual(false);
+    });
+
+    it('returns false if categories are not loaded', () => {
+      const store = {
+        categoryStore: Map({
+          categoryTypesLoaded: true,
+          categoriesLoaded: false,
+          subcategoriesLoaded: true,
+        }),
+      };
+
+      expect(categoryDataLoaded(store)).toEqual(false);
+    });
+
+    it('returns false if subcategories are not loaded', () => {
+      const store = {
+        categoryStore: Map({
+          categoryTypesLoaded: true,
+          categoriesLoaded: true,
+          subcategoriesLoaded: false,
+        }),
+      };
+
+      expect(categoryDataLoaded(store)).toEqual(false);
+    });
   });
 
   describe('editableGroupedCategories', () => {

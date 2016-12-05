@@ -2,29 +2,38 @@ import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import categoryTransformer from '../transformers/category-transformer';
 import subcategoryTransformer from '../transformers/subcategory-transformer';
+import { categoryDataLoaded } from '../selectors/category-selector';
 
 class CategoryActions {
 
-  getCategories() {
+  getCategories(options) {
+    const categoriesLoaded = categoryDataLoaded(store.getState());
+
+    if (categoriesLoaded && options && options.useStore) {
+      return Promise.resolve();
+    }
+
     const that = this;
     store.dispatch({ type: 'GET_CATEGORIES' });
 
-    return apiUtil.get({
+    apiUtil.get({
       url: 'category_type2',
       onSuccess: response => this.storeCategoryTypes(response.category_type2),
-    }).then(() => {
-      apiUtil.get({
-        url: 'categories',
-        onSuccess: response => that.storeCategories(
-          response.categories.map(category => categoryTransformer.transformFromApi(category))
-        ),
-      }); }).then(() => {
-        apiUtil.get({
-          url: 'subcategories',
-          onSuccess: response => that.storeSubcategories(
-            response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))
-          ),
-        }); });
+    });
+
+    apiUtil.get({
+      url: 'categories',
+      onSuccess: response => that.storeCategories(
+        response.categories.map(category => categoryTransformer.transformFromApi(category))
+      ),
+    });
+
+    return apiUtil.get({
+      url: 'subcategories',
+      onSuccess: response => that.storeSubcategories(
+        response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))
+      ),
+    });
   }
 
   saveCategory(category) {
