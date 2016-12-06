@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import chartDataForMonthTotals from '../report-selector';
+import { chartDataForMonthTotals, chartDataForCombo } from '../report-selector';
 
 describe('ReportSelector', () => {
   describe('chartDataForMonthTotals', () => {
@@ -19,6 +19,22 @@ describe('ReportSelector', () => {
     });
     it('converts month totals into chartData', () => {
       expect(chartDataForMonthTotals(store)).toEqual(chartData);
+    });
+  });
+
+  describe('chartDataForCombo', () => {
+    it('converts month totals into a combo chart format', () => {
+      const store = {
+        reportStore: fromJS({ totals: [['Aug-16', 1000, 2000], ['Sep-16', 3000, 4000], ['Oct-16', 5000, 6000]] }),
+      };
+
+      const chartData = chartDataForCombo(store);
+
+      expect(chartData.xAxisLabels).toEqual(['Aug-16', 'Sep-16', 'Oct-16']);
+      expect(chartData.seriesData).toEqual([
+        { name: 'Income', data: [1000, 3000, 5000], backgroundColour: 'green' },
+        { name: 'Expense', data: [2000, 4000, 6000], backgroundColour: 'red' },
+      ]);
     });
   });
 });

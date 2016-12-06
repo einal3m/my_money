@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import reportActions, {
-  getCategoryReport, getSubcategoryReport, toggleReportView,
-  SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW,
+  getCategoryReport, getSubcategoryReport, toggleReportView, getIncomeExpenseBarReport,
+  SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
 } from '../report-actions';
 import transactionTransformer from '../../transformers/transaction-transformer';
 import apiUtil from '../../util/api-util';
@@ -106,6 +106,29 @@ describe('ReportActions', () => {
       toggleReportView();
 
       expect(store.dispatch).toHaveBeenCalledWith({ type: TOGGLE_REPORT_VIEW });
+    });
+  });
+
+  describe('getIncomeExpenseBarReport', () => {
+    beforeEach(() => {
+      spyOn(apiUtil, 'get');
+      getIncomeExpenseBarReport();
+    });
+
+    it('calls the report/subcategory api and dispatches response to the store', () => {
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_REPORT' });
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('report/income_expense_bar');
+    });
+
+    it('onSuccess, stores the totals in the store', () => {
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+
+      getArgs.onSuccess({ report: ['totals'] });
+
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SET_TOTALS_REPORT, totals: ['totals'] });
     });
   });
 });

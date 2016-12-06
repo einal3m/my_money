@@ -69,4 +69,17 @@ function storeTransactionReport(transactions, totals) {
   store.dispatch({ type: SET_TRANSACTION_REPORT, transactions, totals });
 }
 
+export function getIncomeExpenseBarReport() {
+  store.dispatch({ type: GET_REPORT });
+  return apiUtil.get({
+    url: 'report/income_expense_bar',
+    onSuccess: response => storeTotalsReport(response.report),
+  });
+}
+
+export const SET_TOTALS_REPORT = 'SET_TOTALS_REPORT';
+function storeTotalsReport(totals) {
+  store.dispatch({ type: SET_TOTALS_REPORT, totals });
+}
+
 export default new ReportActions();

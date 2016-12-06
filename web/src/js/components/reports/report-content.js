@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import D3BarChart from './d3-bar-chart';
 import ReportTransactionTable from './report-transaction-table';
-import chartDataForMonthTotals from '../../selectors/report-selector';
+import { chartDataForMonthTotals } from '../../selectors/report-selector';
 
 export class ReportContentComponent extends React.Component {
 

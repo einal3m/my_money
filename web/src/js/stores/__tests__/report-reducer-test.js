@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import reportReducer from '../report-reducer';
 import {
-  GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, TOGGLE_REPORT_VIEW,
+  GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
 } from '../../actions/report-actions';
 
 describe('ReportReducer', () => {
@@ -45,6 +45,15 @@ describe('ReportReducer', () => {
       const action = { type: SET_TRANSACTION_REPORT, transactions: ['transaction'], totals: ['total'] };
       const state = reportReducer(undefined, action);
       expect(state.get('transactions').toJS()).toEqual(['transaction']);
+      expect(state.get('totals').toJS()).toEqual(['total']);
+      expect(state.get('loaded')).toEqual(true);
+    });
+  });
+
+  describe('SET_TOTALS_REPORT', () => {
+    it('sets the transactions and totals, and sets loading to false', () => {
+      const action = { type: SET_TOTALS_REPORT, totals: ['total'] };
+      const state = reportReducer(undefined, action);
       expect(state.get('totals').toJS()).toEqual(['total']);
       expect(state.get('loaded')).toEqual(true);
     });

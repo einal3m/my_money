@@ -12,9 +12,26 @@ function convertMonthTotals(monthTotals) {
   };
 }
 
-const chartDataForMonthTotals = createSelector(
+export const chartDataForMonthTotals = createSelector(
   monthTotalSelector,
   monthTotals => convertMonthTotals(monthTotals)
 );
 
-export default chartDataForMonthTotals;
+function convertMonthTotalsForCombo(monthTotals) {
+  const xAxisLabels = monthTotals.toJS().map(month => month[0]);
+  const incomeData = monthTotals.toJS().map(month => month[1]);
+  const expenseData = monthTotals.toJS().map(month => month[2]);
+
+  return {
+    xAxisLabels,
+    seriesData: [
+      { name: 'Income', data: incomeData, backgroundColour: 'green' },
+      { name: 'Expense', data: expenseData, backgroundColour: 'red' },
+    ],
+  };
+}
+
+export const chartDataForCombo = createSelector(
+  monthTotalSelector,
+  monthTotals => convertMonthTotalsForCombo(monthTotals)
+);
