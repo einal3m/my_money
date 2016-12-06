@@ -1,32 +1,49 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
-import D3Chart from './d3-bar-chart';
+import D3BarLineComboChart from './d3-bar-line-combo-chart';
+import { chartDataForCombo } from '../../selectors/report-selector';
+import { getIncomeExpenseBarReport } from '../../actions/report-actions';
 
 require('../../../css/common.scss');
 require('../../../css/report.scss');
 
+export class IncomeVsExpenseBarChartComponent extends React.Component {
 
-const IncomeVsExpenseBarChart = () => {
-  const seriesData = [
-    { name: 'Actual', data: [400, 2300, -1000, -1005, -2345], backgroundColour: '#61ABDB', borderColor: 'maroon' },
-    { name: 'Last Year', data: [4300, 2300, 1000, -1500, -2345], backgroundColour: '#FDCA3A', borderColor: 'maroon' },
-    { name: 'Budget', data: [2500, -2300, -3330, -1500, 10], backgroundColour: '#80D8C4', borderColor: 'maroon' },
-  ];
+  constructor() {
+    super();
+    getIncomeExpenseBarReport();
+  }
 
-  const xAxisLabels = ['Feb-15', 'Mar-15', 'Apr-15', 'May-15', 'Jun-15'];
+  renderChart() {
+    if (this.props.loaded) {
+      return <D3BarLineComboChart chartData={this.props.chartData} />;
+    }
+    return undefined;
+  }
 
-  const chartData = { seriesData, xAxisLabels };
-
-  return (
-    <div>
-      <PageHeader title="Income vs Expenses" />
-
-      <div id="report" className="container">
-        <D3Chart chartData={chartData} />
+  render() {
+    return (
+      <div>
+        <PageHeader title="Income vs Expenses" />
+        <div id="report" className="container">
+          {this.renderChart()}
+        </div>
       </div>
+    );
+  }
+}
 
-    </div>
-  );
+IncomeVsExpenseBarChartComponent.propTypes = {
+  loaded: PropTypes.bool.isRequired,
+  chartData: PropTypes.shape({}),
 };
 
-export default IncomeVsExpenseBarChart;
+function mapStateToProps(state) {
+  return {
+    loaded: state.reportStore.get('loaded'),
+    chartData: chartDataForCombo(state),
+  };
+}
+
+export default connect(mapStateToProps)(IncomeVsExpenseBarChartComponent);

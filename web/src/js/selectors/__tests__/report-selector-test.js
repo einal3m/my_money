@@ -32,8 +32,8 @@ describe('ReportSelector', () => {
 
       expect(chartData.xAxisLabels).toEqual(['Aug-16', 'Sep-16', 'Oct-16']);
       expect(chartData.seriesData).toEqual([
-        { name: 'Income', data: [1000, 3000, 5000], backgroundColour: 'green' },
-        { name: 'Expense', data: [2000, 4000, 6000], backgroundColour: 'red' },
+        { name: 'Income', data: [1000, 3000, 5000], backgroundColour: '#66CC66' },
+        { name: 'Expense', data: [2000, 4000, 6000], backgroundColour: '#FF6666' },
       ]);
     });
   });

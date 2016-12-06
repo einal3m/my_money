@@ -25,8 +25,8 @@ function convertMonthTotalsForCombo(monthTotals) {
   return {
     xAxisLabels,
     seriesData: [
-      { name: 'Income', data: incomeData, backgroundColour: 'green' },
-      { name: 'Expense', data: expenseData, backgroundColour: 'red' },
+      { name: 'Income', data: incomeData, backgroundColour: '#66CC66' },
+      { name: 'Expense', data: expenseData, backgroundColour: '#FF6666' },
     ],
   };
 }
