@@ -29,9 +29,9 @@ export default function barLineComboChart(xAxisLabels, seriesData, id, options, 
   const [xScale, yScale] = createBarScales(xAxisLabels, seriesData, dim);
   createYAxis(vis, yScale, dim, callbacks);
   createBarXAxis(vis, xScale, dim);
-  create0Axis(vis, yScale, dim);
 
   createSeries(vis, seriesData, yScale, dim, 1);
+  create0Axis(vis, yScale, dim);
   createNetLine(vis, xAxisLabels, seriesData, xScale, yScale, dim);
 
   createHover(vis, xAxisLabels, seriesData, dim, callbacks);

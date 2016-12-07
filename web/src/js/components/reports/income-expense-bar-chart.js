@@ -16,7 +16,7 @@ export class IncomeVsExpenseBarChartComponent extends React.Component {
   }
 
   renderChart() {
-    if (this.props.loaded) {
+    if (this.props.loaded && this.props.chartData) {
       return <D3BarLineComboChart chartData={this.props.chartData} />;
     }
     return undefined;

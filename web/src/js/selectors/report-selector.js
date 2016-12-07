@@ -18,6 +18,9 @@ export const chartDataForMonthTotals = createSelector(
 );
 
 function convertMonthTotalsForCombo(monthTotals) {
+  if (monthTotals.size === 0) return null;
+  if (monthTotals.get(0).size !== 3) return null;
+
   const xAxisLabels = monthTotals.toJS().map(month => month[0]);
   const incomeData = monthTotals.toJS().map(month => month[1]);
   const expenseData = monthTotals.toJS().map(month => month[2]);

@@ -36,5 +36,21 @@ describe('ReportSelector', () => {
         { name: 'Expense', data: [2000, 4000, 6000], backgroundColour: '#FF6666' },
       ]);
     });
+
+    it('doesnt convert if there is no data', () => {
+      const store = {
+        reportStore: fromJS({ totals: [] }),
+      };
+
+      expect(chartDataForCombo(store)).toEqual(null);
+    });
+
+    it('doesnt convert if there are not 3 entries per month', () => {
+      const store = {
+        reportStore: fromJS({ totals: [['Aug-16', 1000], ['Sep-16', 3000]] }),
+      };
+
+      expect(chartDataForCombo(store)).toEqual(null);
+    });
   });
 });
