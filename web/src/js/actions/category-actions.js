@@ -5,37 +5,6 @@ import subcategoryTransformer from '../transformers/subcategory-transformer';
 import { categoryDataLoaded } from '../selectors/category-selector';
 
 class CategoryActions {
-
-  getCategories(options) {
-    const categoriesLoaded = categoryDataLoaded(store.getState());
-
-    if (categoriesLoaded && options && options.useStore) {
-      return Promise.resolve();
-    }
-
-    const that = this;
-    store.dispatch({ type: 'GET_CATEGORIES' });
-
-    apiUtil.get({
-      url: 'category_type2',
-      onSuccess: response => this.storeCategoryTypes(response.category_type2),
-    });
-
-    apiUtil.get({
-      url: 'categories',
-      onSuccess: response => that.storeCategories(
-        response.categories.map(category => categoryTransformer.transformFromApi(category))
-      ),
-    });
-
-    return apiUtil.get({
-      url: 'subcategories',
-      onSuccess: response => that.storeSubcategories(
-        response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))
-      ),
-    });
-  }
-
   saveCategory(category) {
     store.dispatch({ type: 'SAVE_CATEGORY' });
     if (category.id) {
@@ -102,20 +71,6 @@ class CategoryActions {
     });
   }
 
-  storeCategoryTypes = (categoryTypes) => {
-    store.dispatch({
-      type: 'SET_CATEGORY_TYPES',
-      categoryTypes,
-    });
-  };
-
-  storeCategories = (categories) => {
-    store.dispatch({
-      type: 'SET_CATEGORIES',
-      categories,
-    });
-  };
-
   storeCategory = (category) => {
     store.dispatch({
       type: 'SET_CATEGORY',
@@ -127,13 +82,6 @@ class CategoryActions {
     store.dispatch({
       type: 'REMOVE_CATEGORY',
       categoryId,
-    });
-  };
-
-  storeSubcategories = (subcategories) => {
-    store.dispatch({
-      type: 'SET_SUBCATEGORIES',
-      subcategories,
     });
   };
 
@@ -150,6 +98,72 @@ class CategoryActions {
       subcategoryId,
     });
   };
+}
+
+export const GET_CATEGORIES = 'GET_CATEGORIES';
+export function getCategories(options) {
+  const categoriesLoaded = categoryDataLoaded(store.getState());
+
+  if (categoriesLoaded && options && options.useStore) {
+    return Promise.resolve();
+  }
+
+  store.dispatch({ type: 'GET_CATEGORIES' });
+
+  return Promise.all([
+    fetchCategoryTypes(),
+    fetchCategories(),
+    fetchSubcategories(),
+  ]);
+}
+
+export function fetchCategoryTypes() {
+  return apiUtil.get({
+    url: 'category_type2',
+    onSuccess: response => storeCategoryTypes(response.category_type2),
+  });
+}
+
+export const SET_CATEGORY_TYPES = 'SET_CATEGORY_TYPES';
+function storeCategoryTypes(categoryTypes) {
+  store.dispatch({
+    type: SET_CATEGORY_TYPES,
+    categoryTypes,
+  });
+}
+
+export function fetchCategories() {
+  return apiUtil.get({
+    url: 'categories',
+    onSuccess: response => storeCategories(
+      response.categories.map(category => categoryTransformer.transformFromApi(category))
+    ),
+  });
+}
+
+export const SET_CATEGORIES = 'SET_CATEGORIES';
+function storeCategories(categories) {
+  store.dispatch({
+    type: SET_CATEGORIES,
+    categories,
+  });
+}
+
+export function fetchSubcategories() {
+  return apiUtil.get({
+    url: 'subcategories',
+    onSuccess: response => storeSubcategories(
+      response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))
+    ),
+  });
+}
+
+export const SET_SUBCATEGORIES = 'SET_SUBCATEGORIES';
+function storeSubcategories(subcategories) {
+  store.dispatch({
+    type: SET_SUBCATEGORIES,
+    subcategories,
+  });
 }
 
 export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY';

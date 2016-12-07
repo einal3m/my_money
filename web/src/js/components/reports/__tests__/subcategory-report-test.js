@@ -4,16 +4,13 @@ import SubcategoryReport from '../subcategory-report';
 import PageHeader from '../../common/page-header';
 import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../../common/criteria/search-criteria';
 import ReportContent from '../report-content';
-import * as accountActions from '../../../actions/account-actions';
 import * as reportActions from '../../../actions/report-actions';
 
 describe('SubcategoryReport', () => {
   describe('render', () => {
     it('has a page header, search criteria and chart', () => {
-      spyOn(accountActions, 'getAccounts');
       spyOn(reportActions, 'getSubcategoryReport');
       const report = shallowRenderer(<SubcategoryReport />);
-      expect(accountActions.getAccounts).toHaveBeenCalled();
       expect(reportActions.getSubcategoryReport).toHaveBeenCalled();
 
       const [header, criteria, content] = report.props.children;

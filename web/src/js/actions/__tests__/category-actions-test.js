@@ -1,5 +1,6 @@
 import categoryActions, {
-  setCurrentCategory, setCurrentSubcategory, SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY,
+  setCurrentCategory, setCurrentSubcategory, fetchCategoryTypes, fetchCategories, fetchSubcategories,
+  SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY, SET_CATEGORY_TYPES, SET_CATEGORIES, SET_SUBCATEGORIES
 } from '../category-actions';
 import categoryTransformer from '../../transformers/category-transformer';
 import subcategoryTransformer from '../../transformers/subcategory-transformer';
@@ -19,13 +20,80 @@ describe('CategoryActions', () => {
     });
   });
 
-  describe('category type actions', () => {
-    it('storeCategoryTypes dispatches the category type data to the store', () => {
-      categoryActions.storeCategoryTypes('categoryTypes');
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_CATEGORY_TYPES',
-        categoryTypes: 'categoryTypes',
-      });
+  describe('fetchCategoryTypes', () => {
+    it('fetches category types', () => {
+      spyOn(apiUtil, 'get');
+
+      fetchCategoryTypes();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('category_type2');
+    });
+
+    it('saves the category types to the store on success', () => {
+      spyOn(apiUtil, 'get');
+
+      fetchCategoryTypes();
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      getArgs.onSuccess({ category_type2: ['types'] });
+
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SET_CATEGORY_TYPES, categoryTypes: ['types'] });
+    });
+  });
+
+  describe('fetchCategories', () => {
+    it('fetches categories', () => {
+      spyOn(apiUtil, 'get');
+
+      fetchCategories();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('categories');
+    });
+
+    it('saves the categories to the store on success', () => {
+      spyOn(apiUtil, 'get');
+
+      fetchCategories();
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      spyOn(categoryTransformer, 'transformFromApi').and.returnValue('transformedCategory');
+
+      getArgs.onSuccess({ categories: ['category'] });
+
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SET_CATEGORIES, categories: ['transformedCategory'] });
+      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('category');
+    });
+  });
+
+  describe('fetchSubcategories', () => {
+    it('fetches subcategories', () => {
+      spyOn(apiUtil, 'get');
+
+      fetchSubcategories();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('subcategories');
+    });
+
+    it('saves the subcategories to the store on success', () => {
+      spyOn(apiUtil, 'get');
+
+      fetchSubcategories();
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('transformedSubcategory');
+
+      getArgs.onSuccess({ subcategories: ['subcategory'] });
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        { type: SET_SUBCATEGORIES, subcategories: ['transformedSubcategory'] }
+      );
+      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith('subcategory');
     });
   });
 
@@ -103,14 +171,6 @@ describe('CategoryActions', () => {
       const successCallback = deleteArgs.onSuccess;
       successCallback();
       expect(categoryActions.removeCategory).toHaveBeenCalledWith(23);
-    });
-
-    it('storeCategories dispatches the categories to the store', () => {
-      categoryActions.storeCategories(['categories']);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_CATEGORIES',
-        categories: ['categories'],
-      });
     });
 
     it('storeCategory dispatches the category to the store', () => {
@@ -203,14 +263,6 @@ describe('CategoryActions', () => {
       const successCallback = deleteArgs.onSuccess;
       successCallback();
       expect(categoryActions.removeSubcategory).toHaveBeenCalledWith(43);
-    });
-
-    it('storeSubcategories dispatches the subcategories to the store', () => {
-      categoryActions.storeSubcategories(['subcategories']);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: 'SET_SUBCATEGORIES',
-        subcategories: ['subcategories'],
-      });
     });
 
     it('storeSubcategory dispatches the subcategory to the store', () => {

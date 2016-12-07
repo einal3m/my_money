@@ -1,15 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getDateRanges, setCurrentDateRange, updateCurrentDateRange } from '../../../actions/date-range-actions';
+import { setCurrentDateRange, updateCurrentDateRange } from '../../../actions/date-range-actions';
 import DatePicker from '../date-picker/date-picker';
 import DropDown from '../../common/controls/drop-down';
 
 export class DateRangeFilterComponent extends React.Component {
-
-  constructor() {
-    super();
-    getDateRanges();
-  }
 
   onSelectDateRange = (id) => {
     setCurrentDateRange(id);

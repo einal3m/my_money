@@ -5,13 +5,11 @@ import SearchCriteria from '../search-criteria';
 import PageHeader from '../../common/page-header';
 import TransactionTable from '../transaction-table';
 import TransactionModal from '../transaction-modal';
-import categoryActions from '../../../actions/category-actions';
 import * as formActions from '../../../actions/form-actions';
 
 describe('TransactionList', () => {
   let transactionList;
   beforeEach(() => {
-    spyOn(categoryActions, 'getCategories');
     transactionList = shallowRenderer(<TransactionList loaded currentAccount={{ id: 12, name: 'Melanie' }} />);
   });
 
@@ -27,8 +25,6 @@ describe('TransactionList', () => {
       expect(table.props.children.type).toEqual(TransactionTable);
       expect(importModal).toBeUndefined();
       expect(editModal.type).toEqual(TransactionModal);
-
-      expect(categoryActions.getCategories).toHaveBeenCalled();
     });
   });
 

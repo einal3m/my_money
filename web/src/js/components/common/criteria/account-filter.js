@@ -5,11 +5,6 @@ import accountSelector from '../../../selectors/account-selector';
 import AccountPicker from '../controls/account-picker';
 
 export class AccountFilterComponent extends React.Component {
-  constructor() {
-    super();
-    getAccounts({ useStore: true });
-  }
-
   onChange = (accountId) => {
     setCurrentAccount(accountId);
     if (this.props.multiple) {

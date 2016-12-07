@@ -2,36 +2,41 @@ import apiUtil from '../util/api-util';
 import store from '../stores/store';
 import { getAccounts } from './account-actions';
 import { getDateRanges } from './date-range-actions';
+import { getCategories } from './category-actions';
 import transactionTransformer from '../transformers/transaction-transformer';
 import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from './form-actions';
 import { getCategoryReport, getSubcategoryReport } from './report-actions';
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
 export function getTransactions() {
-  getAccounts({ useStore: true }).then(() => {
-    getDateRanges().then(() => {
-      const accountId = store.getState().accountStore.get('currentAccount').get('id');
-      const dateRange = store.getState().dateRangeStore.get('currentDateRange');
-      const fromDate = dateRange.get('fromDate');
-      const toDate = dateRange.get('toDate');
-      let description;
-      const moreOptions = store.getState().transactionStore.get('moreOptions');
-      if (moreOptions) {
-        description = store.getState().transactionStore.get('searchDescription');
-      }
+  Promise.all([
+    getAccounts({ useStore: true }),
+    getDateRanges(),
+    getCategories({ useStore: true }),
+  ]).then(() => fetchTransactions());
+}
 
-      let url = `accounts/${accountId}/transactions?from_date=${fromDate}&to_date=${toDate}`;
-      if (description) {
-        url = `${url}&description=${description}`;
-      }
+export function fetchTransactions() {
+  const accountId = store.getState().accountStore.get('currentAccount').get('id');
+  const dateRange = store.getState().dateRangeStore.get('currentDateRange');
+  const fromDate = dateRange.get('fromDate');
+  const toDate = dateRange.get('toDate');
+  let description;
+  const moreOptions = store.getState().transactionStore.get('moreOptions');
+  if (moreOptions) {
+    description = store.getState().transactionStore.get('searchDescription');
+  }
 
-      return apiUtil.get({
-        url,
-        onSuccess: response => storeTransactions(
-          response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction))
-        ),
-      });
-    });
+  let url = `accounts/${accountId}/transactions?from_date=${fromDate}&to_date=${toDate}`;
+  if (description) {
+    url = `${url}&description=${description}`;
+  }
+
+  return apiUtil.get({
+    url,
+    onSuccess: response => storeTransactions(
+      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction))
+    ),
   });
 }
 

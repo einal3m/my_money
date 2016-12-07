@@ -12,16 +12,56 @@ describe('TransactionActions', () => {
     dispatcherSpy = spyOn(store, 'dispatch');
   });
 
-  describe('getTransactions', () => {
-    // TODO: learn how to test promises
-  });
+  describe('fetchTransactions', () => {
+    beforeEach(() => {
+      spyOn(apiUtil, 'get');
+    });
 
-  describe('storeTransactions', () => {
-    it('dispatches the transactions to the store', () => {
-      transactionActions.storeTransactions(['transactions']);
-      expect(dispatcherSpy).toHaveBeenCalledWith({
+    it('makes a get request with data params', () => {
+      spyOn(store, 'getState').and.returnValue({
+        accountStore: Map({ currentAccount: Map({ id: 4 }) }),
+        dateRangeStore: Map({ currentDateRange: Map({ fromDate: '2016-08-19', toDate: '2016-12-19' }) }),
+        transactionStore: Map({ moreOptions: false }),
+      });
+      transactionActions.fetchTransactions();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('accounts/4/transactions?from_date=2016-08-19&to_date=2016-12-19');
+    });
+
+    it('makes a get request with description, if it is set', () => {
+      spyOn(store, 'getState').and.returnValue({
+        accountStore: Map({ currentAccount: Map({ id: 4 }) }),
+        dateRangeStore: Map({ currentDateRange: Map({ fromDate: '2016-08-19', toDate: '2016-12-19' }) }),
+        transactionStore: Map({ moreOptions: true, searchDescription: 'hello' }),
+      });
+      transactionActions.fetchTransactions();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('accounts/4/transactions?from_date=2016-08-19&to_date=2016-12-19&description=hello');
+    });
+
+    it('stores the transaction in the store, on success', () => {
+      spyOn(store, 'getState').and.returnValue({
+        accountStore: Map({ currentAccount: Map({ id: 4 }) }),
+        dateRangeStore: Map({ currentDateRange: Map({ fromDate: '2016-08-19', toDate: '2016-12-19' }) }),
+        transactionStore: Map({ moreOptions: false }),
+      });
+
+      spyOn(transactionTransformer, 'transformFromApi').and.returnValue('transformedTransaction');
+      transactionActions.fetchTransactions();
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      getArgs.onSuccess({ transactions: ['transaction'] });
+
+      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
+      expect(store.dispatch).toHaveBeenCalledWith({
         type: transactionActions.SET_TRANSACTIONS,
-        transactions: ['transactions'],
+        transactions: ['transformedTransaction'],
       });
     });
   });

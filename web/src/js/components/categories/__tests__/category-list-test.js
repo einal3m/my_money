@@ -5,7 +5,7 @@ import PageHeader from '../../common/page-header';
 import NewModelButton from '../../common/controls/new-model-buttons';
 import CategoryTypeTable from '../category-type-table';
 import CategoryModal from '../category-modal';
-import categoryActions from '../../../actions/category-actions';
+import * as categoryActions from '../../../actions/category-actions';
 
 describe('CategoryList', () => {
   const category1 = { id: 1, name: 'One', subcategories: [] };

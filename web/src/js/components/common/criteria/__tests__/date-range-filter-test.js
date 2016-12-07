@@ -10,8 +10,6 @@ describe('DateRangeFilter', () => {
   let dateRanges;
   let fetchSpy;
   beforeEach(() => {
-    spyOn(dateRangeActions, 'getDateRanges');
-
     dateRanges = [
       { id: 11, name: 'Name1', custom: true, fromDate: '2015-07-01', toDate: '2015-08-03' },
       { id: 22, name: 'Name2', custom: false, fromDate: '2014-06-23', toDate: '2014-09-03' },
@@ -26,7 +24,6 @@ describe('DateRangeFilter', () => {
         <DateRangeFilter loaded={false} dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
 
-      expect(dateRangeActions.getDateRanges).toHaveBeenCalled();
       expect(dateRangeFilter.props.children).toEqual(<div />);
     });
 

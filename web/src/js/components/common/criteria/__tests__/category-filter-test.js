@@ -18,7 +18,6 @@ describe('CategoryFilter', () => {
   ];
   let fetchSpy;
   beforeEach(() => {
-    spyOn(categoryActions.default, 'getCategories');
     fetchSpy = jasmine.createSpy('fetchSpy');
   });
 

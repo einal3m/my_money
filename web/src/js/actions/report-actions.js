@@ -1,27 +1,36 @@
 import apiUtil from '../util/api-util';
 import store from '../stores/store';
 import transactionTransformer from '../transformers/transaction-transformer';
+import { getCategories } from '../actions/category-actions';
+import { getDateRanges } from '../actions/date-range-actions';
+import { getAccounts } from '../actions/account-actions';
 
 export const GET_REPORT = 'GET_REPORT';
 export const SET_ACCOUNT_BALANCE_REPORT = 'SET_ACCOUNT_BALANCE_REPORT';
 
-class ReportActions {
-  getAccountBalanceReport() {
-    const selectedAccounts = store.getState().accountStore.get('selectedAccounts');
-    const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
+export function getAccountBalanceReport() {
+  Promise.all([
+    getAccounts(),
+    getDateRanges(),
+  ]).then(() => fetchAccountBalanceReport());
+}
 
-    selectedAccounts.forEach((accountId) => {
-      store.dispatch({ type: GET_REPORT });
-      return apiUtil.get({
-        url: `report/eod_balance?account_id=${accountId}&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`,
-        onSuccess: response => this.storeAccountBalanceReport(accountId, response.report),
-      });
+export function fetchAccountBalanceReport() {
+  console.log('fetchAccountBalanceReport');
+  const selectedAccounts = store.getState().accountStore.get('selectedAccounts').toJS();
+  const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
+
+  selectedAccounts.forEach((accountId) => {
+    store.dispatch({ type: GET_REPORT });
+    return apiUtil.get({
+      url: `report/eod_balance?account_id=${accountId}&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`,
+      onSuccess: response => storeAccountBalanceReport(accountId, response.report),
     });
-  }
+  });
+}
 
-  storeAccountBalanceReport = (accountId, report) => {
-    store.dispatch({ type: SET_ACCOUNT_BALANCE_REPORT, accountId, report });
-  };
+function storeAccountBalanceReport(accountId, report) {
+  store.dispatch({ type: SET_ACCOUNT_BALANCE_REPORT, accountId, report });
 }
 
 export const TOGGLE_REPORT_VIEW = 'TOGGLE_REPORT_VIEW';
@@ -30,6 +39,16 @@ export function toggleReportView() {
 }
 
 export function getSubcategoryReport() {
+  Promise.all([
+    getCategories({ useStore: true }),
+    getDateRanges(),
+    getAccounts({ useStore: true }),
+  ]).then(() => {
+    fetchSubcategoryReport();
+  });
+}
+
+export function fetchSubcategoryReport() {
   const currentCategoryId = store.getState().categoryStore.get('currentCategoryId');
   const currentSubcategoryId = store.getState().categoryStore.get('currentSubcategoryId');
   const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
@@ -48,6 +67,16 @@ export function getSubcategoryReport() {
 }
 
 export function getCategoryReport() {
+  Promise.all([
+    getCategories({ useStore: true }),
+    getDateRanges(),
+    getAccounts({ useStore: true }),
+  ]).then(() => {
+    fetchCategoryReport();
+  });
+}
+
+export function fetchCategoryReport() {
   const currentCategoryId = store.getState().categoryStore.get('currentCategoryId');
   const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
 
@@ -81,5 +110,3 @@ export const SET_TOTALS_REPORT = 'SET_TOTALS_REPORT';
 function storeTotalsReport(totals) {
   store.dispatch({ type: SET_TOTALS_REPORT, totals });
 }
-
-export default new ReportActions();

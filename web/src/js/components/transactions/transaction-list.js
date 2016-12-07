@@ -5,7 +5,7 @@ import PageHeader from '../common/page-header';
 import SearchCriteria from './search-criteria';
 import TransactionTable from './transaction-table';
 import { uploadOFX } from '../../actions/import-actions';
-import categoryActions from '../../actions/category-actions';
+import { getCategories } from '../../actions/category-actions';
 import FileChooserModal from '../import/file-chooser-modal';
 import TransactionModal from './transaction-modal';
 import { showFormModal } from '../../actions/form-actions';
@@ -15,8 +15,6 @@ require('../../../css/common.scss');
 export class TransactionListComponent extends React.Component {
   constructor() {
     super();
-    categoryActions.getCategories();
-
     this.state = {
       showImportModal: false,
     };

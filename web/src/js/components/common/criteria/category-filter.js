@@ -7,10 +7,6 @@ import GroupedCategorySelect from '../controls/grouped-category-select';
 import SubcategoryPicker from '../controls/subcategory-picker';
 
 export class CategoryFilterComponent extends React.Component {
-  constructor() {
-    super();
-    categoryActions.getCategories();
-  }
 
   handleCategoryChange = (event) => {
     setCurrentCategory(event.target.value);

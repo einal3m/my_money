@@ -4,7 +4,7 @@ import PageHeader from '../common/page-header';
 import NewModelButtons from '../common/controls/new-model-buttons';
 import CategoryTypeTable from './category-type-table';
 import CategoryModal from './category-modal';
-import categoryActions from '../../actions/category-actions';
+import { getCategories } from '../../actions/category-actions';
 import { editableGroupedCategories } from '../../selectors/category-selector';
 
 require('../../../css/common.scss');
@@ -13,7 +13,7 @@ require('../../../css/categories.scss');
 export class CategoryListComponent extends React.Component {
   constructor() {
     super();
-    categoryActions.getCategories();
+    getCategories();
   }
 
   renderCategoryTypes() {

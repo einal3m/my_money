@@ -20,7 +20,6 @@ describe('AccountFilter', () => {
 
   beforeEach(() => {
     fetchSpy = jasmine.createSpy('fetchSpy');
-    spyOn(accountActions, 'getAccounts');
   });
 
   describe('render', () => {
@@ -36,7 +35,6 @@ describe('AccountFilter', () => {
       );
       const dropdown = accountFilter.props.children.props.children;
       expect(dropdown).toEqual(<div />);
-      expect(accountActions.getAccounts).toHaveBeenCalled();
     });
 
     it('has a select with single value', () => {

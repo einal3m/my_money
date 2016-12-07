@@ -1,14 +1,15 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
-import categoryActions from './category-actions';
+import { getCategories } from './category-actions';
 import patternTransformer from '../transformers/pattern-transformer';
 
 export const GET_PATTERNS = 'GET_PATTERNS';
 export function getPatterns() {
-  return getAccounts({ useStore: true })
-    .then(() => categoryActions.getCategories({ useStore: true }))
-    .then(() => fetchPatterns());
+  return Promise.all([
+    getAccounts({ useStore: true }),
+    getCategories({ useStore: true }),
+  ]).then(() => fetchPatterns());
 }
 
 export function fetchPatterns() {
