@@ -45,13 +45,11 @@ export class AccountBalanceReport extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.accountStore.get('loaded') && state.dateRangeStore.get('loaded'),
     seriesData: accountBalanceSelector(state).toJS(),
   };
 }
 
 AccountBalanceReport.propTypes = {
-  loaded: PropTypes.bool.isRequired,
   seriesData: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

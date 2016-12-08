@@ -1,19 +1,18 @@
-import { List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import accountBalanceSelector from '../account-balance-selector';
 
 describe('AccountBalanceSelector', () => {
   it('converts account balance into line chart form', () => {
-    const accountBalances = {
-      3: [['01 Mar, 2016', 1111], ['15 Mar, 2016', 4444]],
-      4: [['02 Mar, 2016', 2222], ['16 Mar, 2016', 5555]],
-      5: [['03 Mar, 2016', -3333], ['14 Mar, 2016', -6666]],
-    };
+    const accountBalances = Map()
+      .set(3, fromJS([['01 Mar, 2016', 1111], ['15 Mar, 2016', 4444]]))
+      .set(4, fromJS([['02 Mar, 2016', 2222], ['16 Mar, 2016', 5555]]))
+      .set(5, fromJS([['03 Mar, 2016', -3333], ['14 Mar, 2016', -6666]]));
 
     const selectedAccounts = List([5, 3]);
     const accounts = [{ id: 3, name: 'Account3' }, { id: 5, name: 'Account5' }];
 
     const seriesData = accountBalanceSelector({
-      reportStore: fromJS({ accountBalances }),
+      reportStore: Map({ accountBalances }),
       accountStore: fromJS({ accounts, selectedAccounts }),
     });
 

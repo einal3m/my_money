@@ -10,13 +10,12 @@ export const SET_ACCOUNT_BALANCE_REPORT = 'SET_ACCOUNT_BALANCE_REPORT';
 
 export function getAccountBalanceReport() {
   Promise.all([
-    getAccounts(),
+    getAccounts({ useStore: true }),
     getDateRanges(),
   ]).then(() => fetchAccountBalanceReport());
 }
 
 export function fetchAccountBalanceReport() {
-  console.log('fetchAccountBalanceReport');
   const selectedAccounts = store.getState().accountStore.get('selectedAccounts').toJS();
   const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
 
