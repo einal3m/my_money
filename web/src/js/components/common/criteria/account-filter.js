@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getAccounts, setCurrentAccount, toggleSelectedAccount } from '../../../actions/account-actions';
+import { setCurrentAccount, toggleSelectedAccount } from '../../../actions/account-actions';
 import accountSelector from '../../../selectors/account-selector';
 import AccountPicker from '../controls/account-picker';
 

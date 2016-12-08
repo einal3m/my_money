@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import categoryActions, { setCurrentCategory, setCurrentSubcategory } from '../../../actions/category-actions';
+import { setCurrentCategory, setCurrentSubcategory } from '../../../actions/category-actions';
 import { groupedCategories } from '../../../selectors/category-selector';
 import HorizontalFormControl from '../controls/horizontal-form-control';
 import GroupedCategorySelect from '../controls/grouped-category-select';

@@ -5,7 +5,6 @@ import PageHeader from '../common/page-header';
 import SearchCriteria from './search-criteria';
 import TransactionTable from './transaction-table';
 import { uploadOFX } from '../../actions/import-actions';
-import { getCategories } from '../../actions/category-actions';
 import FileChooserModal from '../import/file-chooser-modal';
 import TransactionModal from './transaction-modal';
 import { showFormModal } from '../../actions/form-actions';

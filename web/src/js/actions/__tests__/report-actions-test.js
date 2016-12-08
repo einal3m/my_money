@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import reportActions, {
+import {
   fetchCategoryReport, fetchSubcategoryReport, toggleReportView, getIncomeExpenseBarReport, fetchAccountBalanceReport,
   SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
 } from '../report-actions';

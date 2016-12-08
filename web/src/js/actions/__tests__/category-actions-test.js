@@ -1,6 +1,6 @@
 import categoryActions, {
   setCurrentCategory, setCurrentSubcategory, fetchCategoryTypes, fetchCategories, fetchSubcategories,
-  SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY, SET_CATEGORY_TYPES, SET_CATEGORIES, SET_SUBCATEGORIES
+  SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY, SET_CATEGORY_TYPES, SET_CATEGORIES, SET_SUBCATEGORIES,
 } from '../category-actions';
 import categoryTransformer from '../../transformers/category-transformer';
 import subcategoryTransformer from '../../transformers/subcategory-transformer';
@@ -11,13 +11,6 @@ describe('CategoryActions', () => {
   let dispatcherSpy;
   beforeEach(() => {
     dispatcherSpy = spyOn(store, 'dispatch');
-  });
-
-  describe('getCategories', () => {
-    // TODO: work out how to test promises
-    xit('calls the api util to get category types, categories and subcategories', () => {
-
-    });
   });
 
   describe('fetchCategoryTypes', () => {

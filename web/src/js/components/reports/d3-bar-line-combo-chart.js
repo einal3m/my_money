@@ -11,18 +11,18 @@ export default class D3BarLineComboChart extends React.Component {
   }
 
   componentDidMount() {
-    this.drawBarChart(this.props);
+    this.drawBarChart(this.props.chartData);
   }
 
   componentWillReceiveProps(nextProps) {
     this.chart.removeChild(this.chart.firstChild);
-    this.drawBarChart(nextProps);
+    this.drawBarChart(nextProps.chartData);
   }
 
-  drawBarChart(props) {
+  drawBarChart(chartData) {
     barLineComboChart(
-      props.chartData.xAxisLabels,
-      props.chartData.seriesData,
+      chartData.xAxisLabels,
+      chartData.seriesData,
       '#d3-chart',
       this.chartOptions(),
       this.chartCallbacks

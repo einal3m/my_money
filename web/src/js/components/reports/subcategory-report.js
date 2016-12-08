@@ -4,7 +4,6 @@ import ReportViewButtons from '../common/controls/report-view-buttons';
 import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../common/criteria/search-criteria';
 import ReportContent from './report-content';
 import { getSubcategoryReport } from '../../actions/report-actions';
-import { getAccounts } from '../../actions/account-actions';
 import { SOURCE_SUBCATEGORY_REPORT } from '../../actions/form-actions';
 
 export default class SubcategoryReport extends React.Component {
