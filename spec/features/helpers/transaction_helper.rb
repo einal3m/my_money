@@ -32,16 +32,36 @@ module TransactionHelper
   end
 
   def filter_transactions(date_range_option, from_date, to_date)
-    within 'div[name=dateRangeId]' do
-      first('button').click
-      click_on date_range_option
+    select_dropdown_option('dateRangeId', date_range_option)
+
+    select_date_from_picker('fromDate', from_date)
+    select_date_from_picker('toDate', to_date)
+  end
+
+  def select_file_to_import(file_name)
+    click_on 'Import'
+
+    page.execute_script('document.getElementById("fileChooser").className = ""')
+    page.attach_file('fileChooser', File.expand_path("spec/fixtures/#{file_name}"))
+
+    within '.modal-footer' do
+      click_on 'Import'
     end
 
-    page.all('.input-group-addon')[0].click
-    click_on from_date.day
+    wait_for_finished_loading
+  end
 
-    page.all('.input-group-addon')[1].click
-    click_on to_date.day
+  def set_import_category(text, category, subcategory)
+    within 'tr', text: text do
+      select_dropdown_option('categoryId', category) if category
+      select_dropdown_option('subcategoryId', subcategory) if subcategory
+    end
+  end
+
+  def import_transactions
+    click_on 'Import'
+    wait_for_finished_loading
+    expect(page).to have_content('my transactions')
   end
 
   private
@@ -54,17 +74,7 @@ module TransactionHelper
     fill_in 'date', with: transaction_params[:date] if transaction_params[:date]
     fill_in 'notes', with: transaction_params[:notes] if transaction_params[:notes]
     fill_in 'amount', with: transaction_params[:amount] if transaction_params[:amount]
-    if transaction_params[:category]
-      within 'div[name=categoryId]' do
-        first('button').click
-        click_on transaction_params[:category]
-      end
-    end
-    if transaction_params[:subcategory]
-      within 'div[name=subcategoryId]' do
-        first('button').click
-        click_on transaction_params[:subcategory]
-      end
-    end
+    select_dropdown_option('categoryId', transaction_params[:category]) if transaction_params[:category]
+    select_dropdown_option('subcategoryId', transaction_params[:subcategory]) if transaction_params[:subcategory]
   end
 end
