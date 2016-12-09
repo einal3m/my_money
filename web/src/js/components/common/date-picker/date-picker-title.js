@@ -73,9 +73,19 @@ export default class DatePickerTitle extends Component {
   render() {
     return (
       <div className="popover-title">
-        <i className="fa fa-chevron-left previous" aria-hidden="true" onClick={this.previousPeriod} />
-        <span className={this.titleClassName()} onClick={this.setView}>{this.renderTitle()}</span>
-        <i className="fa fa-chevron-right next" aria-hidden="true" onClick={this.nextPeriod} />
+        <button className="btn btn-link previous" onClick={this.previousPeriod}>
+          <i className="fa fa-chevron-left" aria-hidden="true" />
+        </button>
+        <button
+          className="btn btn-link title"
+          onClick={this.setView}
+          disabled={this.props.viewMode === DATE_PICKER_YEAR_MODE}
+        >
+          {this.renderTitle()}
+        </button>
+        <button className="btn btn-link next" onClick={this.nextPeriod}>
+          <i className="fa fa-chevron-right" aria-hidden="true" />
+        </button>
       </div>
     );
   }

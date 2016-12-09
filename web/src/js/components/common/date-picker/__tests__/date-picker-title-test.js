@@ -32,11 +32,15 @@ describe('DatePickerTitle', () => {
         const datePickerTitle = shallowRenderer(<DatePickerTitle {...props} viewMode={DATE_PICKER_DAY_MODE} />);
         const [previous, title, next] = datePickerTitle.props.children;
 
-        expect(previous.props.className).toMatch(/fa-chevron-left/);
-        expect(next.props.className).toMatch(/fa-chevron-right/);
-        expect(title.props.className).not.toMatch(/no-hover/);
+        expect(previous.type).toEqual('button');
+        expect(previous.props.children.props.className).toMatch(/fa-chevron-left/);
 
+        expect(title.type).toEqual('button');
+        expect(title.props.disabled).toEqual(false);
         expect(title.props.children).toEqual('February 2013');
+
+        expect(next.type).toEqual('button');
+        expect(next.props.children.props.className).toMatch(/fa-chevron-right/);
       });
     });
 
@@ -45,11 +49,12 @@ describe('DatePickerTitle', () => {
         const datePickerTitle = shallowRenderer(<DatePickerTitle {...props} viewMode={DATE_PICKER_MONTH_MODE} />);
         const [previous, title, next] = datePickerTitle.props.children;
 
-        expect(previous.props.className).toMatch(/fa-chevron-left/);
-        expect(next.props.className).toMatch(/fa-chevron-right/);
-        expect(title.props.className).not.toMatch(/no-hover/);
+        expect(previous.props.children.props.className).toMatch(/fa-chevron-left/);
 
+        expect(title.props.disabled).toEqual(false);
         expect(title.props.children).toEqual('2013');
+
+        expect(next.props.children.props.className).toMatch(/fa-chevron-right/);
       });
     });
 
@@ -58,11 +63,12 @@ describe('DatePickerTitle', () => {
         const datePickerTitle = shallowRenderer(<DatePickerTitle {...props} viewMode={DATE_PICKER_YEAR_MODE} />);
         const [previous, title, next] = datePickerTitle.props.children;
 
-        expect(previous.props.className).toMatch(/fa-chevron-left/);
-        expect(next.props.className).toMatch(/fa-chevron-right/);
-        expect(title.props.className).toMatch(/no-hover/);
+        expect(previous.props.children.props.className).toMatch(/fa-chevron-left/);
 
+        expect(title.props.disabled).toEqual(true);
         expect(title.props.children).toEqual('2013 - 2022');
+
+        expect(next.props.children.props.className).toMatch(/fa-chevron-right/);
       });
     });
   });

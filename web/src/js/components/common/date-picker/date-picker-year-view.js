@@ -15,8 +15,12 @@ export default class DatePickerYearView extends Component {
     this.props.setView(DATE_PICKER_MONTH_MODE);
   };
 
+  startOfDecade() {
+    return (this.props.viewDate.year() - (this.props.viewDate.year() % 10) - 1);
+  }
+
   renderGrid() {
-    const year = this.props.viewDate.year() - 1;
+    const year = this.startOfDecade();
     return this.grid.map((row, i) => <tr key={`row${i}`}>{this.renderRow(row, year + (i * 4))}</tr>);
   }
 

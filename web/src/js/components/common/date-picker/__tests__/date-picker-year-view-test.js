@@ -6,7 +6,7 @@ import DatePickerPanel from '../date-picker-panel';
 import { DATE_PICKER_MONTH_MODE } from '../date-picker-constants';
 
 describe('DatePickerYearView', () => {
-  const viewDate = moment('1990-12-19');
+  const viewDate = moment('1994-12-19');
   let setViewSpy;
   let setDateSpy;
   beforeEach(() => {

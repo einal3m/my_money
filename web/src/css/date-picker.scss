@@ -7,44 +7,41 @@
     padding: 0;
   }
 
+  button:focus {
+    outline:0;
+  }
+
   .popover-title {
+    button {
+      padding: 0;
+      color: black;
+      font-weight: bolder;
+
+      &:hover {
+        color: $main-color;
+      }
+
+      &:disabled {
+        color: black;
+        cursor: default;
+      }
+    }
+
     .title {
       font-weight: bold;
       display: inline-block;
       width: 159px;
       text-align: center;
-
-      &:not(.no-hover) {
-        &:hover {
-          text-decoration: underline;
-          color: $main-color;
-          cursor: pointer;
-        }
-      }
     }
+
     .previous {
       width: 15px;
-      padding: -3px 0 0 0;
       text-align: left;
-
-      &:hover {
-        font-size: large;
-        padding-top: 0;
-        color: $main-color;
-        cursor: pointer;
-      }
     }
+
     .next {
       width: 15px;
-      padding: -3px 0 0 0;
       text-align: right;
-
-      &:hover {
-        font-size: large;
-        padding-top: 0;
-        color: $main-color;
-        cursor: pointer;
-      }
     }
   }
 
