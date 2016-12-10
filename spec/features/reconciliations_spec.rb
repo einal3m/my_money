@@ -14,7 +14,7 @@ feature 'Reconciliations', type: :feature do
     DatabaseCleaner.clean
   end
 
-  scenario 'User performs bank reconciliation', js: true do
+  xscenario 'User performs bank reconciliation', js: true do
     start_my_money
     visit_accounts
     create_account('Savings', {

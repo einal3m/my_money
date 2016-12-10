@@ -15,7 +15,8 @@ module CommonHelper
   end
 
   def select_date_from_picker(id, date)
-    current_date = Date.parse(find("##{id}").value)
+    date_picker_value = find("##{id}").value
+    current_date = date_picker_value.empty? ? Date.today : Date.parse(date_picker_value)
     find(:xpath, "//input[@id='#{id}']/following-sibling::div").click
 
     if (current_date.month == date.month && current_date.year == date.year)

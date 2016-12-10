@@ -1,4 +1,56 @@
 module TransactionHelper
+  def transaction_spec
+    visit_account_transactions 'Account One'
+
+    create_transactions
+    filter_the_transactions
+    edit_transactions
+    delete_transactions
+  end
+
+  def create_transactions
+    create_transaction(date: Date.today, amount: 10, notes: 'First Transaction', category: 'Category Two')
+    create_transaction(date: Date.today, amount: 20, notes: 'Second Transaction', category: 'Category One', subcategory: 'Subcategory One')
+    create_transaction(date: Date.today, amount: 30, notes: 'Third Transaction', category: 'Category Two')
+    create_transaction(date: Date.yesterday, amount: 40, notes: 'Fourth Transaction', category: 'Category One')
+    create_transaction(date: Date.tomorrow, amount: 50, notes: 'Fifth Transaction')
+  end
+
+  def edit_transactions
+    verify_transaction('First Transaction', ['10.00', 'Category Two', '$60.00'])
+
+    edit_transaction('First Transaction',
+      amount: '50',
+      category: 'Category Two',
+      subcategory: 'Subcategory Two'
+    )
+
+    verify_transaction('First Transaction', ['50.00', 'Category Two/Subcategory Two', '$100.00'])
+  end
+
+  def delete_transactions
+    delete_transaction 'First Transaction'
+    expect(page).not_to have_text('First Transaction')
+  end
+
+  def filter_the_transactions
+    filter_transactions('Custom Dates', Date.today, Date.today)
+
+    expect(page).to have_text('First Transaction')
+    expect(page).to have_text('Second Transaction')
+    expect(page).to have_text('Third Transaction')
+    expect(page).not_to have_text('Fourth Transaction')
+    expect(page).not_to have_text('Fifth Transaction')
+
+    filter_transactions('Custom Dates', Date.yesterday, Date.tomorrow)
+
+    expect(page).to have_text('First Transaction')
+    expect(page).to have_text('Second Transaction')
+    expect(page).to have_text('Third Transaction')
+    expect(page).to have_text('Fourth Transaction')
+    expect(page).to have_text('Fifth Transaction')
+  end
+
   def create_transaction(transaction_params)
     click_on 'New'
 
@@ -33,7 +85,6 @@ module TransactionHelper
 
   def filter_transactions(date_range_option, from_date, to_date)
     select_dropdown_option('dateRangeId', date_range_option)
-
     select_date_from_picker('fromDate', from_date)
     select_date_from_picker('toDate', to_date)
   end
@@ -66,12 +117,8 @@ module TransactionHelper
 
   private
 
-  def format_date(date)
-    date.strftime('%-d-%b-%Y')
-  end
-
   def fill_in_savings_transaction_form(transaction_params)
-    fill_in 'date', with: transaction_params[:date] if transaction_params[:date]
+    select_date_from_picker('date', transaction_params[:date]) if transaction_params[:date]
     fill_in 'notes', with: transaction_params[:notes] if transaction_params[:notes]
     fill_in 'amount', with: transaction_params[:amount] if transaction_params[:amount]
     select_dropdown_option('categoryId', transaction_params[:category]) if transaction_params[:category]

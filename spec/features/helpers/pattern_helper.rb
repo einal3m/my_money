@@ -1,4 +1,54 @@
 module PatternHelper
+  def pattern_spec
+    visit_patterns
+
+    create_pattern_for_savings_account
+    edit_patterns
+    delete_patterns
+    create_pattern_for_loan_account
+  end
+
+  def create_pattern_for_savings_account
+    pattern_params = {
+      match_text: 'My Match Text',
+      notes: 'New Note',
+      category: 'Category One',
+      subcategory: 'Subcategory One'
+    }
+    create_pattern(pattern_params)
+    verify_pattern(pattern_params)
+  end
+
+  def create_pattern_for_loan_account
+    click_on 'Account One'
+    click_on 'Account Three'
+
+    pattern_params = {
+      match_text: 'supermarket',
+      notes: 'myPatternNote',
+      category: 'Category Two',
+      subcategory: 'Subcategory Two'
+    }
+    create_pattern(pattern_params)
+    verify_pattern(pattern_params)
+  end
+
+  def edit_patterns
+    edited_pattern_params = {
+      match_text: 'Edited Text',
+      notes: 'Edited Note',
+      category: 'Category Two',
+      subcategory: 'Subcategory Two'
+    }
+    edit_pattern('My Match Text', edited_pattern_params)
+    verify_pattern(edited_pattern_params)
+  end
+
+  def delete_patterns
+    delete_pattern('Edited Text')
+    verify_pattern_deleted('Edited Text')
+  end
+
   def visit_patterns
     visit '/react#/patterns'
     wait_for_finished_loading
@@ -34,18 +84,8 @@ module PatternHelper
   def fill_in_pattern_form(pattern_params)
     fill_in 'matchText', with: pattern_params[:match_text] if pattern_params[:match_text]
     fill_in 'notes', with: pattern_params[:notes] if pattern_params[:notes]
-    if pattern_params[:category]
-      within 'div[name=categoryId]' do
-        first('button').click
-        click_on pattern_params[:category]
-      end
-    end
-    if pattern_params[:subcategory]
-      within 'div[name=subcategoryId]' do
-        first('button').click
-        click_on pattern_params[:subcategory]
-      end
-    end
+    select_dropdown_option('categoryId', pattern_params[:category]) if pattern_params[:category]
+    select_dropdown_option('subcategoryId', pattern_params[:subcategory]) if pattern_params[:subcategory]
   end
 
   def verify_pattern(pattern_params)

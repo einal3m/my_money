@@ -1,4 +1,56 @@
 module AccountHelper
+  def account_spec
+    visit_accounts
+
+    create_savings_account
+    create_and_delete_share_account
+    create_loan_account
+  end
+
+  def create_savings_account
+    create_account('Savings', {
+      name: 'My Account One',
+      bank: 'My Bank One',
+      starting_date: Date.parse('2014-09-12'),
+      starting_balance: '2.00'
+    })
+
+    verify_account('Savings', 'My Account One', ['My Bank One', '$2.00'])
+
+    edit_account('My Account One', {
+      name: 'Account One',
+      bank: 'Bank One',
+      starting_balance: '10.00'
+    })
+
+    verify_account('Savings', 'Account One', ['Bank One', '$10.00'])
+  end
+
+  def create_and_delete_share_account
+    create_account('Share', {
+      name: 'Account Two',
+      ticker: 'TCK'
+    })
+
+    verify_account('Share', 'Account Two', ['$0.00'])
+
+    delete_account('Account Two')
+    verify_account_deleted('Account Two')
+  end
+
+  def create_loan_account
+    create_account('Loan', {
+      name: 'Account Three',
+      bank: 'Bank Three',
+      limit: '10000.00',
+      term: '20',
+      interest_rate: '3.59',
+      starting_date: Date.parse('2014-09-12'),
+    })
+
+    verify_account('Loan', 'Account Three', ['Bank Three', '$0.00'])
+  end
+
   def visit_accounts
     visit '/react#/accounts'
     wait_for_finished_loading
@@ -7,6 +59,7 @@ module AccountHelper
   end
 
   def visit_account_transactions(account_name)
+    visit_accounts
     select_account_action(account_name, 'View Transactions')
     wait_for_finished_loading
     expect(page).to have_content('my transactions')
@@ -50,7 +103,7 @@ module AccountHelper
     fill_in 'name', with: account_params[:name] if account_params[:name]
     fill_in 'bank', with: account_params[:bank] if account_params[:bank]
     fill_in 'openingBalance', with: account_params[:starting_balance] if account_params[:starting_balance]
-    fill_in 'openingBalanceDate', with: account_params[:starting_date] if account_params[:starting_date]
+    select_date_from_picker('openingBalanceDate', account_params[:starting_date]) if account_params[:starting_date]
   end
 
   def fill_in_share_account_form(account_params)
@@ -64,7 +117,7 @@ module AccountHelper
     fill_in 'limit', with: account_params[:limit] if account_params[:limit]
     fill_in 'term', with: account_params[:term] if account_params[:term]
     fill_in 'interestRate', with: account_params[:interest_rate] if account_params[:interest_rate]
-    fill_in 'openingBalanceDate', with: account_params[:starting_date] if account_params[:starting_date]
+    select_date_from_picker('openingBalanceDate', account_params[:starting_date]) if account_params[:starting_date]
   end
 
   def delete_account(account_name)

@@ -5,6 +5,10 @@ RSpec::Core::RakeTask.new(:myrspec) do |t|
   t.pattern = FileList['./spec/**/*_spec.rb'].exclude('./spec/features/**/*_spec.rb')
 end
 
+RSpec::Core::RakeTask.new(:myintegration) do |t|
+  t.pattern = FileList['./spec/features/integration_spec.rb']
+end
+
 task myjs: [:jslint, :'jasmine:ci']
 task myruby: [:rubocop, :myrspec]
 task mycapy: [:'spec:features']
