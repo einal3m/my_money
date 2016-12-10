@@ -8,10 +8,20 @@ export function createSvgContainer(id, width, height) {
 }
 
 export function createBarScales(xAxisLabels, seriesData, dim) {
+  let min = d3.min(seriesData, series => d3.min(series.data));
+  let max = d3.max(seriesData, series => d3.max(series.data));
+
+  if (min === max && max > 0) {
+    min = 0;
+  } else if (min === max && max < 0) {
+    max = 0;
+  } else if (min === max) {
+    min = 0;
+    max = 10000;
+  }
+
   const yScale = d3.scale.linear()
-    .domain([
-      d3.min(seriesData, series => d3.min(series.data)),
-      d3.max(seriesData, series => d3.max(series.data))])
+    .domain([min, max])
     .range([dim.chartHeight, 0]).nice();
 
   const xScale = d3.scale.ordinal()
