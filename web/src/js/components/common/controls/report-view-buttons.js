@@ -7,10 +7,10 @@ export const ReportViewButtonsComponent = (props) => {
 
   return (
     <div className="btn-group" role="group">
-      <button type="button" className={`btn btn-default${className('chart')}`} onClick={toggleReportView}>
+      <button id="chartButton" className={`btn btn-default${className('chart')}`} onClick={toggleReportView}>
         <i className="fa fa-bar-chart" />
       </button>
-      <button type="button" className={`btn btn-default${className('table')}`} onClick={toggleReportView}>
+      <button id="tableButton" className={`btn btn-default${className('table')}`} onClick={toggleReportView}>
         <i className="fa fa-table" />
       </button>
     </div>
