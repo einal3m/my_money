@@ -11,6 +11,7 @@
 #  category_id: int, foreign key
 #  subcategory_id: int foreign key
 #  transaction_type: string
+#  matching_transaction_id: integer foreign key
 #
 class Transaction < ActiveRecord::Base
   include ClassyEnum::ActiveRecord
@@ -22,6 +23,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :subcategory
   belongs_to :reconciliation
   belongs_to :bank_statement
+  has_one :matching_transaction, class_name: 'Transaction', foreign_key: 'matching_transaction_id'
 
   # validations
   validates :date, presence: true

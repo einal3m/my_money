@@ -39,6 +39,10 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before :each do
+    DatabaseCleaner.start
+  end
+
+  config.before :each, :type => :feature do
     page.driver.browser.manage.window.resize_to(1200,750)
     if Capybara.current_driver == :rack_test
       DatabaseCleaner.strategy = :transaction

@@ -9,8 +9,9 @@ require 'lib/date_range'
 #  memo: string
 #  amount: decimal
 #  account_id: int, foreign key
-#  category_id: int, foreign key, ('I', 'E' or 'T')
+#  category_id: int, foreign key
 #  subcategory_id: int foreign key
+#  matching_transaction_id: int foreign key (self)
 #
 RSpec.describe Transaction, type: :model do
   it 'has a valid factory' do
@@ -66,6 +67,12 @@ RSpec.describe Transaction, type: :model do
     it 'belongs to bank statement' do
       bs = FactoryGirl.create(:bank_statement)
       expect(FactoryGirl.create(:transaction, bank_statement: bs).bank_statement).to eq(bs)
+    end
+
+    it 'has one matching transaction' do
+      matching_txn = FactoryGirl.create(:transaction)
+      matched_txn = FactoryGirl.create(:transaction, matching_transaction: matching_txn)
+      expect(matched_txn.matching_transaction).to eq(matching_txn)
     end
   end
 
