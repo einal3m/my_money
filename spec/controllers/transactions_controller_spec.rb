@@ -15,10 +15,10 @@ RSpec.describe TransactionsController, type: :controller do
       t1.reload
       t2.reload
 
-      json = JSON.parse(response.body)
-      expect(json['transactions'].length).to eq(2)
-      expect(json['transactions'][0]).to eq(serialize_transaction(t2))
-      expect(json['transactions'][1]).to eq(serialize_transaction(t1))
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:transactions].length).to eq(2)
+      expect(json[:transactions][0][:id]).to eq(t2.id)
+      expect(json[:transactions][1][:id]).to eq(t1.id)
     end
 
     it 'returns all transactions for specified account for specified date and description' do
@@ -46,12 +46,18 @@ RSpec.describe TransactionsController, type: :controller do
       it 'creates a new Transaction' do
         a = FactoryGirl.create(:account)
         expect {
-          post :create, { account_id: a.id, transaction: build_attributes(:transaction) }, valid_session
+          post :create, { account_id: a.id, transaction: {
+            account_id: a.id,
+            transaction_type: 'bank_transaction',
+            date: '1-Jan-2015',
+            amount: 1000,
+          } }, valid_session
         }.to change(Transaction, :count).by(1)
       end
 
       it 'sends the transaction, with status success' do
         a = FactoryGirl.create(:account)
+        matched_txn = FactoryGirl.create(:transaction)
         post :create, { account_id: a.id, transaction: {
           account_id: a.id,
           transaction_type: 'bank_transaction',
@@ -60,11 +66,12 @@ RSpec.describe TransactionsController, type: :controller do
           memo: 'This is a memo',
           unit_price: 50,
           quantity: 20,
-          amount: 1000
+          amount: 1000,
+          matching_transaction_id: matched_txn.id
         } }, valid_session
         expect(response.status).to eq(201)
 
-        transaction = Transaction.first
+        transaction = Transaction.second
         expect(transaction.transaction_type).to be_a(TransactionType::BankTransaction)
         expect(transaction.unit_price).to eq(50)
         expect(transaction.quantity).to eq(20)
@@ -72,9 +79,25 @@ RSpec.describe TransactionsController, type: :controller do
         expect(transaction.notes).to eq('This is a note')
         expect(transaction.memo).to eq('This is a memo')
         expect(transaction.date).to eq(Date.parse('1-Jan-2015'))
+        expect(transaction.matching_transaction).to eq(matched_txn)
 
-        json = JSON.parse(response.body)
-        expect(json['transaction']).to eq(serialize_transaction(transaction))
+        response_txn = JSON.parse(response.body, symbolize_names: true)[:transaction]
+        expect(response_txn).to include({
+          id: transaction.id,
+          transaction_type: 'bank_transaction',
+          unit_price: 50,
+          quantity: 20,
+          amount: 1000,
+          notes: 'This is a note',
+          memo: 'This is a memo',
+          date: '2015-01-01',
+          matching_transaction: {
+            id: matched_txn.id,
+            account_id: matched_txn.account_id,
+            notes: matched_txn.notes,
+            memo: matched_txn.memo
+          }
+        })
       end
     end
 
@@ -82,7 +105,11 @@ RSpec.describe TransactionsController, type: :controller do
       it 'does not create a new transaction' do
         a = FactoryGirl.create(:account)
         expect {
-          post :create, { account_id: a.id, transaction: build_attributes(:transaction_invalid) }, valid_session
+          post :create, { account_id: a.id, transaction: {
+            account_id: a.id,
+            transaction_type: 'bank_transaction',
+            date: '1-Jan-2015'
+          } }, valid_session
         }.not_to change(Transaction, :count)
         expect(response.status).to eq(422)
       end

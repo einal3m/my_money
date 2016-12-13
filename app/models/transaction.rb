@@ -23,7 +23,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :subcategory
   belongs_to :reconciliation
   belongs_to :bank_statement
-  has_one :matching_transaction, class_name: 'Transaction', foreign_key: 'matching_transaction_id'
+
+  belongs_to :matching_transaction, class_name: 'Transaction', foreign_key: 'matching_transaction_id'
 
   # validations
   validates :date, presence: true

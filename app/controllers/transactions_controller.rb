@@ -27,7 +27,10 @@ class TransactionsController < ApplicationController
     transactions = []
     params[:_json].each do |txn_params|
       transaction = Transaction.new(
-        txn_params.permit(:transaction_type, :date, :amount, :fitid, :memo, :notes, :account_id, :category_id, :subcategory_id)
+        txn_params.permit(
+          :transaction_type, :date, :amount, :fitid, :memo, :notes,
+          :account_id, :category_id, :subcategory_id, :matching_transaction_id
+        )
       )
       transaction.save
       transactions << transaction
@@ -103,7 +106,7 @@ class TransactionsController < ApplicationController
   def transaction_params
     params.require(:transaction).permit(
       :transaction_type, :date, :amount, :fitid, :memo,
-      :notes, :account_id, :category_id, :subcategory_id, :quantity, :unit_price
+      :notes, :account_id, :category_id, :subcategory_id, :quantity, :unit_price, :matching_transaction_id
     )
   end
 end
