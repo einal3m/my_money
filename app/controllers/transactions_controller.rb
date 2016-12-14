@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  before_action :set_transaction, only: [:edit, :update, :destroy]
+  before_action :set_transaction, only: [:edit, :update, :destroy, :matching]
 
   def index
     render json: description ? transactions_by_date_and_description : transactions_by_date
@@ -69,10 +69,8 @@ class TransactionsController < ApplicationController
   end
 
   def matching
-    date = params[:date]
-    amount = - params[:amount].to_i
-
-    txns = Transaction.where(amount: amount, date: date).where.not(account: account)
+    txns = Transaction.where(amount: -@transaction.amount, date: @transaction.date)
+                      .where.not(account: @transaction.account)
 
     render json: txns
   end

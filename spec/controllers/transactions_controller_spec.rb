@@ -218,7 +218,7 @@ RSpec.describe TransactionsController, type: :controller do
     end
   end
 
-  xdescribe 'matching' do
+  describe 'matching' do
     it 'returns transactions from other accounts which match given params' do
       a1 = FactoryGirl.create(:account)
       a2 = FactoryGirl.create(:account)
@@ -226,6 +226,7 @@ RSpec.describe TransactionsController, type: :controller do
       date = '2014-07-01'
       amount = 333
 
+      t0 = FactoryGirl.create(:transaction, account: a1, date: date, amount: amount)
       t1 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
       FactoryGirl.create(:transaction, account: a2, date: date, amount: amount)
       FactoryGirl.create(:transaction, account: a1, date: date, amount: -amount)
@@ -233,7 +234,7 @@ RSpec.describe TransactionsController, type: :controller do
       FactoryGirl.create(:transaction, account: a2, date: date, amount: 444)
       t6 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
 
-      get :matching, { account_id: a1.id, date: date, amount: amount }, valid_session
+      get :matching, { account_id: a1.id, id: t0.id }, valid_session
       expect(response).to be_success
 
       json = JSON.parse(response.body)

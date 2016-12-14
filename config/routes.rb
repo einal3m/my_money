@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     resources :reconciliations
     resources :bank_statements, only: [:create, :index, :destroy]
     resources :transactions do
+      member do
+        get 'matching'
+      end
       collection do
         get 'unreconciled'
         post 'import'
