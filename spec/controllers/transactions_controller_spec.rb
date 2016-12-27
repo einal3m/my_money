@@ -57,7 +57,7 @@ RSpec.describe TransactionsController, type: :controller do
 
       it 'sends the transaction, with status success' do
         a = FactoryGirl.create(:account)
-        matched_txn = FactoryGirl.create(:transaction)
+        matched_txn = FactoryGirl.create(:transaction, date: '1-Jan-2015', amount: -1000)
         post :create, { account_id: a.id, transaction: {
           account_id: a.id,
           transaction_type: 'bank_transaction',

@@ -69,9 +69,7 @@ class TransactionsController < ApplicationController
   end
 
   def matching
-    txns = Transaction.where(amount: -@transaction.amount, date: @transaction.date)
-                      .where.not(account: @transaction.account)
-
+    txns = Transaction.where(amount: -@transaction.amount, date: @transaction.date).where.not(account: @transaction.account)
     render json: txns
   end
 

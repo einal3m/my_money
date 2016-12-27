@@ -11,7 +11,7 @@ class TransactionSerializer < ActiveModel::Serializer
       id: matching_transaction.id,
       account_id: matching_transaction.account_id,
       notes: matching_transaction.notes,
-      memo: matching_transaction.memo,
+      memo: matching_transaction.memo
     }
   end
 end

@@ -41,6 +41,53 @@ RSpec.describe Transaction, type: :model do
     it 'is invalid without a transaction type' do
       expect(FactoryGirl.build(:transaction, transaction_type: nil)).not_to be_valid
     end
+
+    it 'is invalid if matching_transaction is in same account' do
+      matching_txn = FactoryGirl.create(:transaction, amount: 111)
+      expect(FactoryGirl.build(
+        :transaction,
+        amount: -111,
+        matching_transaction_id: matching_txn.id
+      )).to be_valid
+      expect(FactoryGirl.build(
+        :transaction,
+        account_id: matching_txn.account_id,
+        amount: -111,
+        matching_transaction_id: matching_txn.id
+      )).not_to be_valid
+    end
+
+    it 'is invalid if the matching transaction has a different date' do
+      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
+      expect(FactoryGirl.build(
+        :transaction,
+        date: '2016-12-19',
+        amount: -111,
+        matching_transaction_id: matching_txn.id
+      )).to be_valid
+      expect(FactoryGirl.build(
+        :transaction,
+        date: '2016-12-20',
+        amount: -111,
+        matching_transaction_id: matching_txn.id
+      )).not_to be_valid
+    end
+
+    it 'is invalid if the matching transaction has a different amount' do
+      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
+      expect(FactoryGirl.build(
+        :transaction,
+        date: '2016-12-19',
+        amount: -111,
+        matching_transaction_id: matching_txn.id
+      )).to be_valid
+      expect(FactoryGirl.build(
+        :transaction,
+        date: '2016-12-19',
+        amount: -1111,
+        matching_transaction_id: matching_txn.id
+      )).not_to be_valid
+    end
   end
 
   describe 'relationships' do
@@ -70,8 +117,8 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'has one matching transaction' do
-      matching_txn = FactoryGirl.create(:transaction)
-      matched_txn = FactoryGirl.create(:transaction, matching_transaction: matching_txn)
+      matching_txn = FactoryGirl.create(:transaction, amount: 111)
+      matched_txn = FactoryGirl.create(:transaction, matching_transaction: matching_txn, amount: -111)
       expect(matched_txn.matching_transaction).to eq(matching_txn)
     end
   end

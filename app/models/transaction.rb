@@ -31,6 +31,7 @@ class Transaction < ActiveRecord::Base
   validates :account_id, presence: true
   validates :amount, presence: true, numericality: true
   validates :transaction_type, presence: true
+  validate :matching_transaction_must_match
 
   # common lookups
   scope :unreconciled, ->(account) {
@@ -67,6 +68,25 @@ class Transaction < ActiveRecord::Base
 
   def defaults
     self.add_to_reconciliation = false
+  end
+
+  def matching_transaction_must_match
+    return if matching_transaction_id.nil?
+    matching_transaction_must_be_from_different_account
+    matching_transaction_must_have_same_date
+    matching_transaction_must_have_opposite_amount
+  end
+
+  def matching_transaction_must_have_opposite_amount
+    errors.add(:matching_transaction_id, 'must have the opposite amount') if amount != -matching_transaction.amount
+  end
+
+  def matching_transaction_must_have_same_date
+    errors.add(:matching_transaction_id, 'must have the same date') if date != matching_transaction.date
+  end
+
+  def matching_transaction_must_be_from_different_account
+    errors.add(:matching_transaction_id, 'must be in a different account') if account_id == matching_transaction.account_id
   end
 
   # when a new transaction is created, calculate the running balance for the
