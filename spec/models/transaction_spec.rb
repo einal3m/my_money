@@ -88,6 +88,18 @@ RSpec.describe Transaction, type: :model do
         matching_transaction_id: matching_txn.id
       )).not_to be_valid
     end
+
+    it 'is invalid if the matching transaction is already matched' do
+      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
+      FactoryGirl.create(:transaction, date: '2016-12-19', amount: -111, matching_transaction_id: matching_txn.id)
+
+      expect(FactoryGirl.build(
+        :transaction,
+        date: '2016-12-19',
+        amount: -111,
+        matching_transaction_id: matching_txn.id
+      )).not_to be_valid
+    end
   end
 
   describe 'relationships' do
@@ -210,7 +222,52 @@ RSpec.describe Transaction, type: :model do
     end
   end
 
-  describe 'callbacks' do
+  describe 'matching transaction callbacks' do
+    it 'on create sets the other transactions matching id' do
+      transaction1 = FactoryGirl.create(:transaction, amount: 11)
+      transaction2 = FactoryGirl.create(:transaction, amount: -11, matching_transaction_id: transaction1.id)
+
+      transaction1.reload
+      transaction2.reload
+
+      expect(transaction1.matching_transaction_id).to eq(transaction2.id)
+      expect(transaction2.matching_transaction_id).to eq(transaction1.id)
+    end
+
+    it 'on update sets the other transactions matching id' do
+      transaction1 = FactoryGirl.create(:transaction, amount: 11)
+      transaction2 = FactoryGirl.create(:transaction, amount: -11)
+
+      transaction1.update(matching_transaction_id: transaction2.id)
+
+      transaction1.reload
+      transaction2.reload
+
+      expect(transaction1.matching_transaction_id).to eq(transaction2.id)
+      expect(transaction2.matching_transaction_id).to eq(transaction1.id)
+    end
+
+    it 'on update resets old matching transaction to nil' do
+      transaction1 = FactoryGirl.create(:transaction, amount: 11)
+      transaction2 = FactoryGirl.create(:transaction, amount: -11, matching_transaction_id: transaction1.id)
+
+      transaction1.reload
+      transaction2.reload
+
+      expect(transaction1.matching_transaction_id).to eq(transaction2.id)
+      expect(transaction2.matching_transaction_id).to eq(transaction1.id)
+
+      transaction2.update(matching_transaction_id: nil)
+
+      transaction1.reload
+      transaction2.reload
+
+      expect(transaction1.matching_transaction_id).to be_nil
+      expect(transaction2.matching_transaction_id).to be_nil
+    end
+  end
+
+  describe 'balance callbacks' do
     before :each do
       account = FactoryGirl.create(:account, starting_balance: 11_010, starting_date: '2014-08-19')
       @transaction1 = FactoryGirl.create(:transaction, account: account, date: '2014-08-23', amount: 5520)

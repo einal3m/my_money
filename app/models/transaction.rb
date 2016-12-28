@@ -60,8 +60,12 @@ class Transaction < ActiveRecord::Base
 
   # set defaults for extra attributes
   after_initialize :defaults
+
   before_create :calculate_balance_on_create
-  after_update :calculate_balance_on_update
+  before_update :unmatch_transactions
+
+  after_create :match_transaction
+  after_update :calculate_balance_on_update, :match_transaction
   after_destroy :calculate_balance_on_destroy
 
   protected
@@ -75,6 +79,11 @@ class Transaction < ActiveRecord::Base
     matching_transaction_must_be_from_different_account
     matching_transaction_must_have_same_date
     matching_transaction_must_have_opposite_amount
+    matching_transaction_must_not_be_already_matched
+  end
+
+  def matching_transaction_must_not_be_already_matched
+    errors.add(:matching_transaction_id, 'must not already be matched') unless matching_transaction.matching_transaction_id.nil?
   end
 
   def matching_transaction_must_have_opposite_amount
@@ -87,6 +96,19 @@ class Transaction < ActiveRecord::Base
 
   def matching_transaction_must_be_from_different_account
     errors.add(:matching_transaction_id, 'must be in a different account') if account_id == matching_transaction.account_id
+  end
+
+  def match_transaction
+    return if matching_transaction_id.nil?
+    matching_transaction.update_column(:matching_transaction_id, id)
+  end
+
+  def unmatch_transactions
+    return unless changes.key?(:matching_transaction_id)
+    return if changes[:matching_transaction_id][0].nil?
+
+    old_matching_transaction = Transaction.find(changes[:matching_transaction_id][0])
+    old_matching_transaction.update_column(:matching_transaction_id, nil)
   end
 
   # when a new transaction is created, calculate the running balance for the
