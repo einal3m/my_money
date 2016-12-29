@@ -26,11 +26,12 @@ describe('TransactionRow', () => {
       subcategories: [{ id: 5, name: 'My Subcategory' }],
     }],
   }];
+  const accounts = [{ id: 2, name: 'My Matched Account' }];
 
   describe('render', () => {
-    it('transaction attributes', () => {
+    it('category transaction attributes', () => {
       transactionRow = shallowRenderer(
-        <TransactionRow transaction={transaction} groupedCategories={groupedCategories} />
+        <TransactionRow transaction={transaction} groupedCategories={groupedCategories} accounts={accounts} />
       );
       const [date, description, amountCell, balanceCell] = transactionRow.props.children;
 
@@ -46,13 +47,41 @@ describe('TransactionRow', () => {
       expect(balanceCell.props.children.type).toEqual(Balance);
       expect(balanceCell.props.children.props.balance).toEqual(6070);
     });
+
+    it('transfer transaction attributes', () => {
+      const transferTransaction = {
+        id: 22,
+        date: '2015-12-19',
+        amount: 300,
+        notes: 'This is a note',
+        memo: 'This is a memo',
+        balance: 6070,
+        matchingTransaction: { id: 5, accountId: 2 },
+      };
+      transactionRow = shallowRenderer(
+        <TransactionRow transaction={transferTransaction} groupedCategories={groupedCategories} accounts={accounts} />
+      );
+      const [date, description, amountCell, balanceCell] = transactionRow.props.children;
+
+      const [memoNotes, category] = description.props.children;
+
+      expect(transactionRow.type).toEqual('tr');
+      expect(date.props.children.type).toEqual(Date);
+      expect(date.props.children.props.date).toEqual('2015-12-19');
+      expect(memoNotes.props.children).toEqual('This is a memo/This is a note');
+      expect(category.props.children).toEqual('Transfer to: My Matched Account');
+      expect(amountCell.props.children.type).toEqual(Amount);
+      expect(amountCell.props.children.props.amount).toEqual(300);
+      expect(balanceCell.props.children.type).toEqual(Balance);
+      expect(balanceCell.props.children.props.balance).toEqual(6070);
+    });
   });
 
   describe('events', () => {
     it('click row opens edit transaction modal', () => {
       spyOn(formActions, 'showFormModal');
       transactionRow = shallowRenderer(
-        <TransactionRow transaction={transaction} groupedCategories={groupedCategories} />
+        <TransactionRow transaction={transaction} groupedCategories={groupedCategories} accounts={accounts} />
       );
 
       transactionRow.props.onClick();

@@ -3,38 +3,15 @@ import Amount from '../common/amount';
 import Date from '../common/date';
 import Balance from '../common/balance';
 import { showFormModal } from '../../actions/form-actions';
+import { memoAndNotes, categoryAndSubcategory, transferTo } from '../../util/transaction-util';
 
 export default class TransactionRow extends React.Component {
 
-  renderMemoNotes = (memo, notes) => {
-    let text = memo || '';
-    text += memo && notes ? '/' : '';
-    text += notes || '';
-    return text;
-  };
-
-  selectedCategory(categoryId) {
-    return this.props.groupedCategories.map(categoryType =>
-      categoryType.categories.filter(category => category.id === categoryId)
-    ).filter(c => c.length > 0)[0][0];
-  }
-
-  selectedSubcategory = (subcategoryId, category) => (
-    category.subcategories.filter(subcategory => subcategory.id === subcategoryId)[0]
-  );
-
-  renderCategory(categoryId, subcategoryId) {
-    if (!categoryId && !subcategoryId) return '';
-
-    const selectedCategory = this.selectedCategory(categoryId);
-    let text = selectedCategory.name;
-
-    if (subcategoryId) {
-      const selectedSubcategory = this.selectedSubcategory(subcategoryId, selectedCategory);
-      text += `/${selectedSubcategory.name}`;
+  renderCategoryOrTransfer() {
+    if (this.props.transaction.matchingTransaction) {
+      return transferTo(this.props.transaction.matchingTransaction, this.props.accounts);
     }
-
-    return text;
+    return categoryAndSubcategory(this.props.transaction, this.props.groupedCategories);
   }
 
   onClickHandler = () => {
@@ -46,9 +23,9 @@ export default class TransactionRow extends React.Component {
       <tr onClick={this.onClickHandler}>
         <td><Date date={this.props.transaction.date} /></td>
         <td>
-          <div>{this.renderMemoNotes(this.props.transaction.memo, this.props.transaction.notes)}</div>
+          <div>{memoAndNotes(this.props.transaction)}</div>
           <div className="category">
-            {this.renderCategory(this.props.transaction.categoryId, this.props.transaction.subcategoryId)}
+            {this.renderCategoryOrTransfer()}
           </div>
         </td>
         <td className="currency"><Amount amount={this.props.transaction.amount} /></td>
@@ -68,7 +45,9 @@ TransactionRow.propTypes = {
     balance: PropTypes.number.isRequired,
     categoryId: PropTypes.number,
     subcategoryId: PropTypes.number,
+    matchingTransaction: PropTypes.shape({ accountId: PropTypes.number.isRequired }),
   }).isRequired,
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

@@ -1,4 +1,4 @@
-import { memoAndNotes, categoryAndSubcategory } from '../transaction-util';
+import { memoAndNotes, categoryAndSubcategory, accountNameAndBank, transferTo } from '../transaction-util';
 
 describe('transactionUtil', () => {
   describe('memoAndNotes', () => {
@@ -42,6 +42,26 @@ describe('transactionUtil', () => {
     it('returns an empty string when category and subcategory are null', () => {
       const transaction = { };
       expect(categoryAndSubcategory(transaction, groupedCategories)).toEqual('');
+    });
+  });
+
+  describe('accountNameAndBank', () => {
+    it('returns a string with both account name and bank', () => {
+      const account = { name: 'My Account Name', bank: 'My Account Bank' };
+      expect(accountNameAndBank(account)).toEqual('My Account Name (My Account Bank)');
+    });
+
+    it('returns only the account name, when bank is undefined', () => {
+      const account = { name: 'My Account Name' };
+      expect(accountNameAndBank(account)).toEqual('My Account Name');
+    });
+  });
+
+  describe('transferTo', () => {
+    it('returns a string with Transfer to: account name (bank)', () => {
+      const accounts = [{ id: 1 }, { id: 2, name: 'My Account Name', bank: 'My Account Bank' }];
+      const transaction = { accountId: 2 };
+      expect(transferTo(transaction, accounts)).toEqual('Transfer to: My Account Name (My Account Bank)');
     });
   });
 });

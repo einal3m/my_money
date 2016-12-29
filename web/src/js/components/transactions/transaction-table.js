@@ -14,6 +14,7 @@ export class TransactionTableComponent extends React.Component {
         key={transaction.id}
         transaction={transaction}
         groupedCategories={this.props.groupedCategories}
+        accounts={this.props.accounts}
       />
     ));
   }
@@ -70,6 +71,7 @@ function mapStateToProps(state) {
   return {
     transactions: state.transactionStore.get('transactions').toJS(),
     account: state.accountStore.get('currentAccount').toJS(),
+    accounts: state.accountStore.get('accounts').toJS(),
     searchCriteriaLoaded: state.accountStore.get('loaded') && state.dateRangeStore.get('loaded'),
     groupedCategories: groupedCategories(state).toJS(),
   };

@@ -16,6 +16,20 @@ export function categoryAndSubcategory(transaction, groupedCategories) {
   return `${category.name}/${subcategory.name}`;
 }
 
+export function accountNameAndBank(account) {
+  if (account.bank) {
+    return `${account.name} (${account.bank})`;
+  }
+  return account.name;
+}
+
+export function transferTo(transaction, accounts) {
+  const matchingAccount = accounts.filter(
+    account => account.id === transaction.accountId
+  )[0];
+
+  return `Transfer to: ${accountNameAndBank(matchingAccount)}`;
+}
 
 function selectedCategory(categoryId, groupedCategories) {
   return groupedCategories.map(categoryType =>
