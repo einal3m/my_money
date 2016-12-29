@@ -11,11 +11,12 @@ const transactionTransformer = {
       notes: transaction.notes,
       memo: transaction.memo,
       transaction_type: transaction.transactionType,
+      matching_transaction_id: transaction.matchingTransactionId,
     };
   },
 
   transformFromApi(transaction) {
-    return {
+    const transformedTransaction = {
       id: transaction.id,
       accountId: transaction.account_id,
       date: transaction.date,
@@ -27,6 +28,18 @@ const transactionTransformer = {
       balance: transaction.balance,
       transactionType: transaction.transaction_type,
     };
+
+    if (transaction.matching_transaction) {
+      transformedTransaction.matchingTransactionId = transaction.matching_transaction.id;
+      transformedTransaction.matchingTransaction = {
+        id: transaction.matching_transaction.id,
+        accountId: transaction.matching_transaction.account_id,
+        memo: transaction.matching_transaction.memo,
+        notes: transaction.matching_transaction.notes,
+      };
+    }
+
+    return transformedTransaction;
   },
 
   transformFromOfxApi(transaction) {

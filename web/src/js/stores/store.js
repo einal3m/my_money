@@ -2,6 +2,7 @@ import { createStore, combineReducers } from 'redux';
 import accountReducer from './account-reducer';
 import dateRangeReducer from './date-range-reducer';
 import transactionReducer from './transaction-reducer';
+import matchingTransactionReducer from './matching-transactions-reducer';
 import categoryReducer from './category-reducer';
 import importReducer from './import-reducer';
 import apiReducer from './api-status-reducer';
@@ -14,6 +15,7 @@ export default createStore(
     accountStore: accountReducer,
     dateRangeStore: dateRangeReducer,
     transactionStore: transactionReducer,
+    matchingTransactionStore: matchingTransactionReducer,
     categoryStore: categoryReducer,
     importStore: importReducer,
     apiStatusStore: apiReducer,
