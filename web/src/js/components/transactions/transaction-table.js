@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import TransactionRow from './transaction-row';
 import { groupedCategories } from '../../selectors/category-selector';
+import { accountNameAndBank } from '../../util/text-util';
 
 require('../../../css/transaction.scss');
 
@@ -21,7 +22,7 @@ export class TransactionTableComponent extends React.Component {
 
   renderTitle() {
     if (this.props.searchCriteriaLoaded) {
-      return <h3>Transactions for {this.props.account.name}</h3>;
+      return <h3>Transactions for {accountNameAndBank(this.props.account)}</h3>;
     }
     return undefined;
   }

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Amount from '../common/amount';
 import Date from '../common/date';
 import { showFormModal } from '../../actions/form-actions';
-import { memoAndNotes, categoryAndSubcategory } from '../../util/transaction-util';
+import { memoAndNotes, categoryAndSubcategory } from '../../util/text-util';
 
 export default class ReportTransactionRow extends React.Component {
 

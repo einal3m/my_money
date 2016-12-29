@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { showFormModal } from '../../actions/form-actions';
-import { categoryAndSubcategory } from '../../util/transaction-util';
+import { categoryAndSubcategory } from '../../util/text-util';
 
 export default class PatternRow extends React.Component {
 

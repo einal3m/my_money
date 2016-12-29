@@ -1,6 +1,6 @@
-import { memoAndNotes, categoryAndSubcategory, accountNameAndBank, transferTo } from '../transaction-util';
+import { memoAndNotes, categoryAndSubcategory, accountNameAndBank, transferTo } from '../text-util';
 
-describe('transactionUtil', () => {
+describe('textUtil', () => {
   describe('memoAndNotes', () => {
     it('returns a string with both memo and notes', () => {
       const transaction = { memo: 'my memo', notes: 'my notes' };

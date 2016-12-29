@@ -3,7 +3,7 @@ import Amount from '../common/amount';
 import Date from '../common/date';
 import Balance from '../common/balance';
 import { showFormModal } from '../../actions/form-actions';
-import { memoAndNotes, categoryAndSubcategory, transferTo } from '../../util/transaction-util';
+import { memoAndNotes, categoryAndSubcategory, transferTo } from '../../util/text-util';
 
 export default class TransactionRow extends React.Component {
 
