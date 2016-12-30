@@ -83,6 +83,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def matching_transaction_must_not_be_already_matched
+    return if matching_transaction_id == matching_transaction.id && matching_transaction.matching_transaction_id == id
     errors.add(:matching_transaction_id, 'must not already be matched') unless matching_transaction.matching_transaction_id.nil?
   end
 

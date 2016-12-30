@@ -219,7 +219,7 @@ RSpec.describe TransactionsController, type: :controller do
   end
 
   describe 'matching' do
-    it 'returns transactions from other accounts which match given params' do
+    it 'returns transactions from other accounts which match given params, and are unmatched' do
       a1 = FactoryGirl.create(:account)
       a2 = FactoryGirl.create(:account)
 
@@ -228,6 +228,8 @@ RSpec.describe TransactionsController, type: :controller do
 
       t0 = FactoryGirl.create(:transaction, account: a1, date: date, amount: amount)
       t1 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      t2 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      FactoryGirl.create(:transaction, account: a1, date: date, amount: amount, matching_transaction_id: t2.id)
       FactoryGirl.create(:transaction, account: a2, date: date, amount: amount)
       FactoryGirl.create(:transaction, account: a1, date: date, amount: -amount)
       FactoryGirl.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
