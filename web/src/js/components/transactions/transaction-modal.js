@@ -25,13 +25,18 @@ export class TransactionModalComponent extends React.Component {
           onSave={this.handleSave}
           onDelete={this.handleDelete}
         >
-          <BankTransactionForm transaction={this.props.model} groupedCategories={this.props.groupedCategories} />
+          <BankTransactionForm
+            accounts={this.props.accounts}
+            transaction={this.props.model}
+            groupedCategories={this.props.groupedCategories}
+            matchLoading={this.props.matchLoading}
+            matchingTransactions={this.props.matchingTransactions}
+          />
         </FormModal>
       );
     }
     return <div />;
   }
-
 }
 
 TransactionModalComponent.propTypes = {
@@ -40,15 +45,21 @@ TransactionModalComponent.propTypes = {
   modelType: PropTypes.string,
   model: PropTypes.shape({}),
   allowDelete: PropTypes.bool,
+  matchLoading: PropTypes.bool.isRequired,
+  matchingTransactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 function mapStateToProps(state) {
   return {
+    accounts: state.accountStore.get('accounts').toJS(),
     groupedCategories: groupedCategories(state).toJS(),
     show: state.formStore.get('show'),
     modelType: state.formStore.get('modelType'),
     model: state.formStore.get('model').toJS(),
     allowDelete: state.formStore.get('allowDelete'),
+    matchLoading: state.matchingTransactionStore.get('loading'),
+    matchingTransactions: state.matchingTransactionStore.get('matchingTransactions').toJS(),
   };
 }
 

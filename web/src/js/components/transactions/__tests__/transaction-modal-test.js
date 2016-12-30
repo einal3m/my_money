@@ -20,7 +20,7 @@ describe('TransactionModal', () => {
   describe('render', () => {
     it('does not display modal if show is false', () => {
       const transactionModal = shallowRenderer(
-        <TransactionModal show={false} groupedCategories={groupedCategories} />
+        <TransactionModal show={false} groupedCategories={groupedCategories} accounts={[]} />
       );
 
       expect(transactionModal.type).toEqual('div');
@@ -34,6 +34,7 @@ describe('TransactionModal', () => {
           groupedCategories={groupedCategories}
           modelType="Transaction"
           model={{ id: 34 }}
+          accounts={[]}
           allowDelete
         />
       );
@@ -60,6 +61,7 @@ describe('TransactionModal', () => {
           groupedCategories={groupedCategories}
           modelType="Transaction"
           model={{ id: 34 }}
+          accounts={[]}
           allowDelete
         />
       );
@@ -77,6 +79,7 @@ describe('TransactionModal', () => {
           groupedCategories={groupedCategories}
           modelType="Transaction"
           model={{ id: 34 }}
+          accounts={[]}
           allowDelete
         />
       );

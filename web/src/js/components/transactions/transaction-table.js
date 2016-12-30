@@ -63,6 +63,7 @@ export class TransactionTableComponent extends React.Component {
 
 TransactionTableComponent.propTypes = {
   account: PropTypes.shape({ name: PropTypes.string }),
+  accounts: PropTypes.arrayOf(PropTypes.shape({})),
   searchCriteriaLoaded: PropTypes.bool.isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired })),
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

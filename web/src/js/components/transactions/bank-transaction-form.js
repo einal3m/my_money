@@ -1,11 +1,14 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
+import { Tabs, Tab } from 'react-bootstrap';
 import DatePicker from '../common/date-picker/date-picker';
 import FormValidator from '../../util/form-validator';
 import FormControl from '../common/controls/form-control';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
+import MatchingTransactionSelect from '../common/controls/matching-transaction-select';
 import SubcategoryPicker from '../common/controls/subcategory-picker';
 import MoneyInput from '../common/controls/money-input';
+import { getMatchingTransactions } from '../../actions/matching-transactions-actions';
 
 export default class BankTransactionForm extends React.Component {
 
@@ -16,8 +19,13 @@ export default class BankTransactionForm extends React.Component {
         date: moment().format('YYYY-MM-DD'),
         transactionType: 'bank_transaction',
       }, props.transaction),
+      isTransfer: !!props.transaction.matchingTransaction,
     };
     this.validator = new FormValidator(this.validationSchema);
+  }
+
+  componentDidMount() {
+    getMatchingTransactions(this.state.transaction.id);
   }
 
   validationSchema = {
@@ -37,6 +45,10 @@ export default class BankTransactionForm extends React.Component {
     this.handleChange({ target: { name: 'subcategoryId', value: subcategoryId } });
   };
 
+  handleMatchedTransactionChange = (matchedTransactionId) => {
+    this.handleChange({ target: { name: 'matchedTransactionId', value: matchedTransactionId } });
+  };
+
   handleCategoryChange = (event) => {
     this.handleSubcategoryChange(null);
     this.handleChange(event);
@@ -47,6 +59,10 @@ export default class BankTransactionForm extends React.Component {
     transaction[event.target.name] = event.target.value;
     this.setState({ transaction });
     this.validator.validateField(event.target.name, event.target.value);
+  };
+
+  handleChangeTab = (eventKey) => {
+    this.setState({ isTransfer: eventKey === 'transfer' });
   };
 
   isValid() {
@@ -101,16 +117,33 @@ export default class BankTransactionForm extends React.Component {
             onChange={this.handleChange}
           />
         </FormControl>
-        <FormControl name="categoryId" validator={this.validator} label="Category">
-          <GroupedCategorySelect
-            name="categoryId"
-            value={this.state.transaction.categoryId}
-            allowUnassigned
-            groupedCategories={this.props.groupedCategories}
-            onChange={this.handleCategoryChange}
-          />
-        </FormControl>
-        {this.renderSubcategoryPicker()}
+        <Tabs id="myTab" activeKey={this.state.isTransfer ? 'transfer' : 'category'} onSelect={this.handleChangeTab}>
+          <Tab title="Category" eventKey="category">
+            <FormControl name="categoryId" validator={this.validator} label="Category">
+              <GroupedCategorySelect
+                name="categoryId"
+                value={this.state.transaction.categoryId}
+                allowUnassigned
+                groupedCategories={this.props.groupedCategories}
+                onChange={this.handleCategoryChange}
+              />
+            </FormControl>
+            {this.renderSubcategoryPicker()}
+          </Tab>
+          <Tab title="Transfer" eventKey="transfer">
+            <FormControl name="matchingTransactionId" validator={this.validator} label="Matching Transactions">
+              <MatchingTransactionSelect
+                name="matchingTransactionId"
+                value={this.state.transaction.matchingTransactionId}
+                accounts={this.props.accounts}
+                matchingTransactions={this.props.matchingTransactions}
+                loading={this.props.matchLoading}
+                allowUnassigned
+                onChange={this.handleMatchedTransactionChange}
+              />
+            </FormControl>
+          </Tab>
+        </Tabs>
       </div>
     );
   }
@@ -126,6 +159,10 @@ BankTransactionForm.propTypes = {
     balance: PropTypes.number,
     categoryId: PropTypes.number,
     subcategoryId: PropTypes.number,
+    matchingTransaction: PropTypes.shape({}),
   }).isRequired,
+  accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groupedCategories: React.PropTypes.arrayOf(React.PropTypes.shape({})).isRequired,
+  matchLoading: PropTypes.bool.isRequired,
+  matchingTransactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

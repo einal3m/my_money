@@ -8,6 +8,7 @@ import GroupedCategorySelect from '../../common/controls/grouped-category-select
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
 import FormControl from '../../common/controls/form-control';
 import MoneyInput from '../../common/controls/money-input';
+import * as matchingTransactionsActions from '../../../actions/matching-transactions-actions';
 
 describe('BankTransactionForm', () => {
   const groupedCategories = [
@@ -20,8 +21,11 @@ describe('BankTransactionForm', () => {
     },
   ];
 
+  const accounts = [{ id: 11, name: 'Account One' }, { id: 12, name: 'Account Two' }];
+
   const transaction = {
     id: 22,
+    accountId: 11,
     date: '2015-12-19',
     amount: 300,
     notes: 'This is a note',
@@ -31,12 +35,39 @@ describe('BankTransactionForm', () => {
     subcategoryId: 5,
   };
 
+  beforeEach(() => {
+    spyOn(matchingTransactionsActions, 'getMatchingTransactions');
+  });
+
+  describe('component did mount', () => {
+    it('gets the matching transactions', () => {
+      TestUtils.renderIntoDocument(
+        <BankTransactionForm
+          transaction={transaction}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading={false}
+          matchingTransactions={[]}
+        />
+      );
+
+      expect(matchingTransactionsActions.getMatchingTransactions).toHaveBeenCalledWith(transaction.id);
+    });
+  });
+
   describe('render', () => {
     it('has a control for each editable property', () => {
       const form = shallowRenderer(
-        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
+        <BankTransactionForm
+          transaction={transaction}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading={false}
+          matchingTransactions={[]}
+        />
       );
-      const [date, amount, notes, category, subcategory] = form.props.children;
+      const [date, amount, notes, tabs] = form.props.children;
+      const [category, subcategory] = tabs.props.children[0].props.children;
 
       expect(date.type).toEqual(FormControl);
       expect(date.props.name).toEqual('date');
@@ -75,9 +106,16 @@ describe('BankTransactionForm', () => {
 
     it('does not display subcategory picker if category id is null', () => {
       const form = shallowRenderer(
-        <BankTransactionForm transaction={{ }} groupedCategories={groupedCategories} />
+        <BankTransactionForm
+          transaction={{ }}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading={false}
+          matchingTransactions={[]}
+        />
       );
-      const [date, amount, notes, category, subcategory] = form.props.children;
+      const [date, amount, notes, tabs] = form.props.children;
+      const [category, subcategory] = tabs.props.children[0].props.children;
 
       expect(date.props.label).toEqual('Date');
       expect(amount.props.label).toEqual('Amount');
@@ -91,7 +129,13 @@ describe('BankTransactionForm', () => {
     let form;
     beforeEach(() => {
       form = TestUtils.renderIntoDocument(
-        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
+        <BankTransactionForm
+          transaction={transaction}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading={false}
+          matchingTransactions={[]}
+        />
       );
     });
 
@@ -111,7 +155,13 @@ describe('BankTransactionForm', () => {
     let form;
     beforeEach(() => {
       form = TestUtils.renderIntoDocument(
-        <BankTransactionForm transaction={transaction} groupedCategories={groupedCategories} />
+        <BankTransactionForm
+          transaction={transaction}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading={false}
+          matchingTransactions={[]}
+        />
       );
     });
 
