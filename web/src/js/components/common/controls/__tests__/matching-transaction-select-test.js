@@ -4,7 +4,6 @@ import MatchingTransactionSelect from '../matching-transaction-select';
 import DropDown from '../drop-down';
 
 describe('MatchingTransactionSelect', () => {
-  let select;
   const accounts = [{ id: 1, name: 'Account One' }, { id: 2, name: 'Account Two' }];
   const matchingTransactions = [
     { id: 11, accountId: 2, memo: 'Memo One', notes: 'Notes One' },
@@ -16,11 +15,40 @@ describe('MatchingTransactionSelect', () => {
   });
 
   describe('render', () => {
+    it('displays loading text when loading', () => {
+      const select = shallowRenderer(
+        <MatchingTransactionSelect
+          value={null}
+          accounts={accounts}
+          loading
+          matchingTransactions={[]}
+          onChange={onChangeSpy}
+        />
+      );
+
+      expect(select.props.children).toEqual('Loading...');
+    });
+
+    it('displays text when no matching transactions found', () => {
+      const select = shallowRenderer(
+        <MatchingTransactionSelect
+          value={null}
+          accounts={accounts}
+          loading={false}
+          matchingTransactions={[]}
+          onChange={onChangeSpy}
+        />
+      );
+
+      expect(select.props.children).toEqual('No matching transactions found.');
+    });
+
     it('is a dropdown with grouped options', () => {
-      select = shallowRenderer(
+      const select = shallowRenderer(
         <MatchingTransactionSelect
           value={12}
           accounts={accounts}
+          loading={false}
           matchingTransactions={matchingTransactions}
           onChange={onChangeSpy}
         />
@@ -37,29 +65,23 @@ describe('MatchingTransactionSelect', () => {
 
       expect(select.props.groupedOptions).toEqual(expectedGroupedOptions);
     });
-
-    // xit('has a select with a placeholder when value is missing', () => {
-    //  select = shallowRenderer(<CategoryTypeSelect categoryTypes={categoryTypes} onChange={onChangeSpy}/>);
-    //  expect(select.type).toEqual('select');
-    //  expect(select.props.value).toEqual('0');
-    //
-    //  const [blank, options] = select.props.children;
-    //  expect(blank.props.children).toEqual('Please select...');
-    //  expect(options.length).toEqual(2);
-    //  expect(options[0].props.children).toEqual('One');
-    //  expect(options[1].props.children).toEqual('Two');
-    // });
   });
 
-  // xdescribe('onChange', () => {
-  //  it('calls the onChange prop', () => {
-  //    select = shallowRenderer(
-  //      <CategoryTypeSelect value={2} categoryTypes={categoryTypes} onChange={onChangeSpy}/>
-  //    );
-  //
-  //    select.props.onChange({ target: { name: 'categoryTypeId', value: '2' } });
-  //
-  //    expect(onChangeSpy).toHaveBeenCalledWith({ target: { name: 'categoryTypeId', value: 2 } });
-  //  });
-  // });
+  describe('onChange', () => {
+    it('calls the onChange prop', () => {
+      const select = shallowRenderer(
+        <MatchingTransactionSelect
+          value={12}
+          accounts={accounts}
+          loading={false}
+          matchingTransactions={matchingTransactions}
+          onChange={onChangeSpy}
+        />
+      );
+
+      select.props.onChange(2);
+
+      expect(onChangeSpy).toHaveBeenCalledWith(2);
+    });
+  });
 });

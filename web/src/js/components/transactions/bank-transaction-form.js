@@ -9,6 +9,7 @@ import MatchingTransactionSelect from '../common/controls/matching-transaction-s
 import SubcategoryPicker from '../common/controls/subcategory-picker';
 import MoneyInput from '../common/controls/money-input';
 import { getMatchingTransactions } from '../../actions/matching-transactions-actions';
+import { transferTo, memoAndNotes } from '../../util/text-util';
 
 export default class BankTransactionForm extends React.Component {
 
@@ -38,16 +39,30 @@ export default class BankTransactionForm extends React.Component {
     if (date === 'Invalid date') {
       changedDate = '';
     }
-    this.handleChange({ target: { name: 'date', value: changedDate } });
+    this.changeTransaction('date', changedDate);
   };
 
   handleSubcategoryChange = (subcategoryId) => {
-    this.handleChange({ target: { name: 'subcategoryId', value: subcategoryId } });
+    this.changeTransaction('subcategoryId', subcategoryId);
   };
 
-  handleMatchedTransactionChange = (matchedTransactionId) => {
-    this.handleChange({ target: { name: 'matchedTransactionId', value: matchedTransactionId } });
+  handleMatchingTransactionChange = (matchingTransactionId) => {
+    const matchingTransaction = this.props.matchingTransactions.filter(
+      transaction => transaction.id === matchingTransactionId
+    )[0];
+
+    this.changeTransaction('matchingTransaction', matchingTransaction);
+    this.changeTransaction('matchingTransactionId', matchingTransactionId);
   };
+
+  clearMatchingTransaction = () => {
+    this.changeTransaction('matchingTransaction', null);
+    this.changeTransaction('matchingTransactionId', null);
+  };
+
+  changeTransaction(name, value) {
+    this.handleChange({ target: { name, value } });
+  }
 
   handleCategoryChange = (event) => {
     this.handleSubcategoryChange(null);
@@ -71,7 +86,15 @@ export default class BankTransactionForm extends React.Component {
   }
 
   getModel() {
-    return this.state.transaction;
+    const model = this.state.transaction;
+    if (this.state.isTransfer) {
+      model.categoryId = null;
+      model.subcategoryId = null;
+    } else {
+      model.matchedTransactionId = null;
+      model.matchedTransaction = null;
+    }
+    return model;
   }
 
   renderSubcategoryPicker() {
@@ -88,6 +111,18 @@ export default class BankTransactionForm extends React.Component {
           value={this.state.transaction.subcategoryId}
         />
       </FormControl>
+    );
+  }
+
+  renderCurrentMatchingTransaction() {
+    if (!this.state.transaction.matchingTransaction) return <div />;
+
+    return (
+      <div>
+        <div>{transferTo(this.state.transaction.matchingTransaction, this.props.accounts)}</div>
+        <div>Description: {memoAndNotes(this.state.transaction.matchingTransaction)}</div>
+        <i className="fa fa-times-circle" onClick={this.clearMatchingTransaction} />
+      </div>
     );
   }
 
@@ -131,6 +166,7 @@ export default class BankTransactionForm extends React.Component {
             {this.renderSubcategoryPicker()}
           </Tab>
           <Tab title="Transfer" eventKey="transfer">
+            {this.renderCurrentMatchingTransaction()}
             <FormControl name="matchingTransactionId" validator={this.validator} label="Matching Transactions">
               <MatchingTransactionSelect
                 name="matchingTransactionId"
@@ -139,7 +175,7 @@ export default class BankTransactionForm extends React.Component {
                 matchingTransactions={this.props.matchingTransactions}
                 loading={this.props.matchLoading}
                 allowUnassigned
-                onChange={this.handleMatchedTransactionChange}
+                onChange={this.handleMatchingTransactionChange}
               />
             </FormControl>
           </Tab>
@@ -159,6 +195,7 @@ BankTransactionForm.propTypes = {
     balance: PropTypes.number,
     categoryId: PropTypes.number,
     subcategoryId: PropTypes.number,
+    matchingTransactionId: PropTypes.number,
     matchingTransaction: PropTypes.shape({}),
   }).isRequired,
   accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

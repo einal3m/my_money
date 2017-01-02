@@ -1,11 +1,13 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import moment from 'moment';
+import { Tabs } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import BankTransactionForm from '../bank-transaction-form';
 import DatePicker from '../../common/date-picker/date-picker';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
+import MatchingTransactionSelect from '../../common/controls/matching-transaction-select';
 import FormControl from '../../common/controls/form-control';
 import MoneyInput from '../../common/controls/money-input';
 import * as matchingTransactionsActions from '../../../actions/matching-transactions-actions';
@@ -22,7 +24,6 @@ describe('BankTransactionForm', () => {
   ];
 
   const accounts = [{ id: 11, name: 'Account One' }, { id: 12, name: 'Account Two' }];
-
   const transaction = {
     id: 22,
     accountId: 11,
@@ -34,6 +35,11 @@ describe('BankTransactionForm', () => {
     categoryId: 3,
     subcategoryId: 5,
   };
+
+  const matchingTransactions = [
+    { id: 1, accountId: 12, notes: 'transaction one' },
+    { id: 2, accountId: 12, notes: 'transaction two' },
+  ];
 
   beforeEach(() => {
     spyOn(matchingTransactionsActions, 'getMatchingTransactions');
@@ -125,6 +131,56 @@ describe('BankTransactionForm', () => {
     });
   });
 
+  describe('transfer or category', () => {
+    it('removes category/subcategory when transfer tab is selected', () => {
+      const form = TestUtils.renderIntoDocument(
+        <BankTransactionForm
+          transaction={transaction}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading
+          matchingTransactions={matchingTransactions}
+        />
+      );
+
+      const tabs = TestUtils.findRenderedComponentWithType(form, Tabs);
+      tabs.props.onSelect('transfer');
+
+      expect(form.getModel().categoryId).toEqual(null);
+      expect(form.getModel().subcategoryId).toEqual(null);
+    });
+
+    it('removes category/subcategory when transfer tab is selected', () => {
+      const transactionWithMatch = {
+        id: 22,
+        accountId: 11,
+        date: '2015-12-19',
+        amount: 300,
+        notes: 'This is a note',
+        memo: 'This is a memo',
+        balance: 6070,
+        matchedTransactionId: 1,
+        matchedTransaction: matchingTransactions[0],
+      };
+
+      const form = TestUtils.renderIntoDocument(
+        <BankTransactionForm
+          transaction={transactionWithMatch}
+          groupedCategories={groupedCategories}
+          accounts={accounts}
+          matchLoading
+          matchingTransactions={matchingTransactions}
+        />
+      );
+
+      const tabs = TestUtils.findRenderedComponentWithType(form, Tabs);
+      tabs.props.onSelect('category');
+
+      expect(form.getModel().matchedTransactionId).toEqual(null);
+      expect(form.getModel().matchedTransaction).toEqual(null);
+    });
+  });
+
   describe('isValid', () => {
     let form;
     beforeEach(() => {
@@ -159,8 +215,8 @@ describe('BankTransactionForm', () => {
           transaction={transaction}
           groupedCategories={groupedCategories}
           accounts={accounts}
-          matchLoading={false}
-          matchingTransactions={[]}
+          matchLoading
+          matchingTransactions={matchingTransactions}
         />
       );
     });
@@ -236,6 +292,16 @@ describe('BankTransactionForm', () => {
       expect(form.state.transaction.subcategoryId).toEqual(6);
       expect(form.validator.errorState('subcategoryId')).toEqual('has-success');
       expect(form.validator.errorFor('subcategoryId')).toBeUndefined();
+    });
+
+    it('updates matching transaction in state', () => {
+      const matchingTransaction = TestUtils.findRenderedComponentWithType(form, MatchingTransactionSelect);
+
+      matchingTransaction.props.onChange(1);
+      expect(form.state.transaction.matchingTransactionId).toEqual(1);
+      expect(form.state.transaction.matchingTransaction).toEqual(matchingTransactions[0]);
+      expect(form.validator.errorState('matchingTransactionId')).toEqual('has-success');
+      expect(form.validator.errorFor('matchingTransactionId')).toBeUndefined();
     });
   });
 });

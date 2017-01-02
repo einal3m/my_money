@@ -28,6 +28,14 @@ export default class MatchingTransactionSelect extends React.Component {
   }
 
   render() {
+    if (this.props.loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (this.props.matchingTransactions.length === 0) {
+      return <div>No matching transactions found.</div>;
+    }
+
     return (
       <DropDown
         name="matchingTransactionId"
@@ -52,4 +60,5 @@ MatchingTransactionSelect.propTypes = {
     notes: PropTypes.string,
   })).isRequired,
   onChange: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };
