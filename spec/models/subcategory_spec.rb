@@ -26,8 +26,8 @@ RSpec.describe Subcategory, type: :model do
 
     it 'has many transactions' do
       s = FactoryGirl.create(:subcategory)
-      FactoryGirl.create(:transaction, subcategory: s)
-      FactoryGirl.create(:transaction, subcategory: s)
+      FactoryGirl.create(:transaction, category: s.category, subcategory: s)
+      FactoryGirl.create(:transaction, category: s.category, subcategory: s)
 
       expect(s.transactions.length).to eq(2)
     end

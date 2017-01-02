@@ -32,6 +32,8 @@ class Transaction < ActiveRecord::Base
   validates :amount, presence: true, numericality: true
   validates :transaction_type, presence: true
   validate :matching_transaction_must_match
+  validates :category_id, presence: true, if: :subcategory_id?
+  validates :matching_transaction_id, absence: true, if: :category_id?
 
   # common lookups
   scope :unreconciled, ->(account) {

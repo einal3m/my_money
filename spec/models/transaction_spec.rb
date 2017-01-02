@@ -42,6 +42,10 @@ RSpec.describe Transaction, type: :model do
       expect(FactoryGirl.build(:transaction, transaction_type: nil)).not_to be_valid
     end
 
+    it 'is invalid with subcategory without category' do
+      expect(FactoryGirl.build(:transaction, subcategory_id: 1)).not_to be_valid
+    end
+
     it 'is invalid if matching_transaction is in same account' do
       matching_txn = FactoryGirl.create(:transaction, amount: 111)
       expect(FactoryGirl.build(
@@ -100,6 +104,18 @@ RSpec.describe Transaction, type: :model do
         matching_transaction_id: matching_txn.id
       )).not_to be_valid
     end
+
+    it 'is invalid if both matching transaction and category are set' do
+      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
+
+      expect(FactoryGirl.build(
+        :transaction,
+        date: '2016-12-19',
+        amount: -111,
+        matching_transaction_id: matching_txn.id,
+        category_id: 1
+      )).not_to be_valid
+    end
   end
 
   describe 'relationships' do
@@ -115,7 +131,7 @@ RSpec.describe Transaction, type: :model do
 
     it 'belongs to subcategory' do
       s = FactoryGirl.create(:subcategory)
-      expect(FactoryGirl.create(:transaction, subcategory: s).subcategory).to eq(s)
+      expect(FactoryGirl.create(:transaction, category: s.category, subcategory: s).subcategory).to eq(s)
     end
 
     it 'belongs to reconciliation' do

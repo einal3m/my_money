@@ -12,7 +12,7 @@ describe 'SubcategoryDestroyer' do
 
   describe 'errors' do
     it 'doesnt delete if subcategory has transactions' do
-      FactoryGirl.create(:transaction, subcategory: subcategory)
+      FactoryGirl.create(:transaction, category: subcategory.category, subcategory: subcategory)
       expect{destroyer.execute}.to raise_error(MyMoneyError, 'Cannot delete a subcategory that has been allocated to transactions')
     end
     

@@ -5,7 +5,8 @@ RSpec.describe Lib::CategorySearch, type: :class do
   before :each do
     @share_account = FactoryGirl.create(:account, account_type: AccountType::Share.new)
     @loan_account = FactoryGirl.create(:account, account_type: AccountType::Loan.new)
-    @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 400, subcategory: nil)
+    @c = FactoryGirl.create(:category)
+    @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 400, category: @c, subcategory: nil)
     @t2 = FactoryGirl.create(:transaction, account: @loan_account, date: '2014-01-02', category: @t1.category, subcategory: nil, amount: 1000)
     @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
     @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @t1.category, subcategory: nil, amount: 1500)

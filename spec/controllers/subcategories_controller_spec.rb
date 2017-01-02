@@ -91,7 +91,7 @@ RSpec.describe SubcategoriesController, type: :controller do
 
     it 'doesnt destroy the subcategory if it has errors' do
       subcategory = FactoryGirl.create(:subcategory)
-      FactoryGirl.create(:transaction, subcategory: subcategory)
+      FactoryGirl.create(:transaction, category: subcategory.category, subcategory: subcategory)
       expect {
         delete :destroy, { id: subcategory.id }, valid_session
       }.not_to change(Subcategory, :count)
