@@ -230,6 +230,26 @@ RSpec.describe Transaction, type: :model do
 
       expect(Transaction.find_by_description('mel')).to eq([t2, t4, t5])
     end
+
+    it 'finds transactions from other accounts which match given params, and are unmatched' do
+      a1 = FactoryGirl.create(:account)
+      a2 = FactoryGirl.create(:account)
+
+      date = '2014-07-01'
+      amount = 333
+
+      t0 = FactoryGirl.create(:transaction, account: a1, date: date, amount: amount)
+      t1 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      t2 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      FactoryGirl.create(:transaction, account: a1, date: date, amount: amount, matching_transaction_id: t2.id)
+      FactoryGirl.create(:transaction, account: a2, date: date, amount: amount)
+      FactoryGirl.create(:transaction, account: a1, date: date, amount: -amount)
+      FactoryGirl.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
+      FactoryGirl.create(:transaction, account: a2, date: date, amount: 444)
+      t6 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+
+      expect(Transaction.find_matching(date, amount, a1)).to eq([t1, t6])
+    end
   end
 
   describe 'initialize' do

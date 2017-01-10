@@ -56,6 +56,13 @@ class Transaction < ActiveRecord::Base
   scope :find_by_description, ->(description) {
     where('memo like ? or notes like ?', '%' + description + '%', '%' + description + '%')
   }
+  scope :find_matching, ->(date, amount, account) {
+    where(
+      amount: -amount,
+      date: date,
+      matching_transaction_id: nil
+    ).where.not(account: account)
+  }
 
   # non-persistant attributes
   attr_accessor :add_to_reconciliation
