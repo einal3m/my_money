@@ -75,7 +75,7 @@ describe('SubcategoryForm', () => {
       const form = TestUtils.renderIntoDocument(
         <SubcategoryForm subcategory={{}} groupedCategories={groupedCategories} />
       );
-      const name = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+      const name = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[1];
 
       name.value = '';
       TestUtils.Simulate.change(name);

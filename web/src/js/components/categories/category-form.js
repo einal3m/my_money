@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import FormValidator from '../../util/form-validator';
 import FormControl from '../common/controls/form-control';
-import DropDown from '../common/controls/drop-down';
+import Select from '../common/controls/select';
 
 export default class CategoryForm extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ export default class CategoryForm extends React.Component {
     return (
       <div>
         <FormControl name="categoryTypeId" validator={this.validator} label="Category Type">
-          <DropDown
+          <Select
             name="categoryTypeId"
             value={this.state.category.categoryTypeId}
             options={this.props.categoryTypes}

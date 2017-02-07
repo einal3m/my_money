@@ -1,7 +1,7 @@
 import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import SubcategoryPicker from '../subcategory-picker';
-import DropDown from '../drop-down';
+import Select from '../select';
 
 describe('SubcategoryPicker', () => {
   const subcategories = [
@@ -34,7 +34,7 @@ describe('SubcategoryPicker', () => {
         <SubcategoryPicker groupedCategories={groupedCategories} value={null} onChange={onChangeSpy} categoryId={11} />
       );
 
-      expect(subcategoryPicker.type).toEqual(DropDown);
+      expect(subcategoryPicker.type).toEqual(Select);
       expect(subcategoryPicker.props.options).toEqual([subcategories[0], subcategories[2], subcategories[4]]);
     });
   });

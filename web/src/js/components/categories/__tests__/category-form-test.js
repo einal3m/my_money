@@ -3,7 +3,7 @@ import TestUtils from 'react-addons-test-utils';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import CategoryForm from '../category-form';
 import FormControl from '../../common/controls/form-control';
-import DropDown from '../../common/controls/drop-down';
+import Select from '../../common/controls/select';
 
 describe('CategoryForm', () => {
   const category = { id: 11, name: 'categoryName', categoryTypeId: 1 };
@@ -65,7 +65,7 @@ describe('CategoryForm', () => {
   describe('updating state and validation', () => {
     it('name is required', () => {
       const form = TestUtils.renderIntoDocument(<CategoryForm category={{}} categoryTypes={categoryTypes} />);
-      const name = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[0];
+      const name = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input')[1];
 
       name.value = '';
       TestUtils.Simulate.change(name);
@@ -83,7 +83,7 @@ describe('CategoryForm', () => {
       const form = TestUtils.renderIntoDocument(
         <CategoryForm category={{ categoryTypeId: 2 }} categoryTypes={categoryTypes} />
       );
-      const categoryType = TestUtils.findRenderedComponentWithType(form, DropDown);
+      const categoryType = TestUtils.findRenderedComponentWithType(form, Select);
 
       categoryType.props.onChange(null);
       expect(form.validator.errorState('categoryTypeId')).toEqual('has-error');

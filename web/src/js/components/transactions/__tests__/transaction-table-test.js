@@ -13,8 +13,8 @@ describe('TransactionTable', () => {
     let groupedCategories;
 
     beforeEach(() => {
-      transactions = [{ id: 1, date: '2015-12-19', amount: 300, balance: 400 }];
-      account = { name: 'my Account' };
+      transactions = [{ id: 1, accountId: 2, date: '2015-12-19', amount: 300, balance: 400 }];
+      account = { id: 2, name: 'my Account' };
       groupedCategories = [{ categoryType: 'Income' }];
     });
 
@@ -24,6 +24,7 @@ describe('TransactionTable', () => {
           searchCriteriaLoaded={false}
           transactions={[]}
           account={null}
+          accounts={[]}
           groupedCategories={groupedCategories}
         />
       );
@@ -38,6 +39,7 @@ describe('TransactionTable', () => {
           searchCriteriaLoaded
           transactions={[]}
           account={account}
+          accounts={[account]}
           groupedCategories={groupedCategories}
         />
       );
@@ -53,6 +55,7 @@ describe('TransactionTable', () => {
           searchCriteriaLoaded
           transactions={transactions}
           account={account}
+          accounts={[account]}
           groupedCategories={groupedCategories}
         />
       );

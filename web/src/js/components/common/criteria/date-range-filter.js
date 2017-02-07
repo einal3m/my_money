@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { setCurrentDateRange, updateCurrentDateRange } from '../../../actions/date-range-actions';
 import DatePicker from '../date-picker/date-picker';
-import DropDown from '../../common/controls/drop-down';
+import Select from '../../common/controls/select';
 
 export class DateRangeFilterComponent extends React.Component {
 
@@ -29,7 +29,7 @@ export class DateRangeFilterComponent extends React.Component {
             <div className="form-group">
               <label htmlFor="dateRangeSelect" className="col-xs-4 control-label">Date Range</label>
               <div className="col-xs-8">
-                <DropDown
+                <Select
                   name="dateRangeId"
                   value={this.props.currentDateRange.id}
                   options={this.props.dateRanges}

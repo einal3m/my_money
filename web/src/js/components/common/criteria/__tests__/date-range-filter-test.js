@@ -4,7 +4,7 @@ import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import * as dateRangeActions from '../../../../actions/date-range-actions';
 import { DateRangeFilterComponent as DateRangeFilter } from '../date-range-filter';
 import DatePicker from '../../date-picker/date-picker';
-import DropDown from '../../controls/drop-down';
+import Select from '../../controls/select';
 
 describe('DateRangeFilter', () => {
   let dateRanges;
@@ -38,7 +38,7 @@ describe('DateRangeFilter', () => {
       const label = selectGroup.props.children[0];
       const select = selectGroup.props.children[1].props.children;
       expect(label.props.children).toEqual('Date Range');
-      expect(select.type).toEqual(DropDown);
+      expect(select.type).toEqual(Select);
       expect(select.props.value).toEqual(22);
       expect(select.props.options).toEqual(dateRanges);
     });
@@ -86,7 +86,7 @@ describe('DateRangeFilter', () => {
       const dateRangeFilter = TestUtils.renderIntoDocument(
         <DateRangeFilter loaded dateRanges={dateRanges} currentDateRange={dateRanges[1]} fetch={fetchSpy} />
       );
-      const dateRangeDropDown = TestUtils.findRenderedComponentWithType(dateRangeFilter, DropDown);
+      const dateRangeDropDown = TestUtils.findRenderedComponentWithType(dateRangeFilter, Select);
 
       dateRangeDropDown.props.onChange(11);
 

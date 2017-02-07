@@ -1,7 +1,7 @@
 import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import GroupedCategorySelect from '../grouped-category-select';
-import DropDown from '../drop-down';
+import Select from '../select';
 
 describe('GroupedCategorySelect', () => {
   const category1 = { id: 1, name: 'Wages' };
@@ -35,7 +35,7 @@ describe('GroupedCategorySelect', () => {
         />
       );
 
-      expect(select.type).toEqual(DropDown);
+      expect(select.type).toEqual(Select);
       expect(select.props.value).toEqual(2);
       expect(select.props.allowUnassigned).toEqual(false);
       expect(select.props.groupedOptions).toEqual(groupedOptions);

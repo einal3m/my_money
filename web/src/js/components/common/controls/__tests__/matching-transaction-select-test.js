@@ -1,7 +1,7 @@
 import React from 'react';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import MatchingTransactionSelect from '../matching-transaction-select';
-import DropDown from '../drop-down';
+import Select from '../select';
 
 describe('MatchingTransactionSelect', () => {
   const accounts = [{ id: 1, name: 'Account One' }, { id: 2, name: 'Account Two' }];
@@ -54,7 +54,7 @@ describe('MatchingTransactionSelect', () => {
         />
       );
 
-      expect(select.type).toEqual(DropDown);
+      expect(select.type).toEqual(Select);
       expect(select.props.value).toEqual(12);
       expect(select.props.allowUnassigned).toEqual(false);
 

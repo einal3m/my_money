@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import DropDown from './drop-down';
+import Select from './select';
 
 export default class SubcategoryPicker extends React.Component {
 
@@ -13,7 +13,7 @@ export default class SubcategoryPicker extends React.Component {
     const subcategories = this.subcategoriesForCategory();
 
     return (
-      <DropDown
+      <Select
         name="subcategoryId"
         value={this.props.value}
         options={subcategories}

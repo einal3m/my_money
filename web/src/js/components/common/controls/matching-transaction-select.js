@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import DropDown from './drop-down';
+import Select from './select';
 import { memoAndNotes } from '../../../util/text-util';
 
 export default class MatchingTransactionSelect extends React.Component {
@@ -37,7 +37,7 @@ export default class MatchingTransactionSelect extends React.Component {
     }
 
     return (
-      <DropDown
+      <Select
         name="matchingTransactionId"
         value={this.props.value}
         groupedOptions={this.groupedOptions()}

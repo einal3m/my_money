@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import DropDown from './drop-down';
+import Select from './select';
 
 export default class GroupedCategorySelect extends React.Component {
 
@@ -16,7 +16,7 @@ export default class GroupedCategorySelect extends React.Component {
 
   render() {
     return (
-      <DropDown
+      <Select
         name="categoryId"
         value={this.props.value}
         allowUnassigned={this.props.allowUnassigned}
