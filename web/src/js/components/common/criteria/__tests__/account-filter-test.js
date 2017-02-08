@@ -77,7 +77,7 @@ describe('AccountFilter', () => {
     describe('on Change', () => {
       it('single account picker on change calls an action', () => {
         spyOn(accountActions, 'setCurrentAccount');
-        spyOn(accountActions, 'toggleSelectedAccount');
+        spyOn(accountActions, 'setSelectedAccounts');
 
         const accountFilter = shallowRenderer(
           <AccountFilter
@@ -92,13 +92,13 @@ describe('AccountFilter', () => {
 
         dropdown.props.onChange(5);
         expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(5);
-        expect(accountActions.toggleSelectedAccount).not.toHaveBeenCalled();
+        expect(accountActions.setSelectedAccounts).not.toHaveBeenCalled();
         expect(fetchSpy).toHaveBeenCalled();
       });
 
       it('multiple account picker on change calls an action', () => {
         spyOn(accountActions, 'setCurrentAccount');
-        spyOn(accountActions, 'toggleSelectedAccount');
+        spyOn(accountActions, 'setSelectedAccounts');
 
         const accountFilter = shallowRenderer(
           <AccountFilter
@@ -113,8 +113,8 @@ describe('AccountFilter', () => {
         const dropdown = accountFilter.props.children.props.children;
 
         dropdown.props.onChange(5);
-        expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(5);
-        expect(accountActions.toggleSelectedAccount).toHaveBeenCalledWith(5);
+        expect(accountActions.setCurrentAccount).not.toHaveBeenCalled();
+        expect(accountActions.setSelectedAccounts).toHaveBeenCalledWith(5);
         expect(fetchSpy).toHaveBeenCalled();
       });
     });

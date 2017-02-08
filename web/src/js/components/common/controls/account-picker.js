@@ -1,71 +1,26 @@
 import React, { PropTypes } from 'react';
-import { MenuItem, DropdownButton } from 'react-bootstrap';
-
-require('../../../../css/picker.scss');
+import Select from './select';
 
 export default class AccountPicker extends React.Component {
 
-  onSelect = (key) => {
-    this.props.onChange(Number(key));
+  handleSelect = (value) => {
+    this.props.onChange(value);
   };
 
-  sortedAccounts = accounts => (
-    accounts.sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      return 0;
-    })
-  );
+  groupedOptions = () => {
+    const options = [];
 
-  renderAccountName(account) {
-    let selected;
-    if (this.props.multiple) {
-      selected = this.props.value.filter(accountId => accountId === account.id).length > 0;
-    } else {
-      selected = this.props.value === account.id;
-    }
-    const prefix = selected ? '\u2713' : '\u00A0\u00A0';
-    return `${prefix} ${account.name}`;
-  }
-
-  renderMultiAccounts() {
-    const menuItems = [];
     this.props.accountTypes.forEach((accountType) => {
       if (this.props.accountGroups[accountType.code]) {
-        menuItems.push(<MenuItem key={`account_type_${accountType.code}`} header>{accountType.name}</MenuItem>);
-        this.sortedAccounts(this.props.accountGroups[accountType.code]).forEach((account) => {
-          menuItems.push(
-            <MenuItem key={`account_${account.id}`} eventKey={account.id}>{this.renderAccountName(account)}</MenuItem>
-          );
+        options.push({
+          name: accountType.name,
+          options: this.props.accountGroups[accountType.code],
         });
-        menuItems.push(<MenuItem key={`divider_${accountType.code}`} divider />);
       }
     });
 
-    menuItems.pop();
-    return menuItems;
-  }
-
-  renderTitle() {
-    let title;
-    if (this.props.multiple) {
-      title = 'Add/Remove Accounts...';
-    } else {
-      this.props.accountTypes.forEach((accountType) => {
-        if (this.props.accountGroups[accountType.code]) {
-          this.props.accountGroups[accountType.code].forEach((account) => {
-            if (account.id === this.props.value) {
-              title = account.name;
-            }
-          });
-        }
-      });
-    }
-
-    return title;
-  }
+    return options;
+  };
 
   render() {
     return (
@@ -73,14 +28,13 @@ export default class AccountPicker extends React.Component {
         <div className="form-group">
           <label htmlFor="account-dropdown" className="control-label col-xs-4">Accounts</label>
           <div className="col-xs-8">
-            <DropdownButton
-              title={this.renderTitle()}
-              pullRight
-              id="account-dropdown"
-              onSelect={this.onSelect}
-            >
-              {this.renderMultiAccounts()}
-            </DropdownButton>
+            <Select
+              name="accountId"
+              value={this.props.value}
+              groupedOptions={this.groupedOptions()}
+              multiple={!!this.props.multiple}
+              onChange={this.handleSelect}
+            />
           </div>
         </div>
       </div>

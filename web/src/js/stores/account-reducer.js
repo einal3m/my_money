@@ -4,6 +4,7 @@ import {
   SET_CURRENT_ACCOUNT,
   TOGGLE_SELECTED_ACCOUNT,
   SET_ACCOUNT_TYPES,
+  SET_SELECTED_ACCOUNTS,
 } from '../actions/account-actions';
 
 const INITIAL_STATE = Map({
@@ -25,6 +26,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setCurrentAccount(state, action.id);
     case TOGGLE_SELECTED_ACCOUNT:
       return toggleSelectedAccount(state, action.accountId);
+    case SET_SELECTED_ACCOUNTS:
+      return setSelectedAccounts(state, action.accountIds);
     default:
       return state;
   }
@@ -67,15 +70,6 @@ function setCurrentAccount(state, id) {
   return state.set('currentAccount', state.get('accounts').find(account => account.get('id') === id));
 }
 
-function toggleSelectedAccount(state, accountId) {
-  const selected = state.get('selectedAccounts').includes(accountId);
-  return selected ? removeSelectedAccount(state, accountId) : addSelectedAccount(state, accountId);
-}
-
-function addSelectedAccount(state, accountId) {
-  return state.set('selectedAccounts', state.get('selectedAccounts').push(accountId));
-}
-
-function removeSelectedAccount(state, accountId) {
-  return state.set('selectedAccounts', state.get('selectedAccounts').filter(id => id !== accountId));
+function setSelectedAccounts(state, accountIds) {
+  return state.set('selectedAccounts', fromJS(accountIds));
 }

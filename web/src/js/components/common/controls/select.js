@@ -3,8 +3,14 @@ import ReactSelect from 'react-select-plus';
 
 export default class Select extends React.Component {
 
-  handleSelect = (option) => {
-    const id = option ? option.value : null;
+  handleSelect = (value) => {
+    let id;
+    if (this.props.multiple) {
+      id = value.map(option => option.value);
+    } else {
+      id = value ? value.value : null;
+    }
+    console.log('handleSelect', value, id);
     this.props.onChange(id);
   };
 
@@ -31,6 +37,7 @@ export default class Select extends React.Component {
         value={this.props.value}
         clearable={!!this.props.allowUnassigned}
         placeholder={this.props.allowUnassigned ? 'Un-assigned' : 'Please select...'}
+        multi={this.props.multiple}
         options={this.optionsOrGroupedOptions()}
         onChange={this.handleSelect}
       />
@@ -45,12 +52,16 @@ const optionsProp = PropTypes.arrayOf(PropTypes.shape({
 
 Select.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.number,
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
+  ]),
   options: optionsProp,
   groupedOptions: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     options: optionsProp,
   })),
+  multiple: PropTypes.bool,
   allowUnassigned: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
 };

@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { setCurrentAccount, toggleSelectedAccount } from '../../../actions/account-actions';
+import { setCurrentAccount, setSelectedAccounts } from '../../../actions/account-actions';
 import accountSelector from '../../../selectors/account-selector';
 import AccountPicker from '../controls/account-picker';
 
 export class AccountFilterComponent extends React.Component {
-  onChange = (accountId) => {
-    setCurrentAccount(accountId);
+  onChange = (value) => {
     if (this.props.multiple) {
-      toggleSelectedAccount(accountId);
+      setSelectedAccounts(value);
+    } else {
+      setCurrentAccount(value);
     }
     this.props.fetch();
   };

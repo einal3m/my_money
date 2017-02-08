@@ -151,11 +151,11 @@ describe('AccountActions', () => {
       });
     });
 
-    it('toggleSelectedAccount', () => {
-      accountActions.toggleSelectedAccount(45);
+    it('setSelectedAccounts', () => {
+      accountActions.setSelectedAccounts([45]);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: accountActions.TOGGLE_SELECTED_ACCOUNT,
-        accountId: 45,
+        type: accountActions.SET_SELECTED_ACCOUNTS,
+        accountIds: [45],
       });
     });
   });

@@ -2,7 +2,7 @@ import reducer from '../account-reducer';
 import {
   SET_ACCOUNTS,
   SET_CURRENT_ACCOUNT,
-  TOGGLE_SELECTED_ACCOUNT,
+  SET_SELECTED_ACCOUNTS,
   SET_ACCOUNT_TYPES,
 } from '../../actions/account-actions';
 
@@ -98,24 +98,11 @@ describe('reducer', () => {
     });
   });
 
-  describe('account filter selected accounts', () => {
-    describe('TOGGLE_SELECTED_ACCOUNT', () => {
-      it('toggles the selected account in the list', () => {
-        let action = { type: TOGGLE_SELECTED_ACCOUNT, accountId: 4 };
-        const state = reducer(undefined, action);
-
-        expect(state.get('selectedAccounts').toJS()).toEqual([4]);
-
-        action = { type: TOGGLE_SELECTED_ACCOUNT, accountId: 1 };
-        const nextState = reducer(state, action);
-
-        expect(nextState.get('selectedAccounts').toJS()).toEqual([4, 1]);
-
-        action = { type: TOGGLE_SELECTED_ACCOUNT, accountId: 4 };
-        const anotherState = reducer(nextState, action);
-
-        expect(anotherState.get('selectedAccounts').toJS()).toEqual([1]);
-      });
+  describe('SET_SELECTED_ACCOUNTS', () => {
+    it('sets selectedAccounts to account ids', () => {
+      const action = { type: SET_SELECTED_ACCOUNTS, accountIds: [1, 2] };
+      const state = reducer(undefined, action);
+      expect(state.get('selectedAccounts').toJS()).toEqual([1,2]);
     });
   });
 });

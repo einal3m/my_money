@@ -52,9 +52,9 @@ export function setCurrentAccount(id) {
   store.dispatch({ type: SET_CURRENT_ACCOUNT, id });
 }
 
-export const TOGGLE_SELECTED_ACCOUNT = 'TOGGLE_SELECTED_ACCOUNT';
-export function toggleSelectedAccount(accountId) {
-  store.dispatch({ type: TOGGLE_SELECTED_ACCOUNT, accountId });
+export const SET_SELECTED_ACCOUNTS = 'SET_SELECTED_ACCOUNTS';
+export function setSelectedAccounts(accountIds) {
+  store.dispatch({ type: SET_SELECTED_ACCOUNTS, accountIds });
 }
 
 export const SAVE_ACCOUNT = 'SAVE_ACCOUNT';

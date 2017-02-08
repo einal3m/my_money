@@ -1,30 +1,29 @@
 import React from 'react';
-import { DropdownButton } from 'react-bootstrap';
+import Select from '../select';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import AccountPicker from '../account-picker';
 
 describe('AccountPicker', () => {
   let accountPicker;
-  let accountTypes;
-  let accountGroups;
   let onChangeSpy;
+
+  const accountTypes = [
+    { id: 1, code: 'savings', name: 'Savings' },
+    { id: 3, code: 'other', name: 'Other' },
+    { id: 2, code: 'share', name: 'Share' },
+  ];
+
+  const accountGroups = {
+    savings: [{ id: 2, name: 'oneAccount' }],
+    share: [{ id: 1, name: 'myAccount' }, { id: 3, name: 'anotherAccount' }],
+  };
+
   beforeEach(() => {
-    accountTypes = [
-      { id: 1, code: 'savings', name: 'Savings' },
-      { id: 3, code: 'other', name: 'Other' },
-      { id: 2, code: 'share', name: 'Share' },
-    ];
-
-    accountGroups = {
-      savings: [{ id: 2, name: 'oneAccount' }],
-      share: [{ id: 1, name: 'myAccount' }, { id: 3, name: 'anotherAccount' }],
-    };
-
     onChangeSpy = jasmine.createSpy('onChangeSpy');
   });
 
   describe('render', () => {
-    it('multiple has a dropdown button with some menu items selected', () => {
+    it('renders a react select with multiple values', () => {
       accountPicker = shallowRenderer(
         <AccountPicker
           multiple
@@ -35,26 +34,21 @@ describe('AccountPicker', () => {
         />
       );
 
-      const [label, dropdown] = accountPicker.props.children.props.children;
+      const [label, select] = accountPicker.props.children.props.children;
 
       expect(label.props.children).toEqual('Accounts');
 
-      const button = dropdown.props.children;
-      expect(button.type).toEqual(DropdownButton);
-      expect(button.props.title).toEqual('Add/Remove Accounts...');
-
-      const menuItems = button.props.children;
-      expect(menuItems.length).toEqual(6);
-
-      expect(menuItems[0].props.children).toEqual('Savings');
-      expect(menuItems[1].props.children).toEqual('✓ oneAccount');
-      expect(menuItems[2].props.divider).toEqual(true);
-      expect(menuItems[3].props.children).toEqual('Share');
-      expect(menuItems[4].props.children).toEqual('   anotherAccount');
-      expect(menuItems[5].props.children).toEqual('✓ myAccount');
+      expect(select.props.children.type).toEqual(Select);
+      expect(select.props.children.props.name).toEqual('accountId');
+      expect(select.props.children.props.value).toEqual([2,1]);
+      expect(select.props.children.props.multiple).toEqual(true);
+      expect(select.props.children.props.groupedOptions).toEqual([
+        { name: 'Savings', options: accountGroups.savings },
+        { name: 'Share', options: accountGroups.share },
+      ]);
     });
 
-    it('multiple false has a dropdown button with one menu item selected', () => {
+    it('renders a react select with single value', () => {
       accountPicker = shallowRenderer(
         <AccountPicker
           accountTypes={accountTypes}
@@ -63,29 +57,17 @@ describe('AccountPicker', () => {
           onChange={onChangeSpy}
         />
       );
-
-      const [label, dropdown] = accountPicker.props.children.props.children;
+      const [label, select] = accountPicker.props.children.props.children;
 
       expect(label.props.children).toEqual('Accounts');
 
-      const button = dropdown.props.children;
-      expect(button.type).toEqual(DropdownButton);
-      expect(button.props.title).toEqual('myAccount');
-
-      const menuItems = button.props.children;
-      expect(menuItems.length).toEqual(6);
-
-      expect(menuItems[0].props.children).toEqual('Savings');
-      expect(menuItems[1].props.children).toEqual('   oneAccount');
-      expect(menuItems[2].props.divider).toEqual(true);
-      expect(menuItems[3].props.children).toEqual('Share');
-      expect(menuItems[4].props.children).toEqual('   anotherAccount');
-      expect(menuItems[5].props.children).toEqual('✓ myAccount');
+      expect(select.props.children.props.value).toEqual(1);
+      expect(select.props.children.props.multiple).toEqual(false);
     });
   });
 
   describe('events', () => {
-    it('selecting menuitem calls the onChange prop', () => {
+    it('select onChange prop calls onChange', () => {
       accountPicker = shallowRenderer(
         <AccountPicker
           multiple
@@ -96,8 +78,9 @@ describe('AccountPicker', () => {
         />
       );
 
-      const dropdown = accountPicker.props.children.props.children[1].props.children;
-      dropdown.props.onSelect('4');
+      const select = accountPicker.props.children.props.children[1].props.children;
+
+      select.props.onChange(4);
       expect(onChangeSpy).toHaveBeenCalledWith(4);
     });
   });
