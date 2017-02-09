@@ -36,13 +36,7 @@ export default class FormModal extends React.Component {
   deleteButton() {
     if (this.props.allowDelete) {
       return (
-        <Button
-          key="delete1"
-          pullLeft
-          type="delete"
-          ref={(button) => { console.log(button); this.deleteButton1 = button; }}
-          onClick={this.firstDelete}
-        >
+        <Button key="delete1" pullLeft type="delete" onClick={this.firstDelete}>
           Delete
         </Button>
       );

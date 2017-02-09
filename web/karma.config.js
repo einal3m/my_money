@@ -26,6 +26,7 @@ module.exports = function exports(config) {
           },
           { test: /\.scss$/, exclude: /node_modules/, loader: 'style!css!sass' },
           { test: /\.gif$/, loader: 'url-loader?limit=8192' },
+          { test: /\.json/, loader: 'json-loader' },
         ],
       },
       watch: true,

@@ -1,9 +1,9 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import { Modal } from 'react-bootstrap';
+import { shallow } from 'enzyme';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import FormModal from '../form-modal';
-import Button from '../../common/controls/button';
 import * as formActions from '../../../actions/form-actions';
 
 describe('FormModal', () => {
@@ -109,10 +109,22 @@ describe('FormModal', () => {
     });
 
     describe('onDelete cancel', () => {
-      xit('doesnt call the onDelete prop', () => {
-        const buttons = TestUtils.scryRenderedComponentsWithType(modal, Button);
-        modal.deleteButton1.props.onClick();
-        modal.cancelDeleteButton.props.onClick();
+      it('doesnt call the onDelete prop', () => {
+        modal = shallow(
+          <FormModal
+            show
+            modelName={modelName}
+            allowDelete
+            onSave={onSaveSpy}
+            onDelete={onDeleteSpy}
+          >{child}</FormModal>
+        );
+
+        const deleteButton = modal.find({ children: 'Delete' });
+        deleteButton.prop('onClick')();
+
+        const cancelDeleteButton = modal.find({ children: 'Cancel' });
+        cancelDeleteButton.prop('onClick')();
 
         expect(onDeleteSpy).not.toHaveBeenCalled();
       });
