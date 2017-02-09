@@ -2,7 +2,6 @@ import { Map, List, fromJS } from 'immutable';
 import {
   SET_ACCOUNTS,
   SET_CURRENT_ACCOUNT,
-  TOGGLE_SELECTED_ACCOUNT,
   SET_ACCOUNT_TYPES,
   SET_SELECTED_ACCOUNTS,
 } from '../actions/account-actions';
@@ -24,8 +23,6 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setAccountTypes(state, action.accountTypes);
     case SET_CURRENT_ACCOUNT:
       return setCurrentAccount(state, action.id);
-    case TOGGLE_SELECTED_ACCOUNT:
-      return toggleSelectedAccount(state, action.accountId);
     case SET_SELECTED_ACCOUNTS:
       return setSelectedAccounts(state, action.accountIds);
     default:

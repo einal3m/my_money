@@ -40,7 +40,7 @@ describe('AccountPicker', () => {
 
       expect(select.props.children.type).toEqual(Select);
       expect(select.props.children.props.name).toEqual('accountId');
-      expect(select.props.children.props.value).toEqual([2,1]);
+      expect(select.props.children.props.value).toEqual([2, 1]);
       expect(select.props.children.props.multiple).toEqual(true);
       expect(select.props.children.props.groupedOptions).toEqual([
         { name: 'Savings', options: accountGroups.savings },

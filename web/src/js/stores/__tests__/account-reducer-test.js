@@ -102,7 +102,7 @@ describe('reducer', () => {
     it('sets selectedAccounts to account ids', () => {
       const action = { type: SET_SELECTED_ACCOUNTS, accountIds: [1, 2] };
       const state = reducer(undefined, action);
-      expect(state.get('selectedAccounts').toJS()).toEqual([1,2]);
+      expect(state.get('selectedAccounts').toJS()).toEqual([1, 2]);
     });
   });
 });

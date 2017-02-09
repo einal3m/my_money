@@ -10,7 +10,6 @@ export default class Select extends React.Component {
     } else {
       id = value ? value.value : null;
     }
-    console.log('handleSelect', value, id);
     this.props.onChange(id);
   };
 
