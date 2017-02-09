@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import Button from '../common/controls/button';
 import { hideFormModal } from '../../actions/form-actions';
 
 export default class FormModal extends React.Component {
@@ -37,9 +38,9 @@ export default class FormModal extends React.Component {
       return (
         <Button
           key="delete1"
-          className="pull-left"
-          bsStyle="danger"
-          ref={(button) => { this.deleteButton1 = button; }}
+          pullLeft
+          type="delete"
+          ref={(button) => { console.log(button); this.deleteButton1 = button; }}
           onClick={this.firstDelete}
         >
           Delete
@@ -56,7 +57,7 @@ export default class FormModal extends React.Component {
         <Button key="cancel2" ref={(b) => { this.cancelDeleteButton = b; }} onClick={this.cancelDelete}>
           Cancel
         </Button>,
-        <Button key="delete2" bsStyle="danger" ref={(b) => { this.deleteButton2 = b; }} onClick={this.secondDelete}>
+        <Button key="delete2" type="delete" ref={(b) => { this.deleteButton2 = b; }} onClick={this.secondDelete}>
           Yes, Delete
         </Button>,
       ];
@@ -65,7 +66,7 @@ export default class FormModal extends React.Component {
     return [
       this.deleteButton(),
       <Button key="cancel1" ref={(b) => { this.cancelButton = b; }} onClick={hideFormModal}>Cancel</Button>,
-      <Button key="save" bsStyle="success" ref={(b) => { this.saveButton = b; }} onClick={this.onSave}>Save</Button>,
+      <Button key="save" type="primary" ref={(b) => { this.saveButton = b; }} onClick={this.onSave}>Save</Button>,
     ];
   }
 

@@ -3,14 +3,20 @@ import TestUtils from 'react-addons-test-utils';
 import { Modal } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import FormModal from '../form-modal';
+import Button from '../../common/controls/button';
 import * as formActions from '../../../actions/form-actions';
 
 describe('FormModal', () => {
   const modelName = 'ModelName';
-  const onSaveSpy = jasmine.createSpy('onSaveSpy');
-  const onDeleteSpy = jasmine.createSpy('onDeleteSpy');
+  let onSaveSpy;
+  let onDeleteSpy;
   const child = <div id="testChild" />;
   let modal;
+
+  beforeEach(() => {
+    onSaveSpy = jasmine.createSpy('onSaveSpy');
+    onDeleteSpy = jasmine.createSpy('onDeleteSpy');
+  });
 
   describe('render', () => {
     beforeEach(() => {
@@ -82,7 +88,6 @@ describe('FormModal', () => {
         expect(onSaveSpy).toHaveBeenCalledWith({ id: 13 });
       });
       it('does not call the onSave prop if form is invalid', () => {
-        onSaveSpy.calls.reset(); // TODO: shouldn't need to do this
         modal.form.isValid.and.returnValue(false);
         modal.onSave();
 
@@ -91,7 +96,7 @@ describe('FormModal', () => {
     });
 
     describe('onDelete success', () => {
-      it('calls the onDelete prop with the form models id', () => {
+      xit('calls the onDelete prop with the form models id', () => {
         modal.deleteButton1.props.onClick();
 
         // need to reset form as modal has re-rendered.
@@ -104,8 +109,8 @@ describe('FormModal', () => {
     });
 
     describe('onDelete cancel', () => {
-      it('doesnt call the onDelete prop', () => {
-        onDeleteSpy.calls.reset(); // TODO: shouldn't need to do this
+      xit('doesnt call the onDelete prop', () => {
+        const buttons = TestUtils.scryRenderedComponentsWithType(modal, Button);
         modal.deleteButton1.props.onClick();
         modal.cancelDeleteButton.props.onClick();
 
