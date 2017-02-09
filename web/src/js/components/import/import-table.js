@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Table } from 'react-bootstrap';
 import ImportRow from './import-row';
 
 require('../../../css/transaction.scss');
@@ -21,7 +20,7 @@ export default class ImportTable extends React.Component {
   renderTable() {
     if (this.props.transactions.length > 0) {
       return (
-        <Table hover id="transaction-table">
+        <table className="table table-hover" id="transaction-table">
           <thead>
             <tr>
               <th className="date">date</th>
@@ -36,7 +35,7 @@ export default class ImportTable extends React.Component {
           <tbody>
             {this.renderTransactions()}
           </tbody>
-        </Table>
+        </table>
       );
     }
     return <div>No transactions to import</div>;

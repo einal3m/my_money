@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import ImportTable from '../import-table';
 import ImportRow from '../import-row';
@@ -16,7 +15,7 @@ describe('ImportTable', () => {
         <ImportTable transactions={transactions} groupedCategories={groupedCategories} subcategories={subcategories} />
       );
 
-      expect(importTable.props.children.type).toEqual(Table);
+      expect(importTable.props.children.type).toEqual('table');
       const [header, table] = importTable.props.children.props.children;
 
       expect(header.type).toEqual('thead');

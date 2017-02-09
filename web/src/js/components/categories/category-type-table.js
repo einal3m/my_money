@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
 import CategoryRow from './category-row';
 import SubcategoryRow from './subcategory-row';
 
@@ -29,11 +28,11 @@ export default class CategoryTypeTable extends React.Component {
 
   renderTable() {
     return (
-      <Table hover id="category-table">
+      <table className="table table-hover" id="category-table">
         <tbody>
           {this.renderCategories()}
         </tbody>
-      </Table>
+      </table>
     );
   }
 

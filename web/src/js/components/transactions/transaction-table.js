@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import TransactionRow from './transaction-row';
 import { groupedCategories } from '../../selectors/category-selector';
@@ -33,7 +32,7 @@ export class TransactionTableComponent extends React.Component {
     }
     if (this.props.transactions.length > 0) {
       return (
-        <Table hover id="transaction-table">
+        <table className="table table-hover" id="transaction-table">
           <thead>
             <tr>
               <th className="date">date</th>
@@ -45,7 +44,7 @@ export class TransactionTableComponent extends React.Component {
           <tbody>
             {this.renderTransactions()}
           </tbody>
-        </Table>
+        </table>
       );
     }
     return <div>No transactions match the search criteria</div>;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import { TransactionTableComponent as TransactionTable } from '../transaction-table';
 import TransactionRow from '../transaction-row';
@@ -64,7 +63,7 @@ describe('TransactionTable', () => {
       expect(title.props.children).toEqual(['Transactions for ', 'my Account']);
 
       const [thead, tbody] = table.props.children;
-      expect(table.type).toEqual(Table);
+      expect(table.type).toEqual('table');
 
       const [date, description, amount, balance] = thead.props.children.props.children;
       expect(date.props.children).toEqual('date');
