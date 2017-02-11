@@ -119,7 +119,7 @@ export default class BankTransactionForm extends React.Component {
 
     return (
       <div>
-        <div>{transferTo(this.state.transaction.matchingTransaction, this.props.accounts)}</div>
+        <div>{transferTo(this.state.transaction, this.state.transaction.matchingTransaction, this.props.accounts)}</div>
         <div>Description: {memoAndNotes(this.state.transaction.matchingTransaction)}</div>
         <i className="fa fa-times-circle" onClick={this.clearMatchingTransaction} />
       </div>

@@ -23,12 +23,14 @@ export function accountNameAndBank(account) {
   return account.name;
 }
 
-export function transferTo(transaction, accounts) {
+export function transferTo(transaction, matchingTransaction, accounts) {
   const matchingAccount = accounts.filter(
-    account => account.id === transaction.accountId
+    account => account.id === matchingTransaction.accountId
   )[0];
 
-  return `Transfer to: ${accountNameAndBank(matchingAccount)}`;
+  const toOrFrom = transaction.amount > 0 ? 'from' : 'to';
+
+  return `Transfer ${toOrFrom}: ${accountNameAndBank(matchingAccount)}`;
 }
 
 function selectedCategory(categoryId, groupedCategories) {

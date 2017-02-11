@@ -9,7 +9,7 @@ export default class TransactionRow extends React.Component {
 
   renderCategoryOrTransfer() {
     if (this.props.transaction.matchingTransaction) {
-      return transferTo(this.props.transaction.matchingTransaction, this.props.accounts);
+      return transferTo(this.props.transaction, this.props.transaction.matchingTransaction, this.props.accounts);
     }
     return categoryAndSubcategory(this.props.transaction, this.props.groupedCategories);
   }

@@ -58,10 +58,20 @@ describe('textUtil', () => {
   });
 
   describe('transferTo', () => {
-    it('returns a string with Transfer to: account name (bank)', () => {
+    it('returns a string with Transfer to: account name (bank) when amount is negative', () => {
       const accounts = [{ id: 1 }, { id: 2, name: 'My Account Name', bank: 'My Account Bank' }];
-      const transaction = { accountId: 2 };
-      expect(transferTo(transaction, accounts)).toEqual('Transfer to: My Account Name (My Account Bank)');
+      const transaction = { amount: -400 };
+      const matchingTransaction = { accountId: 2 };
+      expect(transferTo(transaction, matchingTransaction, accounts))
+        .toEqual('Transfer to: My Account Name (My Account Bank)');
+    });
+
+    it('returns a string with Transfer from: account name (bank) when amount is positive', () => {
+      const accounts = [{ id: 1 }, { id: 2, name: 'My Account Name', bank: 'My Account Bank' }];
+      const transaction = { amount: 400 };
+      const matchingTransaction = { accountId: 2 };
+      expect(transferTo(transaction, matchingTransaction, accounts))
+        .toEqual('Transfer from: My Account Name (My Account Bank)');
     });
   });
 });

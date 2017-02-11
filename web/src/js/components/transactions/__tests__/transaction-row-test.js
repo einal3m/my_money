@@ -69,7 +69,7 @@ describe('TransactionRow', () => {
       expect(date.props.children.type).toEqual(Date);
       expect(date.props.children.props.date).toEqual('2015-12-19');
       expect(memoNotes.props.children).toEqual('This is a memo/This is a note');
-      expect(category.props.children).toEqual('Transfer to: My Matched Account');
+      expect(category.props.children).toEqual('Transfer from: My Matched Account');
       expect(amountCell.props.children.type).toEqual(Amount);
       expect(amountCell.props.children.props.amount).toEqual(300);
       expect(balanceCell.props.children.type).toEqual(Balance);
