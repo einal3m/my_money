@@ -72,7 +72,7 @@ describe('BankTransactionForm', () => {
           matchingTransactions={[]}
         />
       );
-      const [date, amount, notes, tabs] = form.props.children;
+      const [date, amount, memo, notes, tabs] = form.props.children;
       const [category, subcategory] = tabs.props.children[0].props.children;
 
       expect(date.type).toEqual(FormControl);
@@ -86,6 +86,11 @@ describe('BankTransactionForm', () => {
       expect(amount.props.label).toEqual('Amount');
       expect(amount.props.children.type).toEqual(MoneyInput);
       expect(amount.props.children.props.value).toEqual(300);
+
+      expect(memo.type).toEqual(FormControl);
+      expect(memo.props.name).toEqual('memo');
+      expect(memo.props.label).toEqual('Memo');
+      expect(memo.props.children.props.children).toEqual('This is a memo');
 
       expect(notes.type).toEqual(FormControl);
       expect(notes.props.name).toEqual('notes');
@@ -110,7 +115,7 @@ describe('BankTransactionForm', () => {
       expect(subcategory.props.children.props.value).toEqual(5);
     });
 
-    it('does not display subcategory picker if category id is null', () => {
+    it('does not display subcategory picker if category id is null or memo if memo is null', () => {
       const form = shallowRenderer(
         <BankTransactionForm
           transaction={{ }}
@@ -120,11 +125,12 @@ describe('BankTransactionForm', () => {
           matchingTransactions={[]}
         />
       );
-      const [date, amount, notes, tabs] = form.props.children;
+      const [date, amount, memo, notes, tabs] = form.props.children;
       const [category, subcategory] = tabs.props.children[0].props.children;
 
       expect(date.props.label).toEqual('Date');
       expect(amount.props.label).toEqual('Amount');
+      expect(memo).toEqual(<div />);
       expect(notes.props.label).toEqual('Notes');
       expect(category.props.label).toEqual('Category');
       expect(subcategory).toEqual(<div />);

@@ -126,6 +126,16 @@ export default class BankTransactionForm extends React.Component {
     );
   }
 
+  renderMemo() {
+    if (!this.state.transaction.memo) return <div />;
+
+    return (
+      <FormControl name="memo" validator={this.validator} label="Memo">
+        <div>{this.state.transaction.memo}</div>
+      </FormControl>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -143,6 +153,7 @@ export default class BankTransactionForm extends React.Component {
             onChange={this.handleChange}
           />
         </FormControl>
+        {this.renderMemo()}
         <FormControl name="notes" validator={this.validator} label="Notes">
           <input
             className="form-control"
