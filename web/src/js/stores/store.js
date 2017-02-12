@@ -5,6 +5,7 @@ import transactionReducer from './transaction-reducer';
 import matchingTransactionReducer from './matching-transactions-reducer';
 import categoryReducer from './category-reducer';
 import importReducer from './import-reducer';
+import bankStatementsReducer from './bank-statement-reducer';
 import apiReducer from './api-status-reducer';
 import reportReducer from './report-reducer';
 import formReducer from './form-reducer';
@@ -18,6 +19,7 @@ export default createStore(
     matchingTransactionStore: matchingTransactionReducer,
     categoryStore: categoryReducer,
     importStore: importReducer,
+    bankStatementStore: bankStatementsReducer,
     apiStatusStore: apiReducer,
     reportStore: reportReducer,
     formStore: formReducer,

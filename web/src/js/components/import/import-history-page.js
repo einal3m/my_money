@@ -27,10 +27,14 @@ export class ImportHistoryPageComponent extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    loaded: state.bankStatementStore.get('loaded'),
+    bankStatements: state.bankStatementStore.get('bankStatements').toJS(),
   };
 }
 
 ImportHistoryPageComponent.propTypes = {
+  loaded: PropTypes.bool.isRequired,
+  bankStatements: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default connect(mapStateToProps)(ImportHistoryPageComponent);
