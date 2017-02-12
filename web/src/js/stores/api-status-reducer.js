@@ -13,6 +13,8 @@ import {
 
 import { GET_DATE_RANGES, SET_DATE_RANGES } from '../actions/date-range-actions';
 
+import { GET_BANK_STATEMENTS, SET_BANK_STATEMENTS, UPLOAD_OFX, SET_OFX_TRANSACTIONS } from '../actions/import-actions';
+
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
   message: null,
@@ -25,7 +27,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case GET_TRANSACTIONS:
     case 'GET_CATEGORIES':
     case 'GET_REPORT':
-    case 'UPLOAD_OFX':
+    case UPLOAD_OFX:
+    case GET_BANK_STATEMENTS:
       return setLoading(state);
 
     case SET_ACCOUNTS:
@@ -39,7 +42,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'SET_SUBCATEGORY':
     case 'REMOVE_CATEGORY':
     case 'REMOVE_SUBCATEGORY':
-    case 'SET_OFX_TRANSACTIONS':
+    case SET_OFX_TRANSACTIONS:
+    case SET_BANK_STATEMENTS:
     case 'SET_ACCOUNT_BALANCE_REPORT':
       return setDone(state);
 

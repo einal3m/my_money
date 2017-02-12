@@ -11,7 +11,7 @@ describe('ImportHistoryPage', () => {
   beforeEach(() => {
     spyOn(AccountActions, 'getAccounts');
     importHistoryPage = shallow(
-      <ImportHistoryPage />
+      <ImportHistoryPage loaded apiStatus={{ status: 'DONE' }} bankStatements={[]} />
     );
   });
 
@@ -21,6 +21,7 @@ describe('ImportHistoryPage', () => {
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('import history');
+      expect(header.props.apiStatus).toEqual({ status: 'DONE' });
 
       expect(filter.type).toEqual(SearchCriteria);
       expect(filter.props.filters).toEqual([{ name: ACCOUNT_FILTER }]);

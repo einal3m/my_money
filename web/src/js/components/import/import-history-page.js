@@ -18,7 +18,7 @@ export class ImportHistoryPageComponent extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title="import history" />
+        <PageHeader title="import history" apiStatus={this.props.apiStatus} />
         <SearchCriteria filters={[{ name: ACCOUNT_FILTER }]} fetch={this.fetchHistory} />
       </div>
     );
@@ -29,12 +29,14 @@ function mapStateToProps(state) {
   return {
     loaded: state.bankStatementStore.get('loaded'),
     bankStatements: state.bankStatementStore.get('bankStatements').toJS(),
+    apiStatus: state.apiStatusStore.toJS(),
   };
 }
 
 ImportHistoryPageComponent.propTypes = {
   loaded: PropTypes.bool.isRequired,
-  bankStatements: PropTypes.arrayOf(PropTypes.shape({})),
+  bankStatements: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  apiStatus: PropTypes.shape({}),
 };
 
 export default connect(mapStateToProps)(ImportHistoryPageComponent);
