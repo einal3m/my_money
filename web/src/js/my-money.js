@@ -11,6 +11,7 @@ import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
 import PatternList from './components/patterns/pattern-list';
 import ImportPage from './components/import/import-page';
+import ImportHistoryPage from './components/import/import-history-page';
 import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
 import AccountBalanceChart from './components/reports/account-balance-chart';
 import IncomeVsExpensesReport from './components/reports/income-vs-expenses-report';
@@ -44,6 +45,7 @@ render((
       <Route path="categories" component={CategoryList} />
       <Route path="patterns" component={PatternList} />
       <Route path="import" component={ImportPage} />
+      <Route path="import-history" component={ImportHistoryPage} />
       <Route path="reports">
         <Route path="accountBalance" component={AccountBalanceChart} />
         <Route path="incomeVsExpenseBar" component={IncomeVsExpenseBarChart} />
