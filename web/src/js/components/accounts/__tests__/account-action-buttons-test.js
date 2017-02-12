@@ -36,5 +36,11 @@ describe('AccountActionButtons', () => {
       actionButtons.props.onSelect('edit');
       expect(formActions.showFormModal).toHaveBeenCalledWith('Savings Account', account, { allowDelete: true });
     });
+
+    it('view import history, calls the routeToImportHistory action', () => {
+      spyOn(routingActions, 'routeToImportHistory');
+      actionButtons.props.onSelect('import-history');
+      expect(routingActions.routeToImportHistory).toHaveBeenCalledWith(22);
+    });
   });
 });

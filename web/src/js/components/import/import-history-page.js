@@ -8,7 +8,7 @@ export class ImportHistoryPageComponent extends React.Component {
 
   constructor() {
     super();
-    getAccounts();
+    getAccounts({ useStore: true });
   }
 
   fetchHistory = () => {

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { MenuItem, DropdownButton } from 'react-bootstrap';
 import { showFormModal } from '../../actions/form-actions';
-import { routeToTransactions } from '../../actions/routing-actions';
+import { routeToTransactions, routeToImportHistory } from '../../actions/routing-actions';
 
 const AccountActionButtons = (props) => {
   const editAccount = () => {
@@ -14,6 +14,10 @@ const AccountActionButtons = (props) => {
     routeToTransactions(props.account.id);
   };
 
+  const viewImportHistory = () => {
+    routeToImportHistory(props.account.id);
+  };
+
   const accountActions = (eventKey) => {
     switch (eventKey) {
       case 'edit':
@@ -21,6 +25,9 @@ const AccountActionButtons = (props) => {
         return;
       case 'transactions':
         viewTransactions();
+        return;
+      case 'import-history':
+        viewImportHistory();
         return;
       default:
         return;
@@ -37,6 +44,7 @@ const AccountActionButtons = (props) => {
     >
       <MenuItem eventKey="transactions">View Transactions</MenuItem>
       <MenuItem eventKey="edit">Edit Account</MenuItem>
+      <MenuItem eventKey="import-history">Import History</MenuItem>
     </DropdownButton>
     );
 };

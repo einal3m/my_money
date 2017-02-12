@@ -1,5 +1,5 @@
 import { hashHistory } from 'react-router';
-import { routeToTransactions, routeToImportTransactions } from '../routing-actions';
+import { routeToTransactions, routeToImportTransactions, routeToImportHistory } from '../routing-actions';
 import * as accountActions from '../account-actions';
 
 describe('RoutingActions', () => {
@@ -30,6 +30,16 @@ describe('RoutingActions', () => {
       spyOn(hashHistory, 'push');
       routeToImportTransactions();
       expect(hashHistory.push).toHaveBeenCalledWith('/import');
+    });
+  });
+
+  describe('routeToImportHistory', () => {
+    it('routes to the import history page', () => {
+      spyOn(accountActions, 'setCurrentAccount');
+      spyOn(hashHistory, 'push');
+      routeToImportHistory(22);
+      expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(22);
+      expect(hashHistory.push).toHaveBeenCalledWith('/import-history');
     });
   });
 });

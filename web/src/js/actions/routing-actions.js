@@ -9,3 +9,8 @@ export function routeToTransactions(accountId) {
 export function routeToImportTransactions() {
   hashHistory.push('/import');
 }
+
+export function routeToImportHistory(accountId) {
+  setCurrentAccount(accountId);
+  hashHistory.push('/import-history');
+}
