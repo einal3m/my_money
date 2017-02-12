@@ -2,17 +2,17 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
 import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/search-criteria';
-import { getAccounts } from '../../actions/account-actions';
+import { getBankStatements } from '../../actions/import-actions';
 
 export class ImportHistoryPageComponent extends React.Component {
 
   constructor() {
     super();
-    getAccounts({ useStore: true });
+    this.fetchHistory();
   }
 
   fetchHistory = () => {
-    console.log('fetchHistory');
+    getBankStatements();
   };
 
   render() {
@@ -24,7 +24,6 @@ export class ImportHistoryPageComponent extends React.Component {
     );
   }
 }
-
 
 function mapStateToProps(state) {
   return {
