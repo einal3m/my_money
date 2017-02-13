@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
 import BankStatementTable from './bank-statement-table';
 import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/search-criteria';
-import { getBankStatements } from '../../actions/import-actions';
+import { getBankStatements } from '../../actions/bank-statement-actions';
 
 export class ImportHistoryPageComponent extends React.Component {
 

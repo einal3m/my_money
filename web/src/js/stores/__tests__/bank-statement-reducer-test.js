@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import bankStatementReducer from '../bank-statement-reducer';
-import { GET_BANK_STATEMENTS, SET_BANK_STATEMENTS } from '../../actions/import-actions';
+import { GET_BANK_STATEMENTS, SET_BANK_STATEMENTS } from '../../actions/bank-statement-actions';
 
 describe('BankStatementReducer', () => {
   const bankStatements = [

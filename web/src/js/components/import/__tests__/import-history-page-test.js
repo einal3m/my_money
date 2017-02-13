@@ -4,7 +4,7 @@ import { ImportHistoryPageComponent as ImportHistoryPage } from '../import-histo
 import PageHeader from '../../common/page-header';
 import SearchCriteria, { ACCOUNT_FILTER } from '../../common/criteria/search-criteria';
 import BankStatementTable from '../bank-statement-table';
-import * as ImportActions from '../../../actions/import-actions';
+import * as BankStatementActions from '../../../actions/bank-statement-actions';
 
 describe('ImportHistoryPage', () => {
   let importHistoryPage;
@@ -14,7 +14,7 @@ describe('ImportHistoryPage', () => {
   ];
 
   beforeEach(() => {
-    spyOn(ImportActions, 'getBankStatements');
+    spyOn(BankStatementActions, 'getBankStatements');
   });
 
   describe('render', () => {
