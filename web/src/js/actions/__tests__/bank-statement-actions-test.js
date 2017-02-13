@@ -41,4 +41,21 @@ describe('BankStatementActions', () => {
       );
     });
   });
+
+  describe('delete modal', () => {
+    it('confirmDeleteBankStatement dispatches id to the store', () => {
+      bankStatementActions.confirmDeleteBankStatement({ id: 123 });
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: bankStatementActions.CONFIRM_DELETE_BANK_STATEMENT,
+        bankStatement: { id: 123 },
+      });
+    });
+
+    it('cancelDeleteBankStatement dispatches action to the store', () => {
+      bankStatementActions.cancelDeleteBankStatement();
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: bankStatementActions.CANCEL_DELETE_BANK_STATEMENT,
+      });
+    });
+  });
 });

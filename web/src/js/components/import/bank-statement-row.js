@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import Date from '../common/date';
 import Button from '../common/controls/button';
+import { confirmDeleteBankStatement } from '../../actions/bank-statement-actions';
 
 export default class BankStatementRow extends React.Component {
 
   handleClick = () => {
-    console.log(`delete history: ${this.props.bankStatement.id}`);
+    confirmDeleteBankStatement(this.props.bankStatement);
   };
 
   render() {

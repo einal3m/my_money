@@ -29,3 +29,13 @@ function storeBankStatements(bankStatements) {
     bankStatements,
   });
 }
+
+export const CONFIRM_DELETE_BANK_STATEMENT = 'CONFIRM_DELETE_BANK_STATEMENT';
+export function confirmDeleteBankStatement(bankStatement) {
+  store.dispatch({ type: CONFIRM_DELETE_BANK_STATEMENT, bankStatement });
+}
+
+export const CANCEL_DELETE_BANK_STATEMENT = 'CANCEL_DELETE_BANK_STATEMENT';
+export function cancelDeleteBankStatement() {
+  store.dispatch({ type: CANCEL_DELETE_BANK_STATEMENT });
+}

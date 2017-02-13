@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import BankStatementRow from '../bank-statement-row';
 import Button from '../../common/controls/button';
 import Date from '../../common/date';
+import * as bankStatementActions from '../../../actions/bank-statement-actions';
 
 describe('BankStatementRow', () => {
   let bankStatementRow;
@@ -40,7 +41,13 @@ describe('BankStatementRow', () => {
 
   describe('delete button onClick', () => {
     it('calls the onDelete prop', () => {
-      // TODO: implement this
+      spyOn(bankStatementActions, 'confirmDeleteBankStatement');
+      bankStatementRow = shallow(<BankStatementRow bankStatement={bankStatement} />);
+
+      const button = bankStatementRow.find(Button);
+      button.prop('onClick')();
+
+      expect(bankStatementActions.confirmDeleteBankStatement).toHaveBeenCalledWith(bankStatement);
     });
   });
 });
