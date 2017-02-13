@@ -1,4 +1,4 @@
-import { Map, List, fromJS } from 'immutable';
+import { Map, List } from 'immutable';
 import { GET_BANK_STATEMENTS, SET_BANK_STATEMENTS } from '../actions/import-actions';
 
 const INITIAL_STATE = Map({

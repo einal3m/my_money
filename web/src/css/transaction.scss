@@ -39,6 +39,10 @@ table#transaction-table, table#pattern-table {
     width: 120px;
   }
 
+  .right-justify {
+    text-align: right;
+  }
+
   .positive {
     font-weight: bold;
     color: $main-color;
