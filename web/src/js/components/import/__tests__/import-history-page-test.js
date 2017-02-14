@@ -4,6 +4,7 @@ import { ImportHistoryPageComponent as ImportHistoryPage } from '../import-histo
 import PageHeader from '../../common/page-header';
 import SearchCriteria, { ACCOUNT_FILTER } from '../../common/criteria/search-criteria';
 import BankStatementTable from '../bank-statement-table';
+import BankStatementDeleteModal from '../bank-statement-delete-modal';
 import * as BankStatementActions from '../../../actions/bank-statement-actions';
 
 describe('ImportHistoryPage', () => {
@@ -18,12 +19,17 @@ describe('ImportHistoryPage', () => {
   });
 
   describe('render', () => {
-    it('has a header, filter', () => {
+    it('has a header, filter and modal', () => {
       importHistoryPage = shallow(
-        <ImportHistoryPage loaded={false} apiStatus={{ status: 'DONE' }} bankStatements={[]} />
+        <ImportHistoryPage
+          loaded={false}
+          apiStatus={{ status: 'DONE' }}
+          bankStatements={[]}
+          bankStatementForDelete={bankStatements[1]}
+        />
       );
 
-      const [header, filter, table] = importHistoryPage.children();
+      const [header, filter, table, modal] = importHistoryPage.children();
 
       expect(header.type).toEqual(PageHeader);
       expect(header.props.title).toEqual('import history');
@@ -33,6 +39,9 @@ describe('ImportHistoryPage', () => {
       expect(filter.props.filters).toEqual([{ name: ACCOUNT_FILTER }]);
 
       expect(table).toEqual(<div />);
+
+      expect(modal.type).toEqual(BankStatementDeleteModal);
+      expect(modal.props.bankStatement).toEqual(bankStatements[1]);
     });
 
     it('has a table if bank statements are loaded', () => {

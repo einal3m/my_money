@@ -39,3 +39,7 @@ export const CANCEL_DELETE_BANK_STATEMENT = 'CANCEL_DELETE_BANK_STATEMENT';
 export function cancelDeleteBankStatement() {
   store.dispatch({ type: CANCEL_DELETE_BANK_STATEMENT });
 }
+
+export function deleteBankStatement(bankStatementId) {
+  // TODO: implement this
+}
