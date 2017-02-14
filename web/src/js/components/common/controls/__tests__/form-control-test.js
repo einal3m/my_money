@@ -28,5 +28,19 @@ describe('FormControl', () => {
       expect(helpBlock.props.className).toEqual('help-block');
       expect(helpBlock.props.children).toEqual('Error text');
     });
+
+    it('creates a form control without help block if validator not provided', () => {
+      const formControl = shallowRenderer(
+        <FormControl name="notes" label="Notes">Child</FormControl>
+      );
+
+      const [label, child, helpBlock] = formControl.props.children;
+
+      expect(formControl.props.className).toEqual('form-group has-success');
+      expect(label.props.className).toEqual('control-label');
+      expect(label.props.children).toEqual('Notes');
+      expect(child).toEqual('Child');
+      expect(helpBlock).toEqual(<div />);
+    });
   });
 });
