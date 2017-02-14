@@ -23,6 +23,7 @@ module Lib
         .where(category: @category)
         .find_by_date(@date_range)
         .reverse_date_order
+        .where(matching_transaction: nil)
     end
 
     def set_factor

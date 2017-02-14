@@ -14,6 +14,8 @@ RSpec.describe Lib::CategorySearch, type: :class do
     @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @t1.category, subcategory: nil)
     @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
     @t8 = FactoryGirl.create(:transaction, account: @share_account, date: '2014-01-13', category: @t1.category, subcategory: nil)
+    @t9 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
+    @t10 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200, matching_transaction: @t9)
 
     @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
   end

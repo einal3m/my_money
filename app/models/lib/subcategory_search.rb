@@ -13,6 +13,7 @@ module Lib
         .where(category: @category, subcategory: @subcategory)
         .find_by_date(@date_range)
         .reverse_date_order
+        .where(matching_transaction: nil)
     end
   end
 end
