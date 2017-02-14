@@ -6,7 +6,7 @@ import { cancelDeleteBankStatement, deleteBankStatement } from '../../actions/ba
 export default class BankStatementDeleteModal extends React.Component {
 
   handleDelete = () => {
-    deleteBankStatement(this.props.bankStatement.id);
+    deleteBankStatement(this.props.bankStatement);
   };
 
   handleCancel = () => {

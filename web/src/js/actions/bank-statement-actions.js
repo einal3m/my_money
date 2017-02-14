@@ -40,6 +40,11 @@ export function cancelDeleteBankStatement() {
   store.dispatch({ type: CANCEL_DELETE_BANK_STATEMENT });
 }
 
-export function deleteBankStatement(bankStatementId) {
-  // TODO: implement this
+export const DELETE_BANK_STATEMENT = 'DELETE_BANK_STATEMENT';
+export function deleteBankStatement(bankStatement) {
+  store.dispatch({ type: DELETE_BANK_STATEMENT });
+  return apiUtil.delete({
+    url: `accounts/${bankStatement.accountId}/bank_statements/${bankStatement.id}`,
+    onSuccess: fetchBankStatements,
+  });
 }

@@ -1,7 +1,11 @@
 import { fromJS } from 'immutable';
 import bankStatementReducer from '../bank-statement-reducer';
 import {
-  GET_BANK_STATEMENTS, SET_BANK_STATEMENTS, CONFIRM_DELETE_BANK_STATEMENT, CANCEL_DELETE_BANK_STATEMENT
+  GET_BANK_STATEMENTS,
+  SET_BANK_STATEMENTS,
+  CONFIRM_DELETE_BANK_STATEMENT,
+  CANCEL_DELETE_BANK_STATEMENT,
+  DELETE_BANK_STATEMENT,
 } from '../../actions/bank-statement-actions';
 
 describe('BankStatementReducer', () => {
@@ -40,7 +44,7 @@ describe('BankStatementReducer', () => {
   });
 
   describe('CONFIRM_DELETE_BANK_STATEMENT', () => {
-    it('sets loading to false, and sets bank statements', () => {
+    it('sets bankStatementForDelete from action', () => {
       const action = { type: CONFIRM_DELETE_BANK_STATEMENT, bankStatement: bankStatements[1] };
       const nextState = bankStatementReducer(undefined, action).toJS();
 
@@ -49,9 +53,19 @@ describe('BankStatementReducer', () => {
   });
 
   describe('CANCEL_DELETE_BANK_STATEMENT', () => {
-    it('sets loading to false, and sets bank statements', () => {
+    it('sets bankStatementForDelete to null', () => {
       const initialState = fromJS({ bankStatementForDelete: bankStatements[1] });
       const action = { type: CANCEL_DELETE_BANK_STATEMENT, bankStatements };
+      const nextState = bankStatementReducer(initialState, action).toJS();
+
+      expect(nextState.bankStatementForDelete).toEqual(null);
+    });
+  });
+
+  describe('DELETE_BANK_STATEMENT', () => {
+    it('sets bankStatementForDelete to null', () => {
+      const initialState = fromJS({ bankStatementForDelete: bankStatements[1] });
+      const action = { type: DELETE_BANK_STATEMENT, bankStatements };
       const nextState = bankStatementReducer(initialState, action).toJS();
 
       expect(nextState.bankStatementForDelete).toEqual(null);

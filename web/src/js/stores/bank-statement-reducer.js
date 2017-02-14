@@ -1,6 +1,10 @@
 import { Map, List } from 'immutable';
 import {
-  GET_BANK_STATEMENTS, SET_BANK_STATEMENTS, CONFIRM_DELETE_BANK_STATEMENT, CANCEL_DELETE_BANK_STATEMENT,
+  GET_BANK_STATEMENTS,
+  SET_BANK_STATEMENTS,
+  CONFIRM_DELETE_BANK_STATEMENT,
+  CANCEL_DELETE_BANK_STATEMENT,
+  DELETE_BANK_STATEMENT,
 } from '../actions/bank-statement-actions';
 
 const INITIAL_STATE = Map({
@@ -18,6 +22,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case CONFIRM_DELETE_BANK_STATEMENT:
       return state.set('bankStatementForDelete', Map(action.bankStatement));
     case CANCEL_DELETE_BANK_STATEMENT:
+    case DELETE_BANK_STATEMENT:
       return state.set('bankStatementForDelete', null);
     default:
       return state;

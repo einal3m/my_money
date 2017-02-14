@@ -13,7 +13,15 @@ import {
 
 import { GET_DATE_RANGES, SET_DATE_RANGES } from '../actions/date-range-actions';
 
-import { GET_BANK_STATEMENTS, SET_BANK_STATEMENTS, UPLOAD_OFX, SET_OFX_TRANSACTIONS } from '../actions/import-actions';
+import { UPLOAD_OFX, SET_OFX_TRANSACTIONS } from '../actions/import-actions';
+
+import {
+  GET_BANK_STATEMENTS,
+  SET_BANK_STATEMENTS,
+  CONFIRM_DELETE_BANK_STATEMENT,
+  CANCEL_DELETE_BANK_STATEMENT,
+  DELETE_BANK_STATEMENT,
+} from '../actions/bank-statement-actions';
 
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
@@ -57,6 +65,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case DELETE_TRANSACTION:
     case 'DELETE_CATEGORY':
     case 'DELETE_SUBCATEGORY':
+    case DELETE_BANK_STATEMENT:
       return setDeleting(state);
 
     case 'SET_API_ERROR':

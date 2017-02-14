@@ -61,7 +61,7 @@ describe('BankStatementDeleteModal', () => {
 
       deleteButton.prop('onClick')();
 
-      expect(bankStatementActions.deleteBankStatement).toHaveBeenCalledWith(123);
+      expect(bankStatementActions.deleteBankStatement).toHaveBeenCalledWith(bankStatement);
     });
   });
 });

@@ -58,4 +58,26 @@ describe('BankStatementActions', () => {
       });
     });
   });
+
+  describe('deleteBankStatement', () => {
+    const bankStatement = { id: 23, accountId: 4 };
+    beforeEach(() => {
+      spyOn(apiUtil, 'delete');
+      bankStatementActions.deleteBankStatement(bankStatement);
+    });
+
+    it('makes delete request', () => {
+      expect(apiUtil.delete).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: bankStatementActions.DELETE_BANK_STATEMENT });
+
+      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
+      expect(deleteArgs.url).toEqual('accounts/4/bank_statements/23');
+    });
+
+    it('onSuccess, calls fetchBankStatements', () => {
+      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
+
+      expect(deleteArgs.onSuccess).toEqual(bankStatementActions.fetchBankStatements);
+    });
+  });
 });
