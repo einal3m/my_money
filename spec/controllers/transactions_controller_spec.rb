@@ -235,14 +235,16 @@ RSpec.describe TransactionsController, type: :controller do
       FactoryGirl.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
       FactoryGirl.create(:transaction, account: a2, date: date, amount: 444)
       t6 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      t7 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount, matching_transaction: t0)
 
       get :matching, { account_id: a1.id, id: t0.id }, valid_session
       expect(response).to be_success
 
       json = JSON.parse(response.body)
-      expect(json['transactions'].length).to eq(2)
+      expect(json['transactions'].length).to eq(3)
       expect(json['transactions'][0]['id']).to eq(t1.id)
       expect(json['transactions'][1]['id']).to eq(t6.id)
+      expect(json['transactions'][2]['id']).to eq(t7.id)
     end
   end
 end

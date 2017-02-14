@@ -69,7 +69,9 @@ class TransactionsController < ApplicationController
   end
 
   def matching
-    render json: Transaction.find_matching(@transaction.date, @transaction.amount, account)
+    transactions = Transaction.find_matching(@transaction.date, @transaction.amount, account)
+    transactions.push(@transaction.matching_transaction) if @transaction.matching_transaction
+    render json: transactions
   end
 
   private
