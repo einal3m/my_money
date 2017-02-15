@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Tabs } from 'react-bootstrap';
 import shallowRenderer from '../../../util/__tests__/shallow-renderer';
 import BankTransactionForm from '../bank-transaction-form';
+import MatchingTransaction from '../matching-transaction';
 import DatePicker from '../../common/date-picker/date-picker';
 import GroupedCategorySelect from '../../common/controls/grouped-category-select';
 import SubcategoryPicker from '../../common/controls/subcategory-picker';
@@ -53,7 +54,7 @@ describe('BankTransactionForm', () => {
           groupedCategories={groupedCategories}
           accounts={accounts}
           matchLoading={false}
-          matchingTransactions={[]}
+          matchingTransactions={matchingTransactions}
         />
       );
 
@@ -69,11 +70,12 @@ describe('BankTransactionForm', () => {
           groupedCategories={groupedCategories}
           accounts={accounts}
           matchLoading={false}
-          matchingTransactions={[]}
+          matchingTransactions={matchingTransactions}
         />
       );
       const [date, amount, memo, notes, tabs] = form.props.children;
       const [category, subcategory] = tabs.props.children[0].props.children;
+      const matching = tabs.props.children[1].props.children;
 
       expect(date.type).toEqual(FormControl);
       expect(date.props.name).toEqual('date');
@@ -113,6 +115,12 @@ describe('BankTransactionForm', () => {
       expect(subcategory.props.children.props.groupedCategories).toEqual(groupedCategories);
       expect(subcategory.props.children.props.categoryId).toEqual(3);
       expect(subcategory.props.children.props.value).toEqual(5);
+
+      expect(matching.type).toEqual(MatchingTransaction);
+      expect(matching.props.accounts).toEqual(accounts);
+      expect(matching.props.transaction).toEqual(jasmine.objectContaining(transaction));
+      expect(matching.props.matchingTransactions).toEqual(matchingTransactions);
+      expect(matching.props.matchLoading).toEqual(false);
     });
 
     it('does not display subcategory picker if category id is null or memo if memo is null', () => {
@@ -156,7 +164,7 @@ describe('BankTransactionForm', () => {
       expect(form.getModel().subcategoryId).toEqual(null);
     });
 
-    it('removes category/subcategory when transfer tab is selected', () => {
+    it('removes matched transaction when category tab is selected', () => {
       const transactionWithMatch = {
         id: 22,
         accountId: 11,

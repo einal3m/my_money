@@ -14,7 +14,7 @@ function errorState(validator, name) {
 
 function helpBlock(validator, name) {
   if (validator) return <div className="help-block">{validator.errorFor(name)}</div>;
-  return <div />
+  return <div />;
 }
 
 FormControl.propTypes = {

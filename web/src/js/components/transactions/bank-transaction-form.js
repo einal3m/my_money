@@ -5,11 +5,10 @@ import DatePicker from '../common/date-picker/date-picker';
 import FormValidator from '../../util/form-validator';
 import FormControl from '../common/controls/form-control';
 import GroupedCategorySelect from '../common/controls/grouped-category-select';
-import MatchingTransactionSelect from '../common/controls/matching-transaction-select';
 import SubcategoryPicker from '../common/controls/subcategory-picker';
+import MatchingTransaction from './matching-transaction';
 import MoneyInput from '../common/controls/money-input';
 import { getMatchingTransactions } from '../../actions/matching-transactions-actions';
-import { transferTo, memoAndNotes } from '../../util/text-util';
 
 export default class BankTransactionForm extends React.Component {
 
@@ -114,18 +113,6 @@ export default class BankTransactionForm extends React.Component {
     );
   }
 
-  renderCurrentMatchingTransaction() {
-    if (!this.state.transaction.matchingTransaction) return <div />;
-
-    return (
-      <div>
-        <div>{transferTo(this.state.transaction, this.state.transaction.matchingTransaction, this.props.accounts)}</div>
-        <div>Description: {memoAndNotes(this.state.transaction.matchingTransaction)}</div>
-        <i className="fa fa-times-circle" onClick={this.clearMatchingTransaction} />
-      </div>
-    );
-  }
-
   renderMemo() {
     if (!this.state.transaction.memo) return <div />;
 
@@ -177,18 +164,14 @@ export default class BankTransactionForm extends React.Component {
             {this.renderSubcategoryPicker()}
           </Tab>
           <Tab title="Transfer" eventKey="transfer">
-            {this.renderCurrentMatchingTransaction()}
-            <FormControl name="matchingTransactionId" validator={this.validator} label="Matching Transactions">
-              <MatchingTransactionSelect
-                name="matchingTransactionId"
-                value={this.state.transaction.matchingTransactionId}
-                accounts={this.props.accounts}
-                matchingTransactions={this.props.matchingTransactions}
-                loading={this.props.matchLoading}
-                allowUnassigned
-                onChange={this.handleMatchingTransactionChange}
-              />
-            </FormControl>
+            <MatchingTransaction
+              transaction={this.state.transaction}
+              accounts={this.props.accounts}
+              matchLoading={this.props.matchLoading}
+              matchingTransactions={this.props.matchingTransactions}
+              onChange={this.handleMatchingTransactionChange}
+              onClear={this.clearMatchingTransaction}
+            />
           </Tab>
         </Tabs>
       </div>
