@@ -2,6 +2,7 @@ import { fromJS } from 'immutable';
 import {
   fetchCategoryReport, fetchSubcategoryReport, toggleReportView, getIncomeExpenseBarReport, fetchAccountBalanceReport,
   SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
+  fetchIncomeVsExpensesReport, SET_INCOME_VS_EXPENSE,
 } from '../report-actions';
 import transactionTransformer from '../../transformers/transaction-transformer';
 import apiUtil from '../../util/api-util';
@@ -154,6 +155,35 @@ describe('ReportActions', () => {
       getArgs.onSuccess({ report: ['totals'] });
 
       expect(store.dispatch).toHaveBeenCalledWith({ type: SET_TOTALS_REPORT, totals: ['totals'] });
+    });
+  });
+
+  describe('fetchIncomeVsExpensesReport', () => {
+    beforeEach(() => {
+      spyOn(apiUtil, 'get');
+      spyOn(store, 'getState').and.returnValue({
+        dateRangeStore: fromJS({ currentDateRange: { fromDate: '2016-03-01', toDate: '2016-03-31' } }),
+      });
+      fetchIncomeVsExpensesReport();
+    });
+
+    it('calls the report/income_vs_expenses api and dispatches response to the store', () => {
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'GET_REPORT' });
+
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+      expect(getArgs.url).toEqual('report/income_vs_expense?from_date=2016-03-01&to_date=2016-03-31');
+    });
+
+    it('onSuccess, stores the response in the store', () => {
+      const getArgs = apiUtil.get.calls.argsFor(0)[0];
+
+      getArgs.onSuccess({ income: ['totals'] });
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_INCOME_VS_EXPENSE,
+        incomeVsExpense: { income: ['totals'] },
+      });
     });
   });
 });

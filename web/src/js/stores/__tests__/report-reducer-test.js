@@ -1,7 +1,12 @@
 import { Map } from 'immutable';
 import reportReducer from '../report-reducer';
 import {
-  GET_REPORT, SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
+  GET_REPORT,
+  SET_ACCOUNT_BALANCE_REPORT,
+  SET_TRANSACTION_REPORT,
+  TOGGLE_REPORT_VIEW,
+  SET_TOTALS_REPORT,
+  SET_INCOME_VS_EXPENSE,
 } from '../../actions/report-actions';
 
 describe('ReportReducer', () => {
@@ -10,6 +15,7 @@ describe('ReportReducer', () => {
     expect(state.get('accountBalances').toJS()).toEqual({});
     expect(state.get('transactions').toJS()).toEqual([]);
     expect(state.get('totals').toJS()).toEqual([]);
+    expect(state.get('incomeVsExpense').toJS()).toEqual({});
     expect(state.get('loaded')).toEqual(false);
     expect(state.get('viewType')).toEqual('table');
   });
@@ -22,6 +28,7 @@ describe('ReportReducer', () => {
       expect(state.get('accountBalances').toJS()).toEqual({});
       expect(state.get('transactions').toJS()).toEqual([]);
       expect(state.get('totals').toJS()).toEqual([]);
+      expect(state.get('incomeVsExpense').toJS()).toEqual({});
     });
   });
 
@@ -64,6 +71,15 @@ describe('ReportReducer', () => {
       const action = { type: TOGGLE_REPORT_VIEW };
       const state = reportReducer(undefined, action);
       expect(state.get('viewType')).toEqual('chart');
+    });
+  });
+
+  describe('SET_INCOME_VS_EXPENSES', () => {
+    it('sets the income vs expenses report data', () => {
+      const action = { type: SET_INCOME_VS_EXPENSE, incomeVsExpense: { income: [], expense: [] } };
+      const state = reportReducer(undefined, action);
+      expect(state.get('incomeVsExpense').toJS()).toEqual({ income: [], expense: [] });
+      expect(state.get('loaded')).toEqual(true);
     });
   });
 });
