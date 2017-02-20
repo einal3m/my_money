@@ -23,6 +23,14 @@ import {
   DELETE_BANK_STATEMENT,
 } from '../actions/bank-statement-actions';
 
+import {
+  GET_REPORT,
+  SET_ACCOUNT_BALANCE_REPORT,
+  SET_INCOME_VS_EXPENSE,
+  SET_TRANSACTION_REPORT,
+  SET_TOTALS_REPORT,
+} from '../actions/report-actions';
+
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
   message: null,
@@ -34,7 +42,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case GET_DATE_RANGES:
     case GET_TRANSACTIONS:
     case 'GET_CATEGORIES':
-    case 'GET_REPORT':
+    case GET_REPORT:
     case UPLOAD_OFX:
     case GET_BANK_STATEMENTS:
       return setLoading(state);
@@ -52,7 +60,10 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case 'REMOVE_SUBCATEGORY':
     case SET_OFX_TRANSACTIONS:
     case SET_BANK_STATEMENTS:
-    case 'SET_ACCOUNT_BALANCE_REPORT':
+    case SET_ACCOUNT_BALANCE_REPORT:
+    case SET_INCOME_VS_EXPENSE:
+    case SET_TRANSACTION_REPORT:
+    case SET_TOTALS_REPORT:
       return setDone(state);
 
     case SAVE_ACCOUNT:
