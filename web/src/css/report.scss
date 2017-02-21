@@ -67,3 +67,27 @@
     vertical-align: middle;
   }
 }
+
+table.table-report {
+  .category, .total {
+    font-weight: bold;
+  }
+
+  .money {
+    text-align: right;
+    width: 110px;
+  }
+
+  .subcategory {
+    border-top: grey;
+    border-bottom: none;
+    td.name {
+      padding-left: 20px;
+    }
+  }
+
+  .total {
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+  }
+}

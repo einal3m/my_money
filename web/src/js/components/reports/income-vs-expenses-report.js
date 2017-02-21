@@ -4,6 +4,7 @@ import PageHeader from '../common/page-header';
 import SearchCriteria, { DATE_RANGE_FILTER } from '../common/criteria/search-criteria';
 import PieAndTable from './pie-and-table';
 import { getIncomeVsExpensesReport } from '../../actions/report-actions';
+import { tableData } from '../../selectors/income-expense-selector';
 
 export class IncomeVsExpensesReportComponent extends React.Component {
 
@@ -19,15 +20,15 @@ export class IncomeVsExpensesReportComponent extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader title="income vs expenses" apiStatus={this.props.apiStatus}/>
+        <PageHeader title="income vs expenses" apiStatus={this.props.apiStatus} />
         <SearchCriteria filters={[{ name: DATE_RANGE_FILTER }]} fetch={this.fetchReport} />
         <div id="report" className="container">
           <div className="row">
             <div className="col-xs-6">
-              <PieAndTable loaded={this.props.loaded} title="income" />
+              <PieAndTable loaded={this.props.loaded} title="income" tableData={this.props.tableData.income} />
             </div>
             <div className="col-xs-6">
-              <PieAndTable loaded={this.props.loaded} title="expenses" />
+              <PieAndTable loaded={this.props.loaded} title="expenses" tableData={this.props.tableData.expense} />
             </div>
           </div>
         </div>
@@ -38,14 +39,17 @@ export class IncomeVsExpensesReportComponent extends React.Component {
 
 IncomeVsExpensesReportComponent.propTypes = {
   loaded: PropTypes.bool.isRequired,
-  reportData: PropTypes.shape({}),
+  tableData: PropTypes.shape({
+    income: PropTypes.shape({}),
+    expense: PropTypes.shape({}),
+  }),
   apiStatus: PropTypes.shape({}).isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     loaded: state.reportStore.get('loaded'),
-    reportData: state.reportStore.get('reportData'),
+    tableData: tableData(state).toJS(),
     apiStatus: state.apiStatusStore.toJS(),
   };
 }
