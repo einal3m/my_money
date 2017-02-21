@@ -114,7 +114,6 @@ export function getIncomeVsExpensesReport() {
   Promise.all([
     getDateRanges(),
     getCategories({ userStore: true }),
-    getAccounts({ useStore: true }),
   ]).then(() => {
     fetchIncomeVsExpensesReport();
   });

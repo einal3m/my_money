@@ -23,8 +23,8 @@ function convertIncomeVsExpense(type, incomeVsExpense, categoryNames, subcategor
   const converter = type === 'table' ? convertToTableData : convertToPieChartData;
 
   return Map({
-    income: converter(incomeVsExpense.get('income'), categoryNames, subcategoryNames),
-    expense: converter(incomeVsExpense.get('expense'), categoryNames, subcategoryNames),
+    income: converter('income', incomeVsExpense.get('income'), categoryNames, subcategoryNames),
+    expense: converter('expense', incomeVsExpense.get('expense'), categoryNames, subcategoryNames),
   });
 }
 
@@ -37,7 +37,7 @@ function sortedGroupData(groupData, categoryNames) {
   })).sort(sortByName);
 }
 
-function convertToTableData(groupData, categoryNames, subcategoryNames) {
+function convertToTableData(type, groupData, categoryNames, subcategoryNames) {
   // array of sorted subcategory totals grouped by category
   const groupedSubcategoryData = groupData.get('subcategory_totals').map(subcategory => Map({
     type: 'subcategory',
@@ -64,15 +64,16 @@ function convertToTableData(groupData, categoryNames, subcategoryNames) {
   });
 }
 
-function convertToPieChartData(groupData, categoryNames) {
+function convertToPieChartData(type, groupData, categoryNames) {
   // array of sorted category totals
   const categoryData = sortedGroupData(groupData, categoryNames);
+  const factor = type === 'income' ? 1 : -1;
 
-  const data = categoryData.map(category => category.get('amount'));
+  const data = categoryData.map(category => factor * category.get('amount'));
   const labels = categoryData.map(category => category.get('name'));
 
   return Map({
-    total: groupData.get('total'),
+    total: factor * groupData.get('total'),
     data,
     labels,
   });

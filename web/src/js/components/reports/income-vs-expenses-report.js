@@ -4,7 +4,7 @@ import PageHeader from '../common/page-header';
 import SearchCriteria, { DATE_RANGE_FILTER } from '../common/criteria/search-criteria';
 import PieAndTable from './pie-and-table';
 import { getIncomeVsExpensesReport } from '../../actions/report-actions';
-import { tableData } from '../../selectors/income-expense-selector';
+import { tableData, pieChartData } from '../../selectors/income-expense-selector';
 
 export class IncomeVsExpensesReportComponent extends React.Component {
 
@@ -64,7 +64,7 @@ function mapStateToProps(state) {
   return {
     loaded: state.reportStore.get('loaded'),
     tableData: tableData(state).toJS(),
-    pieChartData: tableData(state).toJS(),
+    pieChartData: pieChartData(state).toJS(),
     apiStatus: state.apiStatusStore.toJS(),
   };
 }
