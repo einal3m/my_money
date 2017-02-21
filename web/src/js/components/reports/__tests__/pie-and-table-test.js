@@ -16,9 +16,10 @@ describe('PieAndTable', () => {
         { type: 'subcategory', subcategoryId: 12, categoryId: 45, name: 'My Subcategory', amount: 5000 },
       ],
     };
+    const pieChartData = { total: 500, data: [500], labels: ['One'] };
 
     beforeEach(() => {
-      pieAndTable = shallow(<PieAndTable loaded title="income" tableData={tableData} />);
+      pieAndTable = shallow(<PieAndTable loaded title="income" tableData={tableData} pieChartData={pieChartData}/>);
     });
 
     it('has a page header', () => {
@@ -34,6 +35,8 @@ describe('PieAndTable', () => {
 
       const firstRow = table.find('tr').first().find(D3PieChart);
       expect(firstRow.prop('id')).toEqual('income');
+      expect(firstRow.prop('data')).toEqual([500]);
+      expect(firstRow.prop('labels')).toEqual(['One']);
 
       const secondRow = table.find(CategoryTotalRow);
       expect(secondRow.prop('name')).toEqual('My Category');

@@ -25,10 +25,20 @@ export class IncomeVsExpensesReportComponent extends React.Component {
         <div id="report" className="container">
           <div className="row">
             <div className="col-xs-6">
-              <PieAndTable loaded={this.props.loaded} title="income" tableData={this.props.tableData.income} />
+              <PieAndTable
+                loaded={this.props.loaded}
+                title="income"
+                tableData={this.props.tableData.income}
+                pieChartData={this.props.pieChartData.income}
+              />
             </div>
             <div className="col-xs-6">
-              <PieAndTable loaded={this.props.loaded} title="expenses" tableData={this.props.tableData.expense} />
+              <PieAndTable
+                loaded={this.props.loaded}
+                title="expenses"
+                tableData={this.props.tableData.expense}
+                pieChartData={this.props.pieChartData.expense}
+              />
             </div>
           </div>
         </div>
@@ -43,6 +53,10 @@ IncomeVsExpensesReportComponent.propTypes = {
     income: PropTypes.shape({}),
     expense: PropTypes.shape({}),
   }),
+  pieChartData: PropTypes.shape({
+    income: PropTypes.shape({}),
+    expense: PropTypes.shape({}),
+  }),
   apiStatus: PropTypes.shape({}).isRequired,
 };
 
@@ -50,6 +64,7 @@ function mapStateToProps(state) {
   return {
     loaded: state.reportStore.get('loaded'),
     tableData: tableData(state).toJS(),
+    pieChartData: tableData(state).toJS(),
     apiStatus: state.apiStatusStore.toJS(),
   };
 }

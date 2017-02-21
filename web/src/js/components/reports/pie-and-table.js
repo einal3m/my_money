@@ -18,6 +18,20 @@ export default class PieAndTable extends React.Component {
     });
   }
 
+  renderPieChart() {
+    return (
+      <tr>
+        <td colSpan="3">
+          <D3PieChart
+            id={this.props.title}
+            data={this.props.pieChartData.data}
+            labels={this.props.pieChartData.labels}
+          />
+        </td>
+      </tr>
+    );
+  }
+
   render() {
     if (!this.props.loaded) {
       return <div />;
@@ -28,7 +42,7 @@ export default class PieAndTable extends React.Component {
         <h3>{this.props.title}</h3>
         <table className="table table-hover table-report">
           <tbody>
-            <tr><td colSpan="3"><D3PieChart id={this.props.title} /></td></tr>
+            {this.renderPieChart()}
             {this.renderRows()}
             <ReportTotalRow amount={this.props.tableData.total} />
           </tbody>
@@ -47,8 +61,11 @@ PieAndTable.propTypes = {
       type: PropTypes.oneOf(['category', 'subcategory']).isRequired,
       categoryId: PropTypes.number,
       subcategoryId: PropTypes.number,
-      name: PropTypes.string.isRequired,
-      amount: PropTypes.number.isRequired,
     })),
+  }),
+  pieChartData: PropTypes.shape({
+    total: PropTypes.number.isRequired,
+    data: PropTypes.arrayOf(PropTypes.number),
+    labels: PropTypes.arrayOf(PropTypes.string),
   }),
 };

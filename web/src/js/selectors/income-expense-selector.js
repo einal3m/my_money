@@ -17,7 +17,7 @@ const subcategoryNameSelector = createSelector(
 
 const sortByName = (a, b) => a.get('name') !== 'Un-assigned' ? a.get('name').localeCompare(b.get('name')) : 1;
 
-function convertIncomeVsExpense(incomeVsExpense, categoryNames, subcategoryNames, type) {
+function convertIncomeVsExpense(type, incomeVsExpense, categoryNames, subcategoryNames) {
   if (incomeVsExpense.size === 0) return Map({});
 
   const converter = type === 'table' ? convertToTableData : convertToPieChartData;
@@ -26,6 +26,15 @@ function convertIncomeVsExpense(incomeVsExpense, categoryNames, subcategoryNames
     income: converter(incomeVsExpense.get('income'), categoryNames, subcategoryNames),
     expense: converter(incomeVsExpense.get('expense'), categoryNames, subcategoryNames),
   });
+}
+
+function sortedGroupData(groupData, categoryNames) {
+  return groupData.get('category_totals').map(category => Map({
+    type: 'category',
+    categoryId: category.get('category_id'),
+    name: categoryNames.get(category.get('category_id')) || 'Un-assigned',
+    amount: category.get('sum'),
+  })).sort(sortByName);
 }
 
 function convertToTableData(groupData, categoryNames, subcategoryNames) {
@@ -40,12 +49,7 @@ function convertToTableData(groupData, categoryNames, subcategoryNames) {
     .groupBy(subcategory => subcategory.get('categoryId'));
 
   // array of sorted category totals
-  const categoryData = groupData.get('category_totals').map(category => Map({
-    type: 'category',
-    categoryId: category.get('category_id'),
-    name: categoryNames.get(category.get('category_id')) || 'Un-assigned',
-    amount: category.get('sum'),
-  })).sort(sortByName);
+  const categoryData = sortedGroupData(groupData, categoryNames);
 
   let rows = List();
   categoryData.forEach((category) => {
@@ -60,13 +64,24 @@ function convertToTableData(groupData, categoryNames, subcategoryNames) {
   });
 }
 
-function convertToPieChartData() {
-  return [];
+function convertToPieChartData(groupData, categoryNames) {
+  // array of sorted category totals
+  const categoryData = sortedGroupData(groupData, categoryNames);
+
+  const data = categoryData.map(category => category.get('amount'));
+  const labels = categoryData.map(category => category.get('name'));
+
+  return Map({
+    total: groupData.get('total'),
+    data,
+    labels,
+  });
 }
 
 export const pieChartData = createSelector(
   incomeVsExpenseSelector,
-  incomeVsExpense => convertIncomeVsExpense(incomeVsExpense, 'pie')
+  categoryNameSelector,
+  (incomeVsExpense, categoryNames) => convertIncomeVsExpense('pie', incomeVsExpense, categoryNames)
 );
 
 export const tableData = createSelector(
@@ -74,5 +89,5 @@ export const tableData = createSelector(
   categoryNameSelector,
   subcategoryNameSelector,
   (incomeVsExpense, categoryNames, subcategoryNames) =>
-    convertIncomeVsExpense(incomeVsExpense, categoryNames, subcategoryNames, 'table')
+    convertIncomeVsExpense('table', incomeVsExpense, categoryNames, subcategoryNames)
 );

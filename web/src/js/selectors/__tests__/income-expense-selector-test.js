@@ -1,5 +1,5 @@
 import { fromJS, Map } from 'immutable';
-import { tableData } from '../income-expense-selector';
+import { tableData, pieChartData } from '../income-expense-selector';
 
 describe('IncomeExpenseSelector', () => {
   const categories = [
@@ -72,6 +72,30 @@ describe('IncomeExpenseSelector', () => {
     expect(result.toJS()).toEqual(expectedTableData);
   });
 
+  it('converts api response into pie chart format', () => {
+    const state = {
+      categoryStore: fromJS({ categories, subcategories }),
+      reportStore: fromJS({ incomeVsExpense: data }),
+    };
+
+    const expectedPieData = {
+      income: {
+        total: 5499,
+        data: [1000, 4499],
+        labels: ['Income1', 'Un-assigned'],
+      },
+      expense: {
+        total: 15080,
+        data: [1000, 5080, 4000],
+        labels: ['A Expense1', 'z Expense1', 'Un-assigned'],
+      },
+    };
+
+    const result = pieChartData(state);
+
+    expect(result.toJS()).toEqual(expectedPieData);
+  });
+
   it('returns nothing if data is not loaded', () => {
     const state = {
       categoryStore: fromJS({ categories: [], subcategories: []}),
@@ -79,5 +103,6 @@ describe('IncomeExpenseSelector', () => {
     };
 
     expect(tableData(state).toJS()).toEqual({});
+    expect(pieChartData(state).toJS()).toEqual({});
   });
 });
