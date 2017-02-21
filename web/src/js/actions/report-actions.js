@@ -113,6 +113,7 @@ function storeTotalsReport(totals) {
 export function getIncomeVsExpensesReport() {
   Promise.all([
     getDateRanges(),
+    getCategories({ userStore: true }),
     getAccounts({ useStore: true }),
   ]).then(() => {
     fetchIncomeVsExpensesReport();
@@ -127,11 +128,13 @@ export function fetchIncomeVsExpensesReport() {
   store.dispatch({ type: GET_REPORT });
   return apiUtil.get({
     url,
-    onSuccess: (response) => {
-      store.dispatch({
-        type: SET_INCOME_VS_EXPENSE,
-        incomeVsExpense: response,
-      });
-    },
+    onSuccess: storeIncomeVsExpensesReport,
+  });
+}
+
+function storeIncomeVsExpensesReport(response) {
+  store.dispatch({
+    type: SET_INCOME_VS_EXPENSE,
+    incomeVsExpense: response,
   });
 }
