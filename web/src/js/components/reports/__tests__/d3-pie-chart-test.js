@@ -4,7 +4,6 @@ import D3PieChart from '../d3-pie-chart';
 
 describe('D3PieChart', () => {
   it('renders a chart container', () => {
-
     const chart = mount(
       <D3PieChart
         id="income"

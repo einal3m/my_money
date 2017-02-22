@@ -101,5 +101,5 @@ function createTotal(vis, chartSize, data) {
 }
 
 function formatMoney(dollarAmount) {
-  return `$${(dollarAmount/100.0).toFixed(2)}`;
+  return `$${(dollarAmount / 100.0).toFixed(2)}`;
 }

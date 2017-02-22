@@ -10,8 +10,8 @@ describe('IncomeVsExpensesReport', () => {
   describe('render', () => {
     let report;
     const tableData = {
-      income: { total: 500, rows: []},
-      expense: { total: 1000, rows: []},
+      income: { total: 500, rows: [] },
+      expense: { total: 1000, rows: [] },
     };
 
     const pieChartData = {

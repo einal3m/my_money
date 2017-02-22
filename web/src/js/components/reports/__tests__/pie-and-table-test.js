@@ -19,7 +19,7 @@ describe('PieAndTable', () => {
     const pieChartData = { total: 500, data: [500], labels: ['One'] };
 
     beforeEach(() => {
-      pieAndTable = shallow(<PieAndTable loaded title="income" tableData={tableData} pieChartData={pieChartData}/>);
+      pieAndTable = shallow(<PieAndTable loaded title="income" tableData={tableData} pieChartData={pieChartData} />);
     });
 
     it('has a page header', () => {

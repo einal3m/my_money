@@ -98,7 +98,7 @@ describe('IncomeExpenseSelector', () => {
 
   it('returns nothing if data is not loaded', () => {
     const state = {
-      categoryStore: fromJS({ categories: [], subcategories: []}),
+      categoryStore: fromJS({ categories: [], subcategories: [] }),
       reportStore: fromJS({ incomeVsExpense: Map({}) }),
     };
 
