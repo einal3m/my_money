@@ -62,7 +62,7 @@ IncomeVsExpensesReportComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.reportStore.get('loaded'),
+    loaded: tableData(state).size > 0,
     tableData: tableData(state).toJS(),
     pieChartData: pieChartData(state).toJS(),
     apiStatus: state.apiStatusStore.toJS(),

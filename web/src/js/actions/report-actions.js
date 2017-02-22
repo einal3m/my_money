@@ -113,7 +113,7 @@ function storeTotalsReport(totals) {
 export function getIncomeVsExpensesReport() {
   Promise.all([
     getDateRanges(),
-    getCategories({ userStore: true }),
+    getCategories({ useStore: true }),
   ]).then(() => {
     fetchIncomeVsExpensesReport();
   });

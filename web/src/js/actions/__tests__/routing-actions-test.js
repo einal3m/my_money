@@ -1,12 +1,17 @@
 import { hashHistory } from 'react-router';
-import { routeToTransactions, routeToImportTransactions, routeToImportHistory } from '../routing-actions';
+import { routeToTransactions, routeToImportTransactions, routeToImportHistory, routeToCategoryReport,
+  routeToSubcategoryReport } from '../routing-actions';
 import * as accountActions from '../account-actions';
+import * as categoryActions from '../category-actions';
 
 describe('RoutingActions', () => {
+  beforeEach(() => {
+    spyOn(hashHistory, 'push');
+  });
+
   describe('routeToTransactions', () => {
     it('sets the current account and routes to the transaction page', () => {
       spyOn(accountActions, 'setCurrentAccount');
-      spyOn(hashHistory, 'push');
 
       routeToTransactions(22);
 
@@ -16,7 +21,6 @@ describe('RoutingActions', () => {
 
     it('does not set current account if not provided', () => {
       spyOn(accountActions, 'setCurrentAccount');
-      spyOn(hashHistory, 'push');
 
       routeToTransactions();
 
@@ -27,7 +31,6 @@ describe('RoutingActions', () => {
 
   describe('routeToImportTransactions', () => {
     it('routes to the import component', () => {
-      spyOn(hashHistory, 'push');
       routeToImportTransactions();
       expect(hashHistory.push).toHaveBeenCalledWith('/import');
     });
@@ -36,10 +39,33 @@ describe('RoutingActions', () => {
   describe('routeToImportHistory', () => {
     it('routes to the import history page', () => {
       spyOn(accountActions, 'setCurrentAccount');
-      spyOn(hashHistory, 'push');
       routeToImportHistory(22);
       expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(22);
       expect(hashHistory.push).toHaveBeenCalledWith('/import-history');
+    });
+  });
+
+  describe('routeToCategoryReport', () => {
+    it('sets the current category and routes to the report', () => {
+      spyOn(categoryActions, 'setCurrentCategory');
+
+      routeToCategoryReport(45);
+
+      expect(categoryActions.setCurrentCategory).toHaveBeenCalledWith(45);
+      expect(hashHistory.push).toHaveBeenCalledWith('/reports/categoryReport');
+    });
+  });
+
+  describe('routeToSubcategoryReport', () => {
+    it('sets the current category and subcategory and routes to the report', () => {
+      spyOn(categoryActions, 'setCurrentCategory');
+      spyOn(categoryActions, 'setCurrentSubcategory');
+
+      routeToSubcategoryReport(45, 12);
+
+      expect(categoryActions.setCurrentCategory).toHaveBeenCalledWith(45);
+      expect(categoryActions.setCurrentSubcategory).toHaveBeenCalledWith(12);
+      expect(hashHistory.push).toHaveBeenCalledWith('/reports/subcategoryReport');
     });
   });
 });
