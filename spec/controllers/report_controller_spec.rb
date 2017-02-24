@@ -177,4 +177,32 @@ RSpec.describe ReportController, type: :controller do
       # expect(json['transactions'][1]).to eq(serialize_transaction(t2))
     end
   end
+
+  describe 'home loan report' do
+    it 'returns loan estimations for specified account' do
+      account = FactoryGirl.create(:account, account_type: 'loan')
+      reporter = instance_double Lib::HomeLoanReporter
+      expect(Lib::HomeLoanReporter).to receive(:new).with(account).and_return(reporter)
+      expect(reporter).to receive(:execute).and_return({ data: 'result' })
+
+      get :home_loan, account_id: account.id
+
+      expect(response).to be_success
+      json = JSON.parse(response.body)
+
+      expect(json['data']).to eq('result')
+    end
+
+    it 'returns an error if account is not a loan' do
+      account = FactoryGirl.create(:account, account_type: 'savings')
+      expect(Lib::HomeLoanReporter).not_to receive(:new)
+
+      get :home_loan, account_id: account.id
+
+      expect(response.status).to eq(400)
+
+      json = JSON.parse(response.body)
+      expect(json['message']).to eq('Account is not a loan account')
+    end
+  end
 end

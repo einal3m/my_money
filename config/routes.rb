@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'report/subcategory'
   get 'report/category'
   get 'report/eod_balance'
+  get 'report/home_loan'
   get 'report/index'
 
   resources :date_range_options

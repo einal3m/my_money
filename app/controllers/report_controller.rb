@@ -69,6 +69,15 @@ class ReportController < ApplicationController
     render json: report_data
   end
 
+  def home_loan
+    account = Account.find(params[:account_id])
+    if account.account_type != AccountType::Loan
+      render json: {message: 'Account is not a loan account'}, status: :bad_request
+    else
+      render json: Lib::HomeLoanReporter.new(account).execute
+    end
+  end
+
   private
 
   def merge_data(income_data, expense_data)
