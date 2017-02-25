@@ -17,6 +17,7 @@ import AccountBalanceChart from './components/reports/account-balance-chart';
 import IncomeVsExpensesReport from './components/reports/income-vs-expenses-report';
 import CategoryReport from './components/reports/category-report';
 import SubcategoryReport from './components/reports/subcategory-report';
+import LoanReport from './components/loan/loan-report';
 
 require('babel-polyfill');
 
@@ -52,6 +53,7 @@ render((
         <Route path="incomeVsExpenses" component={IncomeVsExpensesReport} />
         <Route path="categoryReport" component={CategoryReport} />
         <Route path="subcategoryReport" component={SubcategoryReport} />
+        <Route path="loanReport" component={LoanReport} />
       </Route>
       <IndexRoute component={AccountList} />
     </Route>
