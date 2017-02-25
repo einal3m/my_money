@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :accounts, only: [:create, :index, :destroy, :update] do
     resources :reconciliations
     resources :bank_statements, only: [:create, :index, :destroy]
+    resources :budgets, only: [:create, :index, :destroy, :update]
     resources :transactions do
       member do
         get 'matching'

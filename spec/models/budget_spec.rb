@@ -17,6 +17,13 @@ RSpec.describe Budget, type: :model do
       expect(FactoryGirl.build(:budget, day_of_month: nil)).not_to be_valid
     end
 
+    it 'is valid with a day of month between 1 and 31' do
+      expect(FactoryGirl.build(:budget, day_of_month: 0)).not_to be_valid
+      expect(FactoryGirl.build(:budget, day_of_month: 1)).to be_valid
+      expect(FactoryGirl.build(:budget, day_of_month: 31)).to be_valid
+      expect(FactoryGirl.build(:budget, day_of_month: 32)).not_to be_valid
+    end
+
     it 'is valid without a description' do
       expect(FactoryGirl.build(:budget, description: nil)).to be_valid
     end
