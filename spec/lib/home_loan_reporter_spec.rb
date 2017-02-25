@@ -10,15 +10,17 @@ RSpec.describe Lib::HomeLoanReporter, type: :class do
   end
 
   describe 'minimum repayment' do
-    it 'calculates the minimum loan repayment' do
+    it 'calculates the minimum loan repayment from current date to end of loan term' do
+      one_year_ago = 1.year.ago.to_date
+
       account = FactoryGirl.create(:account,
-        account_type: 'loan', term: 30, interest_rate: 3.89, starting_balance: -45_000_000
+        account_type: 'loan', term: 2, interest_rate: 5.00, starting_balance: -100_000, starting_date: one_year_ago
       )
 
       reporter = Lib::HomeLoanReporter.new(account)
       result = reporter.execute
 
-      expect(result[:minimum_repayment]).to eq(211_993)
+      expect(result[:minimum_repayment]).to eq(8561)
     end
   end
 end

@@ -23,7 +23,7 @@ module Lib
     # n   = total number of interest periods
     #
     def minimum_repayment
-      ((present_value * periodic_rate) / (1 - (1 + periodic_rate)**(-number_of_periods))).round(0).to_i
+      ((present_value * periodic_rate) / (1 - (1 + periodic_rate)**(-periods_remaining))).round(0).to_i
     end
 
     def present_value
@@ -34,8 +34,9 @@ module Lib
       @account.interest_rate / 100.0 / 12.0
     end
 
-    def number_of_periods
-      account.term * 12
+    def periods_remaining
+      number_of_periods_complete = ((Date.today.to_time - account.starting_date.to_time) / 1.month.second).floor
+      account.term * 12 - number_of_periods_complete
     end
   end
 end
