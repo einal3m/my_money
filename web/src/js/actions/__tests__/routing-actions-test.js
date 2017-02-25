@@ -1,6 +1,6 @@
 import { hashHistory } from 'react-router';
 import { routeToTransactions, routeToImportTransactions, routeToImportHistory, routeToCategoryReport,
-  routeToSubcategoryReport } from '../routing-actions';
+  routeToSubcategoryReport, routeToLoanReport } from '../routing-actions';
 import * as accountActions from '../account-actions';
 import * as categoryActions from '../category-actions';
 
@@ -42,6 +42,15 @@ describe('RoutingActions', () => {
       routeToImportHistory(22);
       expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(22);
       expect(hashHistory.push).toHaveBeenCalledWith('/import-history');
+    });
+  });
+
+  describe('routeToLoanReport', () => {
+    it('routes to the loan report page', () => {
+      spyOn(accountActions, 'setCurrentAccount');
+      routeToLoanReport(22);
+      expect(accountActions.setCurrentAccount).toHaveBeenCalledWith(22);
+      expect(hashHistory.push).toHaveBeenCalledWith('/reports/loanReport');
     });
   });
 

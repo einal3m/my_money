@@ -59,5 +59,11 @@ describe('AccountActionButtons', () => {
       actionButtons.props.onSelect('import-history');
       expect(routingActions.routeToImportHistory).toHaveBeenCalledWith(22);
     });
+
+    it('view loan report, calls the routeToLoanReport action', () => {
+      spyOn(routingActions, 'routeToLoanReport');
+      actionButtons.props.onSelect('loan-report');
+      expect(routingActions.routeToLoanReport).toHaveBeenCalledWith(22);
+    });
   });
 });

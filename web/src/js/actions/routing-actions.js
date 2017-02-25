@@ -26,3 +26,8 @@ export function routeToSubcategoryReport(categoryId, subcategoryId) {
   setCurrentSubcategory(subcategoryId);
   hashHistory.push('/reports/subcategoryReport');
 }
+
+export function routeToLoanReport(accountId) {
+  setCurrentAccount(accountId);
+  hashHistory.push('/reports/loanReport');
+}
