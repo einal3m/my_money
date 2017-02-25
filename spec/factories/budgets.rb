@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :budget do
-    account_id 1
+    account
     description "MyString"
     day_of_month 1
     amount 1

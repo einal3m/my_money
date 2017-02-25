@@ -29,4 +29,11 @@ RSpec.describe Budget, type: :model do
       expect(FactoryGirl.build(:budget, credit: nil)).not_to be_valid
     end
   end
+
+  describe 'relationships' do
+    it 'belongs to account' do
+      a = FactoryGirl.create(:account)
+      expect(FactoryGirl.create(:budget, account: a).account).to eq(a)
+    end
+  end
 end

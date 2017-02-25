@@ -18,6 +18,7 @@ class Account < ActiveRecord::Base
   has_many :patterns
   has_many :reconciliations
   has_many :bank_statements
+  has_many :budgets
 
   # validations
   validates :account_type, presence: true

@@ -127,6 +127,14 @@ RSpec.describe Account, type: :model do
 
       expect(a.bank_statements.length).to eq(2)
     end
+
+    it 'has many budgets' do
+      a = FactoryGirl.create(:account)
+      FactoryGirl.create(:budget, account: a)
+      FactoryGirl.create(:budget, account: a)
+
+      expect(a.budgets.length).to eq(2)
+    end
   end
 
   describe 'properties' do
