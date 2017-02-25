@@ -34,6 +34,11 @@ const AccountActionButtons = (props) => {
     }
   };
 
+  const renderLoanActions = () => {
+    if (props.account.accountType === 'loan') return <MenuItem eventKey="loan-report">Loan Report</MenuItem>;
+    return <div />;
+  };
+
   return (
     <DropdownButton
       title="..."
@@ -45,6 +50,7 @@ const AccountActionButtons = (props) => {
       <MenuItem eventKey="transactions">View Transactions</MenuItem>
       <MenuItem eventKey="edit">Edit Account</MenuItem>
       <MenuItem eventKey="import-history">Import History</MenuItem>
+      {renderLoanActions()}
     </DropdownButton>
     );
 };
@@ -52,6 +58,7 @@ const AccountActionButtons = (props) => {
 AccountActionButtons.propTypes = {
   account: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    accountType: PropTypes.string.isRequired,
   }).isRequired,
 };
 

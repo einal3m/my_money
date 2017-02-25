@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import LoanReport from '../loan-report';
 import PageHeader from '../../common/page-header';
 
-fdescribe('LoanReport', () => {
+describe('LoanReport', () => {
   describe('render', () => {
     let report;
 

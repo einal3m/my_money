@@ -10,17 +10,34 @@ describe('AccountActionButtons', () => {
   const actionButtons = shallowRenderer(<AccountActionButtons account={account} />);
 
   describe('render', () => {
-    it('has the account information', () => {
+    it('shows the common account actions when accountType is not loan', () => {
       expect(actionButtons.type).toEqual(DropdownButton);
       expect(actionButtons.props.title).toEqual('...');
 
-      const [view, edit] = actionButtons.props.children;
+      const [view, edit, importHistory, empty] = actionButtons.props.children;
       expect(view.type).toEqual(MenuItem);
       expect(view.props.eventKey).toEqual('transactions');
       expect(view.props.children).toEqual('View Transactions');
       expect(edit.type).toEqual(MenuItem);
       expect(edit.props.eventKey).toEqual('edit');
       expect(edit.props.children).toEqual('Edit Account');
+      expect(importHistory.type).toEqual(MenuItem);
+      expect(importHistory.props.eventKey).toEqual('import-history');
+      expect(importHistory.props.children).toEqual('Import History');
+      expect(empty).toEqual(<div />);
+    });
+
+    it('also shows the loan report actions when accountType is loan', () => {
+      const loanAccount = { id: 22, accountType: 'loan', name: 'myAccount' };
+      const actionButtonsForLoan = shallowRenderer(<AccountActionButtons account={loanAccount} />);
+
+      const [view, edit, importHistory, loanReport] = actionButtonsForLoan.props.children;
+      expect(view.props.eventKey).toEqual('transactions');
+      expect(edit.props.eventKey).toEqual('edit');
+      expect(importHistory.props.eventKey).toEqual('import-history');
+      expect(loanReport.type).toEqual(MenuItem);
+      expect(loanReport.props.eventKey).toEqual('loan-report');
+      expect(loanReport.props.children).toEqual('Loan Report');
     });
   });
 
