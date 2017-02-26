@@ -14,10 +14,10 @@ describe('ReportSelector', () => {
     const xAxisLabels = ['Aug-16', 'Sep-16'];
     const chartData = { seriesData, xAxisLabels };
 
-    it('converts month totals into chartData', () => {
+    it('converts month totals into seriesData', () => {
       expect(chartDataForMonthTotals(store)).toEqual(chartData);
     });
-    it('converts month totals into chartData', () => {
+    it('converts month totals into seriesData', () => {
       expect(chartDataForMonthTotals(store)).toEqual(chartData);
     });
   });

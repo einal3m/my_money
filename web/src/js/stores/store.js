@@ -10,6 +10,7 @@ import apiReducer from './api-status-reducer';
 import reportReducer from './report-reducer';
 import formReducer from './form-reducer';
 import patternReducer from './pattern-reducer';
+import loanReducer from './loan-reducer';
 
 export default createStore(
   combineReducers({
@@ -24,5 +25,6 @@ export default createStore(
     reportStore: reportReducer,
     formStore: formReducer,
     patternStore: patternReducer,
+    loanStore: loanReducer,
   })
 );
