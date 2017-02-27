@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { LoanReportComponent as LoanReport } from '../loan-report';
 import PageHeader from '../../common/page-header';
 import LoanViewButtons from '../loan-view-buttons';
-import D3LineChart from '../../reports/d3-line-chart';
+import LoanChartView from '../loan-chart-view';
 import * as loanActions from '../../../actions/loan-actions';
 
 describe('LoanReport', () => {
@@ -37,20 +37,43 @@ describe('LoanReport', () => {
       expect(buttons.prop('view')).toEqual('chart');
     });
 
-    it('has a chart if seriesData is set', () => {
-      const chart = report.find(D3LineChart);
-      expect(chart.prop('chartData')).toEqual({ seriesData: [{ name: 'Series1' }] });
+    describe('chart view', () => {
+      it('renders the chart view', () => {
+        const chart = report.find(LoanChartView);
+        expect(chart.prop('chartData')).toEqual({ seriesData: [{ name: 'Series1' }] });
+      });
     });
 
-    it('has no chart if seriesData is null', () => {
-      report = shallow(
-        <LoanReport
-          apiStatus={{ status: 'DONE' }}
-          seriesData={[]}
-          view="chart"
-        />
-      );
-      expect(report.find(D3LineChart).length).toEqual(0);
+    describe('budget table view', () => {
+      it('renders the budget table', () => {
+        report = shallow(
+          <LoanReport
+            apiStatus={{ status: 'DONE' }}
+            seriesData={[{ name: 'Series1' }]}
+            view="budget"
+          />
+        );
+
+        expect(report.find(LoanChartView).length).toEqual(0);
+
+        // expect budget table to exist
+      });
+    });
+
+    describe('summary view', () => {
+      it('renders the summary', () => {
+        report = shallow(
+          <LoanReport
+            apiStatus={{ status: 'DONE' }}
+            seriesData={[{ name: 'Series1' }]}
+            view="summary"
+          />
+        );
+
+        expect(report.find(LoanChartView).length).toEqual(0);
+
+        // expect summary table to exist
+      });
     });
   });
 });

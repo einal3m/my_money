@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
 import LoanViewButtons from './loan-view-buttons';
-import D3LineChart from '../reports/d3-line-chart';
+import LoanChartView from './loan-chart-view';
 import { getLoanReport } from '../../actions/loan-actions';
 import seriesData from '../../selectors/loan-report-selector';
 
@@ -12,12 +12,17 @@ export class LoanReportComponent extends React.Component {
     getLoanReport();
   }
 
-  renderChart() {
-    if (this.props.seriesData.length === 0) {
-      return <div />;
+  renderContent() {
+    switch (this.props.view) {
+      case 'chart':
+        return <LoanChartView chartData={{ seriesData: this.props.seriesData }} />;
+      case 'budget':
+        return <div />;
+      case 'summary':
+        return <div />;
+      default:
+        return <div />;
     }
-
-    return <D3LineChart chartData={{ seriesData: this.props.seriesData }} />;
   }
 
   render() {
@@ -27,7 +32,7 @@ export class LoanReportComponent extends React.Component {
           <LoanViewButtons view={this.props.view} />
         </PageHeader>
         <div id="report" className="container">
-          {this.renderChart()}
+          {this.renderContent()}
         </div>
       </div>
     );
