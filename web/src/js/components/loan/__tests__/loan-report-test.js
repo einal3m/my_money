@@ -9,16 +9,18 @@ import * as loanActions from '../../../actions/loan-actions';
 describe('LoanReport', () => {
   describe('render', () => {
     let report;
+    let props;
 
     beforeEach(() => {
       spyOn(loanActions, 'getLoanReport');
-      report = shallow(
-        <LoanReport
-          apiStatus={{ status: 'DONE' }}
-          seriesData={[{ name: 'Series1' }]}
-          view="chart"
-        />
-      );
+      props = {
+        apiStatus: { status: 'DONE' },
+        seriesData: [{ name: 'Series1' }],
+        view: 'chart',
+        account: { name: 'My Account', bank: 'My Bank' },
+      };
+
+      report = shallow(<LoanReport {...props} />);
     });
 
     it('calls the report action', () => {
@@ -37,22 +39,22 @@ describe('LoanReport', () => {
       expect(buttons.prop('view')).toEqual('chart');
     });
 
+    it('has a title', () => {
+      const title = report.find('h3');
+
+      expect(title.text()).toEqual('My Account (My Bank)');
+    });
+
     describe('chart view', () => {
       it('renders the chart view', () => {
         const chart = report.find(LoanChartView);
-        expect(chart.prop('chartData')).toEqual({ seriesData: [{ name: 'Series1' }] });
+        expect(chart.prop('seriesData')).toEqual([{ name: 'Series1' }]);
       });
     });
 
     describe('budget table view', () => {
       it('renders the budget table', () => {
-        report = shallow(
-          <LoanReport
-            apiStatus={{ status: 'DONE' }}
-            seriesData={[{ name: 'Series1' }]}
-            view="budget"
-          />
-        );
+        report = shallow(<LoanReport {...props} view="budget" />);
 
         expect(report.find(LoanChartView).length).toEqual(0);
 
@@ -62,13 +64,7 @@ describe('LoanReport', () => {
 
     describe('summary view', () => {
       it('renders the summary', () => {
-        report = shallow(
-          <LoanReport
-            apiStatus={{ status: 'DONE' }}
-            seriesData={[{ name: 'Series1' }]}
-            view="summary"
-          />
-        );
+        report = shallow(<LoanReport {...props} view="summary" />);
 
         expect(report.find(LoanChartView).length).toEqual(0);
 
