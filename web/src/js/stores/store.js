@@ -11,6 +11,7 @@ import reportReducer from './report-reducer';
 import formReducer from './form-reducer';
 import patternReducer from './pattern-reducer';
 import loanReducer from './loan-reducer';
+import budgetReducer from './budget-reducer';
 
 export default createStore(
   combineReducers({
@@ -26,5 +27,6 @@ export default createStore(
     formStore: formReducer,
     patternStore: patternReducer,
     loanStore: loanReducer,
+    budgetStore: budgetReducer,
   })
 );
