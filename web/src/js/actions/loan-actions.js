@@ -23,3 +23,8 @@ export function fetchLoanReport() {
 function storeLoanReport(response) {
   store.dispatch({ type: SET_LOAN_REPORT, report: response });
 }
+
+export const SET_LOAN_VIEW = 'SET_LOAN_VIEW';
+export function setLoanView(view) {
+  store.dispatch({ type: SET_LOAN_VIEW, view})
+}

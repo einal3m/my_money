@@ -39,4 +39,12 @@ describe('LoanActions', () => {
       );
     });
   });
+
+  describe('setLoanView', () => {
+    it('dispatches the action to the store', () => {
+      loanActions.setLoanView('chart');
+
+      expect(dispatcherSpy).toHaveBeenCalledWith({ type: loanActions.SET_LOAN_VIEW, view: 'chart' });
+    });
+  });
 });
