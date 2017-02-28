@@ -58,5 +58,9 @@ describe('BudgetTable', () => {
       expect(tableBody.childAt(0).type()).toEqual(BudgetRow);
       expect(tableBody.childAt(0).prop('budget')).toEqual(budgets[0]);
     });
+
+    it('renders a modal', () => {
+
+    });
   });
 });

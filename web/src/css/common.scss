@@ -11,6 +11,10 @@ body {
 .button-group {
   margin-top: 20px;
   margin-bottom: 10px;
+
+  button {
+    margin-left: 10px;
+  }
 }
 
 .page-title {
@@ -20,10 +24,6 @@ body {
 
   .inline-heading {
     display: inline-block;
-  }
-
-  .button-group button {
-    margin-left: 10px;
   }
 
   .btn:focus,.btn:active {

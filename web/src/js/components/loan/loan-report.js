@@ -19,7 +19,7 @@ export class LoanReportComponent extends React.Component {
       case 'chart':
         return <LoanChartView seriesData={this.props.seriesData} />;
       case 'budget':
-        return <BudgetTable />;
+        return <BudgetTable account={this.props.account} />;
       case 'summary':
         return <div />;
       default:

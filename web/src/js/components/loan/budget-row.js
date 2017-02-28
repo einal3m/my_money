@@ -13,7 +13,7 @@ export default class BudgetRow extends React.Component {
       <tr onClick={this.onClickHandler}>
         <td>{this.props.budget.description}</td>
         <td>{this.props.budget.dayOfMonth}</td>
-        <td><Amount amount={this.props.budget.amount} /></td>
+        <td className="currency"><Amount amount={this.props.budget.amount} /></td>
       </tr>
     );
   }
