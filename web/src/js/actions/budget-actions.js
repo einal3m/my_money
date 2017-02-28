@@ -1,7 +1,7 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
-import { transformFromApi } from '../transformers/budget-transformer';
+import { transformFromApi, transformToApi } from '../transformers/budget-transformer';
 
 export const GET_BUDGETS = 'GET_BUDGETS';
 export function getBudgets() {
@@ -25,4 +25,40 @@ export function fetchBudgets() {
 export const SET_BUDGETS = 'SET_BUDGETS';
 function storeBudgets(budgets) {
   store.dispatch({ type: SET_BUDGETS, budgets });
+}
+
+export const SAVE_BUDGET = 'SAVE_BUDGET';
+export function saveBudget(budget) {
+  store.dispatch({ type: SAVE_BUDGET });
+  const accountId = store.getState().accountStore.get('currentAccount').get('id');
+
+  if (budget.id) return updateBudget(accountId, budget);
+  return createBudget(accountId, budget);
+}
+
+function createBudget(accountId, budget) {
+  return apiUtil.post({
+    url: `accounts/${accountId}/budgets`,
+    body: { budget: transformToApi(budget) },
+    onSuccess: fetchBudgets,
+  });
+}
+
+function updateBudget(accountId, budget) {
+  return apiUtil.put({
+    url: `accounts/${accountId}/budgets/${budget.id}`,
+    body: { budget: transformToApi(budget) },
+    onSuccess: fetchBudgets,
+  });
+}
+
+export const DELETE_BUDGET = 'DELETE_BUDGET';
+export function deleteBudget(budget) {
+  store.dispatch({ type: DELETE_BUDGET });
+  const accountId = store.getState().accountStore.get('currentAccount').get('id');
+
+  return apiUtil.delete({
+    url: `accounts/${accountId}/budgets/${budget.id}`,
+    onSuccess: fetchBudgets,
+  });
 }
