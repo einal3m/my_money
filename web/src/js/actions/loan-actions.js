@@ -26,5 +26,5 @@ function storeLoanReport(response) {
 
 export const SET_LOAN_VIEW = 'SET_LOAN_VIEW';
 export function setLoanView(view) {
-  store.dispatch({ type: SET_LOAN_VIEW, view})
+  store.dispatch({ type: SET_LOAN_VIEW, view });
 }

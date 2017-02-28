@@ -76,7 +76,7 @@ describe('BudgetForm', () => {
         expect(instance.validator.errorState('description')).toEqual('has-error');
         expect(instance.validator.errorFor('description')).toEqual('Description is required');
 
-        matchText.prop('onChange')({ target: { name: 'description', value: 'new description' }});
+        matchText.prop('onChange')({ target: { name: 'description', value: 'new description' } });
         expect(form.state('budget').description).toEqual('new description');
         expect(instance.validator.errorState('description')).toEqual('has-success');
         expect(instance.validator.errorFor('description')).toBeUndefined();

@@ -1,4 +1,4 @@
-import { Map, List, fromJS } from 'immutable';
+import { Map, List } from 'immutable';
 import {
   GET_BUDGETS,
   SET_BUDGETS,

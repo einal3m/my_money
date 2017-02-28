@@ -28,7 +28,9 @@ export class BudgetTableComponent extends React.Component {
     return (
       <div>
         <div className="pull-left"><h3>Budgeted income/expenses</h3></div>
-        <div className="pull-left button-group"><Button onClick={this.newBudget}><Glyphicon glyph="plus" /> New</Button></div>
+        <div className="pull-left button-group">
+          <Button onClick={this.newBudget}><Glyphicon glyph="plus" /> New</Button>
+        </div>
       </div>
     );
   }
