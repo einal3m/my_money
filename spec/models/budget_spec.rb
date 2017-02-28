@@ -31,10 +31,6 @@ RSpec.describe Budget, type: :model do
     it 'is invalid without an amount' do
       expect(FactoryGirl.build(:budget, amount: nil)).not_to be_valid
     end
-
-    it 'is invalid without credit flag' do
-      expect(FactoryGirl.build(:budget, credit: nil)).not_to be_valid
-    end
   end
 
   describe 'relationships' do

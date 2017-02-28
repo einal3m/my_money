@@ -4,6 +4,5 @@ FactoryGirl.define do
     description "MyString"
     day_of_month 1
     amount 1
-    credit true
   end
 end

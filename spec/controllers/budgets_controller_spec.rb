@@ -5,8 +5,7 @@ RSpec.describe BudgetsController, type: :controller do
     {
       description: 'My description',
       day_of_month: 2,
-      amount: 1000,
-      credit: true
+      amount: 1000
     }
   }
 
@@ -24,11 +23,10 @@ RSpec.describe BudgetsController, type: :controller do
       expect(json['budgets'][0]['description']).to eq('My description')
       expect(json['budgets'][0]['day_of_month']).to eq(2)
       expect(json['budgets'][0]['amount']).to eq(1000)
-      expect(json['budgets'][0]['credit']).to eq(true)
     end
   end
 
-  describe "GET #create" do
+  describe 'GET #create' do
     before :each do
       @account = FactoryGirl.create(:account)
       @budget_attrs = budget_attrs.merge(account_id: @account.id)
@@ -53,7 +51,6 @@ RSpec.describe BudgetsController, type: :controller do
         expect(json['description']).to eq('My description')
         expect(json['day_of_month']).to eq(2)
         expect(json['amount']).to eq(1000)
-        expect(json['credit']).to eq(true)
       end
     end
 
@@ -86,8 +83,7 @@ RSpec.describe BudgetsController, type: :controller do
         put :update, { id: @budget.id, account_id: @account.id, budget: {
           description: 'New description',
           day_of_month: 30,
-          amount: 2000,
-          credit: false
+          amount: 2000
         } }
 
         expect(response).to be_success
@@ -96,15 +92,13 @@ RSpec.describe BudgetsController, type: :controller do
         expect(json['description']).to eq('New description')
         expect(json['day_of_month']).to eq(30)
         expect(json['amount']).to eq(2000)
-        expect(json['credit']).to eq(false)
       end
 
       it 'updates the budget' do
         put :update, { id: @budget.id, account_id: @account.id, budget: {
           description: 'New description',
           day_of_month: 30,
-          amount: 2000,
-          credit: false
+          amount: 2000
         } }
 
         @budget.reload
@@ -112,7 +106,6 @@ RSpec.describe BudgetsController, type: :controller do
         @budget.description = 'New description'
         @budget.day_of_month = 30
         @budget.amount = 2000
-        @budget.credit = false
       end
     end
 
