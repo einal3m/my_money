@@ -8,7 +8,7 @@ const LoanChartView = (props) => {
 
   return (
     <div>
-      <D3LineChart chartData={{ seriesData: props.seriesData }} />;
+      <D3LineChart chartData={{ seriesData: props.seriesData }} />
     </div>
   );
 };

@@ -31,6 +31,15 @@ import {
   SET_TOTALS_REPORT,
 } from '../actions/report-actions';
 
+import {
+  SET_LOAN_REPORT,
+} from '../actions/loan-actions';
+
+import {
+  GET_BUDGETS,
+  SET_BUDGETS,
+} from '../actions/budget-actions';
+
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
   message: null,
@@ -45,6 +54,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case GET_REPORT:
     case UPLOAD_OFX:
     case GET_BANK_STATEMENTS:
+    case GET_BUDGETS:
       return setLoading(state);
 
     case SET_ACCOUNTS:
@@ -64,6 +74,8 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case SET_INCOME_VS_EXPENSE:
     case SET_TRANSACTION_REPORT:
     case SET_TOTALS_REPORT:
+    case SET_LOAN_REPORT:
+    case SET_BUDGETS:
       return setDone(state);
 
     case SAVE_ACCOUNT:

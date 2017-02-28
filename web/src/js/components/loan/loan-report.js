@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
 import LoanViewButtons from './loan-view-buttons';
 import LoanChartView from './loan-chart-view';
+import BudgetTable from './budget-table';
 import { getLoanReport } from '../../actions/loan-actions';
 import seriesData from '../../selectors/loan-report-selector';
 import { accountNameAndBank } from '../../util/text-util';
@@ -18,7 +19,7 @@ export class LoanReportComponent extends React.Component {
       case 'chart':
         return <LoanChartView seriesData={this.props.seriesData} />;
       case 'budget':
-        return <div />;
+        return <BudgetTable />;
       case 'summary':
         return <div />;
       default:

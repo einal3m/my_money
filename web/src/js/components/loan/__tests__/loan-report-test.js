@@ -4,6 +4,7 @@ import { LoanReportComponent as LoanReport } from '../loan-report';
 import PageHeader from '../../common/page-header';
 import LoanViewButtons from '../loan-view-buttons';
 import LoanChartView from '../loan-chart-view';
+import BudgetTable from '../budget-table';
 import * as loanActions from '../../../actions/loan-actions';
 
 describe('LoanReport', () => {
@@ -49,6 +50,7 @@ describe('LoanReport', () => {
       it('renders the chart view', () => {
         const chart = report.find(LoanChartView);
         expect(chart.prop('seriesData')).toEqual([{ name: 'Series1' }]);
+        expect(report.find(BudgetTable).length).toEqual(0);
       });
     });
 
@@ -57,8 +59,7 @@ describe('LoanReport', () => {
         report = shallow(<LoanReport {...props} view="budget" />);
 
         expect(report.find(LoanChartView).length).toEqual(0);
-
-        // expect budget table to exist
+        expect(report.find(BudgetTable).length).toEqual(1);
       });
     });
 
@@ -67,6 +68,7 @@ describe('LoanReport', () => {
         report = shallow(<LoanReport {...props} view="summary" />);
 
         expect(report.find(LoanChartView).length).toEqual(0);
+        expect(report.find(BudgetTable).length).toEqual(0);
 
         // expect summary table to exist
       });
