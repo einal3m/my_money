@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import BudgetRow from './budget-row';
 import { getBudgets } from '../../actions/budget-actions';
 
 export class BudgetTableComponent extends React.Component {
@@ -7,6 +8,10 @@ export class BudgetTableComponent extends React.Component {
   constructor() {
     super();
     getBudgets();
+  }
+
+  renderRows() {
+    return this.props.budgets.map(budget => <BudgetRow key={budget.id} budget={budget} />);
   }
 
   renderTable() {
@@ -19,15 +24,16 @@ export class BudgetTableComponent extends React.Component {
             <th>description</th>
             <th>day of month</th>
             <th>amount</th>
-            <th>credit</th>
           </tr>
         </thead>
+        <tbody>
+          {this.renderRows()}
+        </tbody>
       </table>
     );
   }
 
   render() {
-    console.log(this.props.budgets);
     return (
       <div>
         {this.renderTable()}

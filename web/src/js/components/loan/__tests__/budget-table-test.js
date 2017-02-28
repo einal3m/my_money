@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { BudgetTableComponent as BudgetTable } from '../budget-table';
+import BudgetRow from '../budget-row';
 import * as budgetActions from '../../../actions/budget-actions';
 
 describe('BudgetTable', () => {
@@ -19,6 +20,13 @@ describe('BudgetTable', () => {
   });
 
   it('calls getBudgets on load', () => {
+    shallow(
+      <BudgetTable
+        loaded={false}
+        budgets={budgets}
+        account={account}
+      />
+    );
     expect(budgetActions.getBudgets).toHaveBeenCalled();
   });
 
@@ -35,7 +43,7 @@ describe('BudgetTable', () => {
       expect(budgetTable.find('table').length).toEqual(0);
     });
 
-    it('renders a table if budgets are loaded', () => {
+    it('renders a table of budgets if loaded', () => {
       const budgetTable = shallow(
         <BudgetTable
           loaded
@@ -45,6 +53,10 @@ describe('BudgetTable', () => {
       );
 
       expect(budgetTable.find('table').length).toEqual(1);
+
+      const tableBody = budgetTable.find('tbody');
+      expect(tableBody.childAt(0).type()).toEqual(BudgetRow);
+      expect(tableBody.childAt(0).prop('budget')).toEqual(budgets[0]);
     });
   });
 });
