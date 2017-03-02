@@ -10,6 +10,7 @@ RSpec.describe Lib::HomeLoanReporter, type: :class do
     expect(Lib::LoanCalculator).to receive(:new).and_return(calculator)
     expect(calculator).to receive(:minimum_repayment).and_return(8561)
     expect(calculator).to receive(:minimum_amortization).and_return([['2017-01-01', 3], ['2017-02-28', 4]])
+    expect(calculator).to receive(:budget_amortization).and_return([['2017-01-01', 6], ['2017-02-28', 7]])
 
     allow(Date).to receive(:yesterday).and_return(Date.new(2016, 12, 31))
 
@@ -38,9 +39,17 @@ RSpec.describe Lib::HomeLoanReporter, type: :class do
   end
 
   describe 'minimum repayment ammortization' do
-    it 'returns the amortization' do
+    it 'returns the minimum amortization' do
       expect(@result[:minimum_amortization]).to eq(
         [['2016-01-02', 1], ['2016-02-28', 2], ['2017-01-01', 3], ['2017-02-28', 4]]
+      )
+    end
+  end
+
+  describe 'budget repayment ammortization' do
+    it 'returns the budget amortization' do
+      expect(@result[:budget_amortization]).to eq(
+        [['2016-01-02', 1], ['2016-02-28', 2], ['2017-01-01', 6], ['2017-02-28', 7]]
       )
     end
   end

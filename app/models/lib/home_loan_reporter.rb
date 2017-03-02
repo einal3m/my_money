@@ -11,11 +11,16 @@ module Lib
     def execute
       {
         minimum_repayment: loan_calculator.minimum_repayment,
-        minimum_amortization: eod_balance.drop(1).concat(loan_calculator.minimum_amortization)
+        minimum_amortization: prepend_balance_search(loan_calculator.minimum_amortization),
+        budget_amortization: prepend_balance_search(loan_calculator.budget_amortization)
       }
     end
 
     private
+
+    def prepend_balance_search(amortization)
+      eod_balance.drop(1).concat(amortization)
+    end
 
     def loan_calculator
       @loan_calculator ||= Lib::LoanCalculator.new(@account)
