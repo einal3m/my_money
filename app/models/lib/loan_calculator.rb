@@ -44,7 +44,38 @@ module Lib
       end
     end
 
+    def budget_amortization
+      balances = []
+      balance = present_value
+      date = Date.today.end_of_month
+
+      while balance > 0
+        balance = monthly_balance(balance, date)
+        balances << [date.strftime('%Y-%m-%d'), balance.round]
+        date = (date >> 1).end_of_month
+      end
+
+      balances[-1][1] = 0
+      balances
+    end
+
     private
+
+    def monthly_balance(balance, date)
+      day = 1
+      monthly_interest = 0
+
+      budgets.each do |budget|
+        monthly_interest += interest(balance, budget.day_of_month, day)
+        day = budget.day_of_month
+        balance -= budget.amount
+      end
+
+      monthly_interest += interest(balance, date.day + 1, day)
+      balance += monthly_interest
+
+      balance
+    end
 
     def minimum_repayment_precise
       @minimum_repayment_precise ||= (present_value * periodic_rate) / (1 - (1 + periodic_rate)**(-periods_remaining))
@@ -52,6 +83,10 @@ module Lib
 
     def present_value
       @present_value ||= -@account.current_balance
+    end
+
+    def daily_rate
+      @daily_rate ||= @account.interest_rate / 100.0 / 365.0
     end
 
     def periodic_rate
@@ -65,6 +100,14 @@ module Lib
 
     def next_minimum_repayment_balance(current_balance)
       (current_balance * (1 + periodic_rate) - minimum_repayment_precise)
+    end
+
+    def interest(balance, from_day, to_day)
+      balance * daily_rate * (from_day - to_day)
+    end
+
+    def budgets
+      @budgets ||= @account.budgets.order(:day_of_month)
     end
   end
 end

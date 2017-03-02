@@ -5,6 +5,9 @@ RSpec.describe Lib::LoanCalculator, type: :class do
     @account = FactoryGirl.create(:account,
       account_type: 'loan', term: 2, interest_rate: 5.00, starting_balance: -100_000, starting_date: '2015-12-21'
     )
+    FactoryGirl.create(:budget, account: @account, day_of_month: 20, amount: -5_000)
+    FactoryGirl.create(:budget, account: @account, day_of_month: 10, amount: 20_000)
+
     @calculator = Lib::LoanCalculator.new(@account)
 
     allow(Date).to receive(:today).and_return(Date.new(2016, 12, 21))
@@ -38,6 +41,22 @@ RSpec.describe Lib::LoanCalculator, type: :class do
           ['2017-09-30', 17015],
           ['2017-10-31', 8525],
           ['2017-11-30', 0]
+        ]
+      )
+    end
+  end
+
+  describe 'budget repayment ammortization' do
+    it 'calculates the balance at end of each month based on budget repayment' do
+      expect(@calculator.budget_amortization).to eq(
+        [
+          ['2016-12-31', 85373],
+          ['2017-01-31', 70683],
+          ['2017-02-28', 55908],
+          ['2017-03-31', 41094],
+          ['2017-04-30', 26213],
+          ['2017-05-31', 11272],
+          ['2017-06-30', 0]
         ]
       )
     end
