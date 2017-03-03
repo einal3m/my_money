@@ -3,24 +3,32 @@ import { List, Map } from 'immutable';
 import moneyUtil from '../util/money-util';
 
 const minimumRepaymentBalancesSelector = state => state.loanStore.get('minimumRepaymentBalances');
+const budgetRepaymentBalancesSelector = state => state.loanStore.get('budgetRepaymentBalances');
 
-function convertLoanData(minimumRepaymentBalances) {
+function convertLoanData(minimumRepaymentBalances, budgetRepaymentBalances) {
   if (!minimumRepaymentBalances) return List();
 
-  const data = minimumRepaymentBalances.map(balance =>
+  return List.of(
+    convertAmortization(minimumRepaymentBalances, 'Minimum Repayments', '#9467bd'),
+    convertAmortization(budgetRepaymentBalances, 'Budget Repayments', '#17becf')
+  );
+}
+
+function convertAmortization(balances, name, backgroundColour) {
+  const data = balances.map(balance =>
     List.of(new Date(balance.get(0)), moneyUtil.centsToDollars(balance.get(1)))
   );
-  const name = 'Minimum Repayments';
-  const backgroundColour = '#9467bd';
 
-  return List.of(Map({
+  return Map({
     name,
     data,
     backgroundColour,
-  }));
+  });
 }
 
 export default createSelector(
   minimumRepaymentBalancesSelector,
-  minimumRepaymentBalances => convertLoanData(minimumRepaymentBalances)
+  budgetRepaymentBalancesSelector,
+  (minimumRepaymentBalances, budgetRepaymentBalances) =>
+    convertLoanData(minimumRepaymentBalances, budgetRepaymentBalances)
 );
