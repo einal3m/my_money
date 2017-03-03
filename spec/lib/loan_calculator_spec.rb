@@ -60,5 +60,10 @@ RSpec.describe Lib::LoanCalculator, type: :class do
         ]
       )
     end
+
+    it 'returns an empty array if total budget amounts are less than the minimum repayment' do
+      FactoryGirl.create(:budget, account: @account, day_of_month: 20, amount: 8561-15000-1)
+      expect(@calculator.budget_amortization).to eq([])
+    end
   end
 end

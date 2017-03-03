@@ -45,6 +45,8 @@ module Lib
     end
 
     def budget_amortization
+      return [] if budget_below_minimum_repayment
+
       balances = []
       balance = present_value
       date = Date.today.end_of_month
@@ -60,6 +62,10 @@ module Lib
     end
 
     private
+
+    def budget_below_minimum_repayment
+      @account.budgets.map(&:amount).sum < minimum_repayment_precise
+    end
 
     def monthly_balance(balance, date)
       day = 1
