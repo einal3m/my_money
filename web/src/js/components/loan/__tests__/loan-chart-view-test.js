@@ -2,8 +2,18 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import LoanChartView from '../loan-chart-view';
 import D3LineChart from '../../reports/d3-line-chart';
+import * as loanActions from '../../../actions/loan-actions';
 
 describe('LoanReport', () => {
+  beforeEach(() => {
+    spyOn(loanActions, 'getLoanReport');
+  });
+
+  it('calls the report action', () => {
+    shallow(<LoanChartView seriesData={[{ name: 'Series1' }]} />);
+    expect(loanActions.getLoanReport).toHaveBeenCalled();
+  });
+
   describe('render', () => {
     it('has a chart if seriesData is set and view is chart', () => {
       const view = shallow(<LoanChartView seriesData={[{ name: 'Series1' }]} />);

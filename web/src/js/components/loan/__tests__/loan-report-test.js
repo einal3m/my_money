@@ -5,7 +5,6 @@ import PageHeader from '../../common/page-header';
 import LoanViewButtons from '../loan-view-buttons';
 import LoanChartView from '../loan-chart-view';
 import BudgetTable from '../budget-table';
-import * as loanActions from '../../../actions/loan-actions';
 
 describe('LoanReport', () => {
   describe('render', () => {
@@ -13,7 +12,6 @@ describe('LoanReport', () => {
     let props;
 
     beforeEach(() => {
-      spyOn(loanActions, 'getLoanReport');
       props = {
         apiStatus: { status: 'DONE' },
         seriesData: [{ name: 'Series1' }],
@@ -22,10 +20,6 @@ describe('LoanReport', () => {
       };
 
       report = shallow(<LoanReport {...props} />);
-    });
-
-    it('calls the report action', () => {
-      expect(loanActions.getLoanReport).toHaveBeenCalled();
     });
 
     it('has a page header with buttons', () => {

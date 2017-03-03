@@ -19,7 +19,7 @@ describe('LoanReportSelector', () => {
       {
         name: 'Budget Repayments',
         data: [[new Date('2016-01-31'), 55.55], [new Date('2016-02-29'), 66.66]],
-        backgroundColour: '#bcbd22',
+        backgroundColour: '#17becf',
       },
     ]);
   });

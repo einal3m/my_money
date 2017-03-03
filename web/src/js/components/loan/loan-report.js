@@ -9,10 +9,6 @@ import seriesData from '../../selectors/loan-report-selector';
 import { accountNameAndBank } from '../../util/text-util';
 
 export class LoanReportComponent extends React.Component {
-  constructor() {
-    super();
-    getLoanReport();
-  }
 
   renderContent() {
     switch (this.props.view) {
