@@ -16,8 +16,6 @@ Rails.application.routes.draw do
   post 'transactions/index'
 
   get 'my_money' => 'accounts#my_money'
-  get 'react' => 'static_pages#react'
-  get 'static_pages/home'
   get 'upload/file_chooser'
   post 'upload/upload_file'
 
@@ -49,15 +47,12 @@ Rails.application.routes.draw do
     resources :patterns
   end
 
-  # react bundle
-  get 'react' => 'react#index'
-
   # post 'accounts/:id/last_reconciliation' => 'accounts#last_reconciliation', as: :accounts_last_reconciliation
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'static_pages#my_money'
+  root 'my_money#my_money'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

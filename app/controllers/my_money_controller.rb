@@ -1,4 +1,4 @@
-class StaticPagesController < ApplicationController
+class MyMoneyController < ApplicationController
   def home
   end
 
