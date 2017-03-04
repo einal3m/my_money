@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>my money</title>
+    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id='header'></div>
+    <div class="container">
+      <div id="content"></div>
+      <script type="text/javascript">
+        $(function() {
+          MyMoney.init();
+        });
+      </script>
+    </div>
+    <div id='footer'></div>
+  </body>
+</html>

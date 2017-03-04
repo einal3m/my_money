@@ -1,11 +1,8 @@
 class MyMoneyController < ApplicationController
-  def home
-  end
-
   def my_money
   end
 
-  def react
+  def backbone
     render layout: false
   end
 end
