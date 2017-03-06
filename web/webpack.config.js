@@ -1,5 +1,7 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -39,6 +41,8 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('../public/bundle.css'),
     new CommonsChunkPlugin('vendor', '../public/vendor.bundle.js'),
+    new UglifyJSPlugin(),
+    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
   ],
   resolve: {
     modulesDirectories: ['./node_modules'],
