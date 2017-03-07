@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import PageHeader from '../common/page-header';
+import ReconciliationTable from './reconciliation-table';
 import { getReconciliations } from '../../actions/reconciliation-actions';
 
 export class ReconciliationListComponent extends React.Component {
@@ -13,6 +14,9 @@ export class ReconciliationListComponent extends React.Component {
     return (
       <div>
         <PageHeader title="account reconciliation" apiStatus={this.props.apiStatus} />
+        <div className="container">
+          <ReconciliationTable loaded={this.props.loaded} reconciliations={this.props.reconciliations} />
+        </div>
       </div>
     );
   }
@@ -27,7 +31,7 @@ ReconciliationListComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.patternStore.get('loaded'),
+    loaded: state.reconciliationStore.get('loaded'),
     currentAccount: state.accountStore.get('currentAccount').toJS(),
     reconciliations: state.reconciliationStore.get('reconciliations').toJS(),
     apiStatus: state.apiStatusStore.toJS(),
