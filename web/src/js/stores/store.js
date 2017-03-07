@@ -12,6 +12,7 @@ import formReducer from './form-reducer';
 import patternReducer from './pattern-reducer';
 import loanReducer from './loan-reducer';
 import budgetReducer from './budget-reducer';
+import reconciliationReducer from './reconciliation-reducer';
 
 export default createStore(
   combineReducers({
@@ -28,5 +29,6 @@ export default createStore(
     patternStore: patternReducer,
     loanStore: loanReducer,
     budgetStore: budgetReducer,
+    reconciliationStore: reconciliationReducer,
   })
 );
