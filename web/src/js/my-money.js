@@ -10,6 +10,7 @@ import AccountList from './components/accounts/account-list';
 import TransactionList from './components/transactions/transaction-list';
 import CategoryList from './components/categories/category-list';
 import PatternList from './components/patterns/pattern-list';
+import ReconciliationList from './components/reconciliation/reconciliation-list';
 import ImportPage from './components/import/import-page';
 import ImportHistoryPage from './components/import/import-history-page';
 import IncomeVsExpenseBarChart from './components/reports/income-expense-bar-chart';
@@ -45,6 +46,7 @@ render((
       <Route path="transactions" component={TransactionList} />
       <Route path="categories" component={CategoryList} />
       <Route path="patterns" component={PatternList} />
+      <Route path="reconciliations" component={ReconciliationList} />
       <Route path="import" component={ImportPage} />
       <Route path="import-history" component={ImportHistoryPage} />
       <Route path="reports">
