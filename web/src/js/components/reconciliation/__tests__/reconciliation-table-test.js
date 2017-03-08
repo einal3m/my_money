@@ -17,10 +17,12 @@ describe('ReconciliationTable', () => {
       ];
 
       const table = shallow(<ReconciliationTable loaded reconciliations={reconciliations} />);
-      expect(table.childAt(0).type()).toEqual('table');
+      expect(table.childAt(1).type()).toEqual('table');
+
+      const tableHeading = table.find('h3');
+      expect(tableHeading.text()).toEqual('Reconciliation History');
 
       const tableBody = table.find('tbody');
-
       expect(tableBody.children().length).toEqual(2);
 
       expect(tableBody.childAt(0).type()).toEqual(ReconciliationRow);

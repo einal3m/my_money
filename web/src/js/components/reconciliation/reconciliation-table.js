@@ -9,31 +9,26 @@ export default class ReconciliationTable extends React.Component {
     );
   }
 
-  renderTable() {
+  render() {
     if (!this.props.loaded) {
-      return undefined;
+      return <div />;
     }
 
     return (
-      <table className="table table-hover" id="reconciliation-table">
-        <thead>
-          <tr>
-            <th>statement date</th>
-            <th>statement balance</th>
-            <th>finished</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.renderRows()}
-        </tbody>
-      </table>
-    );
-  }
-
-  render() {
-    return (
       <div>
-        {this.renderTable()}
+        <h3>Reconciliation History</h3>
+        <table className="table table-hover" id="transaction-table">
+          <thead>
+            <tr>
+              <th>statement date</th>
+              <th>statement balance</th>
+              <th>finished</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderRows()}
+          </tbody>
+        </table>
       </div>
     );
   }
