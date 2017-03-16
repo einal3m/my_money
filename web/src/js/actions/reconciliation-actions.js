@@ -26,3 +26,7 @@ export const SET_RECONCILIATIONS = 'SET_RECONCILIATIONS';
 function storeReconciliations(reconciliations) {
   store.dispatch({ type: SET_RECONCILIATIONS, reconciliations });
 }
+
+export function saveReconciliation(reconciliation) {
+
+}
