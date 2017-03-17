@@ -1,7 +1,7 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
-import { transformFromApi } from '../transformers/reconciliation-transformer';
+import { transformFromApi, transformToApi } from '../transformers/reconciliation-transformer';
 
 export const GET_RECONCILIATIONS = 'GET_RECONCILIATIONS';
 export function getReconciliations() {
@@ -27,6 +27,27 @@ function storeReconciliations(reconciliations) {
   store.dispatch({ type: SET_RECONCILIATIONS, reconciliations });
 }
 
+export const SAVE_RECONCILIATION = 'SAVE_RECONCILIATION';
 export function saveReconciliation(reconciliation) {
+  store.dispatch({ type: SAVE_RECONCILIATION });
+  const accountId = store.getState().accountStore.get('currentAccount').get('id');
 
+  if (reconciliation.id) {
+    return updateReconciliation(reconciliation, accountId);
+  }
+  return createReconciliation(reconciliation, accountId);
+}
+
+function createReconciliation(reconciliation, accountId) {
+  return apiUtil.post({
+    url: `accounts/${accountId}/reconciliations`,
+    body: { reconciliation: transformToApi(reconciliation) },
+  });
+}
+
+function updateReconciliation(reconciliation, accountId) {
+  return apiUtil.put({
+    url: `accounts/${accountId}/reconciliations/${reconciliation.id}`,
+    body: { reconciliation: transformToApi(reconciliation) },
+  });
 }

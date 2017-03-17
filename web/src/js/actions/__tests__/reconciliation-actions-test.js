@@ -39,4 +39,37 @@ describe('ReconciliationActions', () => {
       });
     });
   });
+
+  describe('saveReconciliation', () => {
+    beforeEach(() => {
+      spyOn(apiUtil, 'post').and.returnValue(Promise.resolve());
+      spyOn(apiUtil, 'put').and.returnValue(Promise.resolve());
+      spyOn(reconciliationTransformer, 'transformToApi').and.returnValue('transformedReconciliation');
+      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ currentAccount: { id: 12 } }) });
+    });
+
+    it('makes a post request if it has no id', () => {
+      reconciliationActions.saveReconciliation({ statementBalance: 3000 });
+
+      expect(store.dispatch).toHaveBeenCalledWith({ type: reconciliationActions.SAVE_RECONCILIATION });
+      expect(apiUtil.post).toHaveBeenCalled();
+      expect(reconciliationTransformer.transformToApi).toHaveBeenCalledWith({ statementBalance: 3000 });
+
+      const postArgs = apiUtil.post.calls.argsFor(0)[0];
+      expect(postArgs.url).toEqual('accounts/12/reconciliations');
+      expect(postArgs.body).toEqual({ reconciliation: 'transformedReconciliation' });
+    });
+
+    it('makes a put request if it has an id', () => {
+      reconciliationActions.saveReconciliation({ id: 1, statementBalance: 3000 });
+
+      expect(store.dispatch).toHaveBeenCalledWith({ type: reconciliationActions.SAVE_RECONCILIATION });
+      expect(apiUtil.put).toHaveBeenCalled();
+      expect(reconciliationTransformer.transformToApi).toHaveBeenCalledWith({ id: 1, statementBalance: 3000 });
+
+      const putArgs = apiUtil.put.calls.argsFor(0)[0];
+      expect(putArgs.url).toEqual('accounts/12/reconciliations/1');
+      expect(putArgs.body).toEqual({ reconciliation: 'transformedReconciliation' });
+    });
+  });
 });

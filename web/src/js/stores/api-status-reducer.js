@@ -40,6 +40,12 @@ import {
   SET_BUDGETS,
 } from '../actions/budget-actions';
 
+import {
+  GET_RECONCILIATIONS,
+  SET_RECONCILIATIONS,
+  SAVE_RECONCILIATION,
+} from '../actions/reconciliation-actions';
+
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
   message: null,
@@ -55,6 +61,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case UPLOAD_OFX:
     case GET_BANK_STATEMENTS:
     case GET_BUDGETS:
+    case GET_RECONCILIATIONS:
       return setLoading(state);
 
     case SET_ACCOUNTS:
@@ -76,12 +83,14 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case SET_TOTALS_REPORT:
     case SET_LOAN_REPORT:
     case SET_BUDGETS:
+    case SET_RECONCILIATIONS:
       return setDone(state);
 
     case SAVE_ACCOUNT:
     case SAVE_TRANSACTION:
     case 'SAVE_CATEGORY':
     case 'SAVE_SUBCATEGORY':
+    case SAVE_RECONCILIATION:
       return setSaving(state);
 
     case DELETE_ACCOUNT:
