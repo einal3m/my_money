@@ -1,0 +1,14 @@
+GEM
+  specs:
+    rack (1.6.4)
+    roda (2.6.0)
+      rack
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  roda
+
+BUNDLED WITH
+   1.12.5
