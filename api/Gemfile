@@ -5,6 +5,7 @@ gem 'roda'
 gem 'ruby-enum'
 
 group :development, :test do
+  gem 'rubocop', require: false
   gem 'rspec'
   gem 'rack-test'
 end

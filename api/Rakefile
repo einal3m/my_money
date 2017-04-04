@@ -1,0 +1,8 @@
+task default: [:rubocop, :spec]
+
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+
+task :rubocop do
+  sh 'rubocop -c .rubocop.yml'
+end
