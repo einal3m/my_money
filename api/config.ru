@@ -1,3 +1,3 @@
-require_relative 'app.rb'
+require_relative 'my_money.rb'
 
-run App.freeze.app
+run MyMoney.freeze.app
