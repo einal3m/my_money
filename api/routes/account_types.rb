@@ -1,8 +1,9 @@
+require_relative '../queries/account_type_query'
+
 class MyMoney
   route('account_types') do |r|
     r.get do
-      'GET account_types'
-      # r.halt(200, 'GET account_types')
+      AccountTypeQuery.new.execute
     end
   end
 end

@@ -1,1 +1,10 @@
+source 'http://rubygems.org'
+
 gem 'roda'
+
+gem 'ruby-enum'
+
+group :development, :test do
+  gem 'rspec'
+  gem 'rack-test'
+end
