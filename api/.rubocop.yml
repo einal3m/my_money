@@ -1,6 +1,10 @@
 AllCops:
   Exclude:
     - 'spec/spec_helper.rb'
+    - 'db/migrations/001_start.rb'
 
 Documentation:
   Enabled: false
+
+LineLength:
+  Max: 100

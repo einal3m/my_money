@@ -1,4 +1,4 @@
-require_relative '../../my_money'
+require_relative '../../queries/account_type_query'
 require 'rack/test'
 
 RSpec.describe '/account_types' do

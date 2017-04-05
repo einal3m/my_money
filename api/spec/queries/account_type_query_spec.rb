@@ -1,4 +1,4 @@
-require_relative '../../../api/queries/account_type_query'
+require_relative '../../queries/account_type_query'
 
 RSpec.describe AccountTypeQuery do
   describe 'execute' do
