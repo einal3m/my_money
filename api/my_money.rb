@@ -4,7 +4,11 @@ require 'roda'
 class MyMoney < Roda
   plugin :multi_route
   plugin :json
-  Dir['./routes/*.rb'].each { |f| require f }
+  Unreloader.require('routes'){}
+  Unreloader.require('queries'){}
+  Unreloader.require('models'){}
+
+  # Dir['./routes/*.rb'].each { |f| require f }
 
   route(&:multi_route)
 end

@@ -1,3 +1,7 @@
-require_relative 'my_money.rb'
+env = ENV['RACK_ENV'] || 'development'
+dev = (env == 'development')
 
-run MyMoney.freeze.app
+require 'rack/unreloader'
+Unreloader = Rack::Unreloader.new(:subclasses=>%w'Roda Sequel::Model', :reload=>dev){MyMoney}
+Unreloader.require './my_money.rb'
+run(dev ? Unreloader : MyMoney.freeze.app)

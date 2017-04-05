@@ -5,6 +5,7 @@ gem 'roda'
 gem 'sequel'
 gem 'sqlite3'
 gem 'ruby-enum'
+gem 'rack-unreloader'
 
 group :development, :test do
   gem 'rubocop', require: false
