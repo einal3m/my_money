@@ -1,3 +1,4 @@
+require_relative 'config/db'
 require 'roda'
 
 class MyMoney < Roda

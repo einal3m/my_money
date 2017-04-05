@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'roda'
 
+gem 'sequel'
+gem 'sqlite3'
 gem 'ruby-enum'
 
 group :development, :test do
