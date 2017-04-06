@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'roda'
-
+gem 'rack-cors', require: 'rack/cors'
 gem 'sequel'
 gem 'sqlite3'
 gem 'ruby-enum'
@@ -11,4 +11,5 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rspec'
   gem 'rack-test'
+  gem 'database_cleaner'
 end
