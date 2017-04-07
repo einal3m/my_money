@@ -2,11 +2,12 @@ require_relative '../../models/account'
 require_relative '../../queries/accounts_query'
 require_relative '../../models/account_type'
 require_relative '../../serializers/account_serializer'
+require_relative '../factories/factory'
 
 RSpec.describe AccountsQuery do
   describe 'execute' do
     it 'returns the serialized Accounts' do
-      account = Account.create(name: 'My Account')
+      account = Factory.create_account(name: 'My Account', account_type: AccountType::SAVINGS)
 
       serializer = instance_double AccountSerializer
       expect(AccountSerializer).to receive(:new).with([account]).and_return(serializer)
