@@ -1,12 +1,14 @@
-require_relative '../models/account'
-
 class AccountCommands
-  def initialize(params)
-    @params = params
+  def create(params)
+    account = Account.create(params)
+    account.id
   end
 
-  def create
-    account = Account.create(@params)
-    account.id
+  def update(account, params)
+    account.update(params)
+  end
+
+  def delete(account)
+    account.delete
   end
 end

@@ -11,3 +11,6 @@ LineLength:
 
 MethodLength:
   Max: 15
+
+WordArray:
+  Enabled: false

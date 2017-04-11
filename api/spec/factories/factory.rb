@@ -1,5 +1,5 @@
 class Factory
-  def self.create_account(attrs)
+  def self.create_account(attrs = {})
     default_attrs = {
       name: 'My Account',
       bank: 'My Bank',

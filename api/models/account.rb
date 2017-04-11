@@ -1,5 +1,3 @@
-require_relative 'account_type'
-
 class Account < Sequel::Model
   plugin :validation_helpers
 

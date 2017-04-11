@@ -1,5 +1,3 @@
-require_relative '../models/account_type'
-
 class AccountTypeQuery
   def execute
     {

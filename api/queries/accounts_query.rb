@@ -1,6 +1,3 @@
-require_relative '../models/account'
-require_relative '../serializers/account_serializer'
-
 class AccountsQuery
   def execute
     { accounts: AccountSerializer.new(Account.all).serialize }
