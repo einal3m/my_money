@@ -25,20 +25,7 @@ RSpec.describe Account, type: :model do
     )
   end
 
-  # xit 'has a valid factory' do
-  #   a = FactoryGirl.create(:account)
-  #
-  #   expect(a).to be_valid
-  #   expect(a).to be_a(Account)
-  # end
-  #
-  # xdescribe 'defaults' do
-  #   it 'to zero starting balance' do
-  #     expect(Account.new.starting_balance).to eq(0)
-  #   end
-  # end
-
-  describe 'validate' do
+  describe 'validations' do
     context 'is invalid without a name' do
       let(:name) { nil }
       it('should have error') do

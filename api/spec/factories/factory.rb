@@ -14,4 +14,13 @@ class Factory
 
     Account.create(default_attrs.merge(attrs))
   end
+
+  def self.create_category(attrs = {})
+    default_attrs = {
+      category_type_id: 2,
+      name: 'My Category'
+    }
+
+    Category.create(default_attrs.merge(attrs))
+  end
 end
