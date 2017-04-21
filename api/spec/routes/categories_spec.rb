@@ -1,5 +1,5 @@
 require_relative '../../queries/categories_query'
-# require_relative '../../commands/account_commands'
+require_relative '../../commands/category_commands'
 require_relative '../factories/factory'
 require 'rack/test'
 
@@ -23,93 +23,67 @@ RSpec.describe '/categories' do
     end
   end
 
-  # describe 'GET index' do
-  #   it 'returns a list of all categories' do
-  #     category = FactoryGirl.create(:category)
-  #     get :index, {}, valid_session
-  #
-  #     expect(response).to be_success
-  #
-  #     json = JSON.parse(response.body)
-  #     expect(json['categories'].length).to eq(1)
-  #     expect(json['categories'][0]).to eq(serialize_category(category))
-  #   end
-  # end
-  #
-  # describe 'POST create' do
-  #   context 'with valid params' do
-  #     it 'creates a new category' do
-  #       expect {
-  #         post :create, { category: build_attributes(:category) }, valid_session
-  #       }.to change(Category, :count).by(1)
-  #
-  #       expect(response).to be_success
-  #       category = Category.first
-  #       json = JSON.parse(response.body)
-  #       expect(json['category']).to eq(serialize_category(category))
-  #     end
-  #   end
-  #
-  #   context 'with invalid params' do
-  #     it 'does not create a new category' do
-  #       expect {
-  #         post :create, { category: build_attributes(:category_invalid) }, valid_session
-  #       }.not_to change(Category, :count)
-  #       expect(response.status).to eq(422)
-  #     end
-  #   end
-  # end
-  #
-  # describe 'PUT update' do
-  #   context 'with valid params' do
-  #     it 'updates the requested category' do
-  #       category = FactoryGirl.create(:category)
-  #
-  #       new_category_type = FactoryGirl.create(:category_type)
-  #       put :update, {
-  #         id: category.to_param,
-  #         category: build_attributes(:category, name: 'New Name',
-  # category_type: new_category_type)
-  #       }, valid_session
-  #
-  #       expect(response).to be_success
-  #       category.reload
-  #       json = JSON.parse(response.body)
-  #       expect(json['category']).to eq(
-  # 'id' => category.id, 'name' => 'New Name', 'category_type_id' => new_category_type.id
-  # )
-  #     end
-  #   end
-  #
-  #   context 'with invalid params' do
-  #     it 'returns an error' do
-  #       category = FactoryGirl.create(:category)
-  #       put :update, { id: category.id, category: build_attributes(:category_invalid) },
-  # valid_session
-  #
-  #       expect(response.status).to eq(422)
-  #     end
-  #   end
-  # end
-  #
-  # describe 'DELETE destroy' do
-  #   it 'destroys the requested category' do
-  #     category = FactoryGirl.create(:category)
-  #     expect {
-  #       delete :destroy, { id: category.id }, valid_session
-  #     }.to change(Category, :count).by(-1)
-  #     expect(response).to be_success
-  #   end
-  #
-  #   it 'doesnt destroy the category if it has errors' do
-  #     category = FactoryGirl.create(:category)
-  #     FactoryGirl.create(:subcategory, category: category)
-  #     expect {
-  #       delete :destroy, { id: category.id }, valid_session
-  #     }.not_to change(Category, :count)
-  #     expect(response.status).to eq(422)
-  #     json = JSON.parse(response.body)
-  #     expect(json['message']).to eq('Cannot delete a category that has subcategories')
-  #   end
-  # end
+  describe 'POST create' do
+    it 'calls the create category command and returns 201' do
+      params = {
+        name: 'my category',
+        category_type_id: 2
+      }
+      command = instance_double CategoryCommands
+      expect(CategoryCommands).to receive(:new).and_return(command)
+      expect(command).to receive(:create).with(params).and_return(11)
+
+      post '/categories', JSON.generate(category: params)
+
+      expect(JSON.parse(last_response.body)).to eq('id' => 11)
+      expect(last_response.status).to eq(201)
+    end
+  end
+
+  describe 'PUT update' do
+    it 'calls the update category command and returns 204' do
+      category = Factory.create_category
+      params = { name: 'updated name' }
+
+      command = instance_double CategoryCommands
+      expect(CategoryCommands).to receive(:new).and_return(command)
+      expect(command).to receive(:update).with(category, params)
+
+      put "/categories/#{category.id}", JSON.generate(category: params)
+
+      expect(last_response.status).to eq(204)
+      expect(last_response.body).to eq('')
+    end
+
+    it 'returns 404 if category does not exist' do
+      expect(CategoryCommands).not_to receive(:new)
+
+      put '/categories/11', category: { 'name' => 'updated name' }
+
+      expect(last_response.status).to eq(404)
+    end
+  end
+
+  describe 'DELETE categories/:id' do
+    it 'calls the delete category command and returns 200' do
+      category = Factory.create_category
+
+      command = instance_double CategoryCommands
+      expect(CategoryCommands).to receive(:new).and_return(command)
+      expect(command).to receive(:delete).with(category)
+
+      delete "/categories/#{category.id}"
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to eq('')
+    end
+
+    it 'returns 404 if category does not exist' do
+      expect(CategoryCommands).not_to receive(:new)
+
+      delete '/categories/11'
+
+      expect(last_response.status).to eq(404)
+    end
+  end
 end
