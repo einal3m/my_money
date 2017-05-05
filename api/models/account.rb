@@ -1,6 +1,8 @@
 class Account < Sequel::Model
   plugin :validation_helpers
 
+  one_to_many :budgets
+
   def validate
     super
     validates_presence [:name, :account_type]

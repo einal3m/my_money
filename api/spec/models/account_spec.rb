@@ -175,4 +175,14 @@ RSpec.describe Account, type: :model do
       end
     end
   end
+
+  describe 'relationships' do
+    it 'has many budgets' do
+      account = Factory.create_account
+      Factory.create_budget(account: account)
+      Factory.create_budget(account: account)
+
+      expect(account.budgets.length).to eq(2)
+    end
+  end
 end

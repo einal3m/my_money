@@ -33,4 +33,16 @@ class Factory
 
     Subcategory.create(default_attrs.merge(attrs))
   end
+
+  def self.create_budget(attrs = {})
+    default_attrs = {
+      description: 'My description',
+      day_of_month: 1,
+      amount: 100
+    }
+
+    attrs[:account] = create_account unless attrs[:account]
+
+    Budget.create(default_attrs.merge(attrs))
+  end
 end
