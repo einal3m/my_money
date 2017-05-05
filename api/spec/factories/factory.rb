@@ -23,4 +23,14 @@ class Factory
 
     Category.create(default_attrs.merge(attrs))
   end
+
+  def self.create_subcategory(attrs = {})
+    default_attrs = {
+      name: 'My Subcategory'
+    }
+
+    attrs[:category] = create_category unless attrs[:category]
+
+    Subcategory.create(default_attrs.merge(attrs))
+  end
 end

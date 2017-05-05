@@ -1,3 +1,5 @@
+require_relative '../factories/factory'
+
 RSpec.describe Category, type: :model do
   let(:name) { 'My Category' }
   let(:category_type_id) { CategoryType.expense[:id] }
@@ -27,33 +29,29 @@ RSpec.describe Category, type: :model do
     end
   end
 
-  # describe 'relationships' do
-  #   it 'has many subcategories' do
-  #     c = FactoryGirl.create(:category)
-  #     FactoryGirl.create(:subcategory, category: c)
-  #     FactoryGirl.create(:subcategory, category: c)
-  #
-  #     expect(c.subcategories.length).to eq(2)
-  #   end
-  #
-  #   it 'has many transactions' do
-  #     c = FactoryGirl.create(:category)
-  #     FactoryGirl.create(:transaction, category: c)
-  #     FactoryGirl.create(:transaction, category: c)
-  #
-  #     expect(c.transactions.length).to eq(2)
-  #   end
-  #
-  #   it 'has many patterns' do
-  #     c = FactoryGirl.create(:category)
-  #     FactoryGirl.create(:pattern, category: c)
-  #     FactoryGirl.create(:pattern, category: c)
-  #
-  #     expect(c.patterns.length).to eq(2)
-  #   end
-  #
-  #   it 'belongs to category_type' do
-  #     expect(FactoryGirl.create(:category).category_type).to be_valid
-  #   end
-  # end
+  describe 'relationships' do
+    it 'has many subcategories' do
+      category = Factory.create_category
+      Factory.create_subcategory(category: category)
+      Factory.create_subcategory(category: category)
+
+      expect(category.subcategories.length).to eq(2)
+    end
+
+    # it 'has many transactions' do
+    #   c = FactoryGirl.create(:category)
+    #   FactoryGirl.create(:transaction, category: c)
+    #   FactoryGirl.create(:transaction, category: c)
+    #
+    #   expect(c.transactions.length).to eq(2)
+    # end
+    #
+    # it 'has many patterns' do
+    #   c = FactoryGirl.create(:category)
+    #   FactoryGirl.create(:pattern, category: c)
+    #   FactoryGirl.create(:pattern, category: c)
+    #
+    #   expect(c.patterns.length).to eq(2)
+    # end
+  end
 end
