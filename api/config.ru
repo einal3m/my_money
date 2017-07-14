@@ -5,11 +5,8 @@ require 'rack/cors'
 
 use Rack::Cors do
   allow do
-    origins 'localhost:8090'
-    resource(
-      '*',
-      methods: [:get, :post, :patch, :put, :delete, :options]
-    )
+    origins 'localhost:8090', '127.0.0.1:8090'
+    resource('*', headers: :any, methods: [:get, :post, :patch, :put, :delete, :options])
   end
 end
 
