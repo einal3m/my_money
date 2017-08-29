@@ -1,4 +1,6 @@
-class DateRangeOption
+require_relative '../lib/enum'
+
+class DateRangeOption < Lib::Enum
   def klass
     'Lib::' + self.class.to_s.split('::').last + 'DateRange'
   end
