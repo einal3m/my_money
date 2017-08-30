@@ -2,6 +2,7 @@ class Account < Sequel::Model
   plugin :validation_helpers
 
   one_to_many :budgets
+  one_to_many :patterns
 
   def validate
     super

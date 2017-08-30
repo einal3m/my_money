@@ -184,5 +184,13 @@ RSpec.describe Account, type: :model do
 
       expect(account.budgets.length).to eq(2)
     end
+
+    it 'has many patterns' do
+      account = Factory.create_account
+      Factory.create_pattern(account: account)
+      Factory.create_pattern(account: account)
+
+      expect(account.patterns.length).to eq(2)
+    end
   end
 end

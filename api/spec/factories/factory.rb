@@ -45,4 +45,17 @@ class Factory
 
     Budget.create(default_attrs.merge(attrs))
   end
+
+  def self.create_pattern(attrs = {})
+    default_attrs = {
+      match_text: 'match text',
+      notes: 'notes'
+    }
+
+    attrs[:account] = create_account unless attrs[:account]
+    attrs[:category] = create_category unless attrs[:category]
+    attrs[:subcategory] = create_subcategory(category: attrs[:category]) unless attrs[:subcategory]
+
+    Pattern.create(default_attrs.merge(attrs))
+  end
 end
