@@ -10,8 +10,8 @@ class MyMoney
 
       # POST accounts/:account_id/budgets
       r.post do
-        account_id = BudgetCommands.new.create(request_body(r)[:budget])
-        r.halt(201, { 'Location' => "#{request.path}/#{account_id}" }, id: account_id)
+        budget_id = BudgetCommands.new.create(request_body(r)[:budget])
+        r.halt(201, { 'Location' => "#{request.path}/#{budget_id}" }, id: budget_id)
       end
     end
 
