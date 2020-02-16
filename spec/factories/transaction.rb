@@ -1,15 +1,18 @@
-FactoryGirl.define do
-  factory :transaction do |f|
-    f.date "2014-03-03"
-    f.memo "This is a Memo"
-    f.notes "This is a Note"
-    f.amount 555
-    f.fitid "This is a fitid"
-    f.transaction_type 'bank_transaction'
+# frozen_string_literal: true
+
+FactoryBot.define do
+  factory :transaction do
+    date { '2014-03-03' }
+    memo { 'This is a Memo' }
+    notes { 'This is a Note' }
+    amount { 555 }
+    fitid { 'This is a fitid' }
+    transaction_type { 'bank_transaction' }
+    bank_statement
     account
   end
 
-  factory :transaction_invalid, parent: :transaction do |f|
-    f.date nil
+  factory :transaction_invalid, parent: :transaction do
+    date { nil }
   end
 end

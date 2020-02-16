@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Reconciliation
 #
@@ -7,7 +9,7 @@
 # statement_balance, decimal
 # reconciled, boolean
 #
-class Reconciliation < ActiveRecord::Base
+class Reconciliation < ApplicationRecord
   # validations
   validates :account_id, presence: true
   validates :statement_date, presence: true

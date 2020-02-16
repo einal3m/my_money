@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class BankStatementCreator
-  CREATE_BANK_STATEMENT_VALID_PARAMS = [:account_id, :file_name]
-  CREATE_TRANSACTIONS_VALID_PARAMS = [:account_id, :date, :amount, :memo, :notes, :category_id, :subcategory_id]
+  CREATE_BANK_STATEMENT_VALID_PARAMS = %i[account_id file_name].freeze
+  CREATE_TRANSACTIONS_VALID_PARAMS = %i[account_id date amount memo notes category_id subcategory_id].freeze
 
   def initialize(bank_statement_params, transaction_params)
     @bank_statement_params = bank_statement_params

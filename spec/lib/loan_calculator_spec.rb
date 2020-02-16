@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Lib::LoanCalculator, type: :class do
   before :each do
-    @account = FactoryGirl.create(:account,
+    @account = FactoryBot.create(:account,
       account_type: 'loan', term: 2, interest_rate: 5.00, starting_balance: -100_000, starting_date: '2015-12-21'
     )
-    FactoryGirl.create(:budget, account: @account, day_of_month: 20, amount: -5_000)
-    FactoryGirl.create(:budget, account: @account, day_of_month: 10, amount: 20_000)
+    FactoryBot.create(:budget, account: @account, day_of_month: 20, amount: -5_000)
+    FactoryBot.create(:budget, account: @account, day_of_month: 10, amount: 20_000)
 
     @calculator = Lib::LoanCalculator.new(@account)
 
@@ -62,7 +62,7 @@ RSpec.describe Lib::LoanCalculator, type: :class do
     end
 
     it 'returns an empty array if total budget amounts are less than the minimum repayment' do
-      FactoryGirl.create(:budget, account: @account, day_of_month: 20, amount: 8561-15000-1)
+      FactoryBot.create(:budget, account: @account, day_of_month: 20, amount: 8561-15000-1)
       expect(@calculator.budget_amortization).to eq([])
     end
   end

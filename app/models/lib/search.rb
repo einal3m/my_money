@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   class Search
     def transactions
@@ -45,7 +47,12 @@ module Lib
     end
 
     def number_of_months
-      (@date_range.to_date.year * 12 + @date_range.to_date.month) - (@date_range.from_date.year * 12 + @date_range.from_date.month) + 1
+      to_year = @date_range.to_date.year
+      to_month = @date_range.to_date.month
+      from_year = @date_range.from_date.year
+      from_month = @date_range.from_date.month
+
+      (to_year * 12 + to_month) - (from_year * 12 + from_month) + 1
     end
   end
 end

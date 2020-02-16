@@ -3,7 +3,7 @@ require 'creators/bank_statement_creator'
 
 describe 'BankStatementCreator' do
   let (:file_name) { 'file.ofx' }
-  let (:account) { FactoryGirl.create(:account) }
+  let (:account) { FactoryBot.create(:account) }
   let (:bank_statement_params) { { file_name: file_name, account_id: account.id } }
   let (:transaction_params) do
     [

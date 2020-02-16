@@ -3,14 +3,14 @@ require 'lib/date_range'
 
 RSpec.describe Lib::BalanceSearch, type: :class do
   before :each do
-    @a = FactoryGirl.create(:account, starting_balance: 0, starting_date: '2013-12-25')
-    @t1 = FactoryGirl.create(:transaction, account: @a, date: '2014-01-01', amount: 4) # 4
-    @t2 = FactoryGirl.create(:transaction, account: @a, date: '2014-01-02', amount: 10) # 14
-    @t3 = FactoryGirl.create(:transaction, account: @a, date: '2014-01-02', amount: -12) # 2
-    @t4 = FactoryGirl.create(:transaction, account: @a, date: '2014-02-02', amount: 15) # 17
-    @t5 = FactoryGirl.create(:transaction, account: @a, date: '2014-02-02', amount: 5) # 22
-    @t6 = FactoryGirl.create(:transaction, account: @a, date: '2014-03-02', amount: -6) # 16
-    @t7 = FactoryGirl.create(:transaction, account: @a, date: '2014-03-31', amount: 7) # 23
+    @a = FactoryBot.create(:account, starting_balance: 0, starting_date: '2013-12-25')
+    @t1 = FactoryBot.create(:transaction, account: @a, date: '2014-01-01', amount: 4) # 4
+    @t2 = FactoryBot.create(:transaction, account: @a, date: '2014-01-02', amount: 10) # 14
+    @t3 = FactoryBot.create(:transaction, account: @a, date: '2014-01-02', amount: -12) # 2
+    @t4 = FactoryBot.create(:transaction, account: @a, date: '2014-02-02', amount: 15) # 17
+    @t5 = FactoryBot.create(:transaction, account: @a, date: '2014-02-02', amount: 5) # 22
+    @t6 = FactoryBot.create(:transaction, account: @a, date: '2014-03-02', amount: -6) # 16
+    @t7 = FactoryBot.create(:transaction, account: @a, date: '2014-03-31', amount: 7) # 23
 
     @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-03-31')
   end

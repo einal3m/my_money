@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 #  Pattern
 #
@@ -7,7 +9,7 @@
 #  category_id: int, foreign key
 #  subcategory_id: int foreign key
 #
-class Pattern < ActiveRecord::Base
+class Pattern < ApplicationRecord
   # model relationships
   belongs_to :account
   belongs_to :category

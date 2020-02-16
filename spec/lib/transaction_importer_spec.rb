@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'TransactionImporter' do
-  let (:account) { FactoryGirl.create(:account) }
+  let (:account) { FactoryBot.create(:account) }
   let (:memo) { 'MEMO' }
   let (:date) { '2014-07-01' }
   let (:amount) { 333 }
@@ -31,7 +31,7 @@ describe 'TransactionImporter' do
     end
 
     it 'sets the transactions to duplicate if they already exist' do
-      FactoryGirl.create(:transaction, account: account, memo: memo, date: date, amount: amount)
+      FactoryBot.create(:transaction, account: account, memo: memo, date: date, amount: amount)
       transactions = Lib::TransactionImporter.new(account, file).execute
 
       expect(transactions.length).to eq(1)
@@ -40,7 +40,7 @@ describe 'TransactionImporter' do
     end
 
     it 'does not set to duplicate if matching transaction in a different account' do
-      FactoryGirl.create(:transaction, memo: memo, date: date, amount: amount)
+      FactoryBot.create(:transaction, memo: memo, date: date, amount: amount)
       transactions = Lib::TransactionImporter.new(account, file).execute
 
       expect(transactions.length).to eq(1)
@@ -49,9 +49,9 @@ describe 'TransactionImporter' do
     end
 
     it 'sets category and subcategory for transactions which match a pattern' do
-      category = FactoryGirl.create(:category)
-      subcategory = FactoryGirl.create(:subcategory, category: category)
-      FactoryGirl.create(:pattern, account: account, match_text: memo, notes: 'New Note', category: category, subcategory: subcategory)
+      category = FactoryBot.create(:category)
+      subcategory = FactoryBot.create(:subcategory, category: category)
+      FactoryBot.create(:pattern, account: account, match_text: memo, notes: 'New Note', category: category, subcategory: subcategory)
 
       transactions = Lib::TransactionImporter.new(account, file).execute
 

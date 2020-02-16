@@ -1,4 +1,6 @@
-class BankStatement < ActiveRecord::Base
+# frozen_string_literal: true
+
+class BankStatement < ApplicationRecord
   # validations
   validates :account_id, presence: true
   validates :date, presence: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   class CategoryTypeSearch < Search
     def initialize(attrs)
@@ -21,7 +23,8 @@ module Lib
     private
 
     def transaction_query
-      Transaction.joins(:category)
+      Transaction
+        .joins(:category)
         .where(categories: { category_type_id: @category_type.id })
         .find_by_date(@date_range)
         .reverse_date_order

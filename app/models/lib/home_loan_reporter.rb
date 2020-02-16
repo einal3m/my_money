@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lib/date_range'
 
 module Lib

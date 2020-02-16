@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   class LoanCalculator
     attr_reader :account
@@ -51,7 +53,7 @@ module Lib
       balance = present_value
       date = Date.today.end_of_month
 
-      while balance > 0
+      while balance.positive?
         balance = monthly_balance(balance, date)
         balances << [date.strftime('%Y-%m-%d'), balance.round]
         date = (date >> 1).end_of_month
@@ -84,7 +86,7 @@ module Lib
     end
 
     def minimum_repayment_precise
-      @minimum_repayment_precise ||= (present_value * periodic_rate) / (1 - (1 + periodic_rate)**(-periods_remaining))
+      @minimum_repayment_precise ||= (present_value * periodic_rate) / (1 - (1 + periodic_rate)**-periods_remaining)
     end
 
     def present_value

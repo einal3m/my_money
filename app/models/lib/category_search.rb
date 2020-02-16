@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   class CategorySearch < Search
     attr_reader :category, :date_range
@@ -29,6 +31,7 @@ module Lib
     def set_factor
       return nil if @category_type.nil?
       return -1 if @category_type.name == 'Expense'
+
       1
     end
   end

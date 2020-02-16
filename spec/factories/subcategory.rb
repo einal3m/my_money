@@ -1,12 +1,12 @@
-FactoryGirl.define do
+# frozen_string_literal: true
 
-  factory :subcategory do |f|
-    f.name "New Subcategory" 
+FactoryBot.define do
+  factory :subcategory do
+    name { 'New Subcategory' }
     category
   end
 
-  factory :subcategory_invalid, parent: :subcategory do |f|
-    f.name nil
+  factory :subcategory_invalid, parent: :subcategory do
+    name { nil }
   end
-
 end

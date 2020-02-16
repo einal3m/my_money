@@ -3,7 +3,7 @@ require 'lib/date_range'
 
 RSpec.describe Lib::HomeLoanReporter, type: :class do
   before :each do
-    @account = FactoryGirl.create(:account, starting_date: '2016-01-01')
+    @account = FactoryBot.create(:account, starting_date: '2016-01-01')
     @reporter = Lib::HomeLoanReporter.new(@account)
 
     calculator = instance_double Lib::LoanCalculator

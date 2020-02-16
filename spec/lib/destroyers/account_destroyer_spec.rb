@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'destroyers/account_destroyer'
 
 describe 'AccountDestroyer' do
-  let(:account) { FactoryGirl.create(:account) }
+  let(:account) { FactoryBot.create(:account) }
   let(:destroyer) { AccountDestroyer.new account }
 
   it 'deletes an account' do
@@ -12,7 +12,7 @@ describe 'AccountDestroyer' do
 
   describe 'errors' do
     it 'doesnt delete if account has transactions' do
-      FactoryGirl.create(:transaction, account: account)
+      FactoryBot.create(:transaction, account: account)
       expect{destroyer.execute}.to raise_error(MyMoneyError, 'Cannot delete an account that has transactions')
     end
   end

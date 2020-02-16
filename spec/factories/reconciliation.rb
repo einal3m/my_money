@@ -1,13 +1,13 @@
-FactoryGirl.define do
+# frozen_string_literal: true
 
-  factory :reconciliation do |f|
+FactoryBot.define do
+  factory :reconciliation do
     account
-    f.statement_date "2014-04-04"
-    f.statement_balance 666
+    statement_date { '2014-04-04' }
+    statement_balance { 666 }
   end
 
-  factory :reconciliation_invalid, parent: :reconciliation do |f|
-    f.statement_date nil
+  factory :reconciliation_invalid, parent: :reconciliation do
+    statement_date { nil }
   end
-
 end

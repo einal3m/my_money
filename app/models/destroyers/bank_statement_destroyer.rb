@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'exceptions/my_money_error'
 
 class BankStatementDestroyer

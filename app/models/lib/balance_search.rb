@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   # BalanceSearch
   #
@@ -55,6 +57,7 @@ module Lib
     # if last day of date range not in data, then add it
     def add_last_day(sql_data, data)
       return if sql_data.last && (sql_data.last.date == @date_range.to_date)
+
       data << [@date_range.to_date.strftime(LINE_CHART_DF), data.last[1]]
     end
 

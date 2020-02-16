@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 #  Transaction
 #
@@ -13,18 +15,18 @@
 #  transaction_type: string
 #  matching_transaction_id: integer foreign key
 #
-class Transaction < ActiveRecord::Base
+class Transaction < ApplicationRecord
   include ClassyEnum::ActiveRecord
   classy_enum_attr :transaction_type
 
   # model relationships
   belongs_to :account
-  belongs_to :category
-  belongs_to :subcategory
-  belongs_to :reconciliation
-  belongs_to :bank_statement
+  belongs_to :category, optional: true
+  belongs_to :subcategory, optional: true
+  belongs_to :reconciliation, optional: true
+  belongs_to :bank_statement, optional: true
 
-  belongs_to :matching_transaction, class_name: 'Transaction', foreign_key: 'matching_transaction_id'
+  belongs_to :matching_transaction, class_name: 'Transaction', foreign_key: 'matching_transaction_id', optional: true
 
   # validations
   validates :date, presence: true
@@ -36,27 +38,27 @@ class Transaction < ActiveRecord::Base
   validates :matching_transaction_id, absence: true, if: :category_id?
 
   # common lookups
-  scope :unreconciled, ->(account) {
+  scope :unreconciled, lambda { |account|
     where(account: account, reconciliation: nil)
   }
   scope :date_order, -> { order(date: :asc, id: :asc) }
   scope :reverse_date_order, -> { order(date: :desc, id: :desc) }
-  scope :find_by_date, ->(date_range) {
+  scope :find_by_date, lambda { |date_range|
     where('date >= ? and date <= ?', date_range.from_date, date_range.to_date)
   }
-  scope :find_by_dates, ->(from_date, to_date) {
+  scope :find_by_dates, lambda { |from_date, to_date|
     where('date >= ? and date <= ?', from_date, to_date)
   }
-  scope :for_account_type, ->(account_type) {
+  scope :for_account_type, lambda { |account_type|
     joins(:account).where(accounts: { account_type: account_type.new.to_s })
   }
-  scope :for_banking_accounts, -> {
+  scope :for_banking_accounts, lambda {
     joins(:account).where(accounts: { account_type: [AccountType::Savings.new.to_s, AccountType::Loan.new.to_s] })
   }
-  scope :find_by_description, ->(description) {
+  scope :find_by_description, lambda { |description|
     where('memo like ? or notes like ?', '%' + description + '%', '%' + description + '%')
   }
-  scope :find_matching, ->(date, amount, account) {
+  scope :find_matching, lambda { |date, amount, account|
     where(
       amount: -amount,
       date: date,
@@ -85,6 +87,7 @@ class Transaction < ActiveRecord::Base
 
   def matching_transaction_must_match
     return if matching_transaction_id.nil?
+
     matching_transaction_must_be_from_different_account
     matching_transaction_must_have_same_date
     matching_transaction_must_have_opposite_amount
@@ -93,7 +96,9 @@ class Transaction < ActiveRecord::Base
 
   def matching_transaction_must_not_be_already_matched
     return if matching_transaction_id == matching_transaction.id && matching_transaction.matching_transaction_id == id
-    errors.add(:matching_transaction_id, 'must not already be matched') unless matching_transaction.matching_transaction_id.nil?
+    return if matching_transaction.matching_transaction_id.nil?
+
+    errors.add(:matching_transaction_id, 'must not already be matched')
   end
 
   def matching_transaction_must_have_opposite_amount
@@ -105,11 +110,14 @@ class Transaction < ActiveRecord::Base
   end
 
   def matching_transaction_must_be_from_different_account
-    errors.add(:matching_transaction_id, 'must be in a different account') if account_id == matching_transaction.account_id
+    return unless account_id == matching_transaction.account_id
+
+    errors.add(:matching_transaction_id, 'must be in a different account')
   end
 
   def match_transaction
     return if matching_transaction_id.nil?
+
     matching_transaction.update_column(:matching_transaction_id, id)
   end
 
@@ -143,11 +151,11 @@ class Transaction < ActiveRecord::Base
   # and all those that follow, only when either date or amount is changed
   def calculate_balance_on_update
     # only update balance if either date or amount is changed
-    return unless changes.key?(:date) || changes.key?(:amount)
+    return unless saved_changes.key?(:date) || saved_changes.key?(:amount)
 
     # determine the earliest date that has changed
     from_date = date
-    from_date = changes[:date].min if changes.key?(:date)
+    from_date = saved_changes[:date].min if saved_changes.key?(:date)
 
     new_balance = get_new_balance(from_date - 1.day)
     update_balance_for_following(from_date, new_balance)

@@ -1,8 +1,10 @@
-FactoryGirl.define do
+# frozen_string_literal: true
+
+FactoryBot.define do
   factory :budget do
     account
-    description "MyString"
-    day_of_month 1
-    amount 1
+    description { 'MyString' }
+    day_of_month { 1 }
+    amount { 1 }
   end
 end
