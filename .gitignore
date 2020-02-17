@@ -10,25 +10,29 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
+/db/*.sqlite3-*
 
-# Ignore all logfiles and tempfiles.
-/log/*.log
-/tmp
-
-# Ignore other unneeded files
 .DS_Store
 
-# Ignore code coverage fils
-coverage
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
 
-# Ignore npm modules
-web/node_modules
-npm-debug.log
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
 
-.idea*
+/public/assets
+.byebug_history
 
-bootstrap.min.css
-font-awesome.min.css
-public/assets
-web/fonts
+# Ignore master key for decrypting credentials and more.
+/config/master.key
 
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
