@@ -1,108 +1,145 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ReconciliationsController, type: :controller do
-  let(:valid_attributes) {
-    FactoryGirl.attributes_for(:reconciliation)
-  }
-
-  let(:invalid_attributes) {
-    FactoryGirl.attributes_for(:reconciliation_invalid)
-  }
-
-  let(:valid_session) { {} }
-
   describe 'GET index' do
     it 'returns all reconciliations for the account' do
-      reconciliation = FactoryGirl.create(:reconciliation)
-      get :index, { account_id: reconciliation.account_id }, valid_session
+      reconciliation = FactoryBot.create(:reconciliation)
 
-      expect(response).to be_success
+      get :index, params: { account_id: reconciliation.account_id }
+
+      expect(response.status).to eq(200)
 
       json = JSON.parse(response.body)
       expect(json['reconciliations'].length).to eq(1)
-      expect(json['reconciliations'][0]).to eq(serialize_reconciliation(reconciliation))
+      expect(json['reconciliations'][0]).to eq(serialized_reconciliation(reconciliation))
     end
   end
 
   describe 'GET show' do
     it 'returns the specified reconciliation' do
-      reconciliation = FactoryGirl.create(:reconciliation)
-      get :show, { account_id: reconciliation.account_id, id: reconciliation.id }, valid_session
+      reconciliation = FactoryBot.create(:reconciliation)
+
+      get :show, params: { account_id: reconciliation.account_id, id: reconciliation.id }
+
       json = JSON.parse(response.body)
-      expect(response).to be_success
-      expect(json['reconciliation']).to eq(serialize_reconciliation(reconciliation))
+      expect(response.status).to eq(200)
+      expect(json['reconciliation']).to eq(serialized_reconciliation(reconciliation))
     end
   end
 
   describe 'POST create' do
-    let(:account) { FactoryGirl.create(:account) }
-
     context 'with valid params' do
       it 'creates a new Reconciliation' do
-        expect {
-          post :create, { account_id: account, reconciliation: build_attributes(:reconciliation) }, valid_session
-        }.to change(Reconciliation, :count).by(1)
+        account = FactoryBot.create(:account)
+
+        expect do
+          post :create, params: {
+            account_id: account,
+            reconciliation: FactoryBot.attributes_for(:reconciliation, account_id: account.id)
+          }
+        end.to change(Reconciliation, :count).by(1)
       end
 
       it 'returns the reconciliation' do
-        post :create, { account_id: account, reconciliation: build_attributes(:reconciliation) }, valid_session
-        expect(response).to be_success
+        account = FactoryBot.create(:account)
+
+        post :create, params: {
+          account_id: account,
+          reconciliation: FactoryBot.attributes_for(:reconciliation, account_id: account.id)
+        }
+        expect(response.status).to eq(201)
 
         reconciliation = Reconciliation.first
         json = JSON.parse(response.body)
-        expect(json['reconciliation']).to eq(serialize_reconciliation(reconciliation))
+        expect(json['reconciliation']).to eq(serialized_reconciliation(reconciliation))
       end
     end
 
     context 'with invalid params' do
       it 'does not create a new reconciliation' do
-        expect {
-          post :create, { account_id: account, reconciliation: build_attributes(:reconciliation_invalid) }, valid_session
-        }.not_to change(Reconciliation, :count)
+        account = FactoryBot.create(:account)
+
+        expect do
+          post :create, params: {
+            account_id: account,
+            reconciliation: FactoryBot.attributes_for(:reconciliation_invalid, account_id: account.id)
+          }
+        end.not_to change(Reconciliation, :count)
+
         expect(response.status).to be(422)
       end
     end
   end
 
   describe 'PUT update' do
-    let(:reconciliation) { FactoryGirl.create(:reconciliation) }
-
     context 'with valid params' do
       it 'updates and returns the requested reconciliation' do
-        put :update, {
+        reconciliation = FactoryBot.create(:reconciliation)
+
+        put :update, params: {
           account_id: reconciliation.account_id,
           id: reconciliation.id,
-          reconciliation: build_attributes(:reconciliation, statement_balance: '977', statement_date: '2014-07-02')
-        }, valid_session
+          reconciliation: { statement_balance: '977', statement_date: '2014-07-02' }
+        }
+
         reconciliation.reload
         expect(reconciliation.statement_date).to eq(Date.parse('2014-07-02'))
         expect(reconciliation.statement_balance).to eq(977)
 
-        expect(response).to be_success
+        expect(response.status).to eq(200)
         json = JSON.parse(response.body)
-        expect(json['reconciliation']).to eq(serialize_reconciliation(reconciliation))
+        expect(json['reconciliation']).to eq(serialized_reconciliation(reconciliation))
       end
     end
 
     context 'with transactions' do
       it 'sets reconciled to true and updates transactions' do
-        r = FactoryGirl.create(:reconciliation, reconciled: false)
-        t = FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
-        put :update, account_id: r.account_id, id: r.id, reconciled: true, transactions: [{ id: t.id }]
+        reconciliation = FactoryBot.create(:reconciliation, reconciled: false)
+        transaction = FactoryBot.create(:transaction, account: reconciliation.account, reconciliation: nil)
 
-        r.reload
-        t.reload
-        expect(r.reconciled).to be_truthy
-        expect(t.reconciliation).to eq(r)
+        put :update, params: {
+          account_id: reconciliation.account_id,
+          id: reconciliation.id,
+          reconciled: true,
+          transactions: [{ id: transaction.id }]
+        }
+
+        reconciliation.reload
+        transaction.reload
+        expect(reconciliation.reconciled).to be_truthy
+        expect(transaction.reconciliation).to eq(reconciliation)
       end
     end
 
     context 'with invalid params' do
       it 'returns an error code' do
-        put :update, { account_id: reconciliation.account_id, id: reconciliation.id,
-                       reconciliation: build_attributes(:reconciliation_invalid) }, valid_session
+        reconciliation = FactoryBot.create(:reconciliation)
+
+        put :update, params: {
+          account_id: reconciliation.account_id,
+          id: reconciliation.id,
+          reconciliation: { statement_date: nil }
+
+        }
+
         expect(response.status).to be(422)
       end
     end
+  end
+
+  def serialized_reconciliation(reconciliation)
+    {
+      'id' => reconciliation.id,
+      'account_id' => reconciliation.account_id,
+      'statement_date' => date_string(reconciliation.statement_date),
+      'statement_balance' => reconciliation.statement_balance,
+      'reconciled' => reconciliation.reconciled
+    }
+  end
+
+  def date_string(date)
+    date&.strftime('%Y-%m-%d')
   end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ReconciliationsController < ApplicationController
-  before_action :set_reconciliation, only: [:show, :update, :transactions, :reconcile]
+  before_action :set_reconciliation, only: %i[show update transactions reconcile]
   before_action :set_account, only: [:index]
 
   def index
@@ -24,12 +26,10 @@ class ReconciliationsController < ApplicationController
       transaction_array = params[:transactions]
       reconcile_transactions(transaction_array)
       render json: @reconciliation, status: :ok
+    elsif @reconciliation.update(reconciliation_params)
+      render json: @reconciliation, status: :ok
     else
-      if @reconciliation.update(reconciliation_params)
-        render json: @reconciliation, status: :ok
-      else
-        render json: @reconciliation.errors, status: :unprocessable_entity
-      end
+      render json: @reconciliation.errors, status: :unprocessable_entity
     end
   end
 

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class CategoryType2 < ClassyEnum::Base
-  include ActiveModel::Serialization
-
   def code
     option.to_s
   end

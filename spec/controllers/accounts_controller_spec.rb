@@ -1,26 +1,18 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AccountsController, type: :controller do
-  let(:valid_attributes) {
-    FactoryGirl.attributes_for(:account)
-  }
-
-  let(:invalid_attributes) {
-    FactoryGirl.attributes_for(:account_invalid)
-  }
-
-  let(:valid_session) { {} }
-
   describe 'GET index' do
     it 'returns a list of all accounts' do
-      account = FactoryGirl.create(:account, starting_balance: 1000)
-      get :index, {}, valid_session
+      account = FactoryBot.create(:account, starting_balance: 1000)
+      get :index
 
-      expect(response).to be_success
+      expect(response.status).to eq(200)
 
       json = JSON.parse(response.body)
       expect(json['accounts'].length).to eq(1)
-      expect(json['accounts'][0]).to eq(serialize_account(account))
+      expect(json['accounts'][0]).to eq(serialized_account(account))
     end
   end
 
@@ -28,73 +20,76 @@ RSpec.describe AccountsController, type: :controller do
     context 'with valid params' do
       context 'Savings account' do
         it 'creates a new Savings Account' do
-          expect {
-            post :create, { account: build_attributes(:account) }, valid_session
-          }.to change(Account, :count).by(1)
+          expect do
+            post :create, params: { account: FactoryBot.attributes_for(:account) }
+          end.to change(Account, :count).by(1)
         end
 
         it 'sends the account' do
-          post :create, { account: build_attributes(:account) }, valid_session
+          post :create, params: { account: FactoryBot.attributes_for(:account) }
           account = Account.first
 
           json = JSON.parse(response.body)
-          expect(json['account']).to eq(serialize_account(account))
+          expect(json['account']).to eq(serialized_account(account))
         end
       end
 
       context 'Share account' do
         it 'creates a new Share Account' do
-          expect {
-            post :create, { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }, valid_session
-          }.to change(Account, :count).by(1)
+          expect do
+            post :create, params: { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }
+          end.to change(Account, :count).by(1)
         end
 
         it 'sends the account' do
-          post :create, { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }, valid_session
+          post :create, params: { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }
           account = Account.first
 
           expect(account.name).to eq('Name')
           expect(account.ticker).to eq('TCK')
           expect(account.starting_balance).to eq(0)
-          
+
           json = JSON.parse(response.body)
-          expect(json['account']).to eq(serialize_account(account))
+          expect(json['account']).to eq(serialized_account(account))
         end
       end
 
       context 'Loan account' do
         it 'creates a new Loan Account' do
-          expect {
-            post :create, { account: {
-              account_type: 'loan', name: 'Name', limit: 3000, term: 30, interest_rate: 3.45, starting_date: '2016-12-31'
-            } }, valid_session
-          }.to change(Account, :count).by(1)
+          expect do
+            post :create, params: { account: {
+              account_type: 'loan',
+              name: 'Name',
+              limit: 3000,
+              term: 30,
+              interest_rate: 3.45,
+              starting_date: '2016-12-31'
+            } }
+          end.to change(Account, :count).by(1)
         end
 
         it 'sends the account' do
-          post :create, { account: {
-            account_type: 'loan', name: 'Name', limit: 3000, term: 30, interest_rate: 3.45, starting_date: '2016-12-31'
-          } }, valid_session
+          post :create, params: { account: {
+            account_type: 'loan',
+            name: 'Name',
+            limit: 3000,
+            term: 30,
+            interest_rate: 3.45,
+            starting_date: '2016-12-31'
+          } }
+
           account = Account.first
-
-          # expect(account.name).to eq('Name')
-          # expect(account.limit).to eq(3000)
-          # expect(account.term).to eq(30)
-          # expect(account.interest_rate).to eq(3.45)
-
           json = JSON.parse(response.body)
-          p json
-          expect(json['account']['id']).to eq(account.id)
-          expect(json['account']['limit']).to eq(3000)
+          expect(json['account']).to eq(serialized_account(account))
         end
       end
     end
 
     context 'with invalid params' do
       it 'does not save a new Account' do
-        expect {
-          post :create, { account: FactoryGirl.attributes_for(:account_invalid) }, valid_session
-        }.not_to change(Account, :count)
+        expect do
+          post :create, params: { account: FactoryBot.attributes_for(:account_invalid) }
+        end.not_to change(Account, :count)
         expect(response.status).to eq(422)
       end
     end
@@ -102,39 +97,42 @@ RSpec.describe AccountsController, type: :controller do
 
   describe 'PUT update' do
     before :each do
-      @account = FactoryGirl.create(:account)
     end
 
     context 'with valid params' do
       it 'updates the requested account' do
-        put :update, {
-          id: @account.id,
-          account: FactoryGirl.attributes_for(
+        account = FactoryBot.create(:account)
+
+        put :update, params: {
+          id: account.id,
+          account: FactoryBot.attributes_for(
             :account,
             name: 'New Account2',
             bank: 'New Bank2',
             starting_balance: 800,
             starting_date: '2014-02-02'
           )
-        }, valid_session
+        }
 
-        expect(response).to be_success
+        expect(response.status).to eq(200)
 
         json = JSON.parse(response.body)
-        @account.reload
-        expect(json['account']).to eq(serialize_account(@account))
-        expect(@account.name).to eq('New Account2')
-        expect(@account.bank).to eq('New Bank2')
-        expect(@account.starting_balance).to eq(800)
-        expect(@account.starting_date).to eq(Date.parse('2014-02-02'))
+        account.reload
+        expect(json['account']).to eq(serialized_account(account))
+        expect(account.name).to eq('New Account2')
+        expect(account.bank).to eq('New Bank2')
+        expect(account.starting_balance).to eq(800)
+        expect(account.starting_date).to eq(Date.parse('2014-02-02'))
       end
     end
 
     context 'with invalid params' do
-      it 'assigns the account as @account' do
-        expect {
-          put :update, { id: @account.id, account: FactoryGirl.attributes_for(:account_invalid) }, valid_session
-        }.not_to change { @account.updated_at }
+      it 'does not update the account' do
+        account = FactoryBot.create(:account)
+
+        expect do
+          put :update, params: { id: account.id, account: FactoryBot.attributes_for(:account_invalid) }
+        end.not_to(change { account.updated_at })
         expect(response.status).to eq(422)
       end
     end
@@ -142,23 +140,49 @@ RSpec.describe AccountsController, type: :controller do
 
   describe 'DELETE destroy' do
     it 'destroys the requested account' do
-      account = FactoryGirl.create(:account)
-      expect {
-        delete :destroy, { id: account.id }, valid_session
-      }.to change(Account, :count).by(-1)
-      expect(response).to be_success
+      account = FactoryBot.create(:account)
+
+      expect do
+        delete :destroy, params: { id: account.id }
+      end.to change(Account, :count).by(-1)
+      expect(response.status).to eq(204)
     end
 
-    it 'destroys the requested account' do
-      account = FactoryGirl.create(:account)
-      FactoryGirl.create(:transaction, account: account)
+    it 'does not destroy the requested account if there are transactions' do
+      account = FactoryBot.create(:account)
+      FactoryBot.create(:transaction, account: account)
 
-      expect {
-        delete :destroy, { id: account.id }, valid_session
-      }.not_to change(Account, :count)
+      expect do
+        delete :destroy, params: { id: account.id }
+      end.not_to change(Account, :count)
+
       expect(response.status).to eq(422)
       json = JSON.parse(response.body)
       expect(json['message']).to eq('Cannot delete an account that has transactions')
     end
+  end
+
+  def serialized_account(account)
+    {
+      'id' => account.id,
+      'account_type' => account.account_type.code,
+      'name' => account.name,
+      'bank' => account.bank,
+      'ticker' => account.ticker,
+      'starting_balance' => account.starting_balance,
+      'starting_date' => date_string(account.starting_date),
+      'current_balance' => account.current_balance,
+      'limit' => account.limit,
+      'term' => account.term,
+      'interest_rate' => rate_string(account.interest_rate)
+    }
+  end
+
+  def date_string(date)
+    date&.strftime('%Y-%m-%d')
+  end
+
+  def rate_string(rate)
+    rate.nil? ? nil : rate.to_s
   end
 end

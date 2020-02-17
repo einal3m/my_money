@@ -1,99 +1,113 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe BankStatementsController, type: :controller do
+  describe 'GET #index' do
+    it 'returns http success' do
+      account = FactoryBot.create(:account)
+      bank_statement1 = FactoryBot.create(:bank_statement, account: account)
+      bank_statement2 = FactoryBot.create(:bank_statement, account: account)
 
-  describe "GET #index" do
-    it "returns http success" do
-      account = FactoryGirl.create(:account)
-      bank_statement1 = FactoryGirl.create(:bank_statement, account: account)
-      bank_statement2 = FactoryGirl.create(:bank_statement, account: account)
-      get :index, { account_id: account.id }
-      expect(response).to have_http_status(:success)
+      get :index, params: { account_id: account.id }
+
+      expect(response.status).to eq(200)
+
       json = JSON.parse(response.body)
       expect(json['bank_statements'].length).to eq(2)
-      expect(json['bank_statements'][0]['id']).to eq(bank_statement2.id)
-      expect(json['bank_statements'][0]['account_id']).to eq(bank_statement2.account.id)
-      expect(Date.parse(json['bank_statements'][0]['date'])).to eq(bank_statement2.date)
-      expect(json['bank_statements'][0]['file_name']).to eq(bank_statement2.file_name)
-      expect(json['bank_statements'][0]['transaction_count']).to eq(bank_statement2.transaction_count)
+      expect(json['bank_statements'][0]).to eq(serialized_bank_statement(bank_statement2))
+      expect(json['bank_statements'][1]).to eq(serialized_bank_statement(bank_statement1))
     end
   end
 
-  describe "GET #destroy" do
-    it "successfully deletes bank statement and its transactions" do
-      bank_statement = FactoryGirl.create(:bank_statement)
-      transaction = FactoryGirl.create(:transaction, bank_statement: bank_statement)
+  describe 'GET #destroy' do
+    it 'successfully deletes bank statement and its transactions' do
+      bank_statement = FactoryBot.create(:bank_statement)
+      transaction = FactoryBot.create(:transaction, bank_statement: bank_statement)
 
-      get :destroy, { account_id: bank_statement.account_id, id: bank_statement.id }
-      
-      expect(response).to have_http_status(:success)
+      get :destroy, params: { account_id: bank_statement.account_id, id: bank_statement.id }
+
+      expect(response.status).to eq(204)
       expect(BankStatement.exists?(bank_statement.id)).to be_falsy
       expect(Transaction.exists?(transaction.id)).to be_falsy
     end
 
     it 'returns error when bank statement contains reconciled transactions' do
-      bank_statement = FactoryGirl.create(:bank_statement)
-      reconciliation = FactoryGirl.create(:reconciliation, account: bank_statement.account)
-      transaction = FactoryGirl.create(:transaction, bank_statement: bank_statement, reconciliation: reconciliation)
+      bank_statement = FactoryBot.create(:bank_statement)
+      reconciliation = FactoryBot.create(:reconciliation, account: bank_statement.account)
+      FactoryBot.create(:transaction, bank_statement: bank_statement, reconciliation: reconciliation)
       expect(bank_statement.transactions).not_to receive(:destroy)
       expect(bank_statement).not_to receive(:destroy)
 
-      get :destroy, { account_id: bank_statement.account_id, id: bank_statement.id }
+      get :destroy, params: { account_id: bank_statement.account_id, id: bank_statement.id }
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.status).to eq(422)
       json = JSON.parse(response.body)
       expect(json['message']).to eq('Cannot delete a bank statement with reconciled transactions')
     end
   end
 
-  describe "GET #create" do
-    let (:account) { FactoryGirl.create(:account) }
-    let (:file_name) { 'sample.qif' }
-    let (:transaction_attrs) do 
-      [
-        {date: '2015-01-01', amount: 500, account_id: account.id, import: true },
-        {date: '2015-02-01', amount: 520, account_id: account.id }
+  describe 'GET #create' do
+    it 'returns http success' do
+      account = FactoryBot.create(:account)
+      transaction_attrs = [
+        { date: '2015-01-01', amount: 500, account_id: account.id, import: true },
+        { date: '2015-02-01', amount: 520, account_id: account.id }
       ]
-    end
 
-    it "returns http success" do
-      make_create_request
+      get :create, params: {
+        account_id: account.id,
+        transactions: transaction_attrs,
+        bank_statement: {
+          account_id: account.id,
+          file_name: 'sample.qif'
+        }
+      }
 
       bs = account.bank_statements.last
       expect(bs.date).to eq(Date.today)
-      expect(bs.file_name).to eq(file_name)
+      expect(bs.file_name).to eq('sample.qif')
       expect(bs.transaction_count).to eq(2)
       expect(bs.transactions.length).to eq(2)
 
-      expect(response).to have_http_status(:success)
+      expect(response.status).to eq(201)
       json = JSON.parse(response.body)
-      expect(json['bank_statement']).to eq({
-        'id' => bs.id,
-        'account_id' => account.id,
-        'file_name' => file_name,
-        'date' => Date.today.strftime('%Y-%m-%d'),
-        'transaction_count' => 2
-      })
-
+      expect(json['bank_statement']).to eq(serialized_bank_statement(bs))
     end
 
-    it "returns validation error" do
-      transaction_attrs[0].delete(:date)
-      make_create_request
-      expect(response).to have_http_status(:unprocessable_entity)
+    it 'returns validation error' do
+      account = FactoryBot.create(:account)
+      transaction_attrs = [
+        { amount: 500, account_id: account.id, import: true },
+        { date: '2015-02-01', amount: 520, account_id: account.id }
+      ]
+
+      get :create, params: {
+        account_id: account.id,
+        transactions: transaction_attrs,
+        bank_statement: {
+          account_id: account.id,
+          file_name: 'sample.qif'
+        }
+      }
+
+      expect(response.status).to eq(422)
       json = JSON.parse(response.body)
       expect(json['message']).to eq('Validation failed: Transactions is invalid')
     end
   end
 
-  def make_create_request
-      get :create, {
-        account_id: account.id,
-        transactions: transaction_attrs,
-        bank_statement: {
-          account_id: account.id,
-          file_name: file_name
-        }
-      }
+  def serialized_bank_statement(bank_statement)
+    {
+      'id' => bank_statement.id,
+      'account_id' => bank_statement.account_id,
+      'date' => date_string(bank_statement.date),
+      'file_name' => bank_statement.file_name,
+      'transaction_count' => bank_statement.transaction_count
+    }
+  end
+
+  def date_string(date)
+    date&.strftime('%Y-%m-%d')
   end
 end

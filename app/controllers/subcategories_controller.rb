@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'destroyers/subcategory_destroyer'
 
 class SubcategoriesController < ApplicationController
@@ -44,7 +46,6 @@ class SubcategoriesController < ApplicationController
     @subcategory ||= Subcategory.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def subcategory_params
     params.require(:subcategory).permit(:name, :category_id)
   end

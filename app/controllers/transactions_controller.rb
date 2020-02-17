@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class TransactionsController < ApplicationController
-  before_action :set_transaction, only: [:edit, :update, :destroy, :matching]
+  before_action :set_transaction, only: %i[edit update destroy matching]
 
   def index
     render json: description ? transactions_by_date_and_description : transactions_by_date
@@ -69,8 +71,9 @@ class TransactionsController < ApplicationController
   end
 
   def matching
-    transactions = Transaction.find_matching(@transaction.date, @transaction.amount, account)
+    transactions = Transaction.find_matching(@transaction.date, @transaction.amount, account).to_a
     transactions.push(@transaction.matching_transaction) if @transaction.matching_transaction
+
     render json: transactions
   end
 

@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require 'lib/date_range'
 
 class ReportController < ApplicationController
-  before_action :set_data_range, only: [:income_vs_expense, :eod_balance, :category, :subcategory]
+  before_action :set_data_range, only: %i[income_vs_expense eod_balance category subcategory]
 
-  def index
-  end
+  def index; end
 
   def income_vs_expense
     category_types = { income: CategoryType.income, expense: CategoryType.expense }
     report_data = { income: {}, expense: {} }
 
-    [:income, :expense].each do |category_type|
+    %i[income expense].each do |category_type|
       report_data[category_type] = get_category_type_data(category_type, category_types)
     end
 
@@ -26,7 +27,7 @@ class ReportController < ApplicationController
     expense_search = Lib::CategoryTypeSearch.new(date_range: date_range, category_type: expense_type)
 
     report_data = merge_data(income_search.month_totals, expense_search.month_totals)
-    render json: report_data
+    render json: { report: report_data }
   end
 
   # balance
@@ -39,7 +40,7 @@ class ReportController < ApplicationController
       @line_chart_data = search.eod_balance
     end
 
-    render json: @line_chart_data
+    render json: { report: @line_chart_data }
   end
 
   def category
@@ -117,6 +118,10 @@ class ReportController < ApplicationController
   end
 
   def set_subcategory
-    @subcategory = params.key?(:subcategory_id) && !params[:subcategory_id].blank? ? Subcategory.find(params[:subcategory_id]) : nil
+    @subcategory = subcategory_in_params? ? Subcategory.find(params[:subcategory_id]) : nil
+  end
+
+  def subcategory_in_params?
+    params.key?(:subcategory_id) && !params[:subcategory_id].blank?
   end
 end

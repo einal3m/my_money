@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PatternsController < ApplicationController
   def index
     render json: account.patterns

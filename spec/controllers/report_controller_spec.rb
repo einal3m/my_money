@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ReportController, type: :controller do
@@ -17,8 +19,9 @@ RSpec.describe ReportController, type: :controller do
       expect(Lib::BalanceSearch).to receive(:new).with(account: account, date_range: date_range).and_return(search)
       expect(search).to receive(:eod_balance).and_return(data)
 
-      get :eod_balance, account_id: account_id, from_date: from_date, to_date: to_date
-      expect(response).to be_success
+      get :eod_balance, params: { account_id: account_id, from_date: from_date, to_date: to_date }
+
+      expect(response.status).to eq(200)
       json = JSON.parse(response.body)
       expect(json['report'].length).to eq(2)
       expect(json['report']).to eq(data)
@@ -26,7 +29,8 @@ RSpec.describe ReportController, type: :controller do
 
     it 'returns no data when account not specified' do
       get :eod_balance
-      expect(response).to be_success
+
+      expect(response.status).to eq(200)
       json = JSON.parse(response.body)
       expect(json['report'].length).to eq(0)
     end
@@ -47,15 +51,19 @@ RSpec.describe ReportController, type: :controller do
       expect(CategoryType).to receive(:expense).and_return(expense_category_type)
 
       expect(Lib::Last13MonthsDateRange).to receive(:new).and_return(date_range)
-      expect(Lib::CategoryTypeSearch).to receive(:new).with(category_type: income_category_type, date_range: date_range).and_return(income_search)
-      expect(Lib::CategoryTypeSearch).to receive(:new).with(category_type: expense_category_type, date_range: date_range).and_return(expense_search)
+      expect(Lib::CategoryTypeSearch).to receive(:new).with(
+        category_type: income_category_type, date_range: date_range
+      ).and_return(income_search)
+      expect(Lib::CategoryTypeSearch).to receive(:new).with(
+        category_type: expense_category_type, date_range: date_range
+      ).and_return(expense_search)
 
       expect(income_search).to receive(:month_totals).and_return(income_data)
       expect(expense_search).to receive(:month_totals).and_return(expense_data)
 
       get :income_expense_bar
 
-      expect(response).to be_success
+      expect(response.status).to eq(200)
 
       json = JSON.parse(response.body)
       expect(json['report'].length).to eq(2)
@@ -73,7 +81,7 @@ RSpec.describe ReportController, type: :controller do
       date_range = double :date_range
       expect(Lib::CustomDateRange).to receive(:new).with(from_date: from_date, to_date: to_date).and_return(date_range)
 
-      [:income, :expense].each do |type|
+      %i[income expense].each do |type|
         category_type = double :category_type
         category_type_search = double :category_type_search
         unassigned_search = double :unassigned_search
@@ -85,17 +93,20 @@ RSpec.describe ReportController, type: :controller do
         expect(Lib::CategorySearch).to receive(:new)
           .with(date_range: date_range, category: nil, category_type: category_type)
           .and_return(unassigned_search)
-
-        expect(category_type_search).to receive(:group_by).with(:category_id, :subcategory_id)
-          .and_return([{ type => 100 }])
-        expect(category_type_search).to receive(:group_by).with(:category_id)
-          .and_return([{ type => 200 }])
+        expect(category_type_search).to receive(:group_by).with(
+          :category_id, :subcategory_id
+        ) .and_return([{ type => 100 }])
+        expect(category_type_search).to receive(:group_by).with(
+          :category_id
+        ) .and_return([{ type => 200 }])
         expect(unassigned_search).to receive(:sum).and_return(unassigned_total[type])
         expect(category_type_search).to receive(:sum).and_return(total[type])
       end
 
-      get :income_vs_expense, from_date: from_date, to_date: to_date
-      expect(response).to be_success
+      get :income_vs_expense, params: { from_date: from_date, to_date: to_date }
+
+      expect(response.status).to eq(200)
+
       json = JSON.parse(response.body)
       expect(json).to eq(
         'income' => {
@@ -120,8 +131,8 @@ RSpec.describe ReportController, type: :controller do
       category = double :category, id: category_id
       date_range = double :date_range
       search = double :search
-      t1 = FactoryGirl.create(:transaction)
-      t2 = FactoryGirl.create(:transaction)
+      t1 = FactoryBot.create(:transaction)
+      t2 = FactoryBot.create(:transaction)
       month_data = [['date1', 40, -60], ['date2', 140, -70]]
 
       expect(Lib::CustomDateRange).to receive(:new).with(from_date: from_date, to_date: to_date).and_return(date_range)
@@ -130,17 +141,14 @@ RSpec.describe ReportController, type: :controller do
       expect(search).to receive(:month_totals).and_return(month_data)
       expect(search).to receive(:transactions).and_return([t1, t2])
 
-      get :category, category_id: category.id, from_date: from_date, to_date: to_date
+      get :category, params: { category_id: category.id, from_date: from_date, to_date: to_date }
 
-      expect(response).to be_success
+      expect(response.status).to eq(200)
+
       json = JSON.parse(response.body)
-
       expect(json['month_totals'].length).to eq(2)
       expect(json['month_totals']).to eq(month_data)
-
       expect(json['transactions'].length).to eq(2)
-      # expect(json['transactions'][0]).to eq(serialize_transaction(t1))
-      # expect(json['transactions'][1]).to eq(serialize_transaction(t2))
     end
   end
 
@@ -153,51 +161,50 @@ RSpec.describe ReportController, type: :controller do
       category = double :category
       date_range = double :date_range
       search = double :search
-      t1 = FactoryGirl.create(:transaction)
-      t2 = FactoryGirl.create(:transaction)
+      t1 = FactoryBot.create(:transaction)
+      t2 = FactoryBot.create(:transaction)
       month_data = [['date1', 40, -60], ['date2', 140, -70]]
 
       expect(Lib::CustomDateRange).to receive(:new).with(from_date: from_date, to_date: to_date).and_return(date_range)
-      expect(Lib::SubcategorySearch).to receive(:new).with(category: category, subcategory: subcategory, date_range: date_range).and_return(search)
+      expect(Lib::SubcategorySearch).to receive(:new).with(
+        category: category, subcategory: subcategory, date_range: date_range
+      ).and_return(search)
       expect(Subcategory).to receive(:find).with(subcategory_id.to_s).and_return(subcategory)
       expect(subcategory).to receive(:category).and_return(category)
       expect(search).to receive(:month_totals).and_return(month_data)
       expect(search).to receive(:transactions).and_return([t1, t2])
 
-      get :subcategory, subcategory_id: subcategory.id, from_date: from_date, to_date: to_date
+      get :subcategory, params: { subcategory_id: subcategory.id, from_date: from_date, to_date: to_date }
 
-      expect(response).to be_success
+      expect(response.status).to eq(200)
+
       json = JSON.parse(response.body)
-
       expect(json['month_totals'].length).to eq(2)
       expect(json['month_totals']).to eq(month_data)
-
       expect(json['transactions'].length).to eq(2)
-      # expect(json['transactions'][0]).to eq(serialize_transaction(t1))
-      # expect(json['transactions'][1]).to eq(serialize_transaction(t2))
     end
   end
 
   describe 'home loan report' do
     it 'returns loan estimations for specified account' do
-      account = FactoryGirl.create(:account, account_type: 'loan')
+      account = FactoryBot.create(:account, account_type: 'loan')
       reporter = instance_double Lib::HomeLoanReporter
       expect(Lib::HomeLoanReporter).to receive(:new).with(account).and_return(reporter)
-      expect(reporter).to receive(:execute).and_return({ data: 'result' })
+      expect(reporter).to receive(:execute).and_return(data: 'result')
 
-      get :home_loan, account_id: account.id
+      get :home_loan, params: { account_id: account.id }
 
-      expect(response).to be_success
+      expect(response.status).to eq(200)
+
       json = JSON.parse(response.body)
-
       expect(json['data']).to eq('result')
     end
 
     it 'returns an error if account is not a loan' do
-      account = FactoryGirl.create(:account, account_type: 'savings')
+      account = FactoryBot.create(:account, account_type: 'savings')
       expect(Lib::HomeLoanReporter).not_to receive(:new)
 
-      get :home_loan, account_id: account.id
+      get :home_loan, params: { account_id: account.id }
 
       expect(response.status).to eq(400)
 

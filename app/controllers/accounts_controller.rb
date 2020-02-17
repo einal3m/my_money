@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'destroyers/account_destroyer'
 
 class AccountsController < ApplicationController
-  def my_money
-  end
+  def my_money; end
 
   def index
     accounts = Account.all

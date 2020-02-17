@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'destroyers/category_destroyer'
 
 class CategoriesController < ApplicationController
