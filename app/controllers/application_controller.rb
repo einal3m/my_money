@@ -3,7 +3,7 @@
 require 'lib/date_range'
 require 'exceptions/my_money_error'
 
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   def account
     @account ||= params.key?(:account_id) ? Account.find(params[:account_id].to_i) : nil
   end

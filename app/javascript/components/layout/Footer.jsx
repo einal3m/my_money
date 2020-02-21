@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-require('../../stylesheets/nav.scss');
+import('../../stylesheets/nav.scss');
 
 const Footer = () => (
   <footer className="footer">

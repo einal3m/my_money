@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, NavbarBrand, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
-require('../../stylesheets/nav.scss');
+import ('../../stylesheets/nav.scss');
 
 const Header = () => (
   <Navbar>
