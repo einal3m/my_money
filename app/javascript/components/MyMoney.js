@@ -8,27 +8,30 @@ import {
 import { Provider } from 'react-redux';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
+import store from '../stores/store';
 
 export default function BasicExample() {
   return (
     <Router>
       <Header />
-      <Switch>
-        <Route exact path="/"><AccountList /></Route>
-        <Route path="/accounts"><AccountList /></Route>
-        <Route path="/transactions"><TransactionsList /></Route>
-        <Route path="/categories"><CategoryList /></Route>
-        <Route path="/patterns"><PatternList /></Route>
-        <Route path="/reconciliations"><ReconciliationList /></Route>
-        <Route path="/import"><ImportPage /></Route>
-        <Route path="/import-history"><ImportHistoryPage /></Route>
-        <Route path="/reports/accountBalance"><AccountBalanceChart /></Route>
-        <Route path="/reports/incomeVsExpenseBar"><IncomeVsExpenseBarChart /></Route>
-        <Route path="/reports/incomeVsExpenses"><IncomeVsExpensesReport /></Route>
-        <Route path="/reports/categoryReport"><CategoryReport /></Route>
-        <Route path="/reports/subcategoryReport"><SubcategoryReport /></Route>
-        <Route path="/reports/loanReport"><LoanReport /></Route>
-      </Switch>
+      <Provider store={store}>
+        <Switch>
+          <Route exact path="/"><AccountList /></Route>
+          <Route path="/accounts"><AccountList /></Route>
+          <Route path="/transactions"><TransactionsList /></Route>
+          <Route path="/categories"><CategoryList /></Route>
+          <Route path="/patterns"><PatternList /></Route>
+          <Route path="/reconciliations"><ReconciliationList /></Route>
+          <Route path="/import"><ImportPage /></Route>
+          <Route path="/import-history"><ImportHistoryPage /></Route>
+          <Route path="/reports/accountBalance"><AccountBalanceChart /></Route>
+          <Route path="/reports/incomeVsExpenseBar"><IncomeVsExpenseBarChart /></Route>
+          <Route path="/reports/incomeVsExpenses"><IncomeVsExpensesReport /></Route>
+          <Route path="/reports/categoryReport"><CategoryReport /></Route>
+          <Route path="/reports/subcategoryReport"><SubcategoryReport /></Route>
+          <Route path="/reports/loanReport"><LoanReport /></Route>
+        </Switch>
+      </Provider>
       <Footer />
     </Router>
   );
@@ -50,14 +53,12 @@ const LoanReport = () => <h2>LoanReport</h2>;
 
 
 
-// import store from './stores/store';
 // import apiUtil from './util/api-util';
 // require('babel-polyfill');
 
 // const MyMoney = props => (
 //   <div>
 //     <Header />
-//     <Provider store={store}>
 //       {props.children}
 //     </Provider>
 //     <Footer />
