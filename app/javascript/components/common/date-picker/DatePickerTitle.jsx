@@ -1,11 +1,12 @@
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
   DATE_PICKER_DAY_MODE,
   DATE_PICKER_MONTH_MODE,
-  DATE_PICKER_YEAR_MODE } from './date-picker-constants';
+  DATE_PICKER_YEAR_MODE } from './DatePickerConstants';
 
-export default class DatePickerTitle extends Component {
+export default class DatePickerTitle extends React.Component {
 
   previousPeriod = () => {
     switch (this.props.viewMode) {

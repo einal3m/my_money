@@ -1,8 +1,9 @@
-import React, { PropTypes, Component } from 'react';
-import DatePickerPanel from './date-picker-panel';
-import { DATE_PICKER_MONTH_MODE } from './date-picker-constants';
+import React from 'react';
+import PropTypes from 'prop-types';
+import DatePickerPanel from './DatePickerPanel';
+import { DATE_PICKER_MONTH_MODE } from './DatePickerConstants';
 
-export default class DatePickerYearView extends Component {
+export default class DatePickerYearView extends React.Component {
 
   grid = [
     [true, false, false, false],

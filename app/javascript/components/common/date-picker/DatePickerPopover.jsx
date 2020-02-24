@@ -1,14 +1,15 @@
-import React, { PropTypes, Component } from 'react';
-import DatePickertitle from './date-picker-title';
-import DatePickerDayView from './date-picker-day-view';
-import DatePickerMonthView from './date-picker-month-view';
-import DatePickerYearView from './date-picker-year-view';
+import React from 'react';
+import PropTypes from 'prop-types';
+import DatePickertitle from './DatePickerTitle';
+import DatePickerDayView from './DatePickerDayView';
+import DatePickerMonthView from './DatePickerMonthView';
+import DatePickerYearView from './DatePickerYearView';
 import {
   DATE_PICKER_DAY_MODE,
   DATE_PICKER_MONTH_MODE,
-  DATE_PICKER_YEAR_MODE } from './date-picker-constants';
+  DATE_PICKER_YEAR_MODE } from './DatePickerConstants';
 
-export default class DatePickerPopover extends Component {
+export default class DatePickerPopover extends React.Component {
 
   renderView() {
     switch (this.props.viewMode) {

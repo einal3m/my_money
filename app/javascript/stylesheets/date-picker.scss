@@ -12,6 +12,11 @@
   }
 
   .popover-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
     button {
       padding: 0;
       color: black;

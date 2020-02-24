@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Popover, OverlayTrigger } from 'react-bootstrap';
-import DatePickerPopover from './date-picker-popover';
-import { DATE_PICKER_DAY_MODE, DISPLAY_FORMAT, OUTPUT_FORMAT, PARSE_FORMATS } from './date-picker-constants';
+import DatePickerPopover from './DatePickerPopover';
+import { DATE_PICKER_DAY_MODE, DISPLAY_FORMAT, OUTPUT_FORMAT, PARSE_FORMATS } from './DatePickerConstants';
 
-require('../../../../css/date-picker.scss');
+import '../../../stylesheets/date-picker.scss';
 
 export default class DatePicker extends React.Component {
 
@@ -27,7 +28,7 @@ export default class DatePicker extends React.Component {
   }
 
   onChangeHandler = (event) => {
-    this.setState({ displayDate: event.target.value });
+    // no-op makes this component read only
   };
 
   onBlurHandler = () => {
@@ -83,41 +84,35 @@ export default class DatePicker extends React.Component {
 
   renderAddOn(popover) {
     const addOn = (
-      <div className="input-group-addon">
-        <i className="fa fa-calendar" />
+      <div className="input-group-prepend">
+        <div className="input-group-text"><i className="fa fa-calendar" /></div>
       </div>
     );
 
     if (this.props.disabled) return addOn;
 
     return (
-      <OverlayTrigger trigger="click" placement="bottom" rootClose overlay={popover}>
+      <OverlayTrigger trigger="click" placement="top" rootClose overlay={popover}>
         {addOn}
       </OverlayTrigger>
     );
   }
 
   render() {
-    const CalendarPopover = (props) => {
-      const style = props.style;
-      style.left += -50;
-      return (
-        <Popover {...props} arrowOffsetLeft="80%" style={style} />
-      );
-    };
-
     const popover = (
-      <CalendarPopover id="date-picker">
-        <DatePickerPopover
-          viewMode={this.state.viewMode}
-          viewDate={this.state.viewDate}
-          handlePrevious={this.handlePrevious}
-          handleNext={this.handleNext}
-          setView={this.setView}
-          setDate={this.setDate}
-          closePicker={this.closePicker}
-        />
-      </CalendarPopover>
+      <Popover id="date-picker">
+        <Popover.Content>
+          <DatePickerPopover
+            viewMode={this.state.viewMode}
+            viewDate={this.state.viewDate}
+            handlePrevious={this.handlePrevious}
+            handleNext={this.handleNext}
+            setView={this.setView}
+            setDate={this.setDate}
+            closePicker={this.closePicker}
+          />
+        </Popover.Content>
+      </Popover>
     );
 
     return (
@@ -141,7 +136,7 @@ export default class DatePicker extends React.Component {
 
 DatePicker.propTypes = {
   name: PropTypes.string,
-  value: React.PropTypes.string,
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };

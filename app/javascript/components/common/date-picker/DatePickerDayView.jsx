@@ -1,8 +1,9 @@
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import DatePickerPanel from './date-picker-panel';
+import DatePickerPanel from './DatePickerPanel';
 
-export default class DatePickerDayView extends Component {
+export default class DatePickerDayView extends React.Component {
 
   renderDayTitles = () => {
     const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
