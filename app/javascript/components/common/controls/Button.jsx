@@ -8,14 +8,18 @@ const buttonTypeMapper = {
   delete: 'danger',
 };
 
-const Button = props => (
-  <button
-    onClick={props.onClick}
-    className={`btn btn-${buttonTypeMapper[props.type]} ${props.pullLeft ? 'pull-left' : ''}`}
-  >
-    {props.children}
-  </button>
-);
+export default class Button extends React.Component {
+  render() {
+    return (
+      <button
+        onClick={this.props.onClick}
+        className={`btn btn-${buttonTypeMapper[this.props.type]} ${this.props.pullLeft ? 'pull-left' : ''}`}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
 
 Button.propTypes = {
   type: PropTypes.oneOf(['secondary', 'primary', 'link', 'delete']).isRequired,
@@ -27,5 +31,3 @@ Button.propTypes = {
 Button.defaultProps = {
   type: 'secondary',
 };
-
-export default Button;

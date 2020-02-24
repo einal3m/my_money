@@ -41,6 +41,7 @@ export default class HomeLoanAccountForm extends React.Component {
   };
 
   isValid() {
+    this.forceUpdate();
     return !this.validator.validateAll(this.state.account);
   }
 
@@ -50,7 +51,7 @@ export default class HomeLoanAccountForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form">
         <FormControl name="name" validator={this.validator} label="Name">
           <input
             className="form-control"
@@ -76,35 +77,35 @@ export default class HomeLoanAccountForm extends React.Component {
             onChange={this.handleChange}
           />
         </FormControl>
-        <div className="row">
-          <div className="col-xs-6">
-            <FormControl name="term" validator={this.validator} label="Term">
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  name="term"
-                  type="text"
-                  value={this.state.account.term || ''}
-                  onChange={this.handleChange}
-                />
-                <div className="input-group-addon">years</div>
+        <div className="flex-group-row">
+          <FormControl name="term" validator={this.validator} label="Term">
+            <div className="input-group">
+              <input
+                className="form-control"
+                name="term"
+                type="text"
+                value={this.state.account.term || ''}
+                onChange={this.handleChange}
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">years</div>
               </div>
-            </FormControl>
-          </div>
-          <div className="col-xs-6">
-            <FormControl name="interestRate" validator={this.validator} label="Interest Rate">
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  name="interestRate"
-                  type="text"
-                  value={this.state.account.interestRate || ''}
-                  onChange={this.handleChange}
-                />
-                <div className="input-group-addon">%</div>
+            </div>
+          </FormControl>
+          <FormControl name="interestRate" validator={this.validator} label="Interest Rate">
+            <div className="input-group">
+              <input
+                className="form-control"
+                name="interestRate"
+                type="text"
+                value={this.state.account.interestRate || ''}
+                onChange={this.handleChange}
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">%</div>
               </div>
-            </FormControl>
-          </div>
+            </div>
+          </FormControl>
         </div>
         <FormControl name="openingBalanceDate" validator={this.validator} label="Opening Date">
           <DatePicker

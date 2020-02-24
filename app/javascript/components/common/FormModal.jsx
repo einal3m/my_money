@@ -4,6 +4,8 @@ import { Modal } from 'react-bootstrap';
 import Button from '../common/controls/Button';
 import { hideFormModal } from '../../actions/form-actions';
 
+import '../../stylesheets/modal.scss';
+
 export default class FormModal extends React.Component {
   constructor() {
     super();
@@ -67,7 +69,7 @@ export default class FormModal extends React.Component {
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={hideFormModal} bsSize="small">
+      <Modal show={this.props.show} onHide={hideFormModal} size="sm">
         <Modal.Header>
           <Modal.Title>{this.renderTitle()}</Modal.Title>
         </Modal.Header>

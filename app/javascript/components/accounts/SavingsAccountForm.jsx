@@ -37,6 +37,7 @@ export default class SavingsAccountForm extends React.Component {
   };
 
   isValid() {
+    this.forceUpdate();
     return !this.validator.validateAll(this.state.account);
   }
 
@@ -46,7 +47,7 @@ export default class SavingsAccountForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form">
         <FormControl name="name" validator={this.validator} label="Name">
           <input
             className="form-control"

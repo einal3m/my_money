@@ -37,7 +37,9 @@ export class AccountModalComponent extends React.Component {
           allowDelete={this.props.allowDelete}
           onSave={this.handleSave}
           onDelete={this.handleDelete}
-        >{this.renderForm()}</FormModal>
+        >
+          {this.renderForm()}
+        </FormModal>
       );
     }
     return <div />;

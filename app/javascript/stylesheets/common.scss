@@ -42,6 +42,58 @@ body {
   }
 }
 
+.modal-content .modal-footer {
+  button.btn-success {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  button.btn-success:hover {
+    background-color: $main-color-dark;
+    border: solid 1px transparent;
+  }
+
+  button.btn-success:not(:disabled):active {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark !important;
+  }
+
+  button.btn-success:not(:disabled):focus {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark
+  }
+}
+
+.modal-content .modal-footer {
+  button.btn-default {
+    background-color: $light-grey-background-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  button.btn-default:hover {
+    background-color: $grey-background-color;
+    border: solid 1px transparent;
+  }
+
+  button.btn-default:not(:disabled):active {
+    background-color: $light-grey-background-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $grey-background-color !important;
+  }
+
+  button.btn-default:not(:disabled):focus {
+    background-color: $light-grey-background-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $grey-background-color;
+  }
+}
+
 .button-group.button-group-small button{
   padding: .2rem;
 
@@ -73,6 +125,18 @@ body {
     box-shadow: 0 0 0 1pt $dark-grey-background-color;
     color: black;
   }
+}
+
+.flex-group-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin:5px;
+}
+
+.flex-group-row > div {
+  width: calc(1/2*100% - (1 - 1/2)*10px);
 }
 
 .page-title {

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moneyUtil from '../../../util/money-util';
 
 export default class MoneyInput extends React.Component {
@@ -21,7 +22,9 @@ export default class MoneyInput extends React.Component {
   render() {
     return (
       <div className="input-group">
-        <div className="input-group-addon">$</div>
+        <div className="input-group-prepend">
+          <div className="input-group-text">$</div>
+        </div>
         <input
           className="form-control"
           name={this.props.name}
@@ -37,9 +40,9 @@ export default class MoneyInput extends React.Component {
 
 MoneyInput.propTypes = {
   name: PropTypes.string.isRequired,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.number,
-    React.PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
   ]),
   onChange: PropTypes.func.isRequired,
 };

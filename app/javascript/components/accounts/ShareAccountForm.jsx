@@ -27,6 +27,7 @@ export default class ShareAccountForm extends React.Component {
   };
 
   isValid() {
+    this.forceUpdate();
     return !this.validator.validateAll(this.state.account);
   }
 
@@ -36,7 +37,7 @@ export default class ShareAccountForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form">
         <FormControl name="ticker" validator={this.validator} label="Ticker">
           <input
             className="form-control"
