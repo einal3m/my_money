@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
-import Button from '../common/controls/button';
+import Button from '../common/controls/Button';
 import { hideFormModal } from '../../actions/form-actions';
 
 export default class FormModal extends React.Component {
@@ -82,10 +83,10 @@ export default class FormModal extends React.Component {
 }
 
 FormModal.propTypes = {
-  children: React.PropTypes.node.isRequired,
-  modelName: React.PropTypes.string.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func,
-  show: React.PropTypes.bool.isRequired,
-  allowDelete: React.PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+  modelName: PropTypes.string.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
+  show: PropTypes.bool.isRequired,
+  allowDelete: PropTypes.bool.isRequired,
 };

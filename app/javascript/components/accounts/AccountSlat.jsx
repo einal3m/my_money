@@ -1,10 +1,9 @@
-import React, { PropTypes } from 'react';
-import Balance from '../common/balance';
-import AccountIcon from './account-icon';
-import AccountActionButtons from './account-action-buttons';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Balance from '../common/Balance';
+import AccountIcon from './AccountIcon';
+import AccountActionButtons from './AccountActionButtons';
 import { routeToTransactions } from '../../actions/routing-actions';
-
-require('../../../css/common.scss');
 
 export default class AccountSlat extends React.Component {
 
@@ -13,32 +12,28 @@ export default class AccountSlat extends React.Component {
   };
 
   renderName() {
-    return <a className="name-link" onClick={this.viewTransactions}><h4>{this.props.account.name}</h4></a>;
+    return <a className="name-link" onClick={this.viewTransactions}><h6>{this.props.account.name}</h6></a>;
   }
 
   render() {
     return (
-      <li className="slat-item">
-        <div className="row">
-          <div className="slat-icon col-sm-1 col-xs-2">
-            <AccountIcon accountType={this.props.account.accountType} />
+      <div className="account">
+        <div className="account-icon">
+          <AccountIcon accountType={this.props.account.accountType} />
+        </div>
+        <div className="account-detail">
+          <div>
+            {this.renderName()}
+            <span className="text-muted">{this.props.account.bank}</span>
           </div>
-          <div className="slat-detail col-sm-11 col-xs-10">
-            <div className="row">
-              <div className="col-xs-4 col-sm-6">
-                {this.renderName()}
-                <span className="text-muted">{this.props.account.bank}</span>
-              </div>
-              <div className="currency balance col-xs-4 col-sm-5">
-                <Balance balance={this.props.account.currentBalance} />
-              </div>
-              <div className="slat-icon col-xs-4 col-sm-1">
-                <AccountActionButtons account={this.props.account} />
-              </div>
-            </div>
+          <div className="currency balance">
+            <Balance balance={this.props.account.currentBalance} />
           </div>
         </div>
-      </li>
+        <div className="button-group button-group-small button-group-secondary">
+          <AccountActionButtons account={this.props.account} />
+        </div>
+      </div>
     );
   }
 }

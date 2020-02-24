@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import('../../stylesheets/nav.scss');
+import '../../stylesheets/nav.scss';
 
 const Footer = () => (
-  <footer className="footer">
+  <footer className="page-footer">
     <div>
       <h3>quick links</h3>
       <Link to="/accounts">accounts</Link><br />

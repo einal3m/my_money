@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import { MenuItem, DropdownButton } from 'react-bootstrap';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { showFormModal } from '../../actions/form-actions';
 import { routeToTransactions, routeToImportHistory, routeToLoanReport } from '../../actions/routing-actions';
 
@@ -42,21 +43,20 @@ const AccountActionButtons = (props) => {
   };
 
   const renderLoanActions = () => {
-    if (props.account.accountType === 'loan') return <MenuItem eventKey="loan-report">Loan Report</MenuItem>;
+    if (props.account.accountType === 'loan') return <Dropdown.Item eventKey="loan-report">Loan Report</Dropdown.Item>;
     return <div />;
   };
 
   return (
     <DropdownButton
       title="..."
-      noCaret
-      pullRight
+      alignRight
       id={`action-button-${props.account.id}`}
       onSelect={accountActions}
     >
-      <MenuItem eventKey="transactions">View Transactions</MenuItem>
-      <MenuItem eventKey="edit">Edit Account</MenuItem>
-      <MenuItem eventKey="import-history">Import History</MenuItem>
+      <Dropdown.Item eventKey="transactions">View Transactions</Dropdown.Item>
+      <Dropdown.Item eventKey="edit">Edit Account</Dropdown.Item>
+      <Dropdown.Item eventKey="import-history">Import History</Dropdown.Item>
       {renderLoanActions()}
     </DropdownButton>
     );

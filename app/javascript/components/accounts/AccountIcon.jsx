@@ -1,16 +1,14 @@
-import React, { PropTypes } from 'react';
-import BankIcon from '../common/icons/bank-icon';
-import PiggyBankIcon from '../common/icons/piggy-bank-icon';
-import HomeIcon from '../common/icons/home-icon';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const AccountIcon = (props) => {
   switch (props.accountType) {
     case 'savings':
-      return <PiggyBankIcon />;
+      return <i class="fas fa-piggy-bank fa-3x"></i>;
     case 'share':
-      return <BankIcon />;
+      return <i class="fas fa-university fa-3x"></i>;
     case 'loan':
-      return <HomeIcon />;
+      return <i class="fas fa-home fa-3x"></i>;
     default:
       return <span />;
   }

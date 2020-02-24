@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FormModal from '../common/form-modal';
-import SavingsAccountForm from './savings-account-form';
-import ShareAccountForm from './share-account-form';
-import HomeLoanAccountForm from './home-loan-account-form';
+import FormModal from '../common/FormModal';
+import SavingsAccountForm from './SavingsAccountForm';
+import ShareAccountForm from './ShareAccountForm';
+import HomeLoanAccountForm from './HomeLoanAccountForm';
 import { saveAccount, deleteAccount } from '../../actions/account-actions';
 
 export class AccountModalComponent extends React.Component {

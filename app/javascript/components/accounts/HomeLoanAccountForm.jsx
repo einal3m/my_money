@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
-import DatePicker from '../common/date-picker/date-picker';
-import FormControl from '../common/controls/form-control';
-import MoneyInput from '../common/controls/money-input';
+import React from 'react';
+import PropTypes from 'prop-types';
+import DatePicker from '../common/date-picker/DatePicker';
+import FormControl from '../common/controls/FormControl';
+import MoneyInput from '../common/controls/MoneyInput';
 import FormValidator from '../../util/form-validator';
 
 export default class HomeLoanAccountForm extends React.Component {

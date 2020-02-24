@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
-import Sticky from 'react-stickydiv';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Sticky from 'react-sticky-el';
 import ApiStatus from '../../util/api-status';
 import apiStatusActions from '../../actions/api-status-actions';
 
-require('../../../css/common.scss');
+import '../../stylesheets/common.scss';
 
 export default class PageTitle extends React.Component {
 
@@ -24,7 +25,7 @@ export default class PageTitle extends React.Component {
           return (
             <span className="error">
               Error: {this.props.apiStatus.message}
-              <i className="fa fa-times-circle" onClick={this.clearError} />
+              <i className="fa fa-times-circle click-me" onClick={this.clearError} />
             </span>
           );
         default:
@@ -36,20 +37,14 @@ export default class PageTitle extends React.Component {
 
   render() {
     return (
-      <Sticky zIndex={999}>
+      <Sticky className="sticky">
         <div className="page-title">
-          <div className="container">
-            <div className="row">
-              <div className="title col-xs-8">
-                <div className="inline-heading"><h1>{this.props.title}</h1></div>
-                <span className="status">{this.renderStatus()}</span>
-              </div>
-              <div className="button-group col-xs-4">
-                <div className="pull-right">
-                  {this.props.children}
-                </div>
-              </div>
-            </div>
+          <div className="title-group">
+            <div className="title"><h1>{this.props.title}</h1></div>
+            <span className="status">{this.renderStatus()}</span>
+          </div>
+          <div className="button-group">
+            {this.props.children}
           </div>
         </div>
       </Sticky>

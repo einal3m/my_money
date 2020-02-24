@@ -6,38 +6,57 @@ import {
   Link
 } from "react-router-dom";
 import { Provider } from 'react-redux';
+import ErrorBoundary from './ErrorBoundary';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
+import AccountList from './accounts/AccountList';
 import store from '../stores/store';
+import apiUtil from '../util/api-util';
 
-export default function BasicExample() {
-  return (
-    <Router>
-      <Header />
-      <Provider store={store}>
-        <Switch>
-          <Route exact path="/"><AccountList /></Route>
-          <Route path="/accounts"><AccountList /></Route>
-          <Route path="/transactions"><TransactionsList /></Route>
-          <Route path="/categories"><CategoryList /></Route>
-          <Route path="/patterns"><PatternList /></Route>
-          <Route path="/reconciliations"><ReconciliationList /></Route>
-          <Route path="/import"><ImportPage /></Route>
-          <Route path="/import-history"><ImportHistoryPage /></Route>
-          <Route path="/reports/accountBalance"><AccountBalanceChart /></Route>
-          <Route path="/reports/incomeVsExpenseBar"><IncomeVsExpenseBarChart /></Route>
-          <Route path="/reports/incomeVsExpenses"><IncomeVsExpensesReport /></Route>
-          <Route path="/reports/categoryReport"><CategoryReport /></Route>
-          <Route path="/reports/subcategoryReport"><SubcategoryReport /></Route>
-          <Route path="/reports/loanReport"><LoanReport /></Route>
-        </Switch>
-      </Provider>
-      <Footer />
-    </Router>
-  );
+export default class MyMoney extends React.Component {
+  constructor(props) {
+    super();
+    
+    // const csrfToken = document.querySelector('[name=csrf-token]').content
+    console.log('MyMoney.constructor');
+    console.log(props);
+    // console.log(csrfToken);
+    
+    apiUtil.setUrl(props.host);
+    // apiUtil.setToken(csrfToken);
+  }
+
+  render() {
+    return (
+      <ErrorBoundary>
+        <Router>
+          <Header />
+          <Provider store={store}>
+            <Switch>
+              <Route exact path="/"><AccountList /></Route>
+              <Route path="/accounts"><AccountList /></Route>
+              <Route path="/transactions"><TransactionsList /></Route>
+              <Route path="/categories"><CategoryList /></Route>
+              <Route path="/patterns"><PatternList /></Route>
+              <Route path="/reconciliations"><ReconciliationList /></Route>
+              <Route path="/import"><ImportPage /></Route>
+              <Route path="/import-history"><ImportHistoryPage /></Route>
+              <Route path="/reports/accountBalance"><AccountBalanceChart /></Route>
+              <Route path="/reports/incomeVsExpenseBar"><IncomeVsExpenseBarChart /></Route>
+              <Route path="/reports/incomeVsExpenses"><IncomeVsExpensesReport /></Route>
+              <Route path="/reports/categoryReport"><CategoryReport /></Route>
+              <Route path="/reports/subcategoryReport"><SubcategoryReport /></Route>
+              <Route path="/reports/loanReport"><LoanReport /></Route>
+            </Switch>
+          </Provider>
+          <Footer />
+        </Router>
+      </ErrorBoundary>
+    );
+  }
 }
 
-const AccountList = () => <h2>AccountList</h2>;
+// const AccountList = () => <h2>AccountList</h2>;
 const TransactionsList = () => <h2>TransactionsList</h2>;
 const CategoryList = () => <h2>CategoryList</h2>;
 const PatternList = () => <h2>PatternList</h2>;
@@ -53,7 +72,6 @@ const LoanReport = () => <h2>LoanReport</h2>;
 
 
 
-// import apiUtil from './util/api-util';
 // require('babel-polyfill');
 
 // const MyMoney = props => (
@@ -65,8 +83,6 @@ const LoanReport = () => <h2>LoanReport</h2>;
 //   </div>
 // );
 
-// const host = document.getElementById('host').textContent;
-// apiUtil.setUrl(host);
 
 
 

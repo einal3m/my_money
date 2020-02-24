@@ -8,26 +8,85 @@ body {
   line-height: 18px;
 }
 
-.button-group {
-  margin-top: 20px;
-  margin-bottom: 10px;
+.click-me {
+  cursor: pointer;
+}
 
+.sticky {
+  z-index: 1000;
+}
+
+.page-title .button-group, .account .button-group {
   button {
-    margin-left: 10px;
+    background-color: $main-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  button:hover {
+    background-color: $main-color-dark;
+    border: solid 1px transparent;
+  }
+
+  button:not(:disabled):active {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark !important;
+  }
+
+  button:not(:disabled):focus {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark
+  }
+}
+
+.button-group.button-group-small button{
+  padding: .2rem;
+
+}
+
+.button-group.button-group-small  .dropdown-toggle::after {
+  display: none;
+}
+
+.button-group.button-group-secondary {
+  button {
+    background-color: $grey-background-color;
+    color: black;
+  }
+
+  button:hover {
+    background-color: $dark-grey-background-color;
+    color: black;
+  }
+
+  button:not(:disabled):active {
+    background-color: $grey-background-color;
+    box-shadow: 0 0 0 1pt $dark-grey-background-color !important;
+    color: black;
+  }
+
+  button:not(:disabled):focus {
+    background-color: $grey-background-color;
+    box-shadow: 0 0 0 1pt $dark-grey-background-color;
+    color: black;
   }
 }
 
 .page-title {
   background-color: $grey-background-color;
-  min-height: 75px;
-  vertical-align: middle;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem 1rem;
 
-  .inline-heading {
-    display: inline-block;
-  }
-
-  .btn:focus,.btn:active {
-    outline: none !important;
+  .title-group {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
   }
 
   .status {
@@ -54,40 +113,6 @@ h3 {
 
 .dollars {
   font-size: larger;
-}
-
-ul.slats {
-  padding-left: 0px;
-  li.slat-item {
-    list-style-type: none;
-    min-height: 60px;
-
-    .slat-icon {
-      line-height: 60px;
-      text-align: right;
-    }
-
-    .slat-detail {
-      padding-bottom: 10px;
-      border-bottom: 1px solid silver;
-
-      a {
-        color: $main-color;
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
-
-    .balance {
-      line-height: 56px;
-      vertical-align: middle;
-      font-size: 18px;
-      color: $main-color;
-    }
-
-    padding-bottom: 10px;
-  }
 }
 
 .modal-dialog.modal-sm {

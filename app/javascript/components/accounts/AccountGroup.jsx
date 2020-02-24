@@ -1,7 +1,6 @@
-import React, { PropTypes } from 'react';
-import AccountSlat from './account-slat';
-
-require('../../../css/common.scss');
+import React from 'react';
+import PropTypes from 'prop-types';
+import AccountSlat from './AccountSlat';
 
 export default class AccountGroup extends React.Component {
 
@@ -18,11 +17,10 @@ export default class AccountGroup extends React.Component {
   render() {
     return (
       <div className="account-group">
-        <h3>{this.accountGroupTitle()}</h3>
-        <ul className="slats">
+        <h5 className="text-uppercase">{this.accountGroupTitle()}</h5>
+        <div className="accounts">
           {this.renderAccounts()}
-        </ul>
-        <br />
+        </div>
       </div>
     );
   }

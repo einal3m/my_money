@@ -1,13 +1,15 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAccounts } from '../../actions/account-actions';
 import accountSelector from '../../selectors/account-selector';
-import PageHeader from '../common/page-header';
-import NewModelButtons from '../common/controls/new-model-buttons';
-import AccountGroup from './account-group';
-import AccountModal from './account-modal';
+import PageHeader from '../common/PageHeader';
+import NewModelButtons from '../common/controls/NewModelButtons';
+import AccountGroup from './AccountGroup';
+import AccountModal from './AccountModal';
 
-require('../../../css/common.scss');
+import '../../stylesheets/common.scss';
+import '../../stylesheets/accounts.scss';
 
 export class AccountListComponent extends React.Component {
   constructor() {
@@ -31,7 +33,7 @@ export class AccountListComponent extends React.Component {
           <NewModelButtons modelTypes={['Savings Account', 'Share Account', 'Loan Account']} />
         </PageHeader>
 
-        <div className="container">
+        <div className="account-list">
           {this.renderAccountGroups()}
         </div>
 

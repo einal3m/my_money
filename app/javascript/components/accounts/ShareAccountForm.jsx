@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FormValidator from '../../util/form-validator';
-import FormControl from '../common/controls/form-control';
+import FormControl from '../common/controls/FormControl';
 
 export default class ShareAccountForm extends React.Component {
   constructor(props) {
