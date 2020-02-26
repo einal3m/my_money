@@ -28,7 +28,7 @@ export default class ShareAccountForm extends React.Component {
 
   isValid() {
     this.forceUpdate();
-    return !this.validator.validateAll(this.state.account);
+    return this.validator.isValid(this.state.account);
   }
 
   getModel() {

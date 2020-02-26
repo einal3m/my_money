@@ -23,8 +23,13 @@ export default class FormValidator {
   }
 
   validateAll(values) {
-    this.errors = validate.validate(values, this.schema);
+    this.errors = validate.validate(values, this.schema) || {};
     return this.errors;
+  }
+
+  isValid(values) {
+    this.validateAll(values);
+    return Object.keys(this.errors).length === 0;
   }
 
   validateField(field, value) {

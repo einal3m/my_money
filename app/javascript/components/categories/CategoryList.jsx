@@ -1,14 +1,15 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageHeader from '../common/page-header';
-import NewModelButtons from '../common/controls/new-model-buttons';
-import CategoryTypeTable from './category-type-table';
-import CategoryModal from './category-modal';
+import PageHeader from '../common/PageHeader';
+import NewModelButtons from '../common/controls/NewModelButtons';
+import CategoryTypeTable from './CategoryTypeTable';
+import CategoryModal from './CategoryModal';
 import { getCategories } from '../../actions/category-actions';
 import { editableGroupedCategories } from '../../selectors/category-selector';
 
-require('../../../css/common.scss');
-require('../../../css/categories.scss');
+import '../../stylesheets/common.scss';
+import '../../stylesheets/categories.scss';
 
 export class CategoryListComponent extends React.Component {
   constructor() {
@@ -21,7 +22,7 @@ export class CategoryListComponent extends React.Component {
       return this.props.groupedCategories.map((group) => {
         const categoryTypeCode = group.categoryType.code;
         return (
-          <div key={categoryTypeCode} className="col-sm-6 category-group">
+          <div key={categoryTypeCode} className="category-type">
             <CategoryTypeTable
               categoryType={group.categoryType}
               categories={group.categories}
@@ -39,13 +40,9 @@ export class CategoryListComponent extends React.Component {
         <PageHeader title="my categories" apiStatus={this.props.apiStatus}>
           <NewModelButtons modelTypes={['Category', 'Subcategory']} />
         </PageHeader>
-
-        <div id="category-list" className="container">
-          <div className="row">
-            {this.renderCategoryTypes()}
-          </div>
-        </div>
-
+        <div className="category-list">
+          {this.renderCategoryTypes()}
+        </div>        
         <CategoryModal groupedCategories={this.props.groupedCategories} />
       </div>
     );

@@ -1,5 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactSelect from 'react-select-plus';
+
+import 'react-select-plus/dist/react-select-plus.css';
 
 export default class Select extends React.Component {
 

@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FormValidator from '../../util/form-validator';
-import FormControl from '../common/controls/form-control';
-import Select from '../common/controls/select';
+import FormControl from '../common/controls/FormControl';
+import Select from '../common/controls/Select';
 
 export default class CategoryForm extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class CategoryForm extends React.Component {
 
   isValid() {
     this.forceUpdate();
-    return !this.validator.validateAll(this.state.category);
+    return this.validator.isValid(this.state.category);
   }
 
   getModel() {
@@ -61,10 +62,10 @@ export default class CategoryForm extends React.Component {
 }
 
 CategoryForm.propTypes = {
-  category: React.PropTypes.shape({
-    name: React.PropTypes.string,
-    categoryTypeId: React.PropTypes.number,
+  category: PropTypes.shape({
+    name: PropTypes.string,
+    categoryTypeId: PropTypes.number,
   }).isRequired,
-  categoryTypes: React.PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  categoryTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

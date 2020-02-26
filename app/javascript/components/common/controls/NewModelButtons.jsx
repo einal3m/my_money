@@ -4,7 +4,7 @@ import { Dropdown } from 'react-bootstrap';
 import { showFormModal } from '../../../actions/form-actions';
 
 const NewModelButtons = props => (
-  <Dropdown id="new-category" alignRight onSelect={newModel}>
+  <Dropdown id="new-model-dropdown" alignRight onSelect={newModel}>
     <Dropdown.Toggle>
       <i className="fas fa-plus" /> New
     </Dropdown.Toggle>

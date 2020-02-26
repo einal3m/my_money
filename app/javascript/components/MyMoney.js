@@ -10,6 +10,7 @@ import ErrorBoundary from './ErrorBoundary';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import AccountList from './accounts/AccountList';
+import CategoryList from './categories/CategoryList';
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
@@ -56,9 +57,7 @@ export default class MyMoney extends React.Component {
   }
 }
 
-// const AccountList = () => <h2>AccountList</h2>;
 const TransactionsList = () => <h2>TransactionsList</h2>;
-const CategoryList = () => <h2>CategoryList</h2>;
 const PatternList = () => <h2>PatternList</h2>;
 const ReconciliationList = () => <h2>ReconciliationList</h2>;
 const ImportPage = () => <h2>ImportPage</h2>;
@@ -69,20 +68,3 @@ const IncomeVsExpensesReport = () => <h2>IncomeVsExpensesReport</h2>;
 const CategoryReport = () => <h2>CategoryReport</h2>;
 const SubcategoryReport = () => <h2>SubcategoryReport</h2>;
 const LoanReport = () => <h2>LoanReport</h2>;
-
-
-
-// require('babel-polyfill');
-
-// const MyMoney = props => (
-//   <div>
-//     <Header />
-//       {props.children}
-//     </Provider>
-//     <Footer />
-//   </div>
-// );
-
-
-
-

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { showFormModal } from '../../actions/form-actions';
 
 export default class SubcategoryRow extends React.Component {
@@ -8,15 +9,15 @@ export default class SubcategoryRow extends React.Component {
 
   render() {
     return (
-      <tr className="subcategory" onClick={this.handleClick}>
-        <td>{this.props.subcategory.name}</td>
-      </tr>
+      <div className="subcategory-row click-me" onClick={this.handleClick}>
+        {this.props.subcategory.name}
+      </div>
     );
   }
 }
 
 SubcategoryRow.propTypes = {
-  subcategory: React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired,
+  subcategory: PropTypes.shape({
+    name: PropTypes.string.isRequired,
   }).isRequired,
 };

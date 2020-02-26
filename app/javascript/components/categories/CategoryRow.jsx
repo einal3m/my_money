@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { showFormModal } from '../../actions/form-actions';
 
 export default class CategoryRow extends React.Component {
@@ -8,15 +9,15 @@ export default class CategoryRow extends React.Component {
 
   render() {
     return (
-      <tr className="category" onClick={this.handleClick}>
-        <td>{this.props.category.name}</td>
-      </tr>
+      <div className="category-row click-me" onClick={this.handleClick}>
+        {this.props.category.name}
+      </div>
     );
   }
 }
 
 CategoryRow.propTypes = {
-  category: React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired,
+  category: PropTypes.shape({
+    name: PropTypes.string.isRequired,
   }).isRequired,
 };

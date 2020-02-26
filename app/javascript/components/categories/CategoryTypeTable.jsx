@@ -1,16 +1,17 @@
 import React from 'react';
-import CategoryRow from './category-row';
-import SubcategoryRow from './subcategory-row';
+import PropTypes from 'prop-types';
+import CategoryRow from './CategoryRow';
+import SubcategoryRow from './SubcategoryRow';
 
 export default class CategoryTypeTable extends React.Component {
 
   renderCategories() {
     if (this.props.categories) {
       return this.props.categories.map(category => (
-        [
-          <CategoryRow key={category.id} categoryType={this.props.categoryType} category={category} />,
-          this.renderSubcategories(category),
-        ]
+        <div className="category" key={category.id}>
+          <CategoryRow categoryType={this.props.categoryType} category={category} />
+          {this.renderSubcategories(category)}
+        </div>
       ));
     }
     return undefined;
@@ -23,35 +24,25 @@ export default class CategoryTypeTable extends React.Component {
   );
 
   renderTitle() {
-    return <h3>{this.props.categoryType.name}</h3>;
-  }
-
-  renderTable() {
-    return (
-      <table className="table table-hover" id="category-table">
-        <tbody>
-          {this.renderCategories()}
-        </tbody>
-      </table>
-    );
+    return <h5 className="text-uppercase">{this.props.categoryType.name}</h5>;
   }
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         {this.renderTitle()}
-        {this.renderTable()}
-      </div>
+        {this.renderCategories()}
+      </React.Fragment>
     );
   }
 }
 
 CategoryTypeTable.propTypes = {
-  categoryType: React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired,
+  categoryType: PropTypes.shape({
+    name: PropTypes.string.isRequired,
   }).isRequired,
-  categories: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.number.isRequired,
-    name: React.PropTypes.string.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
 };

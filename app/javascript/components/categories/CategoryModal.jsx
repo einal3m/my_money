@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FormModal from '../common/form-modal';
-import CategoryForm from './category-form';
-import SubcategoryForm from './subcategory-form';
+import FormModal from '../common/FormModal';
+import CategoryForm from './CategoryForm';
+import SubcategoryForm from './SubcategoryForm';
 import categoryActions from '../../actions/category-actions';
 
 export class CategoryModalComponent extends React.Component {
@@ -40,7 +41,9 @@ export class CategoryModalComponent extends React.Component {
           allowDelete={this.props.allowDelete}
           onSave={this.handleSave}
           onDelete={this.handleDelete}
-        >{this.renderForm()}</FormModal>
+        >
+          {this.renderForm()}
+        </FormModal>
       );
     }
     return <div />;

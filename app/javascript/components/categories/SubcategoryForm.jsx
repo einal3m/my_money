@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FormValidator from '../../util/form-validator';
-import GroupedCategorySelect from '../common/controls/grouped-category-select';
-import FormControl from '../common/controls/form-control';
+import GroupedCategorySelect from '../common/controls/GroupedCategorySelect';
+import FormControl from '../common/controls/FormControl';
 
 export default class SubcategoryForm extends React.Component {
 
@@ -25,7 +26,7 @@ export default class SubcategoryForm extends React.Component {
 
   isValid() {
     this.forceUpdate();
-    return !this.validator.validateAll(this.state.subcategory);
+    return this.validator.isValid(this.state.subcategory);
   }
 
   getModel() {
