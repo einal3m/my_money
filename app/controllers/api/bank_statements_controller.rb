@@ -3,7 +3,7 @@
 require 'creators/bank_statement_creator'
 require 'destroyers/bank_statement_destroyer'
 
-class BankStatementsController < ApplicationController
+class Api::BankStatementsController < ApplicationController
   def index
     render json: account.bank_statements.order(id: :desc)
   end

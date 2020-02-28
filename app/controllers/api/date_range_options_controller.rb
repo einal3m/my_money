@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DateRangeOptionsController < ApplicationController
+class Api::DateRangeOptionsController < ApplicationController
   def index
     date_range_options = DateRangeOption.all.map do |date_range_option|
       {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BudgetsController < ApplicationController
+class Api::BudgetsController < ApplicationController
   def index
     render json: account.budgets
   end

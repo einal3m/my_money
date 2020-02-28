@@ -11,7 +11,7 @@ class ApiUtil {
   }
 
   getUrl(url) {
-    return `http://${this.host}/${url}`;
+    return `http://${this.host}/api/${url}`;
   }
 
   get(options) {

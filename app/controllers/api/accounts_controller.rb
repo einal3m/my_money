@@ -2,7 +2,7 @@
 
 require 'destroyers/account_destroyer'
 
-class AccountsController < ApplicationController
+class Api::AccountsController < ApplicationController
   def my_money; end
 
   def index

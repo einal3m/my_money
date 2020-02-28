@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CategoryType2Controller < ApplicationController
+class Api::CategoryType2Controller < ApplicationController
   def index
     category_types = CategoryType2.all.map do |category_type|
       {

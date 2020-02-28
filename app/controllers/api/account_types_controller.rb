@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AccountTypesController < ApplicationController
+class Api::AccountTypesController < ApplicationController
   def index
     account_types = AccountType.all.map do |account_type|
       {

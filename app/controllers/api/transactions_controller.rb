@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TransactionsController < ApplicationController
+class Api::TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[edit update destroy matching]
 
   def index

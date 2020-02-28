@@ -2,7 +2,7 @@
 
 require 'destroyers/subcategory_destroyer'
 
-class SubcategoriesController < ApplicationController
+class Api::SubcategoriesController < ApplicationController
   def index
     render json: Subcategory.all
   end

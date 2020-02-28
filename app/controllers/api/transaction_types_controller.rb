@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TransactionTypesController < ApplicationController
+class Api::TransactionTypesController < ApplicationController
   def index
     transaction_types = TransactionType.all.map do |transaction_type|
       {
