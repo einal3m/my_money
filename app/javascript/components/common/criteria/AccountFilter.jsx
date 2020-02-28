@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setCurrentAccount, setSelectedAccounts } from '../../../actions/account-actions';
 import accountSelector from '../../../selectors/account-selector';
-import AccountPicker from '../controls/account-picker';
+import AccountPicker from '../controls/AccountPicker';
 
 export class AccountFilterComponent extends React.Component {
   onChange = (value) => {
@@ -32,10 +33,8 @@ export class AccountFilterComponent extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-xs-4">
-          {this.renderAccountPicker()}
-        </div>
+      <div className="account-filter">
+        {this.renderAccountPicker()}
       </div>
     );
   }

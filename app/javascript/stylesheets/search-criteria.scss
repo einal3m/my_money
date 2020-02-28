@@ -1,0 +1,23 @@
+@import './colours.scss';
+
+.search-criteria {
+  border-bottom: 2px solid $grey-background-color;
+}
+
+.account-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin: 10px;
+  width: 30%;  
+
+  .control-label {
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .Select {
+    width: 100%;
+  }
+}

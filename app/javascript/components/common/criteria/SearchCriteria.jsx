@@ -1,11 +1,14 @@
-import React, { PropTypes } from 'react';
-import AccountFilter from './account-filter';
-import DateRangeFilter from './date-range-filter';
-import CategoryFilter from './category-filter';
+import React from 'react';
+import PropTypes from 'prop-types';
+import AccountFilter from './AccountFilter';
+import DateRangeFilter from './DateRangeFilter';
+import CategoryFilter from './CategoryFilter';
 
 export const DATE_RANGE_FILTER = 'DATE_RANGE_FILTER';
 export const ACCOUNT_FILTER = 'ACCOUNT_FILTER';
 export const CATEGORY_FILTER = 'CATEGORY_FILTER';
+
+import '../../../stylesheets/search-criteria.scss';
 
 export default class SearchCriteria extends React.Component {
 
@@ -44,7 +47,7 @@ export default class SearchCriteria extends React.Component {
 
   render() {
     return (
-      <div id="search-criteria" className="container">
+      <div className="search-criteria">
         {this.renderCriteria()}
       </div>
     );

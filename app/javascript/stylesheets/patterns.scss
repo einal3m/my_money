@@ -1,0 +1,17 @@
+@import './colours';
+
+.pattern-list {
+  .pattern-title {
+    color: $menu-color;
+    display: flex;
+    flex-direction: row;
+    align-times: baseline;
+    padding-left: 10px;
+    padding-top: 10px;
+
+    .account-name {
+      padding-left: 10px;
+      color: black;
+    }
+  }
+}

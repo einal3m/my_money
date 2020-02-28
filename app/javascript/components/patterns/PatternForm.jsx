@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FormValidator from '../../util/form-validator';
-import FormControl from '../common/controls/form-control';
-import GroupedCategorySelect from '../common/controls/grouped-category-select';
-import SubcategoryPicker from '../common/controls/subcategory-picker';
+import FormControl from '../common/controls/FormControl';
+import GroupedCategorySelect from '../common/controls/GroupedCategorySelect';
+import SubcategoryPicker from '../common/controls/SubcategoryPicker';
 
 export default class PatternForm extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class PatternForm extends React.Component {
 
   isValid() {
     this.forceUpdate();
-    return !this.validator.validateAll(this.state.pattern);
+    return this.validator.isValid(this.state.pattern);
   }
 
   getModel() {
@@ -74,21 +75,15 @@ export default class PatternForm extends React.Component {
             onChange={this.handleChange}
           />
         </FormControl>
-        <div className="row">
-          <div className="col-xs-6">
-            <FormControl name="categoryId" validator={this.validator} label="Category">
-              <GroupedCategorySelect
-                name="categoryId"
-                value={this.state.pattern.categoryId}
-                groupedCategories={this.props.groupedCategories}
-                onChange={this.handleChange}
-              />
-            </FormControl>
-          </div>
-          <div className="col-xs-6">
-            {this.renderSubcategoryPicker()}
-          </div>
-        </div>
+        <FormControl name="categoryId" validator={this.validator} label="Category">
+          <GroupedCategorySelect
+            name="categoryId"
+            value={this.state.pattern.categoryId}
+            groupedCategories={this.props.groupedCategories}
+            onChange={this.handleChange}
+          />
+        </FormControl>
+        {this.renderSubcategoryPicker()}
       </div>
     );
   }
@@ -102,5 +97,5 @@ PatternForm.propTypes = {
     categoryId: PropTypes.number,
     subcategoryId: PropTypes.number,
   }).isRequired,
-  groupedCategories: React.PropTypes.arrayOf(React.PropTypes.shape({})).isRequired,
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

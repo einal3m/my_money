@@ -11,6 +11,7 @@ import Header from './layout/Header';
 import Footer from './layout/Footer';
 import AccountList from './accounts/AccountList';
 import CategoryList from './categories/CategoryList';
+import PatternList from './patterns/PatternList';
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
@@ -58,7 +59,6 @@ export default class MyMoney extends React.Component {
 }
 
 const TransactionsList = () => <h2>TransactionsList</h2>;
-const PatternList = () => <h2>PatternList</h2>;
 const ReconciliationList = () => <h2>ReconciliationList</h2>;
 const ImportPage = () => <h2>ImportPage</h2>;
 const ImportHistoryPage = () => <h2>ImportHistoryPage</h2>;

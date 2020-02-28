@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import Select from './select';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Select from './Select';
 
 export default class AccountPicker extends React.Component {
 
@@ -24,20 +25,16 @@ export default class AccountPicker extends React.Component {
 
   render() {
     return (
-      <div className="picker form-horizontal">
-        <div className="form-group">
-          <label htmlFor="account-dropdown" className="control-label col-xs-4">Accounts</label>
-          <div className="col-xs-8">
-            <Select
-              name="accountId"
-              value={this.props.value}
-              groupedOptions={this.groupedOptions()}
-              multiple={!!this.props.multiple}
-              onChange={this.handleSelect}
-            />
-          </div>
-        </div>
-      </div>
+      <React.Fragment>
+        <label for="accountId" class="control-label">Accounts</label>
+        <Select
+          name="accountId"
+          value={this.props.value}
+          groupedOptions={this.groupedOptions()}
+          multiple={!!this.props.multiple}
+          onChange={this.handleSelect}
+        />
+      </React.Fragment>
     );
   }
 }

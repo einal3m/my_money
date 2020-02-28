@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FormModal from '../common/form-modal';
-import PatternForm from './pattern-form';
+import FormModal from '../common/FormModal';
+import PatternForm from './PatternForm';
 import { groupedCategories } from '../../selectors/category-selector';
 import { savePattern, deletePattern } from '../../actions/pattern-actions';
 

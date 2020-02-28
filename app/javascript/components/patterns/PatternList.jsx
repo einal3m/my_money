@@ -1,14 +1,16 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Glyphicon, Button } from 'react-bootstrap';
-import PageHeader from '../common/page-header';
-import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/search-criteria';
-import PatternTable from './pattern-table';
-import PatternModal from './pattern-modal';
+import { Button } from 'react-bootstrap';
+import PageHeader from '../common/PageHeader';
+import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/SearchCriteria';
+import PatternTable from './PatternTable';
+import PatternModal from './PatternModal';
 import { getPatterns } from '../../actions/pattern-actions';
 import { showFormModal } from '../../actions/form-actions';
 
-require('../../../css/common.scss');
+import '../../stylesheets/common.scss';
+import '../../stylesheets/patterns.scss';
 
 export class PatternListComponent extends React.Component {
   constructor() {
@@ -35,13 +37,13 @@ export class PatternListComponent extends React.Component {
     return (
       <div>
         <PageHeader title="my patterns" apiStatus={this.props.apiStatus}>
-          <Button onClick={this.newPattern}><Glyphicon glyph="plus" /> New</Button>
+          <Button onClick={this.newPattern}><i className="fas fa-plus" /> New</Button>
         </PageHeader>
         <SearchCriteria
           filters={[{ name: ACCOUNT_FILTER, options: { multiple: false } }]}
           fetch={getPatterns}
         />
-        <div className="container">
+        <div className="pattern-list">
           <PatternTable />
         </div>
         <PatternModal />

@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { groupedCategories, categoryDataLoaded } from '../../selectors/category-selector';
-import PatternRow from './pattern-row';
+import PatternRow from './PatternRow';
 
 export class PatternTableComponent extends React.Component {
 
@@ -17,7 +18,12 @@ export class PatternTableComponent extends React.Component {
 
   renderTitle() {
     if (this.props.loaded) {
-      return <h3>patterns for &apos;{this.props.account.name}&apos; account</h3>;
+      return (
+        <div className="pattern-title">
+          <h5 className="text-uppercase">patterns for</h5>
+          <h5 className="account-name">{this.props.account.name}</h5>
+        </div>
+      );
     }
     return undefined;
   }
@@ -42,7 +48,7 @@ export class PatternTableComponent extends React.Component {
         </table>
       );
     }
-    return <div>There are no patterns for this account</div>;
+    return <div className="empty-state">There are no patterns for this account</div>;
   }
 
   render() {

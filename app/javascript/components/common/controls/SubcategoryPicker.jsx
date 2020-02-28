@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import Select from './select';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Select from './Select';
 
 export default class SubcategoryPicker extends React.Component {
 
