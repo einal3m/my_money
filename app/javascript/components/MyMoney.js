@@ -16,6 +16,7 @@ import PatternList from './patterns/PatternList';
 import AccountBalanceChart from './reports/AccountBalanceChart';
 import CategoryReport from './reports/CategoryReport';
 import SubcategoryReport from './reports/SubcategoryReport';
+import IncomeExpenseBarChart from './reports/IncomeExpenseBarChart';
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
@@ -48,7 +49,7 @@ export default class MyMoney extends React.Component {
               <Route path="/import"><ImportPage /></Route>
               <Route path="/import-history"><ImportHistoryPage /></Route>
               <Route path="/reports/accountBalance"><AccountBalanceChart /></Route>
-              <Route path="/reports/incomeVsExpenseBar"><IncomeVsExpenseBarChart /></Route>
+              <Route path="/reports/incomeVsExpenseBar"><IncomeExpenseBarChart /></Route>
               <Route path="/reports/incomeVsExpenses"><IncomeVsExpensesReport /></Route>
               <Route path="/reports/categoryReport"><CategoryReport /></Route>
               <Route path="/reports/subcategoryReport"><SubcategoryReport /></Route>
@@ -65,6 +66,5 @@ export default class MyMoney extends React.Component {
 const ReconciliationList = () => <h2>ReconciliationList</h2>;
 const ImportPage = () => <h2>ImportPage</h2>;
 const ImportHistoryPage = () => <h2>ImportHistoryPage</h2>;
-const IncomeVsExpenseBarChart = () => <h2>IncomeVsExpenseBarChart</h2>;
 const IncomeVsExpensesReport = () => <h2>IncomeVsExpensesReport</h2>;
 const LoanReport = () => <h2>LoanReport</h2>;

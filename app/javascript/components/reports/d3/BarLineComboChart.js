@@ -1,5 +1,5 @@
-import d3 from 'd3';
-import { createSvgContainer, createBarScales, createYAxis, createBarXAxis, create0Axis } from './common';
+import * as d3 from "d3";
+import { createSvgContainer, createBarScales, createYAxis, createBarXAxis, create0Axis } from './Common';
 
 const LINE_COLOUR = '#1F77B4';
 
@@ -55,16 +55,16 @@ function createSeries(vis, seriesData, yScale, dim) {
       .attr('width', dim.barWidth)
       .attr('height', data => Math.abs(yScale(data) - yScale(0)))
       .attr('y', data => data > 0 ? yScale(data) : yScale(0))
-      .style({ fill: series.backgroundColour });
+      .attr('fill', series.backgroundColour);
   });
 }
 
 function createNetLine(vis, xAxisLabels, seriesData, xScale, yScale, dim) {
   // Define the line
-  const line = d3.svg.line()
+  const line = d3.line()
     .x((d, i) => xScale(xAxisLabels[i]))
     .y((d, i) => yScale((seriesData[0].data[i] + seriesData[1].data[i])))
-    .interpolate('linear');
+    .curve(d3.curveLinear);
 
   // add the lines
   vis.append('g')
@@ -103,19 +103,18 @@ function createHover(vis, xAxisLabels, seriesData, dim, callbacks) {
       .attr('transform', `translate(${periodIndex * dim.periodWidth}, 0)`)
       .attr('width', dim.periodWidth)
       .attr('height', dim.chartHeight)
-      .style({ fill: 'transparent' })
-
+      .attr('fill', 'transparent')
       .on('mouseover', () => {
         if (callbacks.showTooltip) {
           callbacks.showTooltip(tooltipData);
         }
-        d3.select(this).style({ fill: 'grey', opacity: 0.05 });
+        d3.select(this).attr('fill', 'grey').attr('opacity', 0.05);
       })
       .on('mouseout', () => {
         if (callbacks.hideTooltip) {
           callbacks.hideTooltip();
         }
-        d3.select(this).style({ fill: 'transparent' });
+        d3.select(this).attr('fill', 'transparent');
       });
   });
 }

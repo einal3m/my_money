@@ -16,10 +16,10 @@ const Header = () => (
       <LinkContainer to="/patterns"><Nav.Link>patterns</Nav.Link></LinkContainer>
       <NavDropdown title="reports" id="basic-nav-dropdown">
         <LinkContainer to="/reports/incomeVsExpenses">
-          <NavDropdown.Item>Income/Expense Bar Chart</NavDropdown.Item>
+          <NavDropdown.Item>Income vs Expenses</NavDropdown.Item>
         </LinkContainer>
         <LinkContainer to="/reports/incomeVsExpenseBar">
-          <NavDropdown.Item>Income vs Expenses</NavDropdown.Item>
+          <NavDropdown.Item>Income/Expense Bar Chart</NavDropdown.Item>
         </LinkContainer>
         <LinkContainer to="/reports/categoryReport">
           <NavDropdown.Item>Category Report</NavDropdown.Item>

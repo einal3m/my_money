@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
-import barLineComboChart from './d3/bar-line-combo-chart';
+import React from 'react';
+import PropTypes from 'prop-types';
+import barLineComboChart from './d3/BarLineComboChart';
 import moneyUtil from '../../util/money-util';
-import ChartTooltip from './chart-tooltip';
+import ChartTooltip from './ChartTooltip';
 
 export default class D3BarLineComboChart extends React.Component {
 
