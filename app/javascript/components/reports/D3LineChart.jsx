@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
-import lineChart from './d3/line-chart';
+import React from 'react';
+import PropTypes from 'prop-types';
+import lineChart from './d3/LineChart';
 import moneyUtil from '../../util/money-util';
 import dateUtil from '../../util/date-util';
-import ChartTooltip from './chart-tooltip';
-import ChartLegend from './chart-legend';
+import ChartTooltip from './ChartTooltip';
+import ChartLegend from './ChartLegend';
 
 export default class D3LineChart extends React.Component {
 

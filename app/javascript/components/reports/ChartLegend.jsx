@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class ChartLegend extends React.Component {
 
@@ -40,9 +41,9 @@ export default class ChartLegend extends React.Component {
 }
 
 ChartLegend.propTypes = {
-  chartData: React.PropTypes.shape({
-    seriesData: React.PropTypes.arrayOf(React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
+  chartData: PropTypes.shape({
+    seriesData: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
     })).isRequired,
   }).isRequired,
 };

@@ -13,6 +13,7 @@ import AccountList from './accounts/AccountList';
 import TransactionList from './transactions/TransactionList';
 import CategoryList from './categories/CategoryList';
 import PatternList from './patterns/PatternList';
+import AccountBalanceChart from './reports/AccountBalanceChart';
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
@@ -62,7 +63,6 @@ export default class MyMoney extends React.Component {
 const ReconciliationList = () => <h2>ReconciliationList</h2>;
 const ImportPage = () => <h2>ImportPage</h2>;
 const ImportHistoryPage = () => <h2>ImportHistoryPage</h2>;
-const AccountBalanceChart = () => <h2>AccountBalanceChart</h2>;
 const IncomeVsExpenseBarChart = () => <h2>IncomeVsExpenseBarChart</h2>;
 const IncomeVsExpensesReport = () => <h2>IncomeVsExpensesReport</h2>;
 const CategoryReport = () => <h2>CategoryReport</h2>;

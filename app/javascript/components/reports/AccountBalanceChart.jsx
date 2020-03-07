@@ -1,13 +1,14 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageHeader from '../common/page-header';
-import SearchCriteria, { DATE_RANGE_FILTER, ACCOUNT_FILTER } from '../common/criteria/search-criteria';
-import D3LineChart from './d3-line-chart';
+import PageHeader from '../common/PageHeader';
+import SearchCriteria, { DATE_RANGE_FILTER, ACCOUNT_FILTER } from '../common/criteria/SearchCriteria';
+import D3LineChart from './D3LineChart';
 import { getAccountBalanceReport } from '../../actions/report-actions';
 import accountBalanceSelector from '../../selectors/account-balance-selector';
 
-require('../../../css/common.scss');
-require('../../../css/report.scss');
+import '../../stylesheets/common.scss';
+import '../../stylesheets/report.scss';
 
 export class AccountBalanceReport extends React.Component {
 

@@ -1,4 +1,4 @@
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 export default function lineChart(seriesData, id, options, callbacks) {
   const width = options.width || 1000;
@@ -30,13 +30,13 @@ export default function lineChart(seriesData, id, options, callbacks) {
 }
 
 function createScales(seriesData, dim) {
-  const xScale = d3.time.scale()
+  const xScale = d3.scaleTime()
     .domain([
       d3.min(seriesData, series => d3.min(series.data, data => data[0])),
       d3.max(seriesData, series => d3.max(series.data, data => data[0]))])
     .range([0, dim.chartWidth]);
 
-  const yScale = d3.scale.linear()
+  const yScale = d3.scaleLinear()
     .domain([
       d3.min(seriesData, series => d3.min(series.data, data => data[1])),
       d3.max(seriesData, series => d3.max(series.data, data => data[1]))])
@@ -46,9 +46,7 @@ function createScales(seriesData, dim) {
 }
 
 function createYAxis(vis, yScale, dim, callbacks) {
-  const yAxis = d3.svg.axis()
-    .scale(yScale)
-    .orient('right')
+  const yAxis = d3.axisRight(yScale)
     .tickSize(dim.chartWidth)
     .ticks(10)
     .tickFormat(value => callbacks.formatYLabels(value));
@@ -59,19 +57,20 @@ function createYAxis(vis, yScale, dim, callbacks) {
     .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`);
 
   yAxisG.selectAll('path.y-axis, .y-axis line, .y-axis path')
-    .style({ fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges' });
+    .attr('fill', 'none')
+    .attr('stroke-width', '1px')
+    .attr('stroke', '#ddd')
+    .attr('shape-rendering', 'crispEdges')
 
   yAxisG.selectAll('text')
     .attr('x', -10)
-    .style('text-anchor', 'end');
+    .attr('text-anchor', 'end');
 }
 
 function createXAxis(vis, xScale, dim, callbacks) {
-  const xAxis = d3.svg.axis()
-    .scale(xScale)
+  const xAxis = d3.axisTop(xScale)
     .tickSize(dim.chartHeight)
     .ticks(8)
-    .orient('top')
     .tickFormat(value => callbacks.formatXLabels(value));
 
   const xAxisG = vis.append('g')
@@ -80,17 +79,20 @@ function createXAxis(vis, xScale, dim, callbacks) {
     .call(xAxis);
 
   xAxisG.selectAll('path.x-axis, .x-axis line, .x-axis path')
-    .style({ fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges' });
+    .attr('fill', 'none')
+    .attr('stroke-width', '1px')
+    .attr('stroke', '#ddd')
+    .attr('shape-rendering', 'crispEdges')
 
   xAxisG.selectAll('text')
     .attr('y', 20);
 }
 
 function createLines(vis, xScale, yScale, seriesData, dim) {
-  const d3Line = d3.svg.line()
+  const d3Line = d3.line()
     .x(data => xScale(data[0]))
     .y(data => yScale(data[1]))
-    .interpolate('step-after');
+    .curve(d3.curveStepAfter);
 
   seriesData.forEach((series, seriesIndex) => {
     vis.append('g')
@@ -108,18 +110,19 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
   const focus = vis.append('g')
     .attr('class', 'focus')
     .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`)
-    .style('display', 'none');
 
   const focusCircles = seriesData.map((series) => {
     const group = focus.append('g');
 
     group.append('circle')
       .attr('r', 6)
-      .style({ stroke: series.backgroundColour, fill: 'white', 'stroke-width': '2' });
+      .attr('fill', 'white')
+      .attr('stroke', series.backgroundColour)
+      .attr('stroke-width', '2')
 
     group.append('circle')
       .attr('r', 3.5)
-      .style({ fill: series.backgroundColour });
+      .attr('fill', series.backgroundColour);
 
     return group;
   });
@@ -129,7 +132,7 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     .attr('width', dim.chartWidth)
     .attr('height', dim.chartHeight)
     .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`)
-    .style({ fill: 'none', 'pointer-events': 'all' })
+    .attr('opacity', 0)
     .on('mouseover', () => focus.style('display', null))
     .on('mouseout', hideCircles)
     .on('mousemove', moveCircles);
