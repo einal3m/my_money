@@ -1,16 +1,17 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toggleReportView } from '../../../actions/report-actions';
 
 export const ReportViewButtonsComponent = (props) => {
-  const className = viewType => viewType === props.viewType ? ' active' : '';
+  const disabled = viewType => viewType === props.viewType ? true : false;
 
   return (
-    <div className="btn-group" role="group">
-      <button id="chartButton" className={`btn btn-default${className('chart')}`} onClick={toggleReportView}>
+    <div className="button-group" role="group">
+      <button id="chartButton" className="btn btn-primary" disabled={disabled('chart')} onClick={toggleReportView}>
         <i className="fa fa-bar-chart" />
       </button>
-      <button id="tableButton" className={`btn btn-default${className('table')}`} onClick={toggleReportView}>
+      <button id="tableButton" className="btn btn-primary" disabled={disabled('table')} onClick={toggleReportView}>
         <i className="fa fa-table" />
       </button>
     </div>

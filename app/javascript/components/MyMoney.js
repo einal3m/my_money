@@ -14,6 +14,8 @@ import TransactionList from './transactions/TransactionList';
 import CategoryList from './categories/CategoryList';
 import PatternList from './patterns/PatternList';
 import AccountBalanceChart from './reports/AccountBalanceChart';
+import CategoryReport from './reports/CategoryReport';
+import SubcategoryReport from './reports/SubcategoryReport';
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
@@ -65,6 +67,4 @@ const ImportPage = () => <h2>ImportPage</h2>;
 const ImportHistoryPage = () => <h2>ImportHistoryPage</h2>;
 const IncomeVsExpenseBarChart = () => <h2>IncomeVsExpenseBarChart</h2>;
 const IncomeVsExpensesReport = () => <h2>IncomeVsExpensesReport</h2>;
-const CategoryReport = () => <h2>CategoryReport</h2>;
-const SubcategoryReport = () => <h2>SubcategoryReport</h2>;
 const LoanReport = () => <h2>LoanReport</h2>;

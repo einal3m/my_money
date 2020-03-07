@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import Amount from '../common/amount';
-import Date from '../common/date';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Amount from '../common/Amount';
+import Date from '../common/Date';
 import { showFormModal } from '../../actions/form-actions';
 import { memoAndNotes, categoryAndSubcategory } from '../../util/text-util';
 

@@ -22,7 +22,8 @@ export class CategoryFilterComponent extends React.Component {
   renderCategoryPicker() {
     if (this.props.loaded) {
       return (
-        <HorizontalFormControl name="currentCategoryId" label="Category" labelCol="4" controlCol="8">
+        <React.Fragment>
+          <label htmlFor="currentCategoryId" className="control-label">Category</label>
           <GroupedCategorySelect
             name="currentCategoryId"
             allowUnassigned
@@ -30,16 +31,17 @@ export class CategoryFilterComponent extends React.Component {
             groupedCategories={this.props.groupedCategories}
             onChange={this.handleCategoryChange}
           />
-        </HorizontalFormControl>
+        </React.Fragment>
       );
     }
-    return undefined;
+    return <div></div>;
   }
 
   renderSubcategoryPicker() {
     if (this.props.showSubcategories && this.props.loaded && this.props.currentCategoryId) {
       return (
-        <HorizontalFormControl name="currentSubcategoryId" label="Subcategory" labelCol="4" controlCol="8">
+        <React.Fragment>
+          <label htmlFor="currentSubcategoryId" className="control-label">Subcategory</label>
           <SubcategoryPicker
             name="currentSubcategoryId"
             groupedCategories={this.props.groupedCategories}
@@ -47,7 +49,7 @@ export class CategoryFilterComponent extends React.Component {
             onChange={this.handleSubcategoryChange}
             value={this.props.currentSubcategoryId}
           />
-        </HorizontalFormControl>
+        </React.Fragment>
       );
     }
     return undefined;
@@ -55,13 +57,9 @@ export class CategoryFilterComponent extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-xs-4">
-          {this.renderCategoryPicker()}
-        </div>
-        <div className="col-xs-4">
-          {this.renderSubcategoryPicker()}
-        </div>
+      <div className="category-filter">
+        {this.renderCategoryPicker()}
+        {this.renderSubcategoryPicker()}
       </div>
     );
   }

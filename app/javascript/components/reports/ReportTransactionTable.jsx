@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ReportTransactionRow from './report-transaction-row';
+import ReportTransactionRow from './ReportTransactionRow';
 import { groupedCategories } from '../../selectors/category-selector';
-import TransactionModal from '../transactions/transaction-modal';
+import TransactionModal from '../transactions/TransactionModal';
 
-require('../../../css/transaction.scss');
+import '../../stylesheets/transaction.scss';
 
 export class ReportTransactionTableComponent extends React.Component {
 

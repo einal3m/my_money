@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import D3BarChart from './d3-bar-chart';
-import ReportTransactionTable from './report-transaction-table';
+import D3BarChart from './D3BarChart';
+import ReportTransactionTable from './ReportTransactionTable';
 import { chartDataForMonthTotals } from '../../selectors/report-selector';
 
 export class ReportContentComponent extends React.Component {
@@ -10,7 +11,7 @@ export class ReportContentComponent extends React.Component {
 
   renderChart = () => <D3BarChart chartData={this.props.chartData} />;
 
-  renderNoTransactions = () => <div>There are no transactions</div>;
+  renderNoTransactions = () => <div className="empty-state">There are no transactions</div>;
 
   render() {
     let content;

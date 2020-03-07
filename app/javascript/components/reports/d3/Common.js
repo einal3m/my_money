@@ -1,4 +1,4 @@
-import d3 from 'd3';
+import * as d3 from "d3";
 
 export function createSvgContainer(id, width, height) {
   const vis = d3.select(id).append('svg')
@@ -20,21 +20,19 @@ export function createBarScales(xAxisLabels, seriesData, dim) {
     max = 10000;
   }
 
-  const yScale = d3.scale.linear()
+  const yScale = d3.scaleLinear()
     .domain([min, max])
     .range([dim.chartHeight, 0]).nice();
 
-  const xScale = d3.scale.ordinal()
+  const xScale = d3.scaleBand()
     .domain(xAxisLabels)
-    .rangeRoundBands([0, dim.chartWidth]);
+    .rangeRound([0, dim.chartWidth]);
 
   return [xScale, yScale];
 }
 
 export function createYAxis(vis, yScale, dim, callbacks) {
-  const yAxis = d3.svg.axis()
-    .scale(yScale)
-    .orient('right')
+  const yAxis = d3.axisRight(yScale)
     .tickSize(dim.chartWidth)
     .ticks(10)
     .tickFormat(value => callbacks.formatYLabels(value));
@@ -45,18 +43,19 @@ export function createYAxis(vis, yScale, dim, callbacks) {
     .attr('transform', `translate(${dim.leftMargin}, ${dim.topMargin})`);
 
   yAxisG.selectAll('path.y-axis, .y-axis line, .y-axis path')
-    .style({ fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges' });
+    .attr('fill', 'none')
+    .attr('stroke-width', '1px')
+    .attr('stroke', '#ddd')
+    .attr('shape-rendering', 'crispEdges');
 
   yAxisG.selectAll('text')
     .attr('x', -10)
-    .style('text-anchor', 'end');
+    .attr('text-anchor', 'end');
 }
 
 export function createBarXAxis(vis, xScale, dim) {
-  const xAxis = d3.svg.axis()
-    .scale(xScale)
+  const xAxis = d3.axisTop(xScale)
     .tickSize(dim.chartHeight)
-    .orient('top');
 
   const xAxisG = vis.append('g')
     .attr('class', 'x-axis')
@@ -64,7 +63,10 @@ export function createBarXAxis(vis, xScale, dim) {
     .call(xAxis);
 
   xAxisG.selectAll('path.x-axis, .x-axis line, .x-axis path')
-    .style({ fill: 'none', 'stroke-width': '1px', stroke: '#ddd', 'shape-rendering': 'crispEdges' });
+    .attr('fill', 'none')
+    .attr('stroke-width', '1px')
+    .attr('stroke', '#ddd')
+    .attr('shape-rendering', 'crispEdges');
 
   xAxisG.selectAll('text')
     .attr('y', 20);

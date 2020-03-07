@@ -1,8 +1,8 @@
 import React from 'react';
-import PageHeader from '../common/page-header';
-import ReportViewButtons from '../common/controls/report-view-buttons';
-import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../common/criteria/search-criteria';
-import ReportContent from './report-content';
+import PageHeader from '../common/PageHeader';
+import ReportViewButtons from '../common/controls/ReportViewButtons';
+import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../common/criteria/SearchCriteria';
+import ReportContent from './ReportContent';
 import { getSubcategoryReport } from '../../actions/report-actions';
 import { SOURCE_SUBCATEGORY_REPORT } from '../../actions/form-actions';
 
