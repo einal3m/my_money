@@ -2,16 +2,16 @@
 $panel-border-radius: 0;
 $panel-default-heading-bg: $main-color;
 
-#search-criteria {
-  padding-top: 15px;
-  select:focus, input:focus {
-    border-color: $main-color;
-  }
+.more-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px;
+}
 
-  .more-or-less {
-    padding-right: 15px;
-    color: $main-color;
-  }
+.more-or-less {
+  padding-bottom: 10px;
+  color: $main-color;
 }
 
 table#transaction-table, table#pattern-table {

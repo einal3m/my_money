@@ -1,15 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Glyphicon } from 'react-bootstrap';
-import PageHeader from '../common/page-header';
-import SearchCriteria from './search-criteria';
-import TransactionTable from './transaction-table';
+import { Button } from 'react-bootstrap';
+import PageHeader from '../common/PageHeader';
+import SearchCriteria from './SearchCriteria';
+import TransactionTable from './TransactionTable';
 import { uploadOFX } from '../../actions/import-actions';
-import FileChooserModal from '../import/file-chooser-modal';
-import TransactionModal from './transaction-modal';
+import FileChooserModal from '../import/FileChooserModal';
+import TransactionModal from './TransactionModal';
 import { showFormModal } from '../../actions/form-actions';
 
-require('../../../css/common.scss');
+import '../../stylesheets/common.scss';
+import '../../stylesheets/transaction.scss';
 
 export class TransactionListComponent extends React.Component {
   constructor() {
@@ -61,11 +63,9 @@ export class TransactionListComponent extends React.Component {
       <div>
         <PageHeader title="my transactions" apiStatus={this.props.apiStatus}>
           <Button onClick={this.showModal}><i className="fa fa-file-text-o" /> Import</Button>
-          <Button onClick={this.newTransaction}><Glyphicon glyph="plus" /> New</Button>
+          <Button onClick={this.newTransaction}><i className="fas fa-plus" /> New</Button>
         </PageHeader>
-        <div className="container">
-          <SearchCriteria />
-        </div>
+        <SearchCriteria />
         <div className="container">
           <TransactionTable />
         </div>
@@ -77,9 +77,9 @@ export class TransactionListComponent extends React.Component {
 }
 
 TransactionListComponent.propTypes = {
-  loaded: React.PropTypes.bool.isRequired,
-  currentAccount: React.PropTypes.shape({ id: React.PropTypes.number }),
-  apiStatus: React.PropTypes.shape({}),
+  loaded: PropTypes.bool.isRequired,
+  currentAccount: PropTypes.shape({ id: PropTypes.number }),
+  apiStatus: PropTypes.shape({}),
 };
 
 function mapStateToProps(state) {

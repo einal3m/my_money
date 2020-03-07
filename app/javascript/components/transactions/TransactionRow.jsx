@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
-import Amount from '../common/amount';
-import Date from '../common/date';
-import Balance from '../common/balance';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Amount from '../common/Amount';
+import Date from '../common/Date';
+import Balance from '../common/Balance';
 import { showFormModal } from '../../actions/form-actions';
 import { memoAndNotes, categoryAndSubcategory, transferTo } from '../../util/text-util';
 
@@ -20,7 +21,7 @@ export default class TransactionRow extends React.Component {
 
   render() {
     return (
-      <tr onClick={this.onClickHandler}>
+      <tr className="click-me" onClick={this.onClickHandler}>
         <td><Date date={this.props.transaction.date} /></td>
         <td>
           <div>{memoAndNotes(this.props.transaction)}</div>

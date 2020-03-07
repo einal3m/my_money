@@ -11,7 +11,7 @@ export default class PatternRow extends React.Component {
 
   render() {
     return (
-      <tr onClick={this.onClickHandler}>
+      <tr className="click-me" onClick={this.onClickHandler}>
         <td>{this.props.pattern.matchText}</td>
         <td>{this.props.pattern.notes}</td>
         <td>{categoryAndSubcategory(this.props.pattern, this.props.groupedCategories)}</td>

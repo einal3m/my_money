@@ -1,13 +1,14 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Tabs, Tab } from 'react-bootstrap';
-import DatePicker from '../common/date-picker/date-picker';
+import DatePicker from '../common/date-picker/DatePicker';
 import FormValidator from '../../util/form-validator';
-import FormControl from '../common/controls/form-control';
-import GroupedCategorySelect from '../common/controls/grouped-category-select';
-import SubcategoryPicker from '../common/controls/subcategory-picker';
-import MatchingTransaction from './matching-transaction';
-import MoneyInput from '../common/controls/money-input';
+import FormControl from '../common/controls/FormControl';
+import GroupedCategorySelect from '../common/controls/GroupedCategorySelect';
+import SubcategoryPicker from '../common/controls/SubcategoryPicker';
+import MatchingTransaction from './MatchingTransaction';
+import MoneyInput from '../common/controls/MoneyInput';
 import { getMatchingTransactions } from '../../actions/matching-transactions-actions';
 
 export default class BankTransactionForm extends React.Component {
@@ -81,7 +82,7 @@ export default class BankTransactionForm extends React.Component {
 
   isValid() {
     this.forceUpdate();
-    return !this.validator.validateAll(this.state.transaction);
+    return this.validator.isValid(this.state.transaction);
   }
 
   getModel() {
@@ -193,7 +194,7 @@ BankTransactionForm.propTypes = {
     matchingTransaction: PropTypes.shape({}),
   }).isRequired,
   accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  groupedCategories: React.PropTypes.arrayOf(React.PropTypes.shape({})).isRequired,
+  groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   matchLoading: PropTypes.bool.isRequired,
   matchingTransactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

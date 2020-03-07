@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setCurrentCategory, setCurrentSubcategory } from '../../../actions/category-actions';
 import { groupedCategories } from '../../../selectors/category-selector';
-import HorizontalFormControl from '../controls/horizontal-form-control';
-import GroupedCategorySelect from '../controls/grouped-category-select';
-import SubcategoryPicker from '../controls/subcategory-picker';
+import HorizontalFormControl from '../controls/HorizontalFormControl';
+import GroupedCategorySelect from '../controls/GroupedCategorySelect';
+import SubcategoryPicker from '../controls/SubcategoryPicker';
 
 export class CategoryFilterComponent extends React.Component {
 
@@ -67,7 +68,7 @@ export class CategoryFilterComponent extends React.Component {
 }
 
 CategoryFilterComponent.propTypes = {
-  loaded: React.PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
   groupedCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentCategoryId: PropTypes.number,
   currentSubcategoryId: PropTypes.number,

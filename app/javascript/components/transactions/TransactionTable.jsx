@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import TransactionRow from './transaction-row';
+import TransactionRow from './TransactionRow';
 import { groupedCategories } from '../../selectors/category-selector';
 import { accountNameAndBank } from '../../util/text-util';
 
-require('../../../css/transaction.scss');
+import '../../stylesheets/transaction.scss';
 
 export class TransactionTableComponent extends React.Component {
 
@@ -47,7 +48,7 @@ export class TransactionTableComponent extends React.Component {
         </table>
       );
     }
-    return <div>No transactions match the search criteria</div>;
+    return <div className="empty-state">No transactions match the search criteria</div>;
   }
 
   render() {

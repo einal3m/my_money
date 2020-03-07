@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class DescriptionFilter extends React.Component {
   onBlur = (event) => {
@@ -13,26 +14,22 @@ export default class DescriptionFilter extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="form-horizontal col-xs-4">
-          <div className="form-group">
-            <label htmlFor="bank" className="col-xs-4">Search Text</label>
-            <input
-              className="form-control col-xs-8"
-              name="bank"
-              ype="text"
-              defaultValue={this.props.description}
-              onBlur={this.onBlur}
-              onKeyPress={this.onKeyPress}
-            />
-          </div>
-        </div>
+      <div className="description-filter">
+        <label htmlFor="bank" className="control-label">Search Text</label>
+        <input
+          className="form-control col-xs-8"
+          name="bank"
+          ype="text"
+          defaultValue={this.props.description}
+          onBlur={this.onBlur}
+          onKeyPress={this.onKeyPress}
+        />
       </div>
     );
   }
 }
 
 DescriptionFilter.propTypes = {
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };

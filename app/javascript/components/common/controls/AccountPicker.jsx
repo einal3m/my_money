@@ -26,7 +26,7 @@ export default class AccountPicker extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <label for="accountId" class="control-label">Accounts</label>
+        <label htmlFor="accountId" className="control-label">Accounts</label>
         <Select
           name="accountId"
           value={this.props.value}

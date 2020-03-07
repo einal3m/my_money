@@ -1,12 +1,13 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Glyphicon } from 'react-bootstrap';
 import { getTransactions, setSearchDescription, toggleMoreOrLess } from '../../actions/transaction-actions';
-import AccountFilter from '../common/criteria/account-filter';
-import DateRangeFilter from '../common/criteria/date-range-filter';
-import DescriptionFilter from '../common/description-filter';
+import CommonSearchCriteria, { ACCOUNT_FILTER, DATE_RANGE_FILTER } from '../common/criteria/SearchCriteria';
+import AccountFilter from '../common/criteria/AccountFilter';
+import DateRangeFilter from '../common/criteria/DateRangeFilter';
+import DescriptionFilter from '../common/DescriptionFilter';
 
-require('../../../css/transaction.scss');
+import '../../stylesheets/transaction.scss';
 
 export class SearchCriteriaComponent extends React.Component {
 
@@ -29,60 +30,55 @@ export class SearchCriteriaComponent extends React.Component {
     getTransactions();
   };
 
-  renderStaticCriteria() {
-    return [
-      <AccountFilter key="1" fetch={this.fetch} />,
-      <DateRangeFilter key="2" fetch={this.fetch} />,
-    ];
-  }
-
-  renderOptionToggle() {
+  renderMoreOptions() {
     return (
-      <div key="3" className="row">
-        <div onClick={this.onToggleMoreOrLess} className="more-or-less pull-right">
+      <div className="more-options">
+        <div onClick={this.onToggleMoreOrLess} className="more-or-less click-me">
           {this.renderMoreOrLess()}
         </div>
+        {this.renderDescriptionFilter()}
       </div>
     );
   }
 
   renderMoreOrLess() {
     if (this.props.moreOptions) {
-      return <span>less <Glyphicon glyph="triangle-top" /></span>;
+      return (
+        <span>less options <i className="fas fa-caret-up" /></span>
+      );
     }
-    return <span>more <Glyphicon glyph="triangle-bottom" /></span>;
+    return <span>more options <i className="fas fa-caret-down" /></span>;
   }
 
-  renderMoreCriteria() {
+  renderDescriptionFilter() {
     if (this.props.moreOptions) {
       return (
         <DescriptionFilter
-          key="4"
-          description={this.props.searchDescription}
-          onChange={this.onDescriptionChange}
+            description={this.props.searchDescription}
+            onChange={this.onDescriptionChange}
         />
       );
     }
-    return undefined;
-  }
 
-  renderCriteria() {
-    if (this.props.loaded) {
-      return [
-        this.renderStaticCriteria(),
-        this.renderOptionToggle(),
-        this.renderMoreCriteria(),
-      ];
-    }
-    return undefined;
+    return <div></div>;
   }
 
   render() {
-    return (
-      <div id="search-criteria">
-        {this.renderCriteria()}
-      </div>
-    );
+    if (this.props.loaded) {
+      return (
+        <React.Fragment>
+          <CommonSearchCriteria 
+            filters={[
+                { name: ACCOUNT_FILTER, options: { multiple: false } },
+                { name: DATE_RANGE_FILTER }
+              ]}
+            fetch={this.fetch}
+          />
+          {this.renderMoreOptions()}
+        </React.Fragment>
+      );
+    }
+    return <div></div>;
   }
 }
 

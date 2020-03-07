@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import FormControl from '../common/controls/form-control';
-import MatchingTransactionSelect from '../common/controls/matching-transaction-select';
+import React from 'react';
+import PropTypes from 'prop-types';
+import FormControl from '../common/controls/FormControl';
+import MatchingTransactionSelect from '../common/controls/MatchingTransactionSelect';
 import { transferTo, memoAndNotes } from '../../util/text-util';
 
 export default class MatchingTransaction extends React.Component {

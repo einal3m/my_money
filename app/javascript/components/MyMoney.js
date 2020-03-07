@@ -10,6 +10,7 @@ import ErrorBoundary from './ErrorBoundary';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import AccountList from './accounts/AccountList';
+import TransactionList from './transactions/TransactionList';
 import CategoryList from './categories/CategoryList';
 import PatternList from './patterns/PatternList';
 import store from '../stores/store';
@@ -37,7 +38,7 @@ export default class MyMoney extends React.Component {
             <Switch>
               <Route exact path="/"><AccountList /></Route>
               <Route path="/accounts"><AccountList /></Route>
-              <Route path="/transactions"><TransactionsList /></Route>
+              <Route path="/transactions"><TransactionList /></Route>
               <Route path="/categories"><CategoryList /></Route>
               <Route path="/patterns"><PatternList /></Route>
               <Route path="/reconciliations"><ReconciliationList /></Route>
@@ -58,7 +59,6 @@ export default class MyMoney extends React.Component {
   }
 }
 
-const TransactionsList = () => <h2>TransactionsList</h2>;
 const ReconciliationList = () => <h2>ReconciliationList</h2>;
 const ImportPage = () => <h2>ImportPage</h2>;
 const ImportHistoryPage = () => <h2>ImportHistoryPage</h2>;

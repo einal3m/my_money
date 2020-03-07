@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 const Date = props => (
@@ -6,7 +7,7 @@ const Date = props => (
 );
 
 Date.propTypes = {
-  date: React.PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
 export default Date;

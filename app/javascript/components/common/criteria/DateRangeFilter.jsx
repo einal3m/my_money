@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setCurrentDateRange, updateCurrentDateRange } from '../../../actions/date-range-actions';
-import DatePicker from '../date-picker/date-picker';
-import Select from '../../common/controls/select';
+import DatePicker from '../date-picker/DatePicker';
+import Select from '../../common/controls/Select';
 
 export class DateRangeFilterComponent extends React.Component {
 
@@ -21,67 +22,42 @@ export class DateRangeFilterComponent extends React.Component {
     this.props.fetch();
   };
 
-  renderDateRangeFilter() {
-    if (this.props.loaded) {
-      return ([
-        <div key="date-range-select" className="col-xs-4">
-          <div className="form-horizontal">
-            <div className="form-group">
-              <label htmlFor="dateRangeSelect" className="col-xs-4 control-label">Date Range</label>
-              <div className="col-xs-8">
-                <Select
-                  name="dateRangeId"
-                  value={this.props.currentDateRange.id}
-                  options={this.props.dateRanges}
-                  onChange={this.onSelectDateRange}
-                />
-              </div>
-            </div>
-          </div>
-        </div>,
-        <div key="from-date" className="col-xs-4">
-          <div className="form-horizontal">
-            <div className="form-group">
-              <label htmlFor="fromDate" className="col-sm-3 control-label">From</label>
-              <div className="col-sm-9">
-                <DatePicker
-                  name="fromDate"
-                  value={this.props.currentDateRange.fromDate}
-                  onChange={this.onFromDateChange}
-                  disabled={!this.props.currentDateRange.custom}
-                />
-                <span className="help-block hidden" />
-              </div>
-            </div>
-          </div>
-        </div>,
-        <div key="to-date" className="col-xs-4">
-          <div className="form-horizontal">
-            <div className="form-group">
-              <label htmlFor="toDate" className="col-sm-3 control-label">To</label>
-              <div className="col-sm-9">
-                <DatePicker
-                  name="toDate"
-                  value={this.props.currentDateRange.toDate}
-                  onChange={this.onToDateChange}
-                  disabled={!this.props.currentDateRange.custom}
-                />
-                <span className="help-block hidden" />
-              </div>
-            </div>
-          </div>
-        </div>,
-      ]);
-    }
-    return <div />;
-  }
-
   render() {
-    return (
-      <div className="row">
-        {this.renderDateRangeFilter()}
-      </div>
-    );
+    if (this.props.loaded) {
+      return (
+        <div className="date-range-filter">
+          <div className="form-group">
+            <label htmlFor="dateRangeSelect" className="control-label">Dates</label>
+            <Select
+              name="dateRangeId"
+              value={this.props.currentDateRange.id}
+              options={this.props.dateRanges}
+              onChange={this.onSelectDateRange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="fromDate" className="control-label">From</label>
+            <DatePicker
+              name="fromDate"
+              value={this.props.currentDateRange.fromDate}
+              onChange={this.onFromDateChange}
+              disabled={!this.props.currentDateRange.custom}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="toDate" className="control-label">To</label>
+            <DatePicker
+              name="toDate"
+              value={this.props.currentDateRange.toDate}
+              onChange={this.onToDateChange}
+              disabled={!this.props.currentDateRange.custom}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    return <div />;
   }
 }
 

@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FormModal from '../common/form-modal';
-import BankTransactionForm from './bank-transaction-form';
+import FormModal from '../common/FormModal';
+import BankTransactionForm from './BankTransactionForm';
 import { groupedCategories } from '../../selectors/category-selector';
 import { saveTransaction, deleteTransaction } from '../../actions/transaction-actions';
 
