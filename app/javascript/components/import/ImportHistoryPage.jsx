@@ -1,10 +1,13 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageHeader from '../common/page-header';
-import BankStatementTable from './bank-statement-table';
-import BankStatementDeleteModal from './bank-statement-delete-modal';
-import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/search-criteria';
+import PageHeader from '../common/PageHeader';
+import BankStatementTable from './BankStatementTable';
+import BankStatementDeleteModal from './BankStatementDeleteModal';
+import SearchCriteria, { ACCOUNT_FILTER } from '../common/criteria/SearchCriteria';
 import { getBankStatements } from '../../actions/bank-statement-actions';
+
+import '../../stylesheets/common.scss';
 
 export class ImportHistoryPageComponent extends React.Component {
 
@@ -26,7 +29,7 @@ export class ImportHistoryPageComponent extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="import-history">
         <PageHeader title="import history" apiStatus={this.props.apiStatus} />
         <SearchCriteria filters={[{ name: ACCOUNT_FILTER }]} fetch={this.fetchHistory} />
         {this.renderBankTransactionTable()}

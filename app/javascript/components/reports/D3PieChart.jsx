@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import pieChart from './d3/pie-chart';
+import React from 'react';
+import PropTypes from 'prop-types';
+import pieChart from './d3/PieChart';
 
 export default class D3PieChart extends React.Component {
 

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { setLoanView } from '../../actions/loan-actions';
 
 export default class LoanViewButtons extends React.Component {

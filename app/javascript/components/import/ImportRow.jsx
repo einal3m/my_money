@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
-import Amount from '../common/amount';
-import Date from '../common/date';
-import GroupedCategorySelect from '../common/controls/grouped-category-select';
-import SubcategoryPicker from '../common/controls/subcategory-picker';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Amount from '../common/Amount';
+import Date from '../common/Date';
+import GroupedCategorySelect from '../common/controls/GroupedCategorySelect';
+import SubcategoryPicker from '../common/controls/SubcategoryPicker';
 import { setImport, setCategoryId, setSubcategoryId, setNotes } from '../../actions/import-actions';
 
 export default class ImportRow extends React.Component {

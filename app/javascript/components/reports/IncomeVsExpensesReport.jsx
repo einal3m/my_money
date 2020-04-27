@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageHeader from '../common/page-header';
-import SearchCriteria, { DATE_RANGE_FILTER } from '../common/criteria/search-criteria';
-import PieAndTable from './pie-and-table';
+import PageHeader from '../common/PageHeader';
+import SearchCriteria, { DATE_RANGE_FILTER } from '../common/criteria/SearchCriteria';
+import PieAndTable from './PieAndTable';
 import { getIncomeVsExpensesReport } from '../../actions/report-actions';
 import { tableData, pieChartData } from '../../selectors/income-expense-selector';
 

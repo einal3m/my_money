@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class FileChooser extends React.Component {
   constructor() {
@@ -32,14 +33,14 @@ export default class FileChooser extends React.Component {
 
   render() {
     return (
-      <div>
-        <label htmlFor="fileChooser" className="btn btn-default"><i className="fa fa-folder-open-o" /></label>
+      <div className="file-chooser">
+        <label htmlFor="fileChooser" className="btn btn-primary"><i className="fa fa-folder-open-o" /></label>
         <input
           id="fileChooser"
           ref={(input) => { this.fileChooser = input; }}
           name="fileChooser"
           type="file"
-          className="hidden"
+          style={ {display: 'none'} }
           accept=".ofx,.csv"
           onChange={this.onChooseFile}
         />

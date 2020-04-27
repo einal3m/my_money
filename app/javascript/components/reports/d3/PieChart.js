@@ -1,4 +1,4 @@
-import d3 from 'd3';
+import * as d3 from "d3";
 
 export default function pieChart(data, labels, chartSelector, options) {
   const chartSize = {
@@ -12,7 +12,7 @@ export default function pieChart(data, labels, chartSelector, options) {
     .attr('width', chartSize.width)
     .attr('height', chartSize.height);
 
-  const pie = d3.layout.pie().sort(null);
+  const pie = d3.pie().sort(null);
 
   createArcs(vis, chartSize, pie, data, labels);
   createTicks(vis, chartSize, pie, data);
@@ -20,8 +20,8 @@ export default function pieChart(data, labels, chartSelector, options) {
 }
 
 function createArcs(vis, chartSize, pie, data, labels) {
-  const colorScale = d3.scale.category20();
-  const arc = d3.svg.arc().innerRadius(chartSize.innerRadius).outerRadius(chartSize.outerRadius);
+  const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+  const arc = d3.arc().innerRadius(chartSize.innerRadius).outerRadius(chartSize.outerRadius);
 
   const arcs = vis.selectAll('g.arc')
     .data(pie(data))

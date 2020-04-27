@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { showFormModal } from '../../actions/form-actions';
-import { routeToTransactions, routeToImportHistory, routeToLoanReport } from '../../actions/routing-actions';
+import { setCurrentAccount } from '../../actions/account-actions';
+import { routeToLoanReport } from '../../actions/routing-actions';
 
 const AccountActionButtons = (props) => {
   const editAccount = () => {
@@ -12,11 +14,11 @@ const AccountActionButtons = (props) => {
   };
 
   const viewTransactions = () => {
-    routeToTransactions(props.account.id);
+    setCurrentAccount(props.account.id);
   };
 
   const viewImportHistory = () => {
-    routeToImportHistory(props.account.id);
+    setCurrentAccount(props.account.id);
   };
 
   const viewLoanReport = () => {
@@ -54,9 +56,13 @@ const AccountActionButtons = (props) => {
       id={`action-button-${props.account.id}`}
       onSelect={accountActions}
     >
-      <Dropdown.Item eventKey="transactions">View Transactions</Dropdown.Item>
+      <LinkContainer to="/transactions">
+        <Dropdown.Item eventKey="transactions">View Transactions</Dropdown.Item>
+      </LinkContainer>
       <Dropdown.Item eventKey="edit">Edit Account</Dropdown.Item>
-      <Dropdown.Item eventKey="import-history">Import History</Dropdown.Item>
+      <LinkContainer to="/import-history">
+        <Dropdown.Item eventKey="import-history">Import History</Dropdown.Item>
+      </LinkContainer>
       {renderLoanActions()}
     </DropdownButton>
     );

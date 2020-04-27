@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
-import ImportRow from './import-row';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ImportRow from './ImportRow';
 
-require('../../../css/transaction.scss');
+import '../../stylesheets/transaction.scss';
 
 export default class ImportTable extends React.Component {
 

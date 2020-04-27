@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import Date from '../common/date';
-import Button from '../common/controls/button';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Date from '../common/Date';
+import Button from '../common/controls/Button';
 import { confirmDeleteBankStatement } from '../../actions/bank-statement-actions';
 
 export default class BankStatementRow extends React.Component {
@@ -15,7 +16,9 @@ export default class BankStatementRow extends React.Component {
         <td><Date date={this.props.bankStatement.date} /></td>
         <td>{this.props.bankStatement.fileName}</td>
         <td className="right-justify">{this.props.bankStatement.transactionCount}</td>
-        <td className="right-justify"><Button onClick={this.handleClick}>Delete</Button></td>
+        <td className="right-justify button-group button-group-secondary">
+          <Button onClick={this.handleClick}>Delete</Button>
+        </td>
       </tr>
     );
   }

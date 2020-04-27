@@ -1,18 +1,28 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import { Button } from 'react-bootstrap';
-import PageHeader from '../common/page-header';
-import ImportTable from './import-table';
+import PageHeader from '../common/PageHeader';
+import ImportTable from './ImportTable';
 import { importTransactions } from '../../actions/import-actions';
 import { groupedCategories } from '../../selectors/category-selector';
 
-require('../../../css/common.scss');
-require('../../../css/import.scss');
+import '../../stylesheets/common.scss';
+import '../../stylesheets/import.scss';
 
 export class ImportPageComponent extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      toTransactions: false,
+    };
+  }
+
   importTransactions = () => {
     importTransactions();
+    this.setState({ toTransactions: true });
   };
 
   renderTitle() {
@@ -24,6 +34,10 @@ export class ImportPageComponent extends React.Component {
   }
 
   render() {
+    if (this.state.toTransactions === true) {
+      return <Redirect to='/transations' />
+    }
+
     return (
       <div>
         <PageHeader title="import transactions" apiStatus={this.props.apiStatus}>

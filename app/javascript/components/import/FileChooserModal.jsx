@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
-import FileChooser from '../common/controls/file-chooser';
-import HorizontalFormControl from '../common/controls/horizontal-form-control';
+import FileChooser from '../common/controls/FileChooser';
+import HorizontalFormControl from '../common/controls/HorizontalFormControl';
 
 export default class FileChooserModal extends React.Component {
   constructor() {
@@ -50,9 +51,10 @@ export default class FileChooserModal extends React.Component {
             <strong>{this.props.account.name}</strong>
             &apos; Account.  The file must be in OFX format
           </p>
-          <HorizontalFormControl name="fileChooser" label="Choose File:" labelCol="3" controlCol="6">
-            <FileChooser ref={(el) => { this.fileChooser = el; }} onChoose={this.onChooseFile} />
-          </HorizontalFormControl>
+          <p>
+            Choose File:
+          </p>
+          <FileChooser ref={(el) => { this.fileChooser = el; }} onChoose={this.onChooseFile} />
         </Modal.Body>
         <Modal.Footer>
           {this.renderCancelButton()}

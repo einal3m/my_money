@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import BankStatementRow from './bank-statement-row';
+import React from 'react';
+import PropTypes from 'prop-types';
+import BankStatementRow from './BankStatementRow';
 
 export default class BankStatementTable extends React.Component {
 
@@ -10,7 +11,7 @@ export default class BankStatementTable extends React.Component {
   render() {
     if (this.props.bankStatements.length > 0) {
       return (
-        <table className="table table-hover" id="transaction-table">
+        <table className="table" id="transaction-table">
           <thead>
             <tr>
               <th>date</th>
@@ -25,7 +26,7 @@ export default class BankStatementTable extends React.Component {
         </table>
       );
     }
-    return <div>Nothing imported into this account</div>;
+    return <div className="empty-state">Nothing imported into this account</div>;
   }
 }
 

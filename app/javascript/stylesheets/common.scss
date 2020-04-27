@@ -16,7 +16,7 @@ body {
   z-index: 1000;
 }
 
-.page-title .button-group, .account .button-group {
+.page-title .button-group, .account .button-group, .file-chooser {
   button {
     background-color: $main-color;
     border: solid 1px transparent;
@@ -37,6 +37,35 @@ body {
   }
 
   button:not(:disabled):focus {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark
+  }
+}
+
+.file-chooser {
+  display: flex;
+  align-items: baseline;
+
+  label {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  label:hover {
+    background-color: $main-color-dark;
+    border: solid 1px transparent;
+  }
+
+  label:not(:disabled):active {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark !important;
+  }
+
+  label:not(:disabled):focus {
     background-color: $main-color;
     border: solid 1px transparent;
     box-shadow: 0 0 0 1pt $main-color-dark

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { Redirect } from 'react-router';
 import PageHeader from '../common/PageHeader';
 import SearchCriteria from './SearchCriteria';
 import TransactionTable from './TransactionTable';
@@ -18,6 +19,7 @@ export class TransactionListComponent extends React.Component {
     super();
     this.state = {
       showImportModal: false,
+      toImport: false,
     };
   }
 
@@ -42,6 +44,7 @@ export class TransactionListComponent extends React.Component {
   importTransactions = (file) => {
     this.hideModal();
     uploadOFX(this.props.currentAccount.id, file);
+    this.setState({ toImport: true });
   };
 
   renderImportModal() {
@@ -59,6 +62,10 @@ export class TransactionListComponent extends React.Component {
   }
 
   render() {
+    if (this.state.toImport === true) {
+      return <Redirect to='/import' />
+    }
+
     return (
       <div>
         <PageHeader title="my transactions" apiStatus={this.props.apiStatus}>

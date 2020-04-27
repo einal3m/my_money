@@ -10,13 +10,16 @@ import ErrorBoundary from './ErrorBoundary';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import AccountList from './accounts/AccountList';
+import ImportHistoryPage from './import/ImportHistoryPage';
 import TransactionList from './transactions/TransactionList';
+import ImportPage from './import/ImportPage';
 import CategoryList from './categories/CategoryList';
 import PatternList from './patterns/PatternList';
 import AccountBalanceChart from './reports/AccountBalanceChart';
 import CategoryReport from './reports/CategoryReport';
 import SubcategoryReport from './reports/SubcategoryReport';
 import IncomeExpenseBarChart from './reports/IncomeExpenseBarChart';
+import IncomeVsExpensesReport from './reports/IncomeVsExpensesReport';
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
@@ -64,7 +67,4 @@ export default class MyMoney extends React.Component {
 }
 
 const ReconciliationList = () => <h2>ReconciliationList</h2>;
-const ImportPage = () => <h2>ImportPage</h2>;
-const ImportHistoryPage = () => <h2>ImportHistoryPage</h2>;
-const IncomeVsExpensesReport = () => <h2>IncomeVsExpensesReport</h2>;
 const LoanReport = () => <h2>LoanReport</h2>;

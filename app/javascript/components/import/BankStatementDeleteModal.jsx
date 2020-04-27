@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
-import Button from '../common/controls/button';
+import Button from '../common/controls/Button';
 import { cancelDeleteBankStatement, deleteBankStatement } from '../../actions/bank-statement-actions';
 
 export default class BankStatementDeleteModal extends React.Component {
@@ -17,7 +18,7 @@ export default class BankStatementDeleteModal extends React.Component {
     if (!this.props.bankStatement) return <div />;
 
     return (
-      <Modal show bsSize="small" onHide={this.handleCancel}>
+      <Modal show size="sm" onHide={this.handleCancel}>
         <Modal.Header>
           <Modal.Title>Delete Import</Modal.Title>
         </Modal.Header>

@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
-import D3PieChart from './d3-pie-chart';
-import CategoryTotalRow from './category-total-row';
-import SubcategoryTotalRow from './subcategory-total-row';
-import ReportTotalRow from './report-total-row';
+import React from 'react';
+import PropTypes from 'prop-types';
+import D3PieChart from './D3PieChart';
+import CategoryTotalRow from './CategoryTotalRow';
+import SubcategoryTotalRow from './SubcategoryTotalRow';
+import ReportTotalRow from './ReportTotalRow';
 
 export default class PieAndTable extends React.Component {
 
