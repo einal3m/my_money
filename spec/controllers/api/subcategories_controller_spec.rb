@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SubcategoriesController, type: :controller do
+RSpec.describe Api::SubcategoriesController, type: :controller do
   let(:valid_session) { {} }
 
   describe 'GET index' do

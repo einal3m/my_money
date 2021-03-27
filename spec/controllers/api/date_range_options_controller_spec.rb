@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DateRangeOptionsController, type: :controller do
+RSpec.describe Api::DateRangeOptionsController, type: :controller do
   describe 'GET index' do
     it 'returns a list of all account types' do
       get :index

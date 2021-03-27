@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AccountsController, type: :controller do
+RSpec.describe Api::AccountsController, type: :controller do
   describe 'GET index' do
     it 'returns a list of all accounts' do
       account = FactoryBot.create(:account, starting_balance: 1000)

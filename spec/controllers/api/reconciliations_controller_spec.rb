@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReconciliationsController, type: :controller do
+RSpec.describe Api::ReconciliationsController, type: :controller do
   describe 'GET index' do
     it 'returns all reconciliations for the account' do
       reconciliation = FactoryBot.create(:reconciliation)

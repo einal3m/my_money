@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CategoriesController, type: :controller do
+RSpec.describe Api::CategoriesController, type: :controller do
   describe 'GET index' do
     it 'returns a list of all categories' do
       category = FactoryBot.create(:category)

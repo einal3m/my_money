@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportController, type: :controller do
+RSpec.describe Api::ReportController, type: :controller do
   describe 'EOD Balance Report' do
     it 'returns an array of eod balances' do
       account_id = 11
