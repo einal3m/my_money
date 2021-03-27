@@ -1,6 +1,6 @@
-class AccountType < ClassyEnum::Base
-  include ActiveModel::Serialization
+# frozen_string_literal: true
 
+class AccountType < ClassyEnum::Base
   def code
     option.to_s
   end

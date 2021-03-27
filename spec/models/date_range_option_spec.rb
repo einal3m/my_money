@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'lib/date_range'
 
@@ -31,6 +33,4 @@ RSpec.describe DateRangeOption, type: :model do
     custom_date_range = DateRangeOption::Custom.new
     expect(custom_date_range.custom?).to be_truthy
   end
-
-
 end

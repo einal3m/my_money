@@ -1,60 +1,33 @@
 AllCops:
   Exclude:
-    - 'spec/**/*'
+    - 'config.ru'
+    - 'api/**/*'
+    - 'node_modules/**/*'
+    - 'spec/spec_helper.rb'
+    - 'spec/rails_helper.rb'
+    - 'spec/lib/**/*'
+    - 'spec/javascripts/**/*'
+    - 'spec/features/**/*'
     - 'config/**/*'
     - 'db/**/*'
     - 'bin/**/*'
     - 'web/**/*'
 
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
+
 MethodLength:
-  Max: 25 # reek performs these checks anyway
-
-WordArray:
-  Enabled: false
-
-# ParameterLists:
-#   Max: 4
-#   CountKeywordArgs: true
-
-# # Avoid more than `Max` levels of nesting.
-# BlockNesting:
-#   Max: 3
-
-# HashSyntax:
-#   Enabled: false
-
-Blocks:
-  Enabled: false
-
-SignalException:
-  Enabled: false
-
-# SpaceInsideBrackets:
-#   Enabled: false
-
-# SingleLineMethods:
-#   Enabled: false
+  Max: 15
 
 LineLength:
-  Max: 150
+  Max: 120
 
-Documentation:
+Metrics/BlockLength:
+  Exclude:  
+    - 'spec/**/*'
+
+Style/Documentation:
   Enabled: false
-
-# ClassAndModuleChildren:
-#   Enabled: false
-
-Lambda:
-  Enabled: false
-
-# FormatString:
-#   Enabled: false
-
-# PredicateName:
-#   Enabled: false
 
 ClassLength:
   Max: 120
-
-# TrivialAccessors:
-#   Enabled: false

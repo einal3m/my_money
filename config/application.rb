@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -8,48 +8,16 @@ Bundler.require(*Rails.groups)
 
 module MyMoney
   class Application < Rails::Application
+    config.api_only = true
+    
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 6.0
 
-    # autoload of lib directory
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.action_controller.allow_forgery_protection = false
 
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
-    config.generators do |g|
-      g.test_framework :rspec, 
-        :fixtures => true, 
-        :view_specs => false, 
-        :helper_specs => false, 
-        :routing_specs => false, 
-        :controller_specs => true, 
-        :request_specs => false 
-      g.fixture_replacement :factory_girl, :dir => "spec/factories" 
-    end
-
-    config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
-      allow do
-        origins 'http://localhost:8090'
-
-        resource '/cors',
-          :headers => :any,
-          :methods => [:post],
-          :credentials => true,
-          :max_age => 0
-
-        resource '*',
-          :headers => :any,
-          :methods => [:get, :post, :delete, :put, :patch, :options, :head],
-          :max_age => 0
-      end
-    end
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
   end
 end

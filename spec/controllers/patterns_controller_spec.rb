@@ -1,46 +1,61 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe PatternsController, type: :controller do
-  let(:valid_session) { {} }
-
   describe 'GET index' do
     it 'returns all patterns for given account' do
-      pattern = FactoryGirl.create(:pattern)
-      get :index, { account_id: pattern.account.id }, valid_session
+      pattern = FactoryBot.create(:pattern)
+
+      get :index, params: { account_id: pattern.account.id }
 
       json = JSON.parse(response.body)
-      expect(response).to be_success
+      expect(response.status).to eq(200)
       expect(json['patterns'].length).to eq(1)
-      expect(json['patterns'][0]).to eq(serialize_pattern(pattern))
+      expect(json['patterns'][0]).to eq(serialized_pattern(pattern))
     end
   end
 
   describe 'POST create' do
     describe 'with valid params' do
       it 'creates a new Pattern' do
-        account = FactoryGirl.create(:account)
-        expect {
-          post :create, { account_id: account.id, pattern: build_attributes(:pattern) }, valid_session
-        }.to change(Pattern, :count).by(1)
+        account = FactoryBot.create(:account)
+        category = FactoryBot.create(:category)
+        subcategory = FactoryBot.create(:subcategory)
+        pattern_attrs = FactoryBot.attributes_for(
+          :pattern,
+          account_id: account.id,
+          category_id: category.id,
+          subcategory_id: subcategory.id
+        )
+
+        expect do
+          post :create, params: { account_id: account.id, pattern: pattern_attrs }
+        end.to change(Pattern, :count).by(1)
+
+        expect(response.status).to eq(201)
 
         json = JSON.parse(response.body)
-        expect(response).to be_success
-
         pattern = Pattern.first
-        expect(json['pattern']).to eq(serialize_pattern(pattern))
+        expect(json['pattern']).to eq(serialized_pattern(pattern))
       end
     end
 
     describe 'with invalid params' do
       it 'returns an error and does not create the pattern' do
-        account = FactoryGirl.create(:account)
-        expect {
-          post :create, { account_id: account.id, pattern: build_attributes(:pattern_invalid) }, valid_session
-        }.not_to change(Pattern, :count)
+        account = FactoryBot.create(:account)
+        category = FactoryBot.create(:category)
 
-        json = JSON.parse(response.body)
+        expect do
+          post :create, params: {
+            account_id: account.id,
+            pattern: FactoryBot.attributes_for(:pattern, account_id: account.id, category_id: category.id)
+          }
+        end.not_to change(Pattern, :count)
+
         expect(response.status).to eq(422)
-        expect(json).to eq('match_text' => ["can't be blank"])
+        json = JSON.parse(response.body)
+        expect(json).to eq('subcategory' => ['must exist'])
       end
     end
   end
@@ -48,16 +63,16 @@ RSpec.describe PatternsController, type: :controller do
   describe 'PUT update' do
     context 'with valid params' do
       it 'updates the requested pattern' do
-        pattern = FactoryGirl.create(:pattern)
-        new_subcategory = FactoryGirl.create(:subcategory)
+        pattern = FactoryBot.create(:pattern)
+        new_subcategory = FactoryBot.create(:subcategory)
         new_category = new_subcategory.category
 
-        put :update, { id: pattern.id, account_id: pattern.account.id, pattern: {
+        put :update, params: { id: pattern.id, account_id: pattern.account.id, pattern: {
           match_text: 'New Text',
           notes: 'New Note',
           category_id: new_category.id,
           subcategory_id: new_subcategory.id
-        } }, valid_session
+        } }
 
         pattern.reload
         expect(pattern.match_text).to eq('New Text')
@@ -66,15 +81,20 @@ RSpec.describe PatternsController, type: :controller do
         expect(pattern.subcategory).to eq(new_subcategory)
 
         json = JSON.parse(response.body)
-        expect(response).to be_success
-        expect(json['pattern']).to eq(serialize_pattern(pattern))
+        expect(response.status).to eq(200)
+        expect(json['pattern']).to eq(serialized_pattern(pattern))
       end
     end
 
     context 'with invalid params' do
       it 'assigns the pattern as @pattern' do
-        pattern = FactoryGirl.create(:pattern)
-        put :update, { id: pattern.id, account_id: pattern.account.id, pattern: build_attributes(:pattern_invalid) }, valid_session
+        pattern = FactoryBot.create(:pattern)
+
+        put :update, params: {
+          id: pattern.id,
+          account_id: pattern.account.id,
+          pattern: FactoryBot.attributes_for(:pattern_invalid)
+        }
 
         json = JSON.parse(response.body)
         expect(response.status).to eq(422)
@@ -85,11 +105,24 @@ RSpec.describe PatternsController, type: :controller do
 
   describe 'DELETE destroy' do
     it 'destroys the requested pattern' do
-      pattern = FactoryGirl.create(:pattern)
-      expect {
-        delete :destroy, { id: pattern.id, account_id: pattern.account.id }, valid_session
-      }.to change(Pattern, :count).by(-1)
-      expect(response).to be_success
+      pattern = FactoryBot.create(:pattern)
+
+      expect do
+        delete :destroy, params: { id: pattern.id, account_id: pattern.account.id }
+      end.to change(Pattern, :count).by(-1)
+
+      expect(response.status).to eq(204)
     end
+  end
+
+  def serialized_pattern(pattern)
+    {
+      'id' => pattern.id,
+      'account_id' => pattern.account_id,
+      'category_id' => pattern.category_id,
+      'subcategory_id' => pattern.subcategory_id,
+      'match_text' => pattern.match_text,
+      'notes' => pattern.notes
+    }
   end
 end

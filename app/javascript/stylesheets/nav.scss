@@ -1,0 +1,37 @@
+@import 'colours';
+
+.navbar {
+  border-top: solid 12px $main-color;
+  border-bottom: solid 3px $main-color;
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  color: $main-color;
+
+  .navbar-brand {
+    font-size:32px;
+    padding-bottom: 10px;
+  }
+
+  .navbar-brand a {
+  	color: $main-color;
+  }
+
+  a:hover {
+  	text-decoration: none;
+  }
+}
+
+.page-footer {
+	background-color: $grey-background-color;
+	padding: 20px 50px 20px 50px;
+	
+	a {
+		color: $main-color;
+	}
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}

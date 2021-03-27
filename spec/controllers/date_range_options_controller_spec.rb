@@ -1,23 +1,55 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe DateRangeOptionsController, type: :controller do
-  let(:valid_session) { {} }
-
   describe 'GET index' do
     it 'returns a list of all account types' do
-      get :index, {}, valid_session
-      expect(response).to be_success
+      get :index
+
+      expect(response.status).to eq(200)
       json = JSON.parse(response.body)
 
       expect(json['date_range_options'].length).to eq(6)
-      expect(json['date_range_options'][0]).to include({ 'id' => 1, 'name' => 'Current Month', 'default' => true, 'custom' => false })
+      expect(json['date_range_options'][0]).to include(
+        'id' => 1,
+        'name' => 'Current Month',
+        'default' => true,
+        'custom' => false
+      )
       expect(json['date_range_options'][0]).to have_key('from_date')
       expect(json['date_range_options'][0]).to have_key('to_date')
-      expect(json['date_range_options'][1]).to include({ 'id' => 2, 'name' => 'Custom Dates', 'default' => false, 'custom' => true })
-      expect(json['date_range_options'][2]).to include({ 'id' => 3, 'name' => 'Current Financial Year', 'default' => false, 'custom' => false })
-      expect(json['date_range_options'][3]).to include({ 'id' => 4, 'name' => 'Previous Financial Year', 'default' => false, 'custom' => false })
-      expect(json['date_range_options'][4]).to include({ 'id' => 5, 'name' => 'Last 90 Days', 'default' => false, 'custom' => false })
-      expect(json['date_range_options'][5]).to include({ 'id' => 6, 'name' => 'Last 12 Months', 'default' => false, 'custom' => false })
+
+      expect(json['date_range_options'][1]).to include(
+        'id' => 2,
+        'name' => 'Custom Dates',
+        'default' => false,
+        'custom' => true
+      )
+      expect(json['date_range_options'][2]).to include(
+        'id' => 3,
+        'name' => 'Current Financial Year',
+        'default' => false,
+        'custom' => false
+      )
+      expect(json['date_range_options'][3]).to include(
+        'id' => 4,
+        'name' => 'Previous Financial Year',
+        'default' => false,
+        'custom' => false
+      )
+      expect(json['date_range_options'][4]).to include(
+        'id' => 5,
+        'name' => 'Last 90 Days',
+        'default' => false,
+        'custom' => false
+      )
+      expect(json['date_range_options'][5]).to include(
+        'id' => 6,
+        'name' => 'Last 12 Months',
+        'default' => false,
+        'custom' => false
+      )
     end
   end
 end

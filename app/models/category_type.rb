@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 #
 #  CategoryType
 #
 #  id: int, primary key
 #  name: string
 #
-class CategoryType < ActiveRecord::Base
+class CategoryType < ApplicationRecord
   validates :name, presence: true
   has_many :categories
 

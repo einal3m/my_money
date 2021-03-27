@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 #  Account
 #
@@ -8,7 +10,7 @@
 #  starting_balance: decimal
 #  starting_date: date
 #
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   include ClassyEnum::ActiveRecord
   classy_enum_attr :account_type
 
@@ -57,7 +59,7 @@ class Account < ActiveRecord::Base
   # exist, then the starting balance of the account
   def current_balance
     # if there are no transactions, return starting balance of account
-    return starting_balance if transactions.length == 0
+    return starting_balance if transactions.empty?
 
     # otherwise return balance of last transaction
     transactions.order(date: :asc, id: :asc).last.balance

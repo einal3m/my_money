@@ -1,15 +1,15 @@
-FactoryGirl.define do
+# frozen_string_literal: true
 
-  factory :pattern do |f|
-  	account
-  	f.match_text "New Pattern"
-  	f.notes "Pattern Note"
-  	category
-  	subcategory
+FactoryBot.define do
+  factory :pattern do
+    account
+    match_text { 'New Pattern' }
+    notes { 'Pattern Note' }
+    category
+    subcategory
   end
 
-  factory :pattern_invalid, parent: :pattern do |f|
-    f.match_text nil
+  factory :pattern_invalid, parent: :pattern do
+    match_text { nil }
   end
-
 end

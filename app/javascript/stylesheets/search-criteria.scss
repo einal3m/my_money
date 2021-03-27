@@ -1,0 +1,90 @@
+@import './colours.scss';
+
+.search-criteria {
+  border-bottom: 2px solid $grey-background-color;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin: 10px;
+  width: 30%;  
+
+  .control-label {
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .Select {
+    width: 100%;
+  }
+}
+
+.date-range-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 10px;
+  width: 100%;
+
+  .form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 30%;
+    margin-bottom: 0px;
+  }
+
+  .control-label {
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .Select {
+    width: 100%;
+  }
+}
+
+.description-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 30%;
+
+  .control-label {
+    padding-right: 10px;
+    font-weight: bold;
+    width: 50%;
+  }
+}
+
+.category-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 10px;
+  width: 50%;
+
+  .control-label {
+    padding-right: 10px;
+    font-weight: bold;
+    width: 50%;
+  }
+
+  .Select {
+    width: 100%;
+  }
+}

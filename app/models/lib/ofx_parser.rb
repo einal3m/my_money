@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   class OfxParser < Lib::Parser
     STMTTRN = '<STMTTRN>'
@@ -8,7 +10,7 @@ module Lib
       'TRNAMT' => 'amount',
       'FITID' => 'fitid',
       'MEMO' => 'memo'
-    }
+    }.freeze
 
     def initialize(file)
       @file = file
@@ -25,18 +27,18 @@ module Lib
       txn_array = []
 
       ofx_array.each_with_index do |ofx, i|
-        txn_array << parse_txn(ofx_array, i) if (ofx == STMTTRN)
+        txn_array << parse_txn(ofx_array, i) if ofx == STMTTRN
       end
 
       txn_array
     end
 
-    def parse_txn(ofx_array, i)
+    def parse_txn(ofx_array, index)
       transaction = ImportedTransaction.new
-      while (ofx_array[i] != END_STMTTRN)
-        code, value = parse_line(ofx_array[i])
+      while ofx_array[index] != END_STMTTRN
+        code, value = parse_line(ofx_array[index])
         build_transaction(transaction, code, value)
-        i += 1
+        index += 1
       end
       transaction
     end

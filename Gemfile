@@ -1,66 +1,65 @@
-source 'http://rubygems.org'
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.2'
+gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.4'
+# Use Puma as the app server
+gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-gem 'active_model_serializers'
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer',  platforms: :ruby
+gem 'sass-rails', '>= 6'
+# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
+gem 'webpacker', '~> 4.0'
+gem 'react-rails'
 
-gem 'autoprefixer-rails'
-
-gem 'webrick', '1.3.1'
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'jquery-turbolinks'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0',          group: :doc
-
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
-
-# static models
+gem 'jbuilder', '~> 2.7'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 4.0'
+# Use Active Model has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+gem 'active_model_serializers'
 gem 'classy_enum'
 
-# graphics for reports
-gem 'd3-rails'
+# Use Active Storage variant
+# gem 'image_processing', '~> 1.2'
 
-# for cross origin requests
-gem 'rack-cors', require: 'rack/cors'
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.4.2', require: false
+
+group :development, :test do
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+end
+
+group :development do
+  gem 'rubocop'
+
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'web-console', '>= 3.3.0'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :test do
+  gem 'database_cleaner-active_record'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
+
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
+  # Easy installation and use of web drivers to run system tests with browsers
+  gem 'webdrivers'
+end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-
-# frontend
-gem 'rails-backbone'
-gem 'bootstrap-sass', '~> 3.2.0.0'
-gem 'handlebars_assets', '~> 0.6.2'
-gem 'font-awesome-rails', '~> 4.0.3.1'
-gem 'bootstrap-datepicker-rails'
-gem 'accountingjs-rails'
-gem 'backbone-validation-rails'
-
-gem 'therubyracer', platforms: :ruby
-
-# testing
-group :development, :test do
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
-  gem 'database_cleaner'
-  gem 'jasmine'
-  gem 'jslint_on_rails'
-  gem 'rubocop'
-  gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'simplecov', '~> 0.9.0', require: false
-  gem 'classify'
-end
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'exceptions/my_money_error'
 
 class SubcategoryDestroyer
@@ -11,7 +13,9 @@ class SubcategoryDestroyer
   end
 
   def validate_subcategory
-    raise MyMoneyError, 'Cannot delete a subcategory that has been allocated to transactions' if @subcategory.transactions.length > 0
-    raise MyMoneyError, 'Cannot delete a subcategory that is assigned to patterns' if @subcategory.patterns.length > 0
+    unless @subcategory.transactions.empty?
+      raise MyMoneyError, 'Cannot delete a subcategory that has been allocated to transactions'
+    end
+    raise MyMoneyError, 'Cannot delete a subcategory that is assigned to patterns' unless @subcategory.patterns.empty?
   end
 end

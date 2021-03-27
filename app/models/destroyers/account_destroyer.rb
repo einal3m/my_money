@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'exceptions/my_money_error'
 
 class AccountDestroyer
@@ -11,6 +13,6 @@ class AccountDestroyer
   end
 
   def validate_account
-    raise MyMoneyError, 'Cannot delete an account that has transactions' if @account.transactions.length > 0
+    raise MyMoneyError, 'Cannot delete an account that has transactions' unless @account.transactions.empty?
   end
 end

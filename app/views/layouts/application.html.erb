@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Money</title>
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' integrity='sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==' crossorigin='anonymous'>
-    <link rel="stylesheet" href="https://unpkg.com/react-select-plus/dist/react-select-plus.css">
-    <link rel='stylesheet' href='bundle.css'>
+    <title>MyMoney</title>
+    <%= csrf_meta_tags %>
+
+    <script src="https://kit.fontawesome.com/c87c821e90.js" crossorigin="anonymous"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <%= javascript_pack_tag 'application' %>
   </head>
   <body>
-    <div id='host' class='hidden'><%= request.host %>:<%= request.port %></div>
-    <div id='app'></div>
-    <script src='vendor.bundle.js'></script>
-    <script src='bundle.js'></script>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

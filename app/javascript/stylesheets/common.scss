@@ -1,0 +1,227 @@
+@import 'colours';
+
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.click-me {
+  cursor: pointer;
+}
+
+.sticky {
+  z-index: 1000;
+}
+
+.page-title .button-group, .account .button-group, .file-chooser {
+  button {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+    margin-left: 10px;
+  }
+
+  button:hover {
+    background-color: $main-color-dark;
+    border: solid 1px transparent;
+  }
+
+  button:not(:disabled):active {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark !important;
+  }
+
+  button:not(:disabled):focus {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark
+  }
+}
+
+.file-chooser {
+  display: flex;
+  align-items: baseline;
+
+  label {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  label:hover {
+    background-color: $main-color-dark;
+    border: solid 1px transparent;
+  }
+
+  label:not(:disabled):active {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark !important;
+  }
+
+  label:not(:disabled):focus {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark
+  }
+}
+
+.modal-content .modal-footer {
+  button.btn-success {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  button.btn-success:hover {
+    background-color: $main-color-dark;
+    border: solid 1px transparent;
+  }
+
+  button.btn-success:not(:disabled):active {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark !important;
+  }
+
+  button.btn-success:not(:disabled):focus {
+    background-color: $main-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $main-color-dark
+  }
+}
+
+.modal-content .modal-footer {
+  button.btn-default {
+    background-color: $light-grey-background-color;
+    border: solid 1px transparent;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+  }
+
+  button.btn-default:hover {
+    background-color: $grey-background-color;
+    border: solid 1px transparent;
+  }
+
+  button.btn-default:not(:disabled):active {
+    background-color: $light-grey-background-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $grey-background-color !important;
+  }
+
+  button.btn-default:not(:disabled):focus {
+    background-color: $light-grey-background-color;
+    border: solid 1px transparent;
+    box-shadow: 0 0 0 1pt $grey-background-color;
+  }
+}
+
+.button-group.button-group-small button{
+  padding: .2rem;
+
+}
+
+.button-group.button-group-small  .dropdown-toggle::after {
+  display: none;
+}
+
+.button-group.button-group-secondary {
+  button {
+    background-color: $grey-background-color;
+    color: black;
+  }
+
+  button:hover {
+    background-color: $dark-grey-background-color;
+    color: black;
+  }
+
+  button:not(:disabled):active {
+    background-color: $grey-background-color;
+    box-shadow: 0 0 0 1pt $dark-grey-background-color !important;
+    color: black;
+  }
+
+  button:not(:disabled):focus {
+    background-color: $grey-background-color;
+    box-shadow: 0 0 0 1pt $dark-grey-background-color;
+    color: black;
+  }
+}
+
+.flex-group-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px;
+}
+
+.flex-group-row > div {
+  width: calc(1/2*100% - (1 - 1/2)*10px);
+}
+
+.page-title {
+  background-color: $grey-background-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem 1rem;
+
+  .title-group {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+  }
+
+  .status {
+    padding-left: 10px;
+    font-size: smaller;
+
+    .error {
+      color: darkred;
+
+      .fa {
+        padding-left: 5px;
+      }
+    }
+  }
+}
+
+h3 {
+  color: $main-color;
+}
+
+.currency {
+  text-align: right;
+}
+
+.dollars {
+  font-size: larger;
+}
+
+.modal-dialog.modal-sm {
+  width: 400px;
+}
+
+.tab-content {
+  margin-top: 10px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.empty-state {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

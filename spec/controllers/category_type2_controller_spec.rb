@@ -1,13 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CategoryType2Controller, type: :controller do
-  let(:valid_session) { {} }
-
   describe 'GET index' do
     it 'returns a list of all category types' do
-      get :index, {}, valid_session
+      get :index
 
-      expect(response).to be_success
+      expect(response.status).to eq(200)
 
       json = JSON.parse(response.body)
 

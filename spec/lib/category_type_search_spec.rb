@@ -3,18 +3,18 @@ require 'lib/date_range'
 
 RSpec.describe Lib::CategorySearch, type: :class do
   before :each do
-    @ct = FactoryGirl.create(:category_type, name: 'Expense')
-    @c1 = FactoryGirl.create(:category, category_type: @ct, name: 'B')
-    @c2 = FactoryGirl.create(:category, category_type: @ct, name: 'A')
-    @sc = FactoryGirl.create(:subcategory, category: @c1)
+    @ct = FactoryBot.create(:category_type, name: 'Expense')
+    @c1 = FactoryBot.create(:category, category_type: @ct, name: 'B')
+    @c2 = FactoryBot.create(:category, category_type: @ct, name: 'A')
+    @sc = FactoryBot.create(:subcategory, category: @c1)
 
-    @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', category: @c1, amount: 400, subcategory: nil)
-    @t2 = FactoryGirl.create(:transaction, date: '2014-01-02', category: @c1, subcategory: @sc, amount: 1000)
-    @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200)
-    @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @c2, subcategory: nil, amount: 1500)
-    @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
-    @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @c2, subcategory: nil)
-    @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
+    @t1 = FactoryBot.create(:transaction, date: '2014-01-01', category: @c1, amount: 400, subcategory: nil)
+    @t2 = FactoryBot.create(:transaction, date: '2014-01-02', category: @c1, subcategory: @sc, amount: 1000)
+    @t3 = FactoryBot.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200)
+    @t4 = FactoryBot.create(:transaction, date: '2014-02-02', category: @c2, subcategory: nil, amount: 1500)
+    @t5 = FactoryBot.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
+    @t6 = FactoryBot.create(:transaction, date: '2014-03-02', category: @c2, subcategory: nil)
+    @t7 = FactoryBot.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
 
     @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
     @search = Lib::CategoryTypeSearch.new(date_range: @dr, category_type: @ct)

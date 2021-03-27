@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'lib/date_range'
 #
@@ -15,7 +17,7 @@ require 'lib/date_range'
 #
 RSpec.describe Transaction, type: :model do
   it 'has a valid factory' do
-    t = FactoryGirl.create(:transaction)
+    t = FactoryBot.create(:transaction)
 
     expect(t).to be_valid
     expect(t).to be_a(Transaction)
@@ -23,37 +25,37 @@ RSpec.describe Transaction, type: :model do
 
   describe 'validations' do
     it 'is invalid without a date' do
-      expect(FactoryGirl.build(:transaction, date: nil)).not_to be_valid
+      expect(FactoryBot.build(:transaction, date: nil)).not_to be_valid
     end
 
     it 'is invalid without an account' do
-      expect(FactoryGirl.build(:transaction, account: nil)).not_to be_valid
+      expect(FactoryBot.build(:transaction, account: nil)).not_to be_valid
     end
 
     it 'is invalid without an amount' do
-      expect(FactoryGirl.build(:transaction, amount: nil)).not_to be_valid
+      expect(FactoryBot.build(:transaction, amount: nil)).not_to be_valid
     end
 
     it 'is invalid when amount is not a number' do
-      expect(FactoryGirl.build(:transaction, amount: 'Amount')).not_to be_valid
+      expect(FactoryBot.build(:transaction, amount: 'Amount')).not_to be_valid
     end
 
     it 'is invalid without a transaction type' do
-      expect(FactoryGirl.build(:transaction, transaction_type: nil)).not_to be_valid
+      expect(FactoryBot.build(:transaction, transaction_type: nil)).not_to be_valid
     end
 
     it 'is invalid with subcategory without category' do
-      expect(FactoryGirl.build(:transaction, subcategory_id: 1)).not_to be_valid
+      expect(FactoryBot.build(:transaction, subcategory_id: 1)).not_to be_valid
     end
 
     it 'is invalid if matching_transaction is in same account' do
-      matching_txn = FactoryGirl.create(:transaction, amount: 111)
-      expect(FactoryGirl.build(
+      matching_txn = FactoryBot.create(:transaction, amount: 111)
+      expect(FactoryBot.build(
         :transaction,
         amount: -111,
         matching_transaction_id: matching_txn.id
       )).to be_valid
-      expect(FactoryGirl.build(
+      expect(FactoryBot.build(
         :transaction,
         account_id: matching_txn.account_id,
         amount: -111,
@@ -62,14 +64,14 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'is invalid if the matching transaction has a different date' do
-      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
-      expect(FactoryGirl.build(
+      matching_txn = FactoryBot.create(:transaction, date: '2016-12-19', amount: 111)
+      expect(FactoryBot.build(
         :transaction,
         date: '2016-12-19',
         amount: -111,
         matching_transaction_id: matching_txn.id
       )).to be_valid
-      expect(FactoryGirl.build(
+      expect(FactoryBot.build(
         :transaction,
         date: '2016-12-20',
         amount: -111,
@@ -78,14 +80,14 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'is invalid if the matching transaction has a different amount' do
-      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
-      expect(FactoryGirl.build(
+      matching_txn = FactoryBot.create(:transaction, date: '2016-12-19', amount: 111)
+      expect(FactoryBot.build(
         :transaction,
         date: '2016-12-19',
         amount: -111,
         matching_transaction_id: matching_txn.id
       )).to be_valid
-      expect(FactoryGirl.build(
+      expect(FactoryBot.build(
         :transaction,
         date: '2016-12-19',
         amount: -1111,
@@ -94,10 +96,10 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'is invalid if the matching transaction is already matched' do
-      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
-      FactoryGirl.create(:transaction, date: '2016-12-19', amount: -111, matching_transaction_id: matching_txn.id)
+      matching_txn = FactoryBot.create(:transaction, date: '2016-12-19', amount: 111)
+      FactoryBot.create(:transaction, date: '2016-12-19', amount: -111, matching_transaction_id: matching_txn.id)
 
-      expect(FactoryGirl.build(
+      expect(FactoryBot.build(
         :transaction,
         date: '2016-12-19',
         amount: -111,
@@ -106,9 +108,9 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'is invalid if both matching transaction and category are set' do
-      matching_txn = FactoryGirl.create(:transaction, date: '2016-12-19', amount: 111)
+      matching_txn = FactoryBot.create(:transaction, date: '2016-12-19', amount: 111)
 
-      expect(FactoryGirl.build(
+      expect(FactoryBot.build(
         :transaction,
         date: '2016-12-19',
         amount: -111,
@@ -120,133 +122,133 @@ RSpec.describe Transaction, type: :model do
 
   describe 'relationships' do
     it 'belongs to account' do
-      a = FactoryGirl.create(:account)
-      expect(FactoryGirl.create(:transaction, account: a).account).to eq(a)
+      a = FactoryBot.create(:account)
+      expect(FactoryBot.create(:transaction, account: a).account).to eq(a)
     end
 
     it 'belongs to category' do
-      c = FactoryGirl.create(:category)
-      expect(FactoryGirl.create(:transaction, category: c).category).to eq(c)
+      c = FactoryBot.create(:category)
+      expect(FactoryBot.create(:transaction, category: c).category).to eq(c)
     end
 
     it 'belongs to subcategory' do
-      s = FactoryGirl.create(:subcategory)
-      expect(FactoryGirl.create(:transaction, category: s.category, subcategory: s).subcategory).to eq(s)
+      s = FactoryBot.create(:subcategory)
+      expect(FactoryBot.create(:transaction, category: s.category, subcategory: s).subcategory).to eq(s)
     end
 
     it 'belongs to reconciliation' do
-      r = FactoryGirl.create(:reconciliation)
-      expect(FactoryGirl.create(:transaction, reconciliation: r).reconciliation).to eq(r)
+      r = FactoryBot.create(:reconciliation)
+      expect(FactoryBot.create(:transaction, reconciliation: r).reconciliation).to eq(r)
     end
 
     it 'belongs to bank statement' do
-      bs = FactoryGirl.create(:bank_statement)
-      expect(FactoryGirl.create(:transaction, bank_statement: bs).bank_statement).to eq(bs)
+      bs = FactoryBot.create(:bank_statement)
+      expect(FactoryBot.create(:transaction, bank_statement: bs).bank_statement).to eq(bs)
     end
 
     it 'has one matching transaction' do
-      matching_txn = FactoryGirl.create(:transaction, amount: 111)
-      matched_txn = FactoryGirl.create(:transaction, matching_transaction: matching_txn, amount: -111)
+      matching_txn = FactoryBot.create(:transaction, amount: 111)
+      matched_txn = FactoryBot.create(:transaction, matching_transaction: matching_txn, amount: -111)
       expect(matched_txn.matching_transaction).to eq(matching_txn)
     end
   end
 
   describe 'scopes' do
     it 'finds unreconciled transactions' do
-      r = FactoryGirl.create(:reconciliation)
-      FactoryGirl.create(:transaction)
-      FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
-      FactoryGirl.create(:transaction, account: r.account, reconciliation: nil)
+      r = FactoryBot.create(:reconciliation)
+      FactoryBot.create(:transaction)
+      FactoryBot.create(:transaction, account: r.account, reconciliation: nil)
+      FactoryBot.create(:transaction, account: r.account, reconciliation: nil)
 
       expect(Transaction.unreconciled(r.account).length).to eq(2)
     end
 
     it 'orders transactions by date, then id' do
-      t1 = FactoryGirl.create(:transaction, date: '2014-01-01')
-      t2 = FactoryGirl.create(:transaction, date: '2014-01-02')
-      t3 = FactoryGirl.create(:transaction, date: '2014-01-03')
-      t4 = FactoryGirl.create(:transaction, date: '2014-01-01')
-      t5 = FactoryGirl.create(:transaction, date: '2014-01-02')
+      t1 = FactoryBot.create(:transaction, date: '2014-01-01')
+      t2 = FactoryBot.create(:transaction, date: '2014-01-02')
+      t3 = FactoryBot.create(:transaction, date: '2014-01-03')
+      t4 = FactoryBot.create(:transaction, date: '2014-01-01')
+      t5 = FactoryBot.create(:transaction, date: '2014-01-02')
 
       expect(Transaction.date_order).to eq([t1, t4, t2, t5, t3])
     end
 
     it 'orders transactions in reverse' do
-      t1 = FactoryGirl.create(:transaction, date: '2014-01-01')
-      t2 = FactoryGirl.create(:transaction, date: '2014-01-02')
-      t3 = FactoryGirl.create(:transaction, date: '2014-01-03')
-      t4 = FactoryGirl.create(:transaction, date: '2014-01-01')
-      t5 = FactoryGirl.create(:transaction, date: '2014-01-02')
+      t1 = FactoryBot.create(:transaction, date: '2014-01-01')
+      t2 = FactoryBot.create(:transaction, date: '2014-01-02')
+      t3 = FactoryBot.create(:transaction, date: '2014-01-03')
+      t4 = FactoryBot.create(:transaction, date: '2014-01-01')
+      t5 = FactoryBot.create(:transaction, date: '2014-01-02')
 
       expect(Transaction.reverse_date_order).to eq([t3, t5, t2, t4, t1])
     end
 
     it 'finds transactions given a date range object' do
-      FactoryGirl.create(:transaction, date: '2014-01-01')
-      t2 = FactoryGirl.create(:transaction, date: '2014-01-03')
-      FactoryGirl.create(:transaction, date: '2014-01-05')
-      t4 = FactoryGirl.create(:transaction, date: '2014-01-02')
-      t5 = FactoryGirl.create(:transaction, date: '2014-01-04')
+      FactoryBot.create(:transaction, date: '2014-01-01')
+      t2 = FactoryBot.create(:transaction, date: '2014-01-03')
+      FactoryBot.create(:transaction, date: '2014-01-05')
+      t4 = FactoryBot.create(:transaction, date: '2014-01-02')
+      t5 = FactoryBot.create(:transaction, date: '2014-01-04')
       dr = Lib::CustomDateRange.new(from_date: '2014-01-02', to_date: '2014-01-04')
 
       expect(Transaction.find_by_date(dr)).to eq([t2, t4, t5])
     end
 
     it 'finds transactions given two dates' do
-      FactoryGirl.create(:transaction, date: '2014-01-01')
-      t2 = FactoryGirl.create(:transaction, date: '2014-01-03')
-      FactoryGirl.create(:transaction, date: '2014-01-05')
-      t4 = FactoryGirl.create(:transaction, date: '2014-01-02')
-      t5 = FactoryGirl.create(:transaction, date: '2014-01-04')
+      FactoryBot.create(:transaction, date: '2014-01-01')
+      t2 = FactoryBot.create(:transaction, date: '2014-01-03')
+      FactoryBot.create(:transaction, date: '2014-01-05')
+      t4 = FactoryBot.create(:transaction, date: '2014-01-02')
+      t5 = FactoryBot.create(:transaction, date: '2014-01-04')
 
       expect(Transaction.find_by_dates('2014-01-02', '2014-01-04')).to eq([t2, t4, t5])
     end
 
     it 'finds transactions given an account type' do
-      @share_account = FactoryGirl.create(:account, account_type: AccountType::Share)
-      FactoryGirl.create(:transaction)
-      t1 = FactoryGirl.create(:transaction, account: @share_account)
+      @share_account = FactoryBot.create(:account, account_type: AccountType::Share)
+      FactoryBot.create(:transaction)
+      t1 = FactoryBot.create(:transaction, account: @share_account)
 
       expect(Transaction.for_account_type(AccountType::Share)).to eq([t1])
     end
 
     it 'finds transactions for banking type accounts' do
-      @share_account = FactoryGirl.create(:account, account_type: AccountType::Share)
-      @loan_account = FactoryGirl.create(:account, account_type: AccountType::Loan)
-      @savings_account = FactoryGirl.create(:account, account_type: AccountType::Savings)
-      FactoryGirl.create(:transaction, account: @share_account)
-      t2 = FactoryGirl.create(:transaction, account: @loan_account)
-      t3 = FactoryGirl.create(:transaction, account: @savings_account)
+      @share_account = FactoryBot.create(:account, account_type: AccountType::Share)
+      @loan_account = FactoryBot.create(:account, account_type: AccountType::Loan)
+      @savings_account = FactoryBot.create(:account, account_type: AccountType::Savings)
+      FactoryBot.create(:transaction, account: @share_account)
+      t2 = FactoryBot.create(:transaction, account: @loan_account)
+      t3 = FactoryBot.create(:transaction, account: @savings_account)
 
       expect(Transaction.for_banking_accounts).to eq([t2, t3])
     end
 
     it 'finds transactions with given string in notes or memo' do
-      FactoryGirl.create(:transaction, notes: 'anything', memo: '')
-      t2 = FactoryGirl.create(:transaction, notes: 'for Mel', memo: 'melanie')
-      FactoryGirl.create(:transaction, notes: 'another thing', memo: '')
-      t4 = FactoryGirl.create(:transaction, notes: 'blah', memo: 'Mel')
-      t5 = FactoryGirl.create(:transaction, notes: 'melanie', memo: 'anything')
+      FactoryBot.create(:transaction, notes: 'anything', memo: '')
+      t2 = FactoryBot.create(:transaction, notes: 'for Mel', memo: 'melanie')
+      FactoryBot.create(:transaction, notes: 'another thing', memo: '')
+      t4 = FactoryBot.create(:transaction, notes: 'blah', memo: 'Mel')
+      t5 = FactoryBot.create(:transaction, notes: 'melanie', memo: 'anything')
 
       expect(Transaction.find_by_description('mel')).to eq([t2, t4, t5])
     end
 
     it 'finds transactions from other accounts which match given params, and are unmatched' do
-      a1 = FactoryGirl.create(:account)
-      a2 = FactoryGirl.create(:account)
+      a1 = FactoryBot.create(:account)
+      a2 = FactoryBot.create(:account)
 
       date = '2014-07-01'
       amount = 333
 
-      t0 = FactoryGirl.create(:transaction, account: a1, date: date, amount: amount)
-      t1 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
-      t2 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
-      FactoryGirl.create(:transaction, account: a1, date: date, amount: amount, matching_transaction_id: t2.id)
-      FactoryGirl.create(:transaction, account: a2, date: date, amount: amount)
-      FactoryGirl.create(:transaction, account: a1, date: date, amount: -amount)
-      FactoryGirl.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
-      FactoryGirl.create(:transaction, account: a2, date: date, amount: 444)
-      t6 = FactoryGirl.create(:transaction, account: a2, date: date, amount: -amount)
+      FactoryBot.create(:transaction, account: a1, date: date, amount: amount)
+      t1 = FactoryBot.create(:transaction, account: a2, date: date, amount: -amount)
+      t2 = FactoryBot.create(:transaction, account: a2, date: date, amount: -amount)
+      FactoryBot.create(:transaction, account: a1, date: date, amount: amount, matching_transaction_id: t2.id)
+      FactoryBot.create(:transaction, account: a2, date: date, amount: amount)
+      FactoryBot.create(:transaction, account: a1, date: date, amount: -amount)
+      FactoryBot.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
+      FactoryBot.create(:transaction, account: a2, date: date, amount: 444)
+      t6 = FactoryBot.create(:transaction, account: a2, date: date, amount: -amount)
 
       expect(Transaction.find_matching(date, amount, a1)).to eq([t1, t6])
     end
@@ -254,14 +256,14 @@ RSpec.describe Transaction, type: :model do
 
   describe 'initialize' do
     it 'sets add to reconciliation to false' do
-      expect(FactoryGirl.create(:transaction).add_to_reconciliation).to eq(false)
+      expect(FactoryBot.create(:transaction).add_to_reconciliation).to eq(false)
     end
   end
 
   describe 'matching transaction callbacks' do
     it 'on create sets the other transactions matching id' do
-      transaction1 = FactoryGirl.create(:transaction, amount: 11)
-      transaction2 = FactoryGirl.create(:transaction, amount: -11, matching_transaction_id: transaction1.id)
+      transaction1 = FactoryBot.create(:transaction, amount: 11)
+      transaction2 = FactoryBot.create(:transaction, amount: -11, matching_transaction_id: transaction1.id)
 
       transaction1.reload
       transaction2.reload
@@ -271,8 +273,8 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'on update sets the other transactions matching id' do
-      transaction1 = FactoryGirl.create(:transaction, amount: 11)
-      transaction2 = FactoryGirl.create(:transaction, amount: -11)
+      transaction1 = FactoryBot.create(:transaction, amount: 11)
+      transaction2 = FactoryBot.create(:transaction, amount: -11)
 
       transaction1.update(matching_transaction_id: transaction2.id)
 
@@ -284,8 +286,8 @@ RSpec.describe Transaction, type: :model do
     end
 
     it 'on update resets old matching transaction to nil' do
-      transaction1 = FactoryGirl.create(:transaction, amount: 11)
-      transaction2 = FactoryGirl.create(:transaction, amount: -11, matching_transaction_id: transaction1.id)
+      transaction1 = FactoryBot.create(:transaction, amount: 11)
+      transaction2 = FactoryBot.create(:transaction, amount: -11, matching_transaction_id: transaction1.id)
 
       transaction1.reload
       transaction2.reload
@@ -305,12 +307,12 @@ RSpec.describe Transaction, type: :model do
 
   describe 'balance callbacks' do
     before :each do
-      account = FactoryGirl.create(:account, starting_balance: 11_010, starting_date: '2014-08-19')
-      @transaction1 = FactoryGirl.create(:transaction, account: account, date: '2014-08-23', amount: 5520)
-      @transaction2 = FactoryGirl.create(:transaction, account: account, date: '2014-08-21', amount: 2225)
-      @transaction3 = FactoryGirl.create(:transaction, account: account, date: '2014-08-24', amount: 3333)
-      @transaction4 = FactoryGirl.create(:transaction, account: account, date: '2014-08-23', amount: 4444)
-      @transaction5 = FactoryGirl.create(:transaction, account: account, date: '2014-08-23', amount: 1000)
+      account = FactoryBot.create(:account, starting_balance: 11_010, starting_date: '2014-08-19')
+      @transaction1 = FactoryBot.create(:transaction, account: account, date: '2014-08-23', amount: 5520)
+      @transaction2 = FactoryBot.create(:transaction, account: account, date: '2014-08-21', amount: 2225)
+      @transaction3 = FactoryBot.create(:transaction, account: account, date: '2014-08-24', amount: 3333)
+      @transaction4 = FactoryBot.create(:transaction, account: account, date: '2014-08-23', amount: 4444)
+      @transaction5 = FactoryBot.create(:transaction, account: account, date: '2014-08-23', amount: 1000)
     end
 
     describe 'before create' do
@@ -361,6 +363,7 @@ RSpec.describe Transaction, type: :model do
         expect(@transaction5.balance).to eq(24_199)
         expect(@transaction3.balance).to eq(27_532)
       end
+
       it 'updates the balances when date is changed to a later date' do
         @transaction1.update(date: '2014-08-25')
 

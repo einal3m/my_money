@@ -3,19 +3,19 @@ require 'lib/date_range'
 
 RSpec.describe Lib::CategorySearch, type: :class do
   before :each do
-    @share_account = FactoryGirl.create(:account, account_type: AccountType::Share.new)
-    @loan_account = FactoryGirl.create(:account, account_type: AccountType::Loan.new)
-    @c = FactoryGirl.create(:category)
-    @t1 = FactoryGirl.create(:transaction, date: '2014-01-01', amount: 400, category: @c, subcategory: nil)
-    @t2 = FactoryGirl.create(:transaction, account: @loan_account, date: '2014-01-02', category: @t1.category, subcategory: nil, amount: 1000)
-    @t3 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
-    @t4 = FactoryGirl.create(:transaction, date: '2014-02-02', category: @t1.category, subcategory: nil, amount: 1500)
-    @t5 = FactoryGirl.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
-    @t6 = FactoryGirl.create(:transaction, date: '2014-03-02', category: @t1.category, subcategory: nil)
-    @t7 = FactoryGirl.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
-    @t8 = FactoryGirl.create(:transaction, account: @share_account, date: '2014-01-13', category: @t1.category, subcategory: nil)
-    @t9 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
-    @t10 = FactoryGirl.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200, matching_transaction: @t9)
+    @share_account = FactoryBot.create(:account, account_type: AccountType::Share.new)
+    @loan_account = FactoryBot.create(:account, account_type: AccountType::Loan.new)
+    @c = FactoryBot.create(:category)
+    @t1 = FactoryBot.create(:transaction, date: '2014-01-01', amount: 400, category: @c, subcategory: nil)
+    @t2 = FactoryBot.create(:transaction, account: @loan_account, date: '2014-01-02', category: @t1.category, subcategory: nil, amount: 1000)
+    @t3 = FactoryBot.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
+    @t4 = FactoryBot.create(:transaction, date: '2014-02-02', category: @t1.category, subcategory: nil, amount: 1500)
+    @t5 = FactoryBot.create(:transaction, date: '2014-01-03', category: nil, subcategory: nil, amount: 500)
+    @t6 = FactoryBot.create(:transaction, date: '2014-03-02', category: @t1.category, subcategory: nil)
+    @t7 = FactoryBot.create(:transaction, date: '2014-03-03', category: nil, subcategory: nil)
+    @t8 = FactoryBot.create(:transaction, account: @share_account, date: '2014-01-13', category: @t1.category, subcategory: nil)
+    @t9 = FactoryBot.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: -1200)
+    @t10 = FactoryBot.create(:transaction, date: '2014-01-01', category: nil, subcategory: nil, amount: 1200, matching_transaction: @t9)
 
     @dr = Lib::CustomDateRange.new(from_date: '2014-01-01', to_date: '2014-02-28')
   end
@@ -46,13 +46,13 @@ RSpec.describe Lib::CategorySearch, type: :class do
   end
 
   it 'returns transactions with positive amounts if income category type provided' do
-    income_category_type = FactoryGirl.create(:category_type, name: 'Income')
+    income_category_type = FactoryBot.create(:category_type, name: 'Income')
     search = Lib::CategorySearch.new(date_range: @dr, category: nil, category_type: income_category_type)
     expect(search.transactions).to eq([@t5])
   end
 
   it 'returns transactions with negative amounts if expense category type provided' do
-    expense_category_type = FactoryGirl.create(:category_type, name: 'Expense')
+    expense_category_type = FactoryBot.create(:category_type, name: 'Expense')
     search = Lib::CategorySearch.new(date_range: @dr, category: nil, category_type: expense_category_type)
     expect(search.transactions).to eq([@t3])
   end

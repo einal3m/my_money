@@ -1,4 +1,6 @@
-class Budget < ActiveRecord::Base
+# frozen_string_literal: true
+
+class Budget < ApplicationRecord
   belongs_to :account
 
   validates :account_id, presence: true

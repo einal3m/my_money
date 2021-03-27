@@ -1,4 +1,6 @@
-class Subcategory < ActiveRecord::Base
+# frozen_string_literal: true
+
+class Subcategory < ApplicationRecord
   belongs_to :category
   has_many :transactions
   has_many :patterns

@@ -1,0 +1,54 @@
+@import 'colours';
+
+.category-list {
+  background-color: $light-grey-background-color;
+  color: $menu-color;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  h5 {
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+
+  .category-type {
+    padding-left: 1rem;
+    width: 50%;
+  }
+  
+  .category {
+    color: black;
+    background-color: white;
+    border: 1px solid $grey-background-color;
+    margin-top: 10px;
+    border-left: 5px solid $main-color;
+    padding: 10px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+
+  .category-row {
+    padding: 10px;
+
+    &:hover {
+      background-color: $grey-background-color;
+    }
+  }
+
+  .subcategory-row {
+    padding: 10px;
+    margin-left: 20px;
+
+    &::before {
+      content: "- "; 
+    }
+
+    &:hover {
+      background-color: $grey-background-color;
+    }
+  }
+}

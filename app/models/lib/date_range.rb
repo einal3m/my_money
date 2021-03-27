@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   # DateRange class
   # Base class for date range classes used to store from_date and to_date attributes
@@ -8,8 +10,8 @@ module Lib
     # checks to see if the string passed in, is a valid DateRange class name
     def self.valid?(klass)
       klass.constantize.is_a?(Class) && klass.constantize.new.is_a?(DateRange)
-      rescue NameError
-        false
+    rescue NameError
+      false
     end
 
     def financial_year(years_ago = 0)
@@ -17,11 +19,11 @@ module Lib
     end
 
     def financial_year_from(years_ago = 0)
-      Date.new(Date.today.month > 6 ? Date.today.year - (years_ago) : Date.today.year - 1 - years_ago, 7, 1)
+      Date.new(Date.today.month > 6 ? Date.today.year - years_ago : Date.today.year - 1 - years_ago, 7, 1)
     end
 
     def financial_year_to(years_ago = 0)
-      Date.new(Date.today.month > 6 ? Date.today.year + 1 - (years_ago) : Date.today.year - years_ago, 6, 30)
+      Date.new(Date.today.month > 6 ? Date.today.year + 1 - years_ago : Date.today.year - years_ago, 6, 30)
     end
   end
 

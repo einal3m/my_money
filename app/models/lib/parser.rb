@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Lib
   class Parser
     private
@@ -11,7 +13,7 @@ module Lib
     end
 
     def parse_amount(amount)
-      ((amount.tr('$,', '').gsub(/\s+/, '').to_f) * 100).round
+      (amount.tr('$,', '').gsub(/\s+/, '').to_f * 100).round
     end
 
     def parse_debit(amount)
