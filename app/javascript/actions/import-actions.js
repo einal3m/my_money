@@ -6,12 +6,11 @@ import { routeToTransactions, routeToImportTransactions } from './routing-action
 export const UPLOAD_OFX = 'UPLOAD_OFX';
 export function uploadOFX(accountId, file) {
   store.dispatch({ type: UPLOAD_OFX, fileName: file.name });
-  routeToImportTransactions();
   return apiUtil.upload({
     url: `accounts/${accountId}/transactions/import`,
     file,
     onSuccess: response => storeOfxTransactions(
-      response.transactions.map(transaction => transactionTransformer.transformFromOfxApi(transaction))
+      response.imported_transactions.map(transaction => transactionTransformer.transformFromOfxApi(transaction))
     ),
   });
 }
@@ -39,7 +38,7 @@ export function importTransactions() {
 
 function importComplete() {
   store.dispatch({ type: SET_OFX_TRANSACTIONS, transactions: [] });
-  routeToTransactions();
+  // routeToTransactions();
 }
 
 export const SET_NOTES = 'SET_NOTES';

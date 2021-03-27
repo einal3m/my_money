@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as bankStatementActions from '../bank-statement-actions';
-import bankStatementTransformer from '../../transformers/bank-statement-transformer';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
+import * as bankStatementActions from 'actions/bank-statement-actions';
+import bankStatementTransformer from 'transformers/bank-statement-transformer';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
 
 describe('BankStatementActions', () => {
   let dispatcherSpy;

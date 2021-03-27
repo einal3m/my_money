@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as accountActions from '../account-actions';
-import accountTransformer from '../../transformers/account-transformer';
-import store from '../../stores/store';
-import apiUtil from '../../util/api-util';
+import * as accountActions from 'actions/account-actions';
+import accountTransformer from 'transformers/account-transformer';
+import store from 'stores/store';
+import apiUtil from 'util/api-util';
 
 describe('AccountActions', () => {
   let dispatcherSpy;

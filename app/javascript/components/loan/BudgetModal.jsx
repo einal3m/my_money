@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FormModal from '../common/form-modal';
-import BudgetForm from './budget-form';
+import FormModal from '../common/FormModal';
+import BudgetForm from './BudgetForm';
 import { saveBudget, deleteBudget } from '../../actions/budget-actions';
 
 export class BudgetModalComponent extends React.Component {

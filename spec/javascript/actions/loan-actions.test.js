@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as loanActions from '../loan-actions';
-import { GET_REPORT } from '../report-actions';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
+import * as loanActions from 'actions/loan-actions';
+import { GET_REPORT } from 'actions/report-actions';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
 
 describe('LoanActions', () => {
   let dispatcherSpy;

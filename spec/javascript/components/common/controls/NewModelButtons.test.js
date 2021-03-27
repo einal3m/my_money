@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
 import NewModelButtons from '../new-model-buttons';
 import * as formActions from '../../../../actions/form-actions';
@@ -13,10 +13,10 @@ describe('NewModelButtons', () => {
       expect(dropdown.props.children[0].props.children[1]).toMatch(/New/);
 
       const buttons = dropdown.props.children[1];
-      expect(buttons.props.children[0].type).toEqual(MenuItem);
+      expect(buttons.props.children[0].type).toEqual(Dropdown.Item);
       expect(buttons.props.children[0].props.children).toEqual('New One');
 
-      expect(buttons.props.children[1].type).toEqual(MenuItem);
+      expect(buttons.props.children[1].type).toEqual(Dropdown.Item);
       expect(buttons.props.children[1].props.children).toEqual('New Two');
     });
   });

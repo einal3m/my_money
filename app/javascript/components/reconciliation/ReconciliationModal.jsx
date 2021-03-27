@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FormModal from '../common/form-modal';
-import ReconciliationForm from './reconciliation-form';
+import FormModal from '../common/FormModal';
+import ReconciliationForm from './ReconciliationForm';
 import { saveReconciliation } from '../../actions/reconciliation-actions';
 
 export class ReconciliationModalComponent extends React.Component {

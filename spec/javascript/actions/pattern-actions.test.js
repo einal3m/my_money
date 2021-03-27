@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as patternActions from '../pattern-actions';
-import patternTransformer from '../../transformers/pattern-transformer';
-import store from '../../stores/store';
-import apiUtil from '../../util/api-util';
+import * as patternActions from 'actions/pattern-actions';
+import patternTransformer from 'transformers/pattern-transformer';
+import store from 'stores/store';
+import apiUtil from 'util/api-util';
 
 describe('PatternActions', () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
-import apiStatusActions from '../api-status-actions';
-import store from '../../stores/store';
+import apiStatusActions from 'actions/api-status-actions';
+import store from 'stores/store';
 
 describe('ApiStatusActions', () => {
   let dispatcherSpy;

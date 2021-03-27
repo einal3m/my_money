@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageHeader from '../common/page-header';
-import LoanViewButtons from './loan-view-buttons';
-import LoanChartView from './loan-chart-view';
-import BudgetTable from './budget-table';
+import PageHeader from '../common/PageHeader';
+import LoanViewButtons from './LoanViewButtons';
+import LoanChartView from './LoanChartView';
+import BudgetTable from './BudgetTable';
 import { getLoanReport } from '../../actions/loan-actions';
 import seriesData from '../../selectors/loan-report-selector';
 import { accountNameAndBank } from '../../util/text-util';

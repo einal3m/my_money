@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import reportReducer from '../report-reducer';
+import reportReducer from 'stores/report-reducer';
 import {
   GET_REPORT,
   SET_ACCOUNT_BALANCE_REPORT,
@@ -7,7 +7,7 @@ import {
   TOGGLE_REPORT_VIEW,
   SET_TOTALS_REPORT,
   SET_INCOME_VS_EXPENSE,
-} from '../../actions/report-actions';
+} from 'actions/report-actions';
 
 describe('ReportReducer', () => {
   it('has a default state', () => {

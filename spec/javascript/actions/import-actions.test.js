@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable';
-import * as importActions from '../import-actions';
-import transactionTransformer from '../../transformers/transaction-transformer';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
-import * as routingActions from '../routing-actions';
+import * as importActions from 'actions/import-actions';
+import transactionTransformer from 'transformers/transaction-transformer';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
+import * as routingActions from 'actions/routing-actions';
 
 describe('ImportActions', () => {
   let dispatcherSpy;

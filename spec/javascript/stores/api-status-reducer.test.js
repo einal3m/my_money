@@ -1,5 +1,5 @@
-import reducer from '../api-status-reducer';
-import ApiStatus from '../../util/api-status';
+import reducer from 'stores/api-status-reducer';
+import ApiStatus from 'util/api-status';
 
 describe('reducer', () => {
   it('has a default state', () => {

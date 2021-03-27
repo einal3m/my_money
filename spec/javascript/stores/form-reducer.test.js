@@ -1,5 +1,5 @@
-import reducer from '../form-reducer';
-import { SHOW_FORM_MODAL, HIDE_FORM_MODAL } from '../../actions/form-actions';
+import reducer from 'stores/form-reducer';
+import { SHOW_FORM_MODAL, HIDE_FORM_MODAL } from 'actions/form-actions';
 
 describe('reducer', () => {
   it('has a default state', () => {

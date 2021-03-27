@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as dateRangeActions from '../date-range-actions';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
-import dateRangeTransformer from '../../transformers/date-range-transformer';
+import * as dateRangeActions from 'actions/date-range-actions';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
+import dateRangeTransformer from 'transformers/date-range-transformer';
 
 describe('DateRangeActions', () => {
   let dispatcherSpy;

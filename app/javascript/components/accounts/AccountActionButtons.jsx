@@ -22,7 +22,7 @@ const AccountActionButtons = (props) => {
   };
 
   const viewLoanReport = () => {
-    routeToLoanReport(props.account.id);
+    setCurrentAccount(props.account.id);
   };
 
   const accountActions = (eventKey) => {
@@ -45,7 +45,12 @@ const AccountActionButtons = (props) => {
   };
 
   const renderLoanActions = () => {
-    if (props.account.accountType === 'loan') return <Dropdown.Item eventKey="loan-report">Loan Report</Dropdown.Item>;
+    if (props.account.accountType === 'loan') 
+      return (
+        <LinkContainer to="/reports/loanReport">
+          <Dropdown.Item eventKey="loan-report">Loan Report</Dropdown.Item>
+        </LinkContainer>
+      );
     return <div />;
   };
 
@@ -60,7 +65,7 @@ const AccountActionButtons = (props) => {
         <Dropdown.Item eventKey="transactions">View Transactions</Dropdown.Item>
       </LinkContainer>
       <Dropdown.Item eventKey="edit">Edit Account</Dropdown.Item>
-      <LinkContainer to="/import-history">
+      <LinkContainer to="/importHistory">
         <Dropdown.Item eventKey="import-history">Import History</Dropdown.Item>
       </LinkContainer>
       {renderLoanActions()}

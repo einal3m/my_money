@@ -1,4 +1,4 @@
-import dateRangeReducer from '../date-range-reducer';
+import dateRangeReducer from 'stores/date-range-reducer';
 
 describe('DateRangeReducer', () => {
   let dateRanges;

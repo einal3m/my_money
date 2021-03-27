@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageHeader from '../common/page-header';
-import ReconciliationTable from './reconciliation-table';
-import ReconciliationModal from './reconciliation-modal';
-import Button from '../common/controls/button';
+import PageHeader from '../common/PageHeader';
+import ReconciliationTable from './ReconciliationTable';
+import ReconciliationModal from './ReconciliationModal';
+import Button from '../common/controls/Button';
 import { getReconciliations } from '../../actions/reconciliation-actions';
 import { showFormModal } from '../../actions/form-actions';
 

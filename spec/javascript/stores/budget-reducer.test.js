@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable';
-import budgetReducer from '../budget-reducer';
+import budgetReducer from 'stores/budget-reducer';
 import {
   SET_BUDGETS,
   GET_BUDGETS,
-} from '../../actions/budget-actions';
+} from 'actions/budget-actions';
 
 describe('PatternReducer', () => {
   it('has a default state', () => {

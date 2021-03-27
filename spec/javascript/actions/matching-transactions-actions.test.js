@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as matchingTransactionsActions from '../matching-transactions-actions';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
-import transactionTransformer from '../../transformers/transaction-transformer';
+import * as matchingTransactionsActions from 'actions/matching-transactions-actions';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
+import transactionTransformer from 'transformers/transaction-transformer';
 
 describe('MatchingTransactionsActions', () => {
   beforeEach(() => {

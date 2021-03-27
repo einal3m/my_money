@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FormValidator from '../../util/form-validator';
-import FormControl from '../common/controls/form-control';
-import DatePicker from '../common/date-picker/date-picker';
-import MoneyInput from '../common/controls/money-input';
+import FormControl from '../common/controls/FormControl';
+import DatePicker from '../common/date-picker/DatePicker';
+import MoneyInput from '../common/controls/MoneyInput';
 import { accountNameAndBank } from '../../util/text-util';
 
 export default class ReconciliationForm extends React.Component {

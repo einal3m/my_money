@@ -1,4 +1,4 @@
-import importReducer from '../import-reducer';
+import importReducer from 'stores/import-reducer';
 
 describe('ImportReducer', () => {
   let transactions;

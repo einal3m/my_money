@@ -1,5 +1,5 @@
-import reducer from '../matching-transactions-reducer';
-import { GET_MATCHING_TRANSACTIONS, SET_MATCHING_TRANSACTIONS } from '../../actions/matching-transactions-actions';
+import reducer from 'stores/matching-transactions-reducer';
+import { GET_MATCHING_TRANSACTIONS, SET_MATCHING_TRANSACTIONS } from 'actions/matching-transactions-actions';
 
 describe('reducer', () => {
   it('has a default state', () => {

@@ -1,10 +1,10 @@
 import { hashHistory } from 'react-router';
 import { routeToTransactions, routeToImportTransactions, routeToImportHistory, routeToCategoryReport,
-  routeToSubcategoryReport, routeToLoanReport } from '../routing-actions';
-import * as accountActions from '../account-actions';
-import * as categoryActions from '../category-actions';
+  routeToSubcategoryReport, routeToLoanReport } from 'actions/routing-actions';
+import * as accountActions from 'actions/account-actions';
+import * as categoryActions from 'actions/category-actions';
 
-describe('RoutingActions', () => {
+xdescribe('RoutingActions', () => {
   beforeEach(() => {
     spyOn(hashHistory, 'push');
   });

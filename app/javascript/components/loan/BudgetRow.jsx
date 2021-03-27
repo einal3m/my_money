@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { showFormModal } from '../../actions/form-actions';
-import Amount from '../common/amount';
+import Amount from '../common/Amount';
 
 export default class BudgetRow extends React.Component {
 

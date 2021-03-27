@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import * as budgetActions from '../budget-actions';
-import * as budgetTransformer from '../../transformers/budget-transformer';
-import store from '../../stores/store';
-import apiUtil from '../../util/api-util';
+import * as budgetActions from 'actions/budget-actions';
+import * as budgetTransformer from 'transformers/budget-transformer';
+import store from 'stores/store';
+import apiUtil from 'util/api-util';
 
 describe('BudgetActions', () => {
   beforeEach(() => {

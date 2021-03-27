@@ -3,10 +3,10 @@ import {
   fetchCategoryReport, fetchSubcategoryReport, toggleReportView, getIncomeExpenseBarReport, fetchAccountBalanceReport,
   SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
   fetchIncomeVsExpensesReport, SET_INCOME_VS_EXPENSE,
-} from '../report-actions';
-import transactionTransformer from '../../transformers/transaction-transformer';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
+} from 'actions/report-actions';
+import transactionTransformer from 'transformers/transaction-transformer';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
 
 describe('ReportActions', () => {
   let dispatcherSpy;

@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import D3LineChart from '../reports/d3-line-chart';
+import React from 'react';
+import PropTypes from 'prop-types';
+import D3LineChart from '../reports/D3LineChart';
 import { getLoanReport } from '../../actions/loan-actions';
 
 export default class LoanChartView extends React.Component {

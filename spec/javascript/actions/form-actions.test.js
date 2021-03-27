@@ -1,11 +1,11 @@
-import store from '../../stores/store';
+import store from 'stores/store';
 import {
   SHOW_FORM_MODAL,
   HIDE_FORM_MODAL,
   SOURCE_CATEGORY_REPORT,
   showFormModal,
   hideFormModal,
-} from '../form-actions';
+} from 'actions/form-actions';
 
 describe('FormActions', () => {
   let dispatcherSpy;

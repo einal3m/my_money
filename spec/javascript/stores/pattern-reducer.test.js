@@ -1,9 +1,9 @@
 import { Map } from 'immutable';
-import patternReducer from '../pattern-reducer';
+import patternReducer from 'stores/pattern-reducer';
 import {
   SET_PATTERNS,
   GET_PATTERNS,
-} from '../../actions/pattern-actions';
+} from 'actions/pattern-actions';
 
 describe('PatternReducer', () => {
   const pattern = { id: 11, matchText: 'Description', notes: 'my note', categoryId: 4, subcategoryId: 6 };

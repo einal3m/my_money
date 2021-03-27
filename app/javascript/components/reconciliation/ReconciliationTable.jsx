@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import ReconciliationRow from './reconciliation-row';
+import ReconciliationRow from './ReconciliationRow';
 
 export default class ReconciliationTable extends React.Component {
 

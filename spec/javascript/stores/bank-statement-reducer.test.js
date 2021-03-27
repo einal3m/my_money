@@ -1,12 +1,12 @@
 import { fromJS } from 'immutable';
-import bankStatementReducer from '../bank-statement-reducer';
+import bankStatementReducer from 'stores/bank-statement-reducer';
 import {
   GET_BANK_STATEMENTS,
   SET_BANK_STATEMENTS,
   CONFIRM_DELETE_BANK_STATEMENT,
   CANCEL_DELETE_BANK_STATEMENT,
   DELETE_BANK_STATEMENT,
-} from '../../actions/bank-statement-actions';
+} from 'actions/bank-statement-actions';
 
 describe('BankStatementReducer', () => {
   const bankStatements = [

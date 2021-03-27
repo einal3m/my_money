@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import Balance from '../common/balance';
-import Date from '../common/date';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Balance from '../common/Balance';
+import Date from '../common/Date';
 
 export default class ReconciliationRow extends React.Component {
 

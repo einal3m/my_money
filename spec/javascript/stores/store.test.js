@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import store from '../store';
+import store from 'stores/store';
 
 describe('store', () => {
   it('is a Redux store with reducers', () => {

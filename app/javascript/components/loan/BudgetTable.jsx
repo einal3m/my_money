@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Glyphicon } from 'react-bootstrap';
-import BudgetRow from './budget-row';
-import BudgetModal from './budget-modal';
-import Button from '../common/controls/button';
+import BudgetRow from './BudgetRow';
+import BudgetModal from './BudgetModal';
+import Button from '../common/controls/Button';
 import { getBudgets } from '../../actions/budget-actions';
 import { showFormModal } from '../../actions/form-actions';
 
@@ -29,7 +29,7 @@ export class BudgetTableComponent extends React.Component {
       <div>
         <div className="pull-left"><h3>Budgeted income/expenses</h3></div>
         <div className="pull-left button-group">
-          <Button onClick={this.newBudget}><Glyphicon glyph="plus" /> New</Button>
+          <Button onClick={this.newBudget}><i className="fas fa-plus" /> New</Button>
         </div>
       </div>
     );

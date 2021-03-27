@@ -1,10 +1,10 @@
 import { Map } from 'immutable';
-import * as transactionActions from '../transaction-actions';
-import transactionTransformer from '../../transformers/transaction-transformer';
-import store from '../../stores/store';
-import apiUtil from '../../util/api-util';
-import * as reportActions from '../report-actions';
-import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from '../form-actions';
+import * as transactionActions from 'actions/transaction-actions';
+import transactionTransformer from 'transformers/transaction-transformer';
+import store from 'stores/store';
+import apiUtil from 'util/api-util';
+import * as reportActions from 'actions/report-actions';
+import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from 'actions/form-actions';
 
 describe('TransactionActions', () => {
   let dispatcherSpy;

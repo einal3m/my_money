@@ -1,11 +1,11 @@
 import categoryActions, {
   setCurrentCategory, setCurrentSubcategory, fetchCategoryTypes, fetchCategories, fetchSubcategories,
   SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY, SET_CATEGORY_TYPES, SET_CATEGORIES, SET_SUBCATEGORIES,
-} from '../category-actions';
-import categoryTransformer from '../../transformers/category-transformer';
-import subcategoryTransformer from '../../transformers/subcategory-transformer';
-import apiUtil from '../../util/api-util';
-import store from '../../stores/store';
+} from 'actions/category-actions';
+import categoryTransformer from 'transformers/category-transformer';
+import subcategoryTransformer from 'transformers/subcategory-transformer';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
 
 describe('CategoryActions', () => {
   let dispatcherSpy;

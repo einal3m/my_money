@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FormValidator from '../../util/form-validator';
-import FormControl from '../common/controls/form-control';
-import MoneyInput from '../common/controls/money-input';
+import FormControl from '../common/controls/FormControl';
+import MoneyInput from '../common/controls/MoneyInput';
 
 export default class BudgetForm extends React.Component {
 
@@ -26,7 +27,7 @@ export default class BudgetForm extends React.Component {
 
   isValid() {
     this.forceUpdate();
-    return !this.validator.validateAll(this.state.budget);
+    return this.validator.isValid(this.state.budget);
   }
 
   getModel() {
