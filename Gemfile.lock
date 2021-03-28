@@ -207,6 +207,16 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.4.1)
       parser (>= 2.7.1.5)
+    rubocop-performance (1.10.2)
+      rubocop (>= 0.90.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.9.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 0.90.0, < 2.0)
+    rubocop-rspec (2.2.0)
+      rubocop (~> 1.0)
+      rubocop-ast (>= 1.1.0)
     ruby-progressbar (1.11.0)
     ruby_dep (1.5.0)
     rubyzip (2.3.0)
@@ -282,7 +292,9 @@ DEPENDENCIES
   rails (~> 6.0.2, >= 6.0.2.1)
   react-rails
   rspec-rails
-  rubocop
+  rubocop-performance
+  rubocop-rails
+  rubocop-rspec
   sass-rails (>= 6)
   selenium-webdriver
   spring
