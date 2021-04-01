@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe BankStatementsController, type: :controller do
+RSpec.describe Api::BankStatementsController, type: :controller do
   describe 'GET #index' do
     it 'returns http success' do
       account = FactoryBot.create(:account)

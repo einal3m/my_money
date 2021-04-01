@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AccountTypesController, type: :controller do
+RSpec.describe Api::AccountTypesController, type: :controller do
   describe 'GET index' do
     it 'returns a list of all account types' do
       get :index

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TransactionsController, type: :controller do
+RSpec.describe Api::TransactionsController, type: :controller do
   describe 'GET index' do
     it 'returns all transactions for specified account for specified date' do
       t1 = FactoryBot.create(:transaction, date: '2014-07-03')

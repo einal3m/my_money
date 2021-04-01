@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PatternsController, type: :controller do
+RSpec.describe Api::PatternsController, type: :controller do
   describe 'GET index' do
     it 'returns all patterns for given account' do
       pattern = FactoryBot.create(:pattern)

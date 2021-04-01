@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TransactionTypesController, type: :controller do
+RSpec.describe Api::TransactionTypesController, type: :controller do
   describe 'GET index' do
     it 'returns a list of all transaction types' do
       get :index

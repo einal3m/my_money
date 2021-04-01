@@ -1,4 +1,10 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
 AllCops:
+  NewCops: enable
   Exclude:
     - 'config.ru'
     - 'api/**/*'
@@ -31,3 +37,6 @@ Style/Documentation:
 
 ClassLength:
   Max: 120
+
+RSpec/MultipleExpectations:
+  Enabled: false
