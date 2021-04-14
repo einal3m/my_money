@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-export default function pieChart(data, labels, d3Container, options) {
+export default function pieChart(data, labels, vis, options) {
   if (data.length == 0) {
     return;
   }
@@ -11,10 +11,6 @@ export default function pieChart(data, labels, d3Container, options) {
     outerRadius: 120,
     innerRadius: 40,
   };
-
-  const vis = d3.select(d3Container.current).append('svg')
-    .attr('width', chartSize.width)
-    .attr('height', chartSize.height);
 
   const pie = d3.pie().sort(null);
 
