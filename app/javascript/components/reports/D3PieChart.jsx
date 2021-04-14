@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import pieChart from './d3/PieChart';
 
-export default class D3PieChart extends React.Component {
-
-  componentDidMount() {
+const D3PieChart = (props) => {
+    const d3Container = useRef(null);
     const options = {
       height: 450,
       width: 450,
     };
 
-    pieChart(this.props.data, this.props.labels, `#d3-chart-${this.props.id}`, options);
-  }
+    useEffect(
+      () => {
+          if (props.data && d3Container.current) {
+            pieChart(props.data, props.labels, d3Container, options);
+          }
+      },
+      [props.data, d3Container.current]
+    )
 
-  render() {
     return (
       <div className="chart-container">
-        <div id={`d3-chart-${this.props.id}`} />
+        <div ref={d3Container}/>
       </div>
     );
-  }
 }
 
 D3PieChart.propTypes = {
-  id: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.number),
   labels: PropTypes.arrayOf(PropTypes.string),
 };
+
+export default D3PieChart;

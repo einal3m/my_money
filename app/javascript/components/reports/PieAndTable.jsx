@@ -24,7 +24,6 @@ export default class PieAndTable extends React.Component {
       <tr>
         <td colSpan="3">
           <D3PieChart
-            id={this.props.title}
             data={this.props.pieChartData.data}
             labels={this.props.pieChartData.labels}
           />
