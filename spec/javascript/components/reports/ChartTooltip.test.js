@@ -1,6 +1,6 @@
 import React from 'react';
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import ChartTooltip from '../chart-tooltip';
+import { render, screen, within } from '@testing-library/react';
+import ChartTooltip from 'components/reports/ChartTooltip';
 
 describe('ChartTooltip', () => {
   it('displays each series name,amount and colour', () => {
@@ -12,20 +12,16 @@ describe('ChartTooltip', () => {
       tooltipPosition: 'left',
     };
 
-    const chartTooltip = shallowRenderer(<ChartTooltip show tooltipData={tooltipData} />);
-    const [title, tooltipItems] = chartTooltip.props.children.props.children;
+    render(<ChartTooltip show tooltipData={tooltipData} />);
 
-    expect(title.props.children).toEqual('Tooltip Title');
-    const [seriesOne, seriesTwo] = tooltipItems.props.children;
+    expect(screen.getByTestId('tooltip-title')).toHaveTextContent('Tooltip Title');
+    const series1 = screen.getByText('Series One').closest('div');
+    const series2 = screen.getByText('Series Two').closest('div');
 
-    let [point, seriesLabel, value] = seriesOne.props.children;
-    expect(point.props.children.props.className).toMatch(/circle/);
-    expect(seriesLabel.props.children).toEqual('Series One');
-    expect(value.props.children).toEqual('32');
+    const group1 = within(series1);
+    expect(group1.getByText('32')).toBeInTheDocument();
 
-    [point, seriesLabel, value] = seriesTwo.props.children;
-    expect(point.props.children.props.className).toMatch(/circle/);
-    expect(seriesLabel.props.children).toEqual('Series Two');
-    expect(value.props.children).toEqual('45');
+    const group2 = within(series2);
+    expect(group2.getByText('45')).toBeInTheDocument();
   });
 });

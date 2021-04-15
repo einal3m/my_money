@@ -1,18 +1,16 @@
 import React from 'react';
-import shallowRenderer from '../../../util/__tests__/shallow-renderer';
-import ChartLegend from '../chart-legend';
+import { render, screen } from '@testing-library/react';
+import ChartLegend from 'components/reports/ChartLegend';
 
-describe('ChartLegend', () => {
-  it('displays each series name', () => {
+describe('D3PieChart', () => {
+  it('renders a chart container', () => {
     const chartData = {
       seriesData: [{ name: 'Series One', backGroundColour: 'red' }, { name: 'Series Two', backgroundColour: 'blue' }],
     };
 
-    const chartLegend = shallowRenderer(<ChartLegend chartData={chartData} />);
+    render(<ChartLegend chartData={chartData} />);
 
-    const legendItems = chartLegend.props.children.props.children.props.children;
-
-    expect(legendItems[0].props.children).toEqual('Series One');
-    expect(legendItems[1].props.children).toEqual('Series Two');
+    expect(screen.getByText('Series One')).toBeInTheDocument();
+    expect(screen.getByText('Series Two')).toBeInTheDocument();
   });
 });

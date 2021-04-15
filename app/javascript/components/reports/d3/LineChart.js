@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-export default function lineChart(seriesData, id, options, callbacks) {
+export default function lineChart(seriesData, vis, options, callbacks) {
   const width = options.width || 1000;
   const height = options.height || 500;
 
@@ -15,9 +15,7 @@ export default function lineChart(seriesData, id, options, callbacks) {
   dim.chartHeight = height - dim.topMargin - dim.xAxisHeight;
   dim.chartWidth = width - dim.leftMargin - dim.rightMargin;
 
-  const vis = d3.select(id).append('svg')
-    .attr('width', width)
-    .attr('height', height);
+  vis.selectAll("*").remove()
 
   const [xScale, yScale] = createScales(seriesData, dim);
 
