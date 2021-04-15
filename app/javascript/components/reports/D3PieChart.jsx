@@ -20,7 +20,7 @@ const D3PieChart = (props) => {
 
     return (
       <div className="chart-container">
-        <svg width={`${options.width}px`} height={`${options.height}px`} ref={ref} />
+        <svg width={`${options.width}px`} height={`${options.height}px`} ref={ref} role='img' />
       </div>
     );
 }

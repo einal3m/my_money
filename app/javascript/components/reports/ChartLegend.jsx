@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class ChartLegend extends React.Component {
-
-  renderLegendItems() {
+const ChartLegend = (props) => {
+  const renderLegendItems = () => {
     let style;
-    return this.props.chartData.seriesData.map((series, i) => {
+    return props.chartData.seriesData.map((series, i) => {
       style = {
         borderTop: `2px solid ${series.backgroundColour}`, borderLeft: `2px solid ${series.backgroundColour}`,
       };
@@ -21,23 +20,21 @@ export default class ChartLegend extends React.Component {
     });
   }
 
-  renderLegend() {
+  const renderLegend = () => {
     return (
       <div className="chart-legend" style={{ top: '30px', right: '0px' }}>
         <div className="legend-items">
-          {this.renderLegendItems()}
+          {renderLegendItems()}
         </div>
       </div>
       );
   }
 
-  render() {
-    return (
-      <div style={{ position: 'relative' }}>
-        {this.renderLegend()}
-      </div>
-    );
-  }
+  return (
+    <div style={{ position: 'relative' }}>
+      {renderLegend()}
+    </div>
+  );
 }
 
 ChartLegend.propTypes = {
@@ -47,3 +44,5 @@ ChartLegend.propTypes = {
     })).isRequired,
   }).isRequired,
 };
+
+export default ChartLegend;
