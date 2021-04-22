@@ -11,6 +11,20 @@ import { Provider } from 'react-redux';
 import ImportPage from 'components/import/ImportPage';
 
 describe('ImportPage', () => {
+  test('no transactions to import', () => {
+    // setup data
+    const account = { id: 1, name: 'My Account' };
+    storeAccounts([account]);
+
+    render(
+      <Provider store={store}>
+        <ImportPage />
+      </Provider>
+    );
+
+    expect(screen.getByText('No transactions to import')).toBeInTheDocument();
+  });
+
   test('importing transactions', async () => {
 
     // setup data
