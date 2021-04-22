@@ -1,7 +1,6 @@
 import apiUtil from '../util/api-util';
 import transactionTransformer from '../transformers/transaction-transformer';
 import store from '../stores/store';
-import { routeToTransactions, routeToImportTransactions } from './routing-actions';
 
 export const UPLOAD_OFX = 'UPLOAD_OFX';
 export function uploadOFX(accountId, file) {
@@ -38,7 +37,6 @@ export function importTransactions() {
 
 function importComplete() {
   store.dispatch({ type: SET_OFX_TRANSACTIONS, transactions: [] });
-  // routeToTransactions();
 }
 
 export const SET_NOTES = 'SET_NOTES';

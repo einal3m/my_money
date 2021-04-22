@@ -23,7 +23,6 @@ describe('ImportActions', () => {
 
       expect(apiUtil.upload).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: importActions.UPLOAD_OFX, fileName: 'file.ofx' });
-      expect(routingActions.routeToImportTransactions).toHaveBeenCalled();
 
       const uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
       expect(uploadArgs.url).toEqual('accounts/45/transactions/import');
@@ -36,7 +35,7 @@ describe('ImportActions', () => {
       spyOn(transactionTransformer, 'transformFromOfxApi').and.returnValue('transformedFromApi');
       const uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
 
-      uploadArgs.onSuccess({ transactions: ['transaction'] });
+      uploadArgs.onSuccess({ imported_transactions: ['transaction'] });
 
       expect(transactionTransformer.transformFromOfxApi).toHaveBeenCalledWith('transaction');
       expect(dispatcherSpy).toHaveBeenCalledWith({
@@ -85,7 +84,6 @@ describe('ImportActions', () => {
         type: importActions.SET_OFX_TRANSACTIONS,
         transactions: [],
       });
-      expect(routingActions.routeToTransactions).toHaveBeenCalled();
     });
   });
 
