@@ -1,50 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactSelect from 'react-select-plus';
+import ReactSelect from 'react-select';
 
-import 'react-select-plus/dist/react-select-plus.css';
+const Select = (props) => {
 
-export default class Select extends React.Component {
-
-  handleSelect = (value) => {
+  const handleSelect = (value) => {
     let id;
-    if (this.props.multiple) {
+    if (props.multiple) {
       id = value.map(option => option.value);
     } else {
       id = value ? value.value : null;
     }
-    this.props.onChange(id);
+    props.onChange(id);
   };
 
-  options = options => options.map(option => ({ value: option.id, label: option.name }));
+  const toOptions = (options) => options.map(option => ({ value: option.id, label: option.name }));
 
-  optionsOrGroupedOptions = () => {
-    if (this.props.options) {
-      return this.options(this.props.options);
+  const optionsOrGroupedOptions = () => {
+    if (props.options) {
+      return toOptions(props.options);
     }
 
-    if (this.props.groupedOptions) {
-      return this.props.groupedOptions.map(group => (
-        { label: group.name, options: this.options(group.options) }
+    if (props.groupedOptions) {
+      return props.groupedOptions.map(group => (
+        { label: group.name, options: toOptions(group.options) }
       ));
     }
-
-    return [];
   };
 
-  render() {
-    return (
-      <ReactSelect
-        name={this.props.name}
-        value={this.props.value}
-        clearable={!!this.props.allowUnassigned}
-        placeholder={this.props.allowUnassigned ? 'Un-assigned' : 'Please select...'}
-        multi={this.props.multiple}
-        options={this.optionsOrGroupedOptions()}
-        onChange={this.handleSelect}
-      />
-    );
-  }
+  const optionForValue = (options, value) => {
+    return options.find(option => option.id === value);
+  };
+
+  const dropDownValue = () => {
+    if (!props.value) return undefined;
+
+    let option;
+
+    if (props.options) {
+      option = optionForValue(props.options, props.value);
+    }
+
+    if (props.groupedOptions) {
+      const allOptions = props.groupedOptions.map(group => group.options).flat();
+      option = optionForValue(allOptions, props.value);
+    }
+
+    if (option) {
+      return { value: props.value, label: option.name };
+    }
+  };
+
+  return (
+    <ReactSelect
+      name={props.name}
+      value={dropDownValue()}
+      options={optionsOrGroupedOptions()}
+      onChange={handleSelect}
+      isClearable={!!props.allowUnassigned}
+      isMulti={props.multiple}
+      placeholder={props.allowUnassigned ? 'Un-assigned' : 'Please select...'}
+      className="react-select"
+      classNamePrefix="react-select"
+    />
+  );
 }
 
 const optionsProp = PropTypes.arrayOf(PropTypes.shape({
@@ -67,3 +86,5 @@ Select.propTypes = {
   allowUnassigned: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
 };
+
+export default Select;

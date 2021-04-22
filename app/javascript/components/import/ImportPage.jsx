@@ -25,17 +25,9 @@ export class ImportPageComponent extends React.Component {
     this.setState({ toTransactions: true });
   };
 
-  renderTitle() {
-    return (
-      <h5>
-        into <strong>{this.props.account.name}</strong> account
-      </h5>
-    );
-  }
-
   render() {
     if (this.state.toTransactions === true) {
-      return <Redirect to='/transations' />
+      return <Redirect to='/transactions' />
     }
 
     return (
@@ -44,7 +36,9 @@ export class ImportPageComponent extends React.Component {
           <Button onClick={this.importTransactions}><i className="fa fa-file-text-o" /> Import</Button>
         </PageHeader>
         <div className="container import">
-          {this.renderTitle()}
+          <h5 data-testid="import-title">
+            into <strong>{this.props.account.name}</strong> account
+          </h5>
           <ImportTable
             transactions={this.props.ofxTransactions}
             groupedCategories={this.props.groupedCategories}

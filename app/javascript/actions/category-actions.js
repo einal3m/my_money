@@ -125,7 +125,7 @@ export function fetchCategoryTypes() {
 }
 
 export const SET_CATEGORY_TYPES = 'SET_CATEGORY_TYPES';
-function storeCategoryTypes(categoryTypes) {
+export function storeCategoryTypes(categoryTypes) {
   store.dispatch({
     type: SET_CATEGORY_TYPES,
     categoryTypes,
@@ -142,7 +142,7 @@ export function fetchCategories() {
 }
 
 export const SET_CATEGORIES = 'SET_CATEGORIES';
-function storeCategories(categories) {
+export function storeCategories(categories) {
   store.dispatch({
     type: SET_CATEGORIES,
     categories,
@@ -159,7 +159,7 @@ export function fetchSubcategories() {
 }
 
 export const SET_SUBCATEGORIES = 'SET_SUBCATEGORIES';
-function storeSubcategories(subcategories) {
+export function storeSubcategories(subcategories) {
   store.dispatch({
     type: SET_SUBCATEGORIES,
     subcategories,

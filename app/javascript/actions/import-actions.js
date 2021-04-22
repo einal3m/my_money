@@ -16,7 +16,7 @@ export function uploadOFX(accountId, file) {
 }
 
 export const SET_OFX_TRANSACTIONS = 'SET_OFX_TRANSACTIONS';
-function storeOfxTransactions(transactions) {
+export function storeOfxTransactions(transactions) {
   store.dispatch({ type: SET_OFX_TRANSACTIONS, transactions });
 }
 

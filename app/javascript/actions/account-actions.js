@@ -24,7 +24,7 @@ export function fetchAccounts(options) {
 }
 
 export const SET_ACCOUNTS = 'SET_ACCOUNTS';
-function storeAccounts(accounts) {
+export function storeAccounts(accounts) {
   store.dispatch({ type: SET_ACCOUNTS, accounts });
 }
 

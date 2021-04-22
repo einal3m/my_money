@@ -29,6 +29,10 @@ table#transaction-table, table#pattern-table {
     tr:hover {
       background-color: $main-color-very-light;
     }
+
+    tr.danger {
+      background-color: #f2dede;
+    }
   }
 
   .currency {
