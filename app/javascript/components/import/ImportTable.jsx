@@ -21,7 +21,7 @@ export default class ImportTable extends React.Component {
   renderTable() {
     if (this.props.transactions.length > 0) {
       return (
-        <table className="table table-hover" id="transaction-table">
+        <table className="table table-hover" id="transaction-table" data-testid="transaction-table">
           <thead>
             <tr>
               <th className="date">date</th>

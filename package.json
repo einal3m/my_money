@@ -14,7 +14,11 @@
     "moduleDirectories": [
       "node_modules",
       "app/javascript"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss)$": "<rootDir>/spec/javascript/mocks/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/spec/javascript/mocks/fileMock.js"
+    }
   },
   "dependencies": {
     "@babel/core": "^7.13.14",

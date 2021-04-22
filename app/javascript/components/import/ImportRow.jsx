@@ -27,6 +27,7 @@ export default class ImportRow extends React.Component {
   renderImport() {
     return (
       <input
+        data-testid="import-checkbox"
         type="checkbox"
         checked={this.props.transaction.import}
         onChange={this.onImportChange}
@@ -36,18 +37,25 @@ export default class ImportRow extends React.Component {
 
   renderNotes() {
     return (
-      <input className="form-control" value={this.props.transaction.notes} onChange={this.onNotesChange} />
+      <input
+        data-testid="import-notes"
+        className="form-control"
+        value={this.props.transaction.notes || ""}
+        onChange={this.onNotesChange}
+      />
     );
   }
 
   renderCategory() {
     return (
-      <GroupedCategorySelect
-        groupedCategories={this.props.groupedCategories}
-        onChange={this.onCategoryChange}
-        value={this.props.transaction.categoryId}
-        allowUnassigned
-      />
+      <div data-testid="import-category">
+        <GroupedCategorySelect
+          groupedCategories={this.props.groupedCategories}
+          onChange={this.onCategoryChange}
+          value={this.props.transaction.categoryId}
+          allowUnassigned
+        />
+      </div>
     );
   }
 
@@ -57,12 +65,14 @@ export default class ImportRow extends React.Component {
     }
 
     return (
-      <SubcategoryPicker
-        groupedCategories={this.props.groupedCategories}
-        categoryId={this.props.transaction.categoryId}
-        onChange={this.onSubcategoryChange}
-        value={this.props.transaction.subcategoryId}
-      />
+      <div data-testid="import-subcategory">
+        <SubcategoryPicker
+          groupedCategories={this.props.groupedCategories}
+          categoryId={this.props.transaction.categoryId}
+          onChange={this.onSubcategoryChange}
+          value={this.props.transaction.subcategoryId}
+        />
+      </div>
     );
   }
 
