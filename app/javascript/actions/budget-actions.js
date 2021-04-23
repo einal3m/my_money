@@ -2,8 +2,13 @@ import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
 import { transformFromApi, transformToApi } from '../transformers/budget-transformer';
+import {
+  GET_BUDGETS,
+  SET_BUDGETS,
+  SAVE_BUDGET,
+  DELETE_BUDGET,
+} from 'actions/action-types';
 
-export const GET_BUDGETS = 'GET_BUDGETS';
 export function getBudgets() {
   return Promise.all([
     getAccounts({ useStore: true }),
@@ -22,12 +27,10 @@ export function fetchBudgets() {
   });
 }
 
-export const SET_BUDGETS = 'SET_BUDGETS';
 function storeBudgets(budgets) {
   store.dispatch({ type: SET_BUDGETS, budgets });
 }
 
-export const SAVE_BUDGET = 'SAVE_BUDGET';
 export function saveBudget(budget) {
   store.dispatch({ type: SAVE_BUDGET });
   const accountId = store.getState().accountStore.get('currentAccount').get('id');
@@ -52,7 +55,6 @@ function updateBudget(accountId, budget) {
   });
 }
 
-export const DELETE_BUDGET = 'DELETE_BUDGET';
 export function deleteBudget(budget) {
   store.dispatch({ type: DELETE_BUDGET });
   const accountId = store.getState().accountStore.get('currentAccount').get('id');

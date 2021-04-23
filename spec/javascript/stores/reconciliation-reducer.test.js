@@ -1,9 +1,9 @@
 import { Map } from 'immutable';
 import reconciliationReducer from 'stores/reconciliation-reducer';
 import {
-  SET_RECONCILIATIONS,
   GET_RECONCILIATIONS,
-} from 'actions/reconciliation-actions';
+  SET_RECONCILIATIONS,
+} from 'actions/action-types';
 
 describe('ReconciliationReducer', () => {
   const reconciliation = { id: 1, accountId: 3, statementBalance: 140, statementDate: '2017-03-14', reconciled: false };

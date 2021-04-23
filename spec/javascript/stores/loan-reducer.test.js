@@ -1,5 +1,5 @@
 import loanReducer from 'stores/loan-reducer';
-import { SET_LOAN_REPORT, SET_LOAN_VIEW } from 'actions/loan-actions';
+import { SET_LOAN_REPORT, SET_LOAN_VIEW } from 'actions/action-types';
 
 describe('LoanReducer', () => {
   it('has a default state', () => {

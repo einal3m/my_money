@@ -4,7 +4,13 @@ import transactionTransformer from 'transformers/transaction-transformer';
 import store from 'stores/store';
 import apiUtil from 'util/api-util';
 import * as reportActions from 'actions/report-actions';
-import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from 'actions/form-actions';
+import {
+  SET_TRANSACTIONS,
+  SET_SEARCH_DESCRIPTION,
+  TOGGLE_MORE_OR_LESS,
+  SOURCE_CATEGORY_REPORT,
+  SOURCE_SUBCATEGORY_REPORT
+} from 'actions/action-types';
 
 describe('TransactionActions', () => {
   let dispatcherSpy;
@@ -60,7 +66,7 @@ describe('TransactionActions', () => {
 
       expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: transactionActions.SET_TRANSACTIONS,
+        type: SET_TRANSACTIONS,
         transactions: ['transformedTransaction'],
       });
     });
@@ -136,7 +142,7 @@ describe('TransactionActions', () => {
     it('dispatches the description to the store', () => {
       transactionActions.setSearchDescription('my String');
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: transactionActions.SET_SEARCH_DESCRIPTION,
+        type: SET_SEARCH_DESCRIPTION,
         description: 'my String',
       });
     });
@@ -146,7 +152,7 @@ describe('TransactionActions', () => {
     it('dispatches the toggle actions', () => {
       transactionActions.toggleMoreOrLess();
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: transactionActions.TOGGLE_MORE_OR_LESS,
+        type: TOGGLE_MORE_OR_LESS,
       });
     });
   });

@@ -2,7 +2,7 @@ import { Map, List } from 'immutable';
 import {
   GET_RECONCILIATIONS,
   SET_RECONCILIATIONS,
-} from '../actions/reconciliation-actions';
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   loaded: false,

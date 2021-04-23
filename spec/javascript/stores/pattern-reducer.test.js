@@ -3,7 +3,7 @@ import patternReducer from 'stores/pattern-reducer';
 import {
   SET_PATTERNS,
   GET_PATTERNS,
-} from 'actions/pattern-actions';
+} from 'actions/action-types';
 
 describe('PatternReducer', () => {
   const pattern = { id: 11, matchText: 'Description', notes: 'my note', categoryId: 4, subcategoryId: 6 };

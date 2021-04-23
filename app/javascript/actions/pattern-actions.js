@@ -3,8 +3,13 @@ import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
 import { getCategories } from './category-actions';
 import patternTransformer from '../transformers/pattern-transformer';
+import {
+  SET_PATTERNS,
+  GET_PATTERNS,
+  SAVE_PATTERN,
+  DELETE_PATTERN,
+} from 'actions/action-types';
 
-export const GET_PATTERNS = 'GET_PATTERNS';
 export function getPatterns() {
   return Promise.all([
     getAccounts({ useStore: true }),
@@ -24,12 +29,10 @@ export function fetchPatterns() {
   });
 }
 
-export const SET_PATTERNS = 'SET_PATTERNS';
 function storePatterns(patterns) {
   store.dispatch({ type: SET_PATTERNS, patterns });
 }
 
-export const SAVE_PATTERN = 'SAVE_PATTERN';
 export function savePattern(pattern) {
   store.dispatch({ type: SAVE_PATTERN });
   if (pattern.id) {
@@ -55,7 +58,6 @@ function updatePattern(pattern) {
   });
 }
 
-export const DELETE_PATTERN = 'DELETE_PATTERN';
 export function deletePattern(pattern) {
   store.dispatch({ type: DELETE_PATTERN });
   return apiUtil.delete({

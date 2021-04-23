@@ -6,7 +6,7 @@ import {
   CONFIRM_DELETE_BANK_STATEMENT,
   CANCEL_DELETE_BANK_STATEMENT,
   DELETE_BANK_STATEMENT,
-} from 'actions/bank-statement-actions';
+} from 'actions/action-types';
 
 describe('BankStatementReducer', () => {
   const bankStatements = [

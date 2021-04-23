@@ -1,5 +1,8 @@
 import { Map, List, fromJS } from 'immutable';
-import { GET_MATCHING_TRANSACTIONS, SET_MATCHING_TRANSACTIONS } from '../actions/matching-transactions-actions';
+import {
+  GET_MATCHING_TRANSACTIONS,
+  SET_MATCHING_TRANSACTIONS,
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   matchingTransactions: List(),

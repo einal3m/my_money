@@ -1,5 +1,15 @@
 import { Map, List, fromJS } from 'immutable';
-import { SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY } from '../actions/category-actions';
+import {
+  SET_CURRENT_CATEGORY,
+  SET_CURRENT_SUBCATEGORY,
+  SET_CATEGORY_TYPES,
+  SET_CATEGORIES,
+  SET_SUBCATEGORIES,
+  SET_CATEGORY,
+  SET_SUBCATEGORY,
+  REMOVE_CATEGORY,
+  REMOVE_SUBCATEGORY,
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   categoryTypesLoaded: false,
@@ -14,19 +24,19 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-    case 'SET_CATEGORY_TYPES':
+    case SET_CATEGORY_TYPES:
       return setCategoryTypes(state, action.categoryTypes);
-    case 'SET_CATEGORIES':
+    case SET_CATEGORIES:
       return setCategories(state, action.categories);
-    case 'SET_CATEGORY':
+    case SET_CATEGORY:
       return setCategory(state, action.category);
-    case 'REMOVE_CATEGORY':
+    case REMOVE_CATEGORY:
       return removeCategory(state, action.categoryId);
-    case 'SET_SUBCATEGORIES':
+    case SET_SUBCATEGORIES:
       return setSubcategories(state, action.subcategories);
-    case 'SET_SUBCATEGORY':
+    case SET_SUBCATEGORY:
       return setSubcategory(state, action.subcategory);
-    case 'REMOVE_SUBCATEGORY':
+    case REMOVE_SUBCATEGORY:
       return removeSubcategory(state, action.subcategoryId);
     case SET_CURRENT_CATEGORY:
       return setCurrentCategory(state, action.categoryId);

@@ -4,10 +4,18 @@ import { getAccounts } from './account-actions';
 import { getDateRanges } from './date-range-actions';
 import { getCategories } from './category-actions';
 import transactionTransformer from '../transformers/transaction-transformer';
-import { SOURCE_CATEGORY_REPORT, SOURCE_SUBCATEGORY_REPORT } from './form-actions';
+import {
+  SAVE_TRANSACTION,
+  DELETE_TRANSACTION,
+  SET_TRANSACTIONS,
+  SET_SEARCH_DESCRIPTION,
+  TOGGLE_MORE_OR_LESS,
+  SOURCE_CATEGORY_REPORT,
+  SOURCE_SUBCATEGORY_REPORT
+} from 'actions/action-types';
+
 import { getCategoryReport, getSubcategoryReport } from './report-actions';
 
-export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
 export function getTransactions() {
   Promise.all([
     getAccounts({ useStore: true }),
@@ -40,7 +48,6 @@ export function fetchTransactions() {
   });
 }
 
-export const SAVE_TRANSACTION = 'SAVE_TRANSACTION';
 export function saveTransaction(transaction) {
   store.dispatch({ type: SAVE_TRANSACTION });
   if (transaction.id) {
@@ -82,7 +89,6 @@ export function onSuccess() {
   }
 }
 
-export const DELETE_TRANSACTION = 'DELETE_TRANSACTION';
 export function deleteTransaction(transaction) {
   store.dispatch({ type: DELETE_TRANSACTION });
   return apiUtil.delete({
@@ -91,17 +97,14 @@ export function deleteTransaction(transaction) {
   });
 }
 
-export const SET_TRANSACTIONS = 'SET_TRANSACTIONS';
 export function storeTransactions(transactions) {
   store.dispatch({ type: SET_TRANSACTIONS, transactions });
 }
 
-export const SET_SEARCH_DESCRIPTION = 'SET_SEARCH_DESCRIPTION';
 export const setSearchDescription = (description) => {
   store.dispatch({ type: SET_SEARCH_DESCRIPTION, description });
 };
 
-export const TOGGLE_MORE_OR_LESS = 'TOGGLE_MORE_OR_LESS';
 export const toggleMoreOrLess = () => {
   store.dispatch({ type: TOGGLE_MORE_OR_LESS });
 };

@@ -1,4 +1,9 @@
 import { Map, List, fromJS } from 'immutable';
+import {
+  SET_DATE_RANGES,
+  SET_CURRENT_DATE_RANGE,
+  UPDATE_CURRENT_DATE_RANGE,
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   loaded: false,
@@ -8,11 +13,11 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-    case 'SET_DATE_RANGES':
+    case SET_DATE_RANGES:
       return setDateRanges(state, action.dateRanges);
-    case 'SET_CURRENT_DATE_RANGE':
+    case SET_CURRENT_DATE_RANGE:
       return setCurrentDateRange(state, action.id);
-    case 'UPDATE_CURRENT_DATE_RANGE':
+    case UPDATE_CURRENT_DATE_RANGE:
       return updateCurrentDateRange(state, action.dateChange);
     default:
       return state;

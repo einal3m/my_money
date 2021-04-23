@@ -1,5 +1,11 @@
 import { fromJS } from 'immutable';
 import * as budgetActions from 'actions/budget-actions';
+import {
+  GET_BUDGETS,
+  SET_BUDGETS,
+  SAVE_BUDGET,
+  DELETE_BUDGET,
+} from 'actions/action-types';
 import * as budgetTransformer from 'transformers/budget-transformer';
 import store from 'stores/store';
 import apiUtil from 'util/api-util';
@@ -18,7 +24,7 @@ describe('BudgetActions', () => {
 
     it('makes an ajax request to GET patterns', () => {
       expect(apiUtil.get).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: budgetActions.GET_BUDGETS });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_BUDGETS });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts/12/budgets');
@@ -32,7 +38,7 @@ describe('BudgetActions', () => {
 
       expect(budgetTransformer.transformFromApi).toHaveBeenCalledWith('budget');
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: budgetActions.SET_BUDGETS,
+        type: SET_BUDGETS,
         budgets: ['transformedBudget'],
       });
     });
@@ -49,7 +55,7 @@ describe('BudgetActions', () => {
     it('makes a post request if it has no id', () => {
       budgetActions.saveBudget({ description: 'my description' });
 
-      expect(store.dispatch).toHaveBeenCalledWith({ type: budgetActions.SAVE_BUDGET });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_BUDGET });
       expect(apiUtil.post).toHaveBeenCalled();
       expect(budgetTransformer.transformToApi).toHaveBeenCalledWith({ description: 'my description' });
 
@@ -62,7 +68,7 @@ describe('BudgetActions', () => {
     it('makes a put request if it has an id', () => {
       budgetActions.saveBudget({ id: 1, description: 'my description' });
 
-      expect(store.dispatch).toHaveBeenCalledWith({ type: budgetActions.SAVE_BUDGET });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_BUDGET });
       expect(apiUtil.put).toHaveBeenCalled();
       expect(budgetTransformer.transformToApi).toHaveBeenCalledWith({ id: 1, description: 'my description' });
 
@@ -80,7 +86,7 @@ describe('BudgetActions', () => {
 
       budgetActions.deleteBudget({ id: 1, description: 'my description' });
 
-      expect(store.dispatch).toHaveBeenCalledWith({ type: budgetActions.DELETE_BUDGET });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: DELETE_BUDGET });
       expect(apiUtil.delete).toHaveBeenCalled();
 
       const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];

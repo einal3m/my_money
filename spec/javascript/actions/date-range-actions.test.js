@@ -3,6 +3,12 @@ import * as dateRangeActions from 'actions/date-range-actions';
 import apiUtil from 'util/api-util';
 import store from 'stores/store';
 import dateRangeTransformer from 'transformers/date-range-transformer';
+import {
+  GET_DATE_RANGES,
+  SET_DATE_RANGES,
+  SET_CURRENT_DATE_RANGE,
+  UPDATE_CURRENT_DATE_RANGE,
+} from 'actions/action-types';
 
 describe('DateRangeActions', () => {
   let dispatcherSpy;
@@ -17,7 +23,7 @@ describe('DateRangeActions', () => {
 
       dateRangeActions.getDateRanges();
       expect(apiUtil.get).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: dateRangeActions.GET_DATE_RANGES });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_DATE_RANGES });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('date_range_options');
@@ -28,7 +34,7 @@ describe('DateRangeActions', () => {
 
       expect(dateRangeTransformer.transformDateRange).toHaveBeenCalledWith('date_range');
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: dateRangeActions.SET_DATE_RANGES,
+        type: SET_DATE_RANGES,
         dateRanges: ['dateRange'],
       });
     });
@@ -47,7 +53,7 @@ describe('DateRangeActions', () => {
   it('setCurrentDateRange dispatches the id to the store', () => {
     dateRangeActions.setCurrentDateRange(45);
     expect(dispatcherSpy).toHaveBeenCalledWith({
-      type: dateRangeActions.SET_CURRENT_DATE_RANGE,
+      type: SET_CURRENT_DATE_RANGE,
       id: 45,
     });
   });
@@ -55,7 +61,7 @@ describe('DateRangeActions', () => {
   it('updateCurrentDateRange dispatches the data to the store', () => {
     dateRangeActions.updateCurrentDateRange({ fromDate: '2015-12-19' });
     expect(dispatcherSpy).toHaveBeenCalledWith({
-      type: dateRangeActions.UPDATE_CURRENT_DATE_RANGE,
+      type: UPDATE_CURRENT_DATE_RANGE,
       dateChange: { fromDate: '2015-12-19' },
     });
   });

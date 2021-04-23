@@ -1,6 +1,15 @@
 import { Map } from 'immutable';
 import categoryReducer from 'stores/category-reducer';
-import { SET_CURRENT_CATEGORY, SET_CURRENT_SUBCATEGORY } from 'actions/category-actions';
+import {
+  SET_CURRENT_CATEGORY,
+  SET_CURRENT_SUBCATEGORY,
+  SET_CATEGORY_TYPES,
+  SET_CATEGORIES,
+  SET_SUBCATEGORIES,
+  SET_CATEGORY,
+  SET_SUBCATEGORY,
+  REMOVE_SUBCATEGORY,
+} from 'actions/action-types';
 
 xdescribe('CategoryReducer', () => {
   const categories = [
@@ -32,7 +41,7 @@ xdescribe('CategoryReducer', () => {
 
   describe('SET_CATEGORY_TYPES', () => {
     it('stores the given category types into the store', () => {
-      const action = { type: 'SET_CATEGORY_TYPES', categoryTypes };
+      const action = { type: SET_CATEGORY_TYPES, categoryTypes };
       const nextState = categoryReducer(undefined, action);
 
       expect(nextState.get('categoryTypes').toJS()).toEqual(categoryTypes);
@@ -43,7 +52,7 @@ xdescribe('CategoryReducer', () => {
   describe('category actions', () => {
     let loadedState;
     beforeEach(() => {
-      const action = { type: 'SET_CATEGORIES', categories };
+      const action = { type: SET_CATEGORIES, categories };
       loadedState = categoryReducer(undefined, action);
     });
 
@@ -57,7 +66,7 @@ xdescribe('CategoryReducer', () => {
     describe('SET_CATEGORY', () => {
       it('adds the category to the store if it doesnt exist', () => {
         const newCategory = { id: 13, name: 'Melanie', categoryTypeId: 2 };
-        const action = { type: 'SET_CATEGORY', category: newCategory };
+        const action = { type: SET_CATEGORY, category: newCategory };
         const state = categoryReducer(loadedState, action);
 
         expect(state.get('categories').size).toEqual(3);
@@ -66,7 +75,7 @@ xdescribe('CategoryReducer', () => {
 
       it('updates the category if it does exist', () => {
         const updatedCategory = { id: 12, name: 'NewName', categoryTypeId: 3 };
-        const action = { type: 'SET_CATEGORY', category: updatedCategory };
+        const action = { type: SET_CATEGORY, category: updatedCategory };
         const state = categoryReducer(loadedState, action);
 
         expect(state.get('categories').size).toEqual(2);
@@ -77,7 +86,7 @@ xdescribe('CategoryReducer', () => {
 
     describe('REMOVE_CATEGORY', () => {
       it('removes the category from the store', () => {
-        const action = { type: 'REMOVE_CATEGORY', categoryId: 11 };
+        const action = { type: REMOVE_CATEGORY, categoryId: 11 };
         const state = categoryReducer(loadedState, action);
 
         expect(state.get('categories').size).toEqual(1);
@@ -89,7 +98,7 @@ xdescribe('CategoryReducer', () => {
   describe('subcategories', () => {
     let loadedState;
     beforeEach(() => {
-      const action = { type: 'SET_SUBCATEGORIES', subcategories };
+      const action = { type: SET_SUBCATEGORIES, subcategories };
       loadedState = categoryReducer(undefined, action);
     });
 
@@ -102,7 +111,7 @@ xdescribe('CategoryReducer', () => {
     describe('SET_SUBCATEGORY', () => {
       it('adds the subcategory to the store if it doesnt exist', () => {
         const newSubcategory = { id: 23, name: 'Melanie', categoryId: 11 };
-        const action = { type: 'SET_SUBCATEGORY', subcategory: newSubcategory };
+        const action = { type: SET_SUBCATEGORY, subcategory: newSubcategory };
         const state = categoryReducer(loadedState, action);
 
         expect(state.get('subcategories').size).toEqual(3);
@@ -111,7 +120,7 @@ xdescribe('CategoryReducer', () => {
 
       it('updates the subcategory if it does exist', () => {
         const updatedSubcategory = { id: 22, name: 'NewName', categoryId: 12 };
-        const action = { type: 'SET_SUBCATEGORY', subcategory: updatedSubcategory };
+        const action = { type: SET_SUBCATEGORY, subcategory: updatedSubcategory };
         const state = categoryReducer(loadedState, action);
 
         expect(state.get('subcategories').size).toEqual(2);
@@ -122,7 +131,7 @@ xdescribe('CategoryReducer', () => {
 
     describe('REMOVE_SUBCATEGORY', () => {
       it('removes the subcategory from the store', () => {
-        const action = { type: 'REMOVE_SUBCATEGORY', subcategoryId: 21 };
+        const action = { type: REMOVE_SUBCATEGORY, subcategoryId: 21 };
         const state = categoryReducer(loadedState, action);
 
         expect(state.get('subcategories').size).toEqual(1);

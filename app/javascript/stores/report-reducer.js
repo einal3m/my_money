@@ -6,7 +6,7 @@ import {
   TOGGLE_REPORT_VIEW,
   SET_TOTALS_REPORT,
   SET_INCOME_VS_EXPENSE,
-} from '../actions/report-actions';
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   accountBalances: Map({}),

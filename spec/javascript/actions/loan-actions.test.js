@@ -1,8 +1,12 @@
 import { fromJS } from 'immutable';
 import * as loanActions from 'actions/loan-actions';
-import { GET_REPORT } from 'actions/report-actions';
 import apiUtil from 'util/api-util';
 import store from 'stores/store';
+import {
+  GET_REPORT,
+  SET_LOAN_REPORT,
+  SET_LOAN_VIEW,
+ } from 'actions/action-types';
 
 describe('LoanActions', () => {
   let dispatcherSpy;
@@ -35,7 +39,7 @@ describe('LoanActions', () => {
       getArgs.onSuccess({ minimum_repayment: 3456 });
 
       expect(dispatcherSpy).toHaveBeenCalledWith(
-        { type: loanActions.SET_LOAN_REPORT, report: { minimum_repayment: 3456 } }
+        { type: SET_LOAN_REPORT, report: { minimum_repayment: 3456 } }
       );
     });
   });
@@ -44,7 +48,7 @@ describe('LoanActions', () => {
     it('dispatches the action to the store', () => {
       loanActions.setLoanView('chart');
 
-      expect(dispatcherSpy).toHaveBeenCalledWith({ type: loanActions.SET_LOAN_VIEW, view: 'chart' });
+      expect(dispatcherSpy).toHaveBeenCalledWith({ type: SET_LOAN_VIEW, view: 'chart' });
     });
   });
 });

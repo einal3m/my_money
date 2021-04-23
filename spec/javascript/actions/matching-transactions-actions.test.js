@@ -3,6 +3,10 @@ import * as matchingTransactionsActions from 'actions/matching-transactions-acti
 import apiUtil from 'util/api-util';
 import store from 'stores/store';
 import transactionTransformer from 'transformers/transaction-transformer';
+import {
+  GET_MATCHING_TRANSACTIONS,
+  SET_MATCHING_TRANSACTIONS,
+} from 'actions/action-types';
 
 describe('MatchingTransactionsActions', () => {
   beforeEach(() => {
@@ -15,7 +19,7 @@ describe('MatchingTransactionsActions', () => {
   describe('getMatchingTransactions', () => {
     it('calls the matching api', () => {
       expect(apiUtil.get).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: matchingTransactionsActions.GET_MATCHING_TRANSACTIONS });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_MATCHING_TRANSACTIONS });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts/12/transactions/34/matching');
@@ -28,7 +32,7 @@ describe('MatchingTransactionsActions', () => {
 
       expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: matchingTransactionsActions.SET_MATCHING_TRANSACTIONS,
+        type: SET_MATCHING_TRANSACTIONS,
         transactions: ['transformedTransaction'],
       });
     });

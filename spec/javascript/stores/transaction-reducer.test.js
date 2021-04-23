@@ -1,10 +1,10 @@
 import transactionReducer from 'stores/transaction-reducer';
 import {
-  TOGGLE_MORE_OR_LESS,
-  SET_SEARCH_DESCRIPTION,
-  SET_TRANSACTIONS,
   GET_TRANSACTIONS,
-} from 'actions/transaction-actions';
+  SET_TRANSACTIONS,
+  SET_SEARCH_DESCRIPTION,
+  TOGGLE_MORE_OR_LESS,
+} from 'actions/action-types';
 
 describe('TransactionReducer', () => {
   let transactions;

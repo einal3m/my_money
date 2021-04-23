@@ -2,7 +2,7 @@ import { Map, List } from 'immutable';
 import {
   GET_BUDGETS,
   SET_BUDGETS,
-} from '../actions/budget-actions';
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   loaded: false,

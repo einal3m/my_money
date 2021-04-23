@@ -1,9 +1,12 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
-import { GET_REPORT } from './report-actions';
+import {
+  GET_REPORT,
+  SET_LOAN_REPORT,
+  SET_LOAN_VIEW,
+ } from 'actions/action-types';
 import { getAccounts } from './account-actions';
 
-export const SET_LOAN_REPORT = 'SET_LOAN_REPORT';
 export function getLoanReport() {
   Promise.all([
     getAccounts({ useStore: true }),
@@ -24,7 +27,6 @@ function storeLoanReport(response) {
   store.dispatch({ type: SET_LOAN_REPORT, report: response });
 }
 
-export const SET_LOAN_VIEW = 'SET_LOAN_VIEW';
 export function setLoanView(view) {
   store.dispatch({ type: SET_LOAN_VIEW, view });
 }

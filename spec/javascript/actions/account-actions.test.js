@@ -1,5 +1,14 @@
 import { fromJS } from 'immutable';
 import * as accountActions from 'actions/account-actions';
+import {
+  GET_ACCOUNTS,
+  SET_ACCOUNTS,
+  GET_ACCOUNT_TYPES,
+  SET_CURRENT_ACCOUNT,
+  SET_ACCOUNT_TYPES,
+  SET_SELECTED_ACCOUNTS,
+  SAVE_ACCOUNT,
+} from 'actions/action-types';
 import accountTransformer from 'transformers/account-transformer';
 import store from 'stores/store';
 import apiUtil from 'util/api-util';
@@ -23,7 +32,7 @@ describe('AccountActions', () => {
 
       expect(apiUtil.get).toHaveBeenCalled();
       expect(promise.then).toBeDefined();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.GET_ACCOUNTS });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_ACCOUNTS });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts');
@@ -34,7 +43,7 @@ describe('AccountActions', () => {
 
       expect(accountTransformer.transformFromApi).toHaveBeenCalledWith('account');
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: accountActions.SET_ACCOUNTS,
+        type: SET_ACCOUNTS,
         accounts: ['transformedFromApi'],
       });
     });
@@ -68,7 +77,7 @@ describe('AccountActions', () => {
 
       expect(apiUtil.get).toHaveBeenCalled();
       expect(promise.then).toBeDefined();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.GET_ACCOUNT_TYPES });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_ACCOUNT_TYPES });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('account_types');
@@ -77,7 +86,7 @@ describe('AccountActions', () => {
       successCallback({ account_types: ['account_type'] });
 
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: accountActions.SET_ACCOUNT_TYPES,
+        type: SET_ACCOUNT_TYPES,
         accountTypes: ['account_type'],
       });
     });
@@ -102,7 +111,7 @@ describe('AccountActions', () => {
 
       expect(apiUtil.post).toHaveBeenCalled();
       expect(accountTransformer.transformToApi).toHaveBeenCalledWith({ name: 'my account' });
-      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.SAVE_ACCOUNT });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_ACCOUNT });
 
       const postArgs = apiUtil.post.calls.argsFor(0)[0];
       expect(postArgs.url).toEqual('accounts');
@@ -118,7 +127,7 @@ describe('AccountActions', () => {
 
       expect(apiUtil.put).toHaveBeenCalled();
       expect(accountTransformer.transformToApi).toHaveBeenCalledWith({ id: 2, name: 'my account' });
-      expect(store.dispatch).toHaveBeenCalledWith({ type: accountActions.SAVE_ACCOUNT });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_ACCOUNT });
 
       const putArgs = apiUtil.put.calls.argsFor(0)[0];
       expect(putArgs.url).toEqual('accounts/2');
@@ -146,7 +155,7 @@ describe('AccountActions', () => {
     it('setCurrentAccount dispatches the id to the store', () => {
       accountActions.setCurrentAccount(45);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: accountActions.SET_CURRENT_ACCOUNT,
+        type: SET_CURRENT_ACCOUNT,
         id: 45,
       });
     });
@@ -154,7 +163,7 @@ describe('AccountActions', () => {
     it('setSelectedAccounts', () => {
       accountActions.setSelectedAccounts([45]);
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: accountActions.SET_SELECTED_ACCOUNTS,
+        type: SET_SELECTED_ACCOUNTS,
         accountIds: [45],
       });
     });

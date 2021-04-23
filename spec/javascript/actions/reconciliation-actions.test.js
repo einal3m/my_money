@@ -3,6 +3,11 @@ import * as reconciliationActions from 'actions/reconciliation-actions';
 import * as reconciliationTransformer from 'transformers/reconciliation-transformer';
 import store from 'stores/store';
 import apiUtil from 'util/api-util';
+import {
+  GET_RECONCILIATIONS,
+  SET_RECONCILIATIONS,
+  SAVE_RECONCILIATION,
+} from 'actions/action-types';
 
 describe('ReconciliationActions', () => {
   beforeEach(() => {
@@ -19,7 +24,7 @@ describe('ReconciliationActions', () => {
 
     it('makes an ajax request to GET reconcilations for current account', () => {
       expect(apiUtil.get).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: reconciliationActions.GET_RECONCILIATIONS });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_RECONCILIATIONS });
 
       const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual('accounts/12/reconciliations');
@@ -34,7 +39,7 @@ describe('ReconciliationActions', () => {
 
       expect(reconciliationTransformer.transformFromApi).toHaveBeenCalledWith('reconciliation');
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: reconciliationActions.SET_RECONCILIATIONS,
+        type: SET_RECONCILIATIONS,
         reconciliations: ['transformedReconciliation'],
       });
     });
@@ -51,7 +56,7 @@ describe('ReconciliationActions', () => {
     it('makes a post request if it has no id', () => {
       reconciliationActions.saveReconciliation({ statementBalance: 3000 });
 
-      expect(store.dispatch).toHaveBeenCalledWith({ type: reconciliationActions.SAVE_RECONCILIATION });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_RECONCILIATION });
       expect(apiUtil.post).toHaveBeenCalled();
       expect(reconciliationTransformer.transformToApi).toHaveBeenCalledWith({ statementBalance: 3000 });
 
@@ -63,7 +68,7 @@ describe('ReconciliationActions', () => {
     it('makes a put request if it has an id', () => {
       reconciliationActions.saveReconciliation({ id: 1, statementBalance: 3000 });
 
-      expect(store.dispatch).toHaveBeenCalledWith({ type: reconciliationActions.SAVE_RECONCILIATION });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_RECONCILIATION });
       expect(apiUtil.put).toHaveBeenCalled();
       expect(reconciliationTransformer.transformToApi).toHaveBeenCalledWith({ id: 1, statementBalance: 3000 });
 

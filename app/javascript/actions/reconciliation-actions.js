@@ -2,8 +2,12 @@ import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
 import { transformFromApi, transformToApi } from '../transformers/reconciliation-transformer';
+import {
+  GET_RECONCILIATIONS,
+  SET_RECONCILIATIONS,
+  SAVE_RECONCILIATION,
+} from 'actions/action-types';
 
-export const GET_RECONCILIATIONS = 'GET_RECONCILIATIONS';
 export function getReconciliations() {
   return Promise.all([
     getAccounts({ useStore: true }),
@@ -22,12 +26,10 @@ export function fetchReconciliations() {
   });
 }
 
-export const SET_RECONCILIATIONS = 'SET_RECONCILIATIONS';
 function storeReconciliations(reconciliations) {
   store.dispatch({ type: SET_RECONCILIATIONS, reconciliations });
 }
 
-export const SAVE_RECONCILIATION = 'SAVE_RECONCILIATION';
 export function saveReconciliation(reconciliation) {
   store.dispatch({ type: SAVE_RECONCILIATION });
   const accountId = store.getState().accountStore.get('currentAccount').get('id');

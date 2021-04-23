@@ -1,4 +1,12 @@
 import { Map, List, fromJS } from 'immutable';
+import {
+  UPLOAD_OFX,
+  SET_OFX_TRANSACTIONS,
+  SET_NOTES,
+  SET_CATEGORY_ID,
+  SET_SUBCATEGORY_ID,
+  SET_IMPORT,
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   transactions: List(),
@@ -7,17 +15,17 @@ const INITIAL_STATE = Map({
 
 export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
   switch (action.type) {
-    case 'SET_OFX_TRANSACTIONS':
+    case SET_OFX_TRANSACTIONS:
       return setOfxTransactions(state, action.transactions);
-    case 'UPLOAD_OFX':
+    case UPLOAD_OFX:
       return setFileName(state, action.fileName);
-    case 'SET_NOTES':
+    case SET_NOTES:
       return setNotes(state, action.index, action.notes);
-    case 'SET_CATEGORY_ID':
+    case SET_CATEGORY_ID:
       return setCategoryId(state, action.index, action.categoryId);
-    case 'SET_SUBCATEGORY_ID':
+    case SET_SUBCATEGORY_ID:
       return setSubcategoryId(state, action.index, action.subcategoryId);
-    case 'SET_IMPORT':
+    case SET_IMPORT:
       return setImport(state, action.index, action.import);
     default:
       return state;
