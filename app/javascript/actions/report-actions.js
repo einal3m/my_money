@@ -1,12 +1,17 @@
-import apiUtil from '../util/api-util';
-import store from '../stores/store';
-import transactionTransformer from '../transformers/transaction-transformer';
-import { getCategories } from '../actions/category-actions';
-import { getDateRanges } from '../actions/date-range-actions';
-import { getAccounts } from '../actions/account-actions';
-
-export const GET_REPORT = 'GET_REPORT';
-export const SET_ACCOUNT_BALANCE_REPORT = 'SET_ACCOUNT_BALANCE_REPORT';
+import apiUtil from 'util/api-util';
+import store from 'stores/store';
+import transactionTransformer from 'transformers/transaction-transformer';
+import { getCategories } from 'actions/category-actions';
+import { getDateRanges } from 'actions/date-range-actions';
+import { getAccounts } from 'actions/account-actions';
+import {
+  GET_REPORT,
+  SET_ACCOUNT_BALANCE_REPORT,
+  SET_TRANSACTION_REPORT,
+  TOGGLE_REPORT_VIEW,
+  SET_TOTALS_REPORT,
+  SET_INCOME_VS_EXPENSE,
+} from './action-types';
 
 export function getAccountBalanceReport() {
   Promise.all([
@@ -32,7 +37,6 @@ function storeAccountBalanceReport(accountId, report) {
   store.dispatch({ type: SET_ACCOUNT_BALANCE_REPORT, accountId, report });
 }
 
-export const TOGGLE_REPORT_VIEW = 'TOGGLE_REPORT_VIEW';
 export function toggleReportView() {
   store.dispatch({ type: TOGGLE_REPORT_VIEW });
 }
@@ -92,7 +96,6 @@ export function fetchCategoryReport() {
   });
 }
 
-export const SET_TRANSACTION_REPORT = 'SET_TRANSACTION_REPORT';
 function storeTransactionReport(transactions, totals) {
   store.dispatch({ type: SET_TRANSACTION_REPORT, transactions, totals });
 }
@@ -105,7 +108,6 @@ export function getIncomeExpenseBarReport() {
   });
 }
 
-export const SET_TOTALS_REPORT = 'SET_TOTALS_REPORT';
 function storeTotalsReport(totals) {
   store.dispatch({ type: SET_TOTALS_REPORT, totals });
 }
@@ -119,7 +121,6 @@ export function getIncomeVsExpensesReport() {
   });
 }
 
-export const SET_INCOME_VS_EXPENSE = 'SET_INCOME_VS_EXPENSE';
 export function fetchIncomeVsExpensesReport() {
   const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
   const url = `report/income_vs_expense?from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`;

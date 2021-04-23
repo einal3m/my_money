@@ -4,6 +4,15 @@ import transactionTransformer from 'transformers/transaction-transformer';
 import apiUtil from 'util/api-util';
 import store from 'stores/store';
 import * as routingActions from 'actions/routing-actions';
+import {
+  UPLOAD_OFX,
+  SET_OFX_TRANSACTIONS,
+  SAVE_TRANSACTIONS,
+  SET_NOTES,
+  SET_CATEGORY_ID,
+  SET_SUBCATEGORY_ID,
+  SET_IMPORT,
+} from 'actions/action-types';
 
 describe('ImportActions', () => {
   let dispatcherSpy;
@@ -22,8 +31,7 @@ describe('ImportActions', () => {
       importActions.uploadOFX(45, file);
 
       expect(apiUtil.upload).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: importActions.UPLOAD_OFX, fileName: 'file.ofx' });
-      expect(routingActions.routeToImportTransactions).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({ type: UPLOAD_OFX, fileName: 'file.ofx' });
 
       const uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
       expect(uploadArgs.url).toEqual('accounts/45/transactions/import');
@@ -36,11 +44,11 @@ describe('ImportActions', () => {
       spyOn(transactionTransformer, 'transformFromOfxApi').and.returnValue('transformedFromApi');
       const uploadArgs = apiUtil.upload.calls.argsFor(0)[0];
 
-      uploadArgs.onSuccess({ transactions: ['transaction'] });
+      uploadArgs.onSuccess({ imported_transactions: ['transaction'] });
 
       expect(transactionTransformer.transformFromOfxApi).toHaveBeenCalledWith('transaction');
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: importActions.SET_OFX_TRANSACTIONS,
+        type: SET_OFX_TRANSACTIONS,
         transactions: ['transformedFromApi'],
       });
     });
@@ -63,7 +71,7 @@ describe('ImportActions', () => {
       importActions.importTransactions();
 
       expect(apiUtil.post).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: importActions.SAVE_TRANSACTIONS });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_TRANSACTIONS });
       expect(transactionTransformer.transformToApi).toHaveBeenCalledWith({ memo: 'two', import: true });
 
       const postArgs = apiUtil.post.calls.argsFor(0)[0];
@@ -82,10 +90,9 @@ describe('ImportActions', () => {
       postArgs.onSuccess();
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: importActions.SET_OFX_TRANSACTIONS,
+        type: SET_OFX_TRANSACTIONS,
         transactions: [],
       });
-      expect(routingActions.routeToTransactions).toHaveBeenCalled();
     });
   });
 
@@ -94,7 +101,7 @@ describe('ImportActions', () => {
       importActions.setNotes(3, 'newNote');
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: importActions.SET_NOTES,
+        type: SET_NOTES,
         index: 3,
         notes: 'newNote',
       });
@@ -104,7 +111,7 @@ describe('ImportActions', () => {
       importActions.setCategoryId(4, 34);
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: importActions.SET_CATEGORY_ID,
+        type: SET_CATEGORY_ID,
         index: 4,
         categoryId: 34,
       });
@@ -114,7 +121,7 @@ describe('ImportActions', () => {
       importActions.setSubcategoryId(5, 27);
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: importActions.SET_SUBCATEGORY_ID,
+        type: SET_SUBCATEGORY_ID,
         index: 5,
         subcategoryId: 27,
       });
@@ -124,7 +131,7 @@ describe('ImportActions', () => {
       importActions.setImport(6, true);
 
       expect(dispatcherSpy).toHaveBeenCalledWith({
-        type: importActions.SET_IMPORT,
+        type: SET_IMPORT,
         index: 6,
         import: true,
       });

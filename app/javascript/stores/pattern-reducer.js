@@ -1,8 +1,8 @@
 import { Map, List, fromJS } from 'immutable';
 import {
-  GET_PATTERNS,
   SET_PATTERNS,
-} from '../actions/pattern-actions';
+  GET_PATTERNS,
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   loaded: false,

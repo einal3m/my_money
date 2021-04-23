@@ -1,50 +1,47 @@
 import { Map } from 'immutable';
 import ApiStatus from '../util/api-status';
 import {
-  GET_TRANSACTIONS,
-  SET_TRANSACTIONS,
-  SAVE_TRANSACTION,
-  DELETE_TRANSACTION } from '../actions/transaction-actions';
-import {
   GET_ACCOUNTS,
   SET_ACCOUNTS,
   SAVE_ACCOUNT,
-  DELETE_ACCOUNT } from '../actions/account-actions';
-
-import { GET_DATE_RANGES, SET_DATE_RANGES } from '../actions/date-range-actions';
-
-import { UPLOAD_OFX, SET_OFX_TRANSACTIONS } from '../actions/import-actions';
-
-import {
+  DELETE_ACCOUNT,
+  GET_TRANSACTIONS,
+  SET_TRANSACTIONS,
+  SAVE_TRANSACTION,
+  DELETE_TRANSACTION ,
+  GET_DATE_RANGES,
+  SET_DATE_RANGES,
+  UPLOAD_OFX,
+  SET_OFX_TRANSACTIONS,
   GET_BANK_STATEMENTS,
   SET_BANK_STATEMENTS,
-  CONFIRM_DELETE_BANK_STATEMENT,
-  CANCEL_DELETE_BANK_STATEMENT,
   DELETE_BANK_STATEMENT,
-} from '../actions/bank-statement-actions';
-
-import {
   GET_REPORT,
   SET_ACCOUNT_BALANCE_REPORT,
   SET_INCOME_VS_EXPENSE,
   SET_TRANSACTION_REPORT,
   SET_TOTALS_REPORT,
-} from '../actions/report-actions';
-
-import {
+  GET_CATEGORIES,
+  SET_CATEGORY_TYPES,
+  SET_CATEGORIES,
+  SET_SUBCATEGORIES,
+  SAVE_CATEGORY,
+  DELETE_CATEGORY,
+  REMOVE_CATEGORY,
+  SAVE_SUBCATEGORY,
+  DELETE_SUBCATEGORY,
+  SET_CATEGORY,
+  SET_SUBCATEGORY,
+  REMOVE_SUBCATEGORY,
   SET_LOAN_REPORT,
-} from '../actions/loan-actions';
-
-import {
   GET_BUDGETS,
   SET_BUDGETS,
-} from '../actions/budget-actions';
-
-import {
   GET_RECONCILIATIONS,
   SET_RECONCILIATIONS,
   SAVE_RECONCILIATION,
-} from '../actions/reconciliation-actions';
+  SET_API_ERROR,
+  CLEAR_API_ERROR,
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
@@ -56,7 +53,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case GET_ACCOUNTS:
     case GET_DATE_RANGES:
     case GET_TRANSACTIONS:
-    case 'GET_CATEGORIES':
+    case GET_CATEGORIES:
     case GET_REPORT:
     case UPLOAD_OFX:
     case GET_BANK_STATEMENTS:
@@ -67,14 +64,14 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
     case SET_ACCOUNTS:
     case SET_TRANSACTIONS:
     case SET_DATE_RANGES:
-    case 'CLEAR_API_ERROR':
-    case 'SET_CATEGORY_TYPES':
-    case 'SET_CATEGORIES':
-    case 'SET_SUBCATEGORIES':
-    case 'SET_CATEGORY':
-    case 'SET_SUBCATEGORY':
-    case 'REMOVE_CATEGORY':
-    case 'REMOVE_SUBCATEGORY':
+    case CLEAR_API_ERROR:
+    case SET_CATEGORY_TYPES:
+    case SET_CATEGORIES:
+    case SET_SUBCATEGORIES:
+    case SET_CATEGORY:
+    case SET_SUBCATEGORY:
+    case REMOVE_CATEGORY:
+    case REMOVE_SUBCATEGORY:
     case SET_OFX_TRANSACTIONS:
     case SET_BANK_STATEMENTS:
     case SET_ACCOUNT_BALANCE_REPORT:
@@ -88,19 +85,19 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 
     case SAVE_ACCOUNT:
     case SAVE_TRANSACTION:
-    case 'SAVE_CATEGORY':
-    case 'SAVE_SUBCATEGORY':
+    case SAVE_CATEGORY:
+    case SAVE_SUBCATEGORY:
     case SAVE_RECONCILIATION:
       return setSaving(state);
 
     case DELETE_ACCOUNT:
     case DELETE_TRANSACTION:
-    case 'DELETE_CATEGORY':
-    case 'DELETE_SUBCATEGORY':
+    case DELETE_CATEGORY:
+    case DELETE_SUBCATEGORY:
     case DELETE_BANK_STATEMENT:
       return setDeleting(state);
 
-    case 'SET_API_ERROR':
+    case SET_API_ERROR:
       return setError(state, action.message);
 
     default:

@@ -3,7 +3,7 @@ import budgetReducer from 'stores/budget-reducer';
 import {
   SET_BUDGETS,
   GET_BUDGETS,
-} from 'actions/budget-actions';
+} from 'actions/action-types';
 
 describe('PatternReducer', () => {
   it('has a default state', () => {

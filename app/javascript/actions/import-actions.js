@@ -1,9 +1,16 @@
 import apiUtil from '../util/api-util';
 import transactionTransformer from '../transformers/transaction-transformer';
 import store from '../stores/store';
-import { routeToTransactions, routeToImportTransactions } from './routing-actions';
+import {
+  UPLOAD_OFX,
+  SET_OFX_TRANSACTIONS,
+  SAVE_TRANSACTIONS,
+  SET_NOTES,
+  SET_CATEGORY_ID,
+  SET_SUBCATEGORY_ID,
+  SET_IMPORT,
+} from 'actions/action-types';
 
-export const UPLOAD_OFX = 'UPLOAD_OFX';
 export function uploadOFX(accountId, file) {
   store.dispatch({ type: UPLOAD_OFX, fileName: file.name });
   return apiUtil.upload({
@@ -15,12 +22,10 @@ export function uploadOFX(accountId, file) {
   });
 }
 
-export const SET_OFX_TRANSACTIONS = 'SET_OFX_TRANSACTIONS';
 export function storeOfxTransactions(transactions) {
   store.dispatch({ type: SET_OFX_TRANSACTIONS, transactions });
 }
 
-export const SAVE_TRANSACTIONS = 'SAVE_TRANSACTIONS';
 export function importTransactions() {
   store.dispatch({ type: SAVE_TRANSACTIONS });
   const importStore = store.getState().importStore;
@@ -38,10 +43,8 @@ export function importTransactions() {
 
 function importComplete() {
   store.dispatch({ type: SET_OFX_TRANSACTIONS, transactions: [] });
-  // routeToTransactions();
 }
 
-export const SET_NOTES = 'SET_NOTES';
 export function setNotes(index, notes) {
   store.dispatch({
     type: SET_NOTES,
@@ -50,7 +53,6 @@ export function setNotes(index, notes) {
   });
 }
 
-export const SET_CATEGORY_ID = 'SET_CATEGORY_ID';
 export function setCategoryId(index, categoryId) {
   store.dispatch({
     type: SET_CATEGORY_ID,
@@ -59,7 +61,6 @@ export function setCategoryId(index, categoryId) {
   });
 }
 
-export const SET_SUBCATEGORY_ID = 'SET_SUBCATEGORY_ID';
 export function setSubcategoryId(index, subcategoryId) {
   store.dispatch({
     type: SET_SUBCATEGORY_ID,
@@ -68,7 +69,6 @@ export function setSubcategoryId(index, subcategoryId) {
   });
 }
 
-export const SET_IMPORT = 'SET_IMPORT';
 export function setImport(index, importFlag) {
   store.dispatch({
     type: SET_IMPORT,

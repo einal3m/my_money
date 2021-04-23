@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import seriesData from '../loan-report-selector';
+import seriesData from 'selectors/loan-report-selector';
 
 describe('LoanReportSelector', () => {
   it('converts loan report response into line chart form', () => {

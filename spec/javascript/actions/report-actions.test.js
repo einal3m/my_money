@@ -1,9 +1,18 @@
 import { fromJS } from 'immutable';
 import {
-  fetchCategoryReport, fetchSubcategoryReport, toggleReportView, getIncomeExpenseBarReport, fetchAccountBalanceReport,
-  SET_ACCOUNT_BALANCE_REPORT, SET_TRANSACTION_REPORT, GET_REPORT, TOGGLE_REPORT_VIEW, SET_TOTALS_REPORT,
-  fetchIncomeVsExpensesReport, SET_INCOME_VS_EXPENSE,
+  fetchCategoryReport,
+  fetchSubcategoryReport,
+  toggleReportView,
+  getIncomeExpenseBarReport,
+  fetchAccountBalanceReport,
+  fetchIncomeVsExpensesReport,
 } from 'actions/report-actions';
+import {
+  SET_TRANSACTION_REPORT,
+  TOGGLE_REPORT_VIEW,
+  SET_TOTALS_REPORT,
+  SET_INCOME_VS_EXPENSE,
+} from 'actions/action-types';
 import transactionTransformer from 'transformers/transaction-transformer';
 import apiUtil from 'util/api-util';
 import store from 'stores/store';

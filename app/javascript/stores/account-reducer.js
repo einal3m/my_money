@@ -4,7 +4,7 @@ import {
   SET_CURRENT_ACCOUNT,
   SET_ACCOUNT_TYPES,
   SET_SELECTED_ACCOUNTS,
-} from '../actions/account-actions';
+} from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   loaded: false,

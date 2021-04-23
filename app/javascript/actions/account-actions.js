@@ -1,8 +1,17 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import accountTransformer from '../transformers/account-transformer';
+import {
+  GET_ACCOUNTS,
+  SET_ACCOUNTS,
+  GET_ACCOUNT_TYPES,
+  SET_CURRENT_ACCOUNT,
+  SET_ACCOUNT_TYPES,
+  SET_SELECTED_ACCOUNTS,
+  SAVE_ACCOUNT,
+  DELETE_ACCOUNT,
+} from 'actions/action-types';
 
-export const GET_ACCOUNTS = 'GET_ACCOUNTS';
 export function getAccounts(options) {
   return getAccountTypes().then(() => fetchAccounts(options));
 }
@@ -23,12 +32,10 @@ export function fetchAccounts(options) {
   });
 }
 
-export const SET_ACCOUNTS = 'SET_ACCOUNTS';
 export function storeAccounts(accounts) {
   store.dispatch({ type: SET_ACCOUNTS, accounts });
 }
 
-export const GET_ACCOUNT_TYPES = 'GET_ACCOUNT_TYPES';
 export function getAccountTypes() {
   const accountTypesLoaded = store.getState().accountStore.get('accountTypesLoaded');
   if (accountTypesLoaded) {
@@ -42,22 +49,18 @@ export function getAccountTypes() {
   });
 }
 
-export const SET_ACCOUNT_TYPES = 'SET_ACCOUNT_TYPES';
 function storeAccountTypes(accountTypes) {
   store.dispatch({ type: SET_ACCOUNT_TYPES, accountTypes });
 }
 
-export const SET_CURRENT_ACCOUNT = 'SET_CURRENT_ACCOUNT';
 export function setCurrentAccount(id) {
   store.dispatch({ type: SET_CURRENT_ACCOUNT, id });
 }
 
-export const SET_SELECTED_ACCOUNTS = 'SET_SELECTED_ACCOUNTS';
 export function setSelectedAccounts(accountIds) {
   store.dispatch({ type: SET_SELECTED_ACCOUNTS, accountIds });
 }
 
-export const SAVE_ACCOUNT = 'SAVE_ACCOUNT';
 export function saveAccount(account) {
   store.dispatch({ type: SAVE_ACCOUNT });
   if (account.id) {
@@ -83,7 +86,6 @@ function updateAccount(account) {
   });
 }
 
-export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export function deleteAccount(id) {
   store.dispatch({ type: DELETE_ACCOUNT });
   return apiUtil.delete({

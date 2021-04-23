@@ -1,4 +1,9 @@
 import dateRangeReducer from 'stores/date-range-reducer';
+import {
+  SET_DATE_RANGES,
+  SET_CURRENT_DATE_RANGE,
+  UPDATE_CURRENT_DATE_RANGE,
+} from 'actions/action-types';
 
 describe('DateRangeReducer', () => {
   let dateRanges;
@@ -21,7 +26,7 @@ describe('DateRangeReducer', () => {
     let nextState;
     beforeEach(() => {
       const initialState = dateRangeReducer();
-      const action = { type: 'SET_DATE_RANGES', dateRanges };
+      const action = { type: SET_DATE_RANGES, dateRanges };
       nextState = dateRangeReducer(initialState, action);
     });
 
@@ -38,8 +43,8 @@ describe('DateRangeReducer', () => {
   describe('SET_CURRENT_DATE_RANGE', () => {
     it('sets currentDateRange with id', () => {
       const initialState = dateRangeReducer();
-      const action1 = { type: 'SET_DATE_RANGES', dateRanges };
-      const action2 = { type: 'SET_CURRENT_DATE_RANGE', id: 11 };
+      const action1 = { type: SET_DATE_RANGES, dateRanges };
+      const action2 = { type: SET_CURRENT_DATE_RANGE, id: 11 };
       const midState = dateRangeReducer(initialState, action1);
       const nextState = dateRangeReducer(midState, action2);
 
@@ -50,8 +55,8 @@ describe('DateRangeReducer', () => {
   describe('UPDATE_CURRENT_DATE_RANGE', () => {
     it('updates the currently selected date ranges from date', () => {
       const initialState = dateRangeReducer();
-      const action1 = { type: 'SET_DATE_RANGES', dateRanges };
-      const action2 = { type: 'UPDATE_CURRENT_DATE_RANGE', dateChange: { fromDate: '2015-01-12' } };
+      const action1 = { type: SET_DATE_RANGES, dateRanges };
+      const action2 = { type: UPDATE_CURRENT_DATE_RANGE, dateChange: { fromDate: '2015-01-12' } };
       const midState = dateRangeReducer(initialState, action1);
       const nextState = dateRangeReducer(midState, action2);
 
@@ -62,8 +67,8 @@ describe('DateRangeReducer', () => {
 
     it('updates the currently selected date ranges to date', () => {
       const initialState = dateRangeReducer();
-      const action1 = { type: 'SET_DATE_RANGES', dateRanges };
-      const action2 = { type: 'UPDATE_CURRENT_DATE_RANGE', dateChange: { toDate: '2015-01-12' } };
+      const action1 = { type: SET_DATE_RANGES, dateRanges };
+      const action2 = { type: UPDATE_CURRENT_DATE_RANGE, dateChange: { toDate: '2015-01-12' } };
       const midState = dateRangeReducer(initialState, action1);
       const nextState = dateRangeReducer(midState, action2);
 

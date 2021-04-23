@@ -1,5 +1,5 @@
 import { List, Map, fromJS } from 'immutable';
-import accountBalanceSelector from '../account-balance-selector';
+import accountBalanceSelector from 'selectors/account-balance-selector';
 
 describe('AccountBalanceSelector', () => {
   it('converts account balance into line chart form', () => {

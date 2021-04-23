@@ -1,5 +1,8 @@
 import { Map, fromJS } from 'immutable';
-import { SET_LOAN_REPORT, SET_LOAN_VIEW } from '../actions/loan-actions';
+import {
+  SET_LOAN_REPORT,
+  SET_LOAN_VIEW,
+ } from 'actions/action-types';
 
 const INITIAL_STATE = Map({
   minimumRepayment: null,
