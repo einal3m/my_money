@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import { editableGroupedCategories, groupedCategories, categoryDataLoaded } from '../category-selector';
+import { editableGroupedCategories, groupedCategories, categoryDataLoaded } from 'selectors/category-selector';
 
 describe('CategorySelector', () => {
   let categories;

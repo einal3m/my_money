@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { chartDataForMonthTotals, chartDataForCombo } from '../report-selector';
+import { chartDataForMonthTotals, chartDataForCombo } from 'selectors/report-selector';
 
 describe('ReportSelector', () => {
   describe('chartDataForMonthTotals', () => {

@@ -1,5 +1,5 @@
 import { fromJS, Map } from 'immutable';
-import { tableData, pieChartData } from '../income-expense-selector';
+import { tableData, pieChartData } from 'selectors/income-expense-selector';
 
 describe('IncomeExpenseSelector', () => {
   const categories = [
