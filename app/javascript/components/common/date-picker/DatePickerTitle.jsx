@@ -75,7 +75,7 @@ export default class DatePickerTitle extends React.Component {
     return (
       <div className="popover-title">
         <button className="btn btn-link previous" onClick={this.previousPeriod}>
-          <i className="fa fa-chevron-left" aria-hidden="true" />
+          <i className="fa fa-chevron-left" data-testid="date-picker-left" aria-hidden="true" />
         </button>
         <button
           className="btn btn-link title"
@@ -85,7 +85,7 @@ export default class DatePickerTitle extends React.Component {
           {this.renderTitle()}
         </button>
         <button className="btn btn-link next" onClick={this.nextPeriod}>
-          <i className="fa fa-chevron-right" aria-hidden="true" />
+          <i className="fa fa-chevron-right"  data-testid="date-picker-right" aria-hidden="true" />
         </button>
       </div>
     );
