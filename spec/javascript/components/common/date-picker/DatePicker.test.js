@@ -164,7 +164,7 @@ describe('DatePicker', () => {
       fireEvent.click(screen.getByText('2021'));
     });
 
-    expect(screen.getByText('2021 - 2030')).toBeInTheDocument();
+    expect(screen.getByText('2020 - 2029')).toBeInTheDocument();
     expect(screen.getByText('2019')).toBeInTheDocument();
     expect(screen.getByText('2020')).toBeInTheDocument();
     expect(screen.getByText('2021')).toBeInTheDocument();
@@ -183,7 +183,7 @@ describe('DatePicker', () => {
       fireEvent.click(screen.getByTestId('date-picker-right'));
     });
 
-    expect(screen.getByText('2031 - 2040')).toBeInTheDocument();
+    expect(screen.getByText('2030 - 2039')).toBeInTheDocument();
     expect(screen.getByText('2029')).toBeInTheDocument();
     expect(screen.getByText('2040')).toBeInTheDocument();
 

@@ -53,6 +53,10 @@ export default class DatePickerTitle extends React.Component {
     }
   };
 
+  startOfDecade() {
+    return (this.props.viewDate.year() - (this.props.viewDate.year() % 10));
+  }
+
   renderTitle = () => {
     switch (this.props.viewMode) {
       case DATE_PICKER_DAY_MODE:
@@ -60,7 +64,8 @@ export default class DatePickerTitle extends React.Component {
       case DATE_PICKER_MONTH_MODE:
         return `${this.props.viewDate.format('YYYY')}`;
       case DATE_PICKER_YEAR_MODE:
-        return `${this.props.viewDate.format('YYYY')} - ${moment(this.props.viewDate).add(9, 'years').format('YYYY')}`;
+        const year = this.startOfDecade();
+        return `${year} - ${year + 9}`;
       default:
         return '';
     }
