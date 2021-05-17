@@ -12,7 +12,11 @@ export default class DatePicker extends React.Component {
   constructor(props) {
     super();
 
-    let viewDate = moment(props.value);
+    this.state = this.defaultState(props.value);
+  }
+
+  defaultState = (value) => {
+    let viewDate = moment(value);
     let displayDate = '';
     if (!viewDate.isValid()) {
       viewDate = moment();
@@ -20,12 +24,13 @@ export default class DatePicker extends React.Component {
       displayDate = viewDate.format(DISPLAY_FORMAT);
     }
 
-    this.state = {
+    return {
       viewMode: DATE_PICKER_DAY_MODE,
       displayDate,
       viewDate,
+      prevPropsValue: value
     };
-  }
+  };
 
   onChangeHandler = (event) => {
     // no-op makes this component read only
@@ -69,17 +74,24 @@ export default class DatePicker extends React.Component {
     this.inputField.click();
   };
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      let viewDate = moment(nextProps.value);
+  static getDerivedStateFromProps(props, state) {
+    if (props.value !== state.prevPropsValue) {
+      let viewDate = moment(props.value);
       let displayDate = '';
       if (!viewDate.isValid()) {
         viewDate = moment();
       } else {
         displayDate = viewDate.format(DISPLAY_FORMAT);
       }
-      this.setState({ displayDate, viewDate });
+
+      return {
+        viewMode: DATE_PICKER_DAY_MODE,
+        displayDate,
+        viewDate,
+        prevPropsValue: props.value
+      };
     }
+    return null;
   }
 
   renderAddOn(popover) {
