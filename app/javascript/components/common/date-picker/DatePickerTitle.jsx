@@ -1,100 +1,92 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import {
   DATE_PICKER_DAY_MODE,
   DATE_PICKER_MONTH_MODE,
   DATE_PICKER_YEAR_MODE } from './DatePickerConstants';
 
-export default class DatePickerTitle extends React.Component {
+export default function DatePickerTitle(props) {
 
-  previousPeriod = () => {
-    switch (this.props.viewMode) {
+  const previousPeriod = () => {
+    switch (props.viewMode) {
       case DATE_PICKER_DAY_MODE:
-        this.props.handlePrevious(1, 'month');
+        props.handlePrevious(1, 'month');
         return;
       case DATE_PICKER_MONTH_MODE:
-        this.props.handlePrevious(1, 'year');
+        props.handlePrevious(1, 'year');
         return;
       case DATE_PICKER_YEAR_MODE:
-        this.props.handlePrevious(10, 'years');
+        props.handlePrevious(10, 'years');
         return;
       default:
         return;
     }
-  };
-
-  nextPeriod = () => {
-    switch (this.props.viewMode) {
-      case DATE_PICKER_DAY_MODE:
-        this.props.handleNext(1, 'month');
-        return;
-      case DATE_PICKER_MONTH_MODE:
-        this.props.handleNext(1, 'year');
-        return;
-      case DATE_PICKER_YEAR_MODE:
-        this.props.handleNext(10, 'years');
-        return;
-      default:
-        return;
-    }
-  };
-
-  setView = () => {
-    switch (this.props.viewMode) {
-      case DATE_PICKER_DAY_MODE:
-        this.props.setView(DATE_PICKER_MONTH_MODE);
-        return;
-      case DATE_PICKER_MONTH_MODE:
-        this.props.setView(DATE_PICKER_YEAR_MODE);
-        return;
-      default:
-        return;
-    }
-  };
-
-  startOfDecade() {
-    return (this.props.viewDate.year() - (this.props.viewDate.year() % 10));
   }
 
-  renderTitle = () => {
-    switch (this.props.viewMode) {
+  const nextPeriod = () => {
+    switch (props.viewMode) {
       case DATE_PICKER_DAY_MODE:
-        return `${this.props.viewDate.format('MMMM')} ${this.props.viewDate.format('YYYY')}`;
+        props.handleNext(1, 'month');
+        return;
       case DATE_PICKER_MONTH_MODE:
-        return `${this.props.viewDate.format('YYYY')}`;
+        props.handleNext(1, 'year');
+        return;
       case DATE_PICKER_YEAR_MODE:
-        const year = this.startOfDecade();
+        props.handleNext(10, 'years');
+        return;
+      default:
+        return;
+    }
+  };
+
+  const setView = () => {
+    switch (props.viewMode) {
+      case DATE_PICKER_DAY_MODE:
+        props.setView(DATE_PICKER_MONTH_MODE);
+        return;
+      case DATE_PICKER_MONTH_MODE:
+        props.setView(DATE_PICKER_YEAR_MODE);
+        return;
+      default:
+        return;
+    }
+  };
+
+  const startOfDecade = () => {
+    return (props.viewDate.year() - (props.viewDate.year() % 10));
+  }
+
+  const renderTitle = () => {
+    switch (props.viewMode) {
+      case DATE_PICKER_DAY_MODE:
+        return `${props.viewDate.format('MMMM')} ${props.viewDate.format('YYYY')}`;
+      case DATE_PICKER_MONTH_MODE:
+        return `${props.viewDate.format('YYYY')}`;
+      case DATE_PICKER_YEAR_MODE:
+        const year = startOfDecade();
         return `${year} - ${year + 9}`;
       default:
         return '';
     }
   };
 
-  titleClassName = () => {
-    if (this.props.viewMode === DATE_PICKER_YEAR_MODE) return 'title no-hover';
-    return 'title';
-  };
-
-  render() {
-    return (
-      <div className="popover-title">
-        <button className="btn btn-link previous" onClick={this.previousPeriod}>
-          <i className="fa fa-chevron-left" data-testid="date-picker-left" aria-hidden="true" />
-        </button>
-        <button
-          className="btn btn-link title"
-          onClick={this.setView}
-          disabled={this.props.viewMode === DATE_PICKER_YEAR_MODE}
-        >
-          {this.renderTitle()}
-        </button>
-        <button className="btn btn-link next" onClick={this.nextPeriod}>
-          <i className="fa fa-chevron-right"  data-testid="date-picker-right" aria-hidden="true" />
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="popover-title">
+      <button className="btn btn-link previous" onClick={previousPeriod}>
+        <i className="fa fa-chevron-left" data-testid="date-picker-left" aria-hidden="true" />
+      </button>
+      <button
+        className="btn btn-link title"
+        onClick={setView}
+        disabled={props.viewMode === DATE_PICKER_YEAR_MODE}
+      >
+        {renderTitle()}
+      </button>
+      <button className="btn btn-link next" onClick={nextPeriod}>
+        <i className="fa fa-chevron-right"  data-testid="date-picker-right" aria-hidden="true" />
+      </button>
+    </div>
+  );
 }
 
 DatePickerTitle.propTypes = {

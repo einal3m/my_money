@@ -9,29 +9,27 @@ import {
   DATE_PICKER_MONTH_MODE,
   DATE_PICKER_YEAR_MODE } from './DatePickerConstants';
 
-export default class DatePickerPopover extends React.Component {
+export default function DatePickerPopover(props) {
 
-  renderView() {
-    switch (this.props.viewMode) {
+  const renderView = () => {
+    switch (props.viewMode) {
       case DATE_PICKER_DAY_MODE:
-        return <DatePickerDayView {...this.props} />;
+        return <DatePickerDayView {...props} />;
       case DATE_PICKER_MONTH_MODE:
-        return <DatePickerMonthView {...this.props} />;
+        return <DatePickerMonthView {...props} />;
       case DATE_PICKER_YEAR_MODE:
-        return <DatePickerYearView {...this.props} />;
+        return <DatePickerYearView {...props} />;
       default:
         return <div />;
     }
   }
 
-  render() {
-    return (
-      <div>
-        <DatePickertitle {...this.props} />
-        {this.renderView()}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <DatePickertitle {...props} />
+      {renderView()}
+    </div>
+  );
 }
 
 DatePickerPopover.propTypes = {

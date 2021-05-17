@@ -3,45 +3,43 @@ import PropTypes from 'prop-types';
 import DatePickerPanel from './DatePickerPanel';
 import { DATE_PICKER_MONTH_MODE } from './DatePickerConstants';
 
-export default class DatePickerYearView extends React.Component {
+export default function DatePickerYearView(props) {
 
-  grid = [
+  const grid = [
     [true, false, false, false],
     [false, false, false, false],
     [false, false, false, true],
   ];
 
-  handleClick = (year) => {
-    this.props.setDate(year);
-    this.props.setView(DATE_PICKER_MONTH_MODE);
+  const handleClick = (year) => {
+    props.setDate(year);
+    props.setView(DATE_PICKER_MONTH_MODE);
   };
 
-  startOfDecade() {
-    return (this.props.viewDate.year() - (this.props.viewDate.year() % 10) - 1);
+  const startOfDecade = () => {
+    return (props.viewDate.year() - (props.viewDate.year() % 10) - 1);
   }
 
-  renderGrid() {
-    const year = this.startOfDecade();
-    return this.grid.map((row, i) => <tr key={`row${i}`}>{this.renderRow(row, year + (i * 4))}</tr>);
+  const renderGrid = () => {
+    const year = startOfDecade();
+    return grid.map((row, i) => <tr key={`row${i}`}>{renderRow(row, year + (i * 4))}</tr>);
   }
 
-  renderRow(row, year) {
+  const renderRow = (row, year) => {
     return row.map((muted, i) => (
       <td key={`cell${i}`}>
-        <DatePickerPanel value={{ year: year + i }} label={`${year + i}`} onClick={this.handleClick} muted={muted} />
+        <DatePickerPanel value={{ year: year + i }} label={`${year + i}`} onClick={handleClick} muted={muted} />
       </td>
     ));
   }
 
-  render() {
-    return (
-      <table className="year-table">
-        <tbody>
-          {this.renderGrid()}
-        </tbody>
-      </table>
-    );
-  }
+  return (
+    <table className="year-table">
+      <tbody>
+        {renderGrid()}
+      </tbody>
+    </table>
+  );
 }
 
 DatePickerYearView.propTypes = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DatePickerPanel = (props) => {
+export default function DatePickerPanel(props) {
   const onClickHandler = () => {
     props.onClick(props.value);
   };
@@ -22,5 +22,3 @@ DatePickerPanel.propTypes = {
   muted: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
-
-export default DatePickerPanel;

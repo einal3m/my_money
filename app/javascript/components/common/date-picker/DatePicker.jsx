@@ -69,7 +69,7 @@ export default class DatePicker extends React.Component {
     this.inputField.click();
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.value !== this.props.value) {
       let viewDate = moment(nextProps.value);
       let displayDate = '';

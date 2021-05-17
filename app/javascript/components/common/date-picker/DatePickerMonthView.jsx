@@ -3,41 +3,39 @@ import PropTypes from 'prop-types';
 import DatePickerPanel from './DatePickerPanel';
 import { DATE_PICKER_DAY_MODE } from './DatePickerConstants';
 
-export default class DatePickerMonthView extends React.Component {
+export default function DatePickerMonthView(props) {
 
-  grid = [
+  const grid = [
     ['Jan', 'Feb', 'Mar', 'Apr'],
     ['May', 'Jun', 'Jul', 'Aug'],
     ['Sep', 'Oct', 'Nov', 'Dec'],
   ];
 
-  handleClick = (month) => {
-    this.props.setDate(month);
-    this.props.setView(DATE_PICKER_DAY_MODE);
+  const handleClick = (month) => {
+    props.setDate(month);
+    props.setView(DATE_PICKER_DAY_MODE);
   };
 
-  renderGrid() {
+  const renderGrid = () => {
     const month = 0;
-    return this.grid.map((row, i) => <tr key={`row${i}`}>{this.renderRow(row, month + (i * 4))}</tr>);
+    return grid.map((row, i) => <tr key={`row${i}`}>{renderRow(row, month + (i * 4))}</tr>);
   }
 
-  renderRow(row, month) {
+  const renderRow = (row, month) => {
     return row.map((label, i) => (
       <td key={`cell${i}`}>
-        <DatePickerPanel value={{ month: month + i }} label={label} onClick={this.handleClick} muted={false} />
+        <DatePickerPanel value={{ month: month + i }} label={label} onClick={handleClick} muted={false} />
       </td>
     ));
   }
 
-  render() {
-    return (
-      <table className="month-table">
-        <tbody>
-          {this.renderGrid()}
-        </tbody>
-      </table>
-    );
-  }
+  return (
+    <table className="month-table">
+      <tbody>
+        {renderGrid()}
+      </tbody>
+    </table>
+  );
 }
 
 DatePickerMonthView.propTypes = {
