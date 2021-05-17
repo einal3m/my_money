@@ -69,7 +69,7 @@ export default class DatePicker extends React.Component {
     this.inputField.click();
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.value !== this.props.value) {
       let viewDate = moment(nextProps.value);
       let displayDate = '';
@@ -85,14 +85,16 @@ export default class DatePicker extends React.Component {
   renderAddOn(popover) {
     const addOn = (
       <div className="input-group-prepend">
-        <div className="input-group-text"><i className="fa fa-calendar" /></div>
+        <div className="input-group-text" data-testid="date-picker-icon">
+          <i className="fa fa-calendar" />
+        </div>
       </div>
     );
 
     if (this.props.disabled) return addOn;
 
     return (
-      <OverlayTrigger trigger="click" placement="top" rootClose overlay={popover}>
+      <OverlayTrigger trigger="click" placement="bottom" rootClose overlay={popover}>
         {addOn}
       </OverlayTrigger>
     );

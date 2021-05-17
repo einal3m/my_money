@@ -1,9 +1,6 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
-import { OverlayTrigger } from 'react-bootstrap';
-import moment from 'moment';
-import shallowRenderer from '../../../../util/__tests__/shallow-renderer';
-import DatePicker from '../date-picker';
+import { render, screen, act, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
+import DatePicker from 'components/common/date-picker/DatePicker';
 
 describe('DatePicker', () => {
   let onChangeSpy;
@@ -11,81 +8,208 @@ describe('DatePicker', () => {
     onChangeSpy = jasmine.createSpy('onChangeSpy');
   });
 
-  describe('render', () => {
-    it('displays an input, with an addon that triggers an overly', () => {
-      const datePicker = shallowRenderer(<DatePicker value="2016-12-19" onChange={onChangeSpy} name="picker" />);
+  test('a disabled date picker shows the date and cant be clicked', () => {
+    render(
+      <DatePicker
+        name="my-date-picker"
+        value="2021-05-31"
+        onChange={onChangeSpy}
+        disabled
+      />
+    );
 
-      const [input, overlay] = datePicker.props.children;
-      const addon = overlay.props.children;
+    // the date is formatted
+    expect(screen.getByDisplayValue('31-May-2021')).toBeInTheDocument();
+    expect(screen.getByTestId('date-picker-icon')).toBeInTheDocument();
 
-      expect(input.type).toEqual('input');
-      expect(input.props.value).toEqual('19-Dec-2016');
-      expect(input.props.name).toEqual('picker');
-      expect(input.props.disabled).toBeUndefined();
-
-      expect(overlay.type).toEqual(OverlayTrigger);
-      expect(addon.props.className).toMatch(/addon/);
-    });
-
-    it('disables the input and overlay if disabled is true', () => {
-      const datePicker = shallowRenderer(
-        <DatePicker value="2016-12-19" onChange={onChangeSpy} name="picker" disabled />
-      );
-      const [input, addon] = datePicker.props.children;
-
-      expect(input.type).toEqual('input');
-      expect(input.props.value).toEqual('19-Dec-2016');
-      expect(input.props.name).toEqual('picker');
-      expect(input.props.disabled).toEqual(true);
-
-      expect(addon.props.className).toMatch(/addon/);
-    });
+    // disabled datepickers don't pop up the datepicker popover
+    fireEvent.click(screen.getByTestId('date-picker-icon'));
+    expect(screen.queryByText('May 2021')).not.toBeInTheDocument();
   });
 
-  describe('DatePickerPopover callbacks', () => {
-    let datePicker;
-    let datePickerView;
-    beforeEach(() => {
-      datePicker = TestUtils.renderIntoDocument(
-        <DatePicker value="2016-12-19" onChange={onChangeSpy} name="picker" />
-      );
-      const overlay = TestUtils.findRenderedComponentWithType(datePicker, OverlayTrigger);
-      datePickerView = overlay.props.overlay.props.children;
+  test('selecting a date from the next month', async () => {
+    render(
+      <DatePicker
+        name="my-date-picker"
+        value="2021-05-31"
+        onChange={onChangeSpy}
+        disabled={false}
+      />
+    );
+
+    const CURRENT_MONTH_CLASS = 'btn btn-link';
+    const OTHER_MONTH_CLASS = 'btn btn-link text-muted';
+
+    // the date is formatted
+    expect(screen.getByDisplayValue('31-May-2021')).toBeInTheDocument();
+    expect(screen.getByTestId('date-picker-icon')).toBeInTheDocument();
+
+    // clicking the date picker opens the popover
+    act(() => {
+      fireEvent.click(screen.getByTestId('date-picker-icon'));
     });
 
-    it('setView sets the view mode state', () => {
-      spyOn(datePicker, 'setState');
-      datePickerView.props.setView('newMode');
-      expect(datePicker.setState).toHaveBeenCalledWith({ viewMode: 'newMode' });
+    // the left and right arrows are displayed
+    expect(screen.getByTestId('date-picker-left')).toBeInTheDocument();
+    expect(screen.getByTestId('date-picker-right')).toBeInTheDocument();
+
+    // month and days of week are displayed
+    expect(screen.getByText('May 2021')).toBeInTheDocument();
+    expect(screen.getByText('Mo')).toBeInTheDocument();
+    expect(screen.getByText('Tu')).toBeInTheDocument();
+    expect(screen.getByText('We')).toBeInTheDocument();
+    expect(screen.getByText('Th')).toBeInTheDocument();
+    expect(screen.getByText('Fr')).toBeInTheDocument();
+    expect(screen.getByText('Sa')).toBeInTheDocument();
+    expect(screen.getByText('Su')).toBeInTheDocument();
+
+    // there are two 1s, one for this month, one for the next month
+    const ones = screen.getAllByText('1');
+    expect(ones[0].className).toEqual(CURRENT_MONTH_CLASS)
+    expect(ones[1].className).toEqual(OTHER_MONTH_CLASS)
+    expect(screen.getByText('31')).toBeInTheDocument();
+
+    // go to the next month
+    act(() => {
+      fireEvent.click(screen.getByTestId('date-picker-right'));
+    });
+    expect(screen.getByText('June 2021')).toBeInTheDocument();
+    expect(screen.getAllByText('1').length).toEqual(2);
+    expect(screen.getAllByText('30').length).toEqual(2);
+    expect(screen.getByText('31').className).toEqual(OTHER_MONTH_CLASS);
+
+    act(() => {
+      fireEvent.click(screen.getByText('13'));
+    })
+
+    expect(onChangeSpy).toHaveBeenCalledWith('2021-06-13');
+
+    // the popover should then disappear
+    await waitForElementToBeRemoved(() => screen.getByText('June 2021'));
+  });
+
+  test('selecting a date from the previous year', async () => {
+    render(
+      <DatePicker
+        name="my-date-picker"
+        value="2021-05-31"
+        onChange={onChangeSpy}
+        disabled={false}
+      />
+    );
+
+    // open the popover
+    act(() => {
+      fireEvent.click(screen.getByTestId('date-picker-icon'));
     });
 
-    it('setDate sets the view date state', () => {
-      spyOn(datePicker, 'setState');
-      datePickerView.props.setDate({ month: 8 });
-      expect(datePicker.setState.calls.argsFor(0)[0].viewDate.isSame(moment('2016-09-19'))).toBeTruthy();
+    // click the month
+    act(() => {
+      fireEvent.click(screen.getByText('May 2021'));
     });
 
-    it('closePicker sets the view date and display date state, clicks on the input to close the popover', () => {
-      spyOn(datePicker, 'setState');
-      spyOn(datePicker.inputField, 'click');
+    // All the months are displayed
+    expect(screen.getByText('Jan')).toBeInTheDocument();
+    expect(screen.getByText('Feb')).toBeInTheDocument();
+    expect(screen.getByText('Mar')).toBeInTheDocument();
+    expect(screen.getByText('Apr')).toBeInTheDocument();
+    expect(screen.getByText('May')).toBeInTheDocument();
+    expect(screen.getByText('Jun')).toBeInTheDocument();
+    expect(screen.getByText('Jul')).toBeInTheDocument();
+    expect(screen.getByText('Aug')).toBeInTheDocument();
+    expect(screen.getByText('Sep')).toBeInTheDocument();
+    expect(screen.getByText('Oct')).toBeInTheDocument();
+    expect(screen.getByText('Nov')).toBeInTheDocument();
+    expect(screen.getByText('Dec')).toBeInTheDocument();
 
-      datePickerView.props.closePicker({ date: 2, month: 7, year: 2016 });
+    // go to the previous year
+    expect(screen.getByText('2021')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(screen.getByTestId('date-picker-left'));
+    });
+    expect(screen.getByText('2020')).toBeInTheDocument();
 
-      expect(datePicker.state.viewDate.isSame(moment('2016-08-02'))).toBeTruthy();
-      expect(datePicker.setState).toHaveBeenCalledWith({ displayDate: '02-Aug-2016' });
-      expect(datePicker.inputField.click).toHaveBeenCalled();
+    // click on december
+    act(() => {
+      fireEvent.click(screen.getByText('Dec'));
+    });
+    expect(screen.getByText('December 2020')).toBeInTheDocument();
+
+    // click on 19
+    act(() => {
+      fireEvent.click(screen.getByText('19'));
+    });
+    expect(onChangeSpy).toHaveBeenCalledWith('2020-12-19');
+
+    // the popover should then disappear
+    await waitForElementToBeRemoved(() => screen.getByText('December 2020'));
+  });
+
+  test('selecting a date from the next decade', async () => {
+    render(
+      <DatePicker
+        name="my-date-picker"
+        value="2021-05-31"
+        onChange={onChangeSpy}
+        disabled={false}
+      />
+    );
+
+    // open the popover
+    act(() => {
+      fireEvent.click(screen.getByTestId('date-picker-icon'));
     });
 
-    it('handlePrevious subtracts the params from the view date state', () => {
-      spyOn(datePicker, 'setState');
-      datePickerView.props.handlePrevious(8, 'months');
-      expect(datePicker.setState.calls.argsFor(0)[0].viewDate.isSame(moment('2016-04-19'))).toBeTruthy();
+    // click the month
+    act(() => {
+      fireEvent.click(screen.getByText('May 2021'));
     });
 
-    it('handleNext adds the params from the view date state', () => {
-      spyOn(datePicker, 'setState');
-      datePickerView.props.handleNext(8, 'months');
-      expect(datePicker.setState.calls.argsFor(0)[0].viewDate.isSame(moment('2017-08-19'))).toBeTruthy();
+    // click the year
+    act(() => {
+      fireEvent.click(screen.getByText('2021'));
     });
+
+    expect(screen.getByText('2020 - 2029')).toBeInTheDocument();
+    expect(screen.getByText('2019')).toBeInTheDocument();
+    expect(screen.getByText('2020')).toBeInTheDocument();
+    expect(screen.getByText('2021')).toBeInTheDocument();
+    expect(screen.getByText('2022')).toBeInTheDocument();
+    expect(screen.getByText('2023')).toBeInTheDocument();
+    expect(screen.getByText('2024')).toBeInTheDocument();
+    expect(screen.getByText('2025')).toBeInTheDocument();
+    expect(screen.getByText('2026')).toBeInTheDocument();
+    expect(screen.getByText('2027')).toBeInTheDocument();
+    expect(screen.getByText('2028')).toBeInTheDocument();
+    expect(screen.getByText('2029')).toBeInTheDocument();
+    expect(screen.getByText('2030')).toBeInTheDocument();
+
+    // click the next decade
+    act(() => {
+      fireEvent.click(screen.getByTestId('date-picker-right'));
+    });
+
+    expect(screen.getByText('2030 - 2039')).toBeInTheDocument();
+    expect(screen.getByText('2029')).toBeInTheDocument();
+    expect(screen.getByText('2040')).toBeInTheDocument();
+
+    // select the year
+    act(() => {
+      fireEvent.click(screen.getByText('2035'));
+    });
+
+    // select the month
+    act(() => {
+      fireEvent.click(screen.getByText('Aug'));
+    });
+
+    // click on 5
+    act(() => {
+      fireEvent.click(screen.getByText('5'));
+    });
+    expect(onChangeSpy).toHaveBeenCalledWith('2035-08-05');
+
+    // the popover should then disappear
+    await waitForElementToBeRemoved(() => screen.getByText('August 2035'));
   });
 });
