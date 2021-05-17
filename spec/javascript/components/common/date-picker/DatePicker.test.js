@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
 import DatePicker from 'components/common/date-picker/DatePicker';
 
 describe('DatePicker', () => {
@@ -83,6 +83,9 @@ describe('DatePicker', () => {
     })
 
     expect(onChangeSpy).toHaveBeenCalledWith('2021-06-13');
+
+    // the popover should then disappear
+    await waitForElementToBeRemoved(() => screen.getByText('June 2021'));
   });
 
   test('selecting a date from the previous year', async () => {
@@ -137,6 +140,9 @@ describe('DatePicker', () => {
       fireEvent.click(screen.getByText('19'));
     });
     expect(onChangeSpy).toHaveBeenCalledWith('2020-12-19');
+
+    // the popover should then disappear
+    await waitForElementToBeRemoved(() => screen.getByText('December 2020'));
   });
 
   test('selecting a date from the next decade', async () => {
@@ -202,5 +208,8 @@ describe('DatePicker', () => {
       fireEvent.click(screen.getByText('5'));
     });
     expect(onChangeSpy).toHaveBeenCalledWith('2035-08-05');
+
+    // the popover should then disappear
+    await waitForElementToBeRemoved(() => screen.getByText('August 2035'));
   });
 });
