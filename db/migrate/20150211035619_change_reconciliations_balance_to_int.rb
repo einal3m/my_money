@@ -1,4 +1,4 @@
-class ChangeReconciliationsBalanceToInt < ActiveRecord::Migration
+class ChangeReconciliationsBalanceToInt < ActiveRecord::Migration[6.0]
   def change
   	execute <<-SQL
     	UPDATE reconciliations

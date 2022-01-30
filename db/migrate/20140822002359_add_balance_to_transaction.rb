@@ -1,4 +1,4 @@
-class AddBalanceToTransaction < ActiveRecord::Migration
+class AddBalanceToTransaction < ActiveRecord::Migration[6.0]
   def change
     add_column :transactions, :balance, :decimal
   end

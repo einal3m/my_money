@@ -1,4 +1,4 @@
-class ChangeTransactionAmountToInt < ActiveRecord::Migration
+class ChangeTransactionAmountToInt < ActiveRecord::Migration[6.0]
   def change
   	execute <<-SQL
     	UPDATE transactions

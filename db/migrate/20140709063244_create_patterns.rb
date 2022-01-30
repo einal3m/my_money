@@ -1,4 +1,4 @@
-class CreatePatterns < ActiveRecord::Migration
+class CreatePatterns < ActiveRecord::Migration[6.0]
   def change
     create_table :patterns do |t|
       t.integer :account_id

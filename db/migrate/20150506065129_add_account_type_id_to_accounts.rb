@@ -1,4 +1,4 @@
-class AddAccountTypeIdToAccounts < ActiveRecord::Migration
+class AddAccountTypeIdToAccounts < ActiveRecord::Migration[6.0]
   def change
     add_column :accounts, :account_type_id, :integer
 

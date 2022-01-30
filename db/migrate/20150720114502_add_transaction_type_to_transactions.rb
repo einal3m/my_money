@@ -1,4 +1,4 @@
-class AddTransactionTypeToTransactions < ActiveRecord::Migration
+class AddTransactionTypeToTransactions < ActiveRecord::Migration[6.0]
   def change
     execute <<-SQL
       UPDATE transactions
