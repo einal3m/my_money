@@ -8,7 +8,7 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
-    - vendor/*/**
+    - vendor/**/*
     - "config.ru"
     - "api/**/*"
     - "node_modules/**/*"
