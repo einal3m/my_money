@@ -2,51 +2,53 @@
 
 require 'destroyers/subcategory_destroyer'
 
-class Api::SubcategoriesController < ApplicationController
-  def index
-    render json: Subcategory.all
-  end
-
-  def create
-    new_subcategory = Subcategory.new(subcategory_params)
-    if new_subcategory.save
-      render json: new_subcategory, status: :created
-    else
-      render json: new_subcategory.errors, status: :unprocessable_entity
+module Api
+  class SubcategoriesController < ApplicationController
+    def index
+      render json: Subcategory.all
     end
-  end
 
-  def update
-    old_category_id = subcategory.category_id
-    if subcategory.update(subcategory_params)
-      update_transactions if category_has_changed(old_category_id)
-      render json: subcategory, status: :ok
-    else
-      render json: subcategory.errors, status: :unprocessable_entity
+    def create
+      new_subcategory = Subcategory.new(subcategory_params)
+      if new_subcategory.save
+        render json: new_subcategory, status: :created
+      else
+        render json: new_subcategory.errors, status: :unprocessable_entity
+      end
     end
-  end
 
-  def destroy
-    destroyer = SubcategoryDestroyer.new subcategory
-    destroyer.execute
-    head :no_content
-  end
+    def update
+      old_category_id = subcategory.category_id
+      if subcategory.update(subcategory_params)
+        update_transactions if category_has_changed(old_category_id)
+        render json: subcategory, status: :ok
+      else
+        render json: subcategory.errors, status: :unprocessable_entity
+      end
+    end
 
-  private
+    def destroy
+      destroyer = SubcategoryDestroyer.new subcategory
+      destroyer.execute
+      head :no_content
+    end
 
-  def category_has_changed(old_category_id)
-    (subcategory.category_id != old_category_id)
-  end
+    private
 
-  def update_transactions
-    subcategory.transactions.update_all(category_id: subcategory.category_id)
-  end
+    def category_has_changed(old_category_id)
+      (subcategory.category_id != old_category_id)
+    end
 
-  def subcategory
-    @subcategory ||= Subcategory.find(params[:id])
-  end
+    def update_transactions
+      subcategory.transactions.update_all(category_id: subcategory.category_id)
+    end
 
-  def subcategory_params
-    params.require(:subcategory).permit(:name, :category_id)
+    def subcategory
+      @subcategory ||= Subcategory.find(params[:id])
+    end
+
+    def subcategory_params
+      params.require(:subcategory).permit(:name, :category_id)
+    end
   end
 end

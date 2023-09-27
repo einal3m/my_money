@@ -1,39 +1,41 @@
 # frozen_string_literal: true
 
-class Api::BudgetsController < ApplicationController
-  def index
-    render json: account.budgets
-  end
-
-  def create
-    new_budget = Budget.new(budget_params)
-    if new_budget.save
-      render json: new_budget, status: :created
-    else
-      render json: new_budget.errors, status: :unprocessable_entity
+module Api
+  class BudgetsController < ApplicationController
+    def index
+      render json: account.budgets
     end
-  end
 
-  def update
-    if budget.update(budget_params)
-      render json: budget, status: :ok
-    else
-      render json: budget.errors, status: :unprocessable_entity
+    def create
+      new_budget = Budget.new(budget_params)
+      if new_budget.save
+        render json: new_budget, status: :created
+      else
+        render json: new_budget.errors, status: :unprocessable_entity
+      end
     end
-  end
 
-  def destroy
-    budget.destroy
-    head :no_content
-  end
+    def update
+      if budget.update(budget_params)
+        render json: budget, status: :ok
+      else
+        render json: budget.errors, status: :unprocessable_entity
+      end
+    end
 
-  private
+    def destroy
+      budget.destroy
+      head :no_content
+    end
 
-  def budget
-    @budget ||= Budget.find(params[:id])
-  end
+    private
 
-  def budget_params
-    params.require(:budget).permit(:account_id, :description, :day_of_month, :amount)
+    def budget
+      @budget ||= Budget.find(params[:id])
+    end
+
+    def budget_params
+      params.require(:budget).permit(:account_id, :description, :day_of_month, :amount)
+    end
   end
 end

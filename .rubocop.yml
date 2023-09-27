@@ -42,3 +42,6 @@ ClassLength:
 
 RSpec/MultipleExpectations:
   Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
