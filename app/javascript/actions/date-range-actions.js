@@ -1,23 +1,26 @@
-import apiUtil from '../util/api-util';
-import dateRangeTransformer from '../transformers/date-range-transformer';
-import store from '../stores/store';
+import apiUtil from "../util/api-util";
+import dateRangeTransformer from "../transformers/date-range-transformer";
+import store from "../stores/store";
 import {
   GET_DATE_RANGES,
   SET_DATE_RANGES,
   SET_CURRENT_DATE_RANGE,
   UPDATE_CURRENT_DATE_RANGE,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 export function getDateRanges() {
-  const dateRangesLoaded = store.getState().dateRangeStore.get('loaded');
+  const dateRangesLoaded = store.getState().dateRangeStore.get("loaded");
 
   if (!dateRangesLoaded) {
     store.dispatch({ type: GET_DATE_RANGES });
     return apiUtil.get({
-      url: 'date_range_options',
-      onSuccess: response => storeDateRanges(
-        response.date_range_options.map(dateRange => dateRangeTransformer.transformDateRange(dateRange))
-      ),
+      url: "date_range_options",
+      onSuccess: (response) =>
+        storeDateRanges(
+          response.date_range_options.map((dateRange) =>
+            dateRangeTransformer.transformDateRange(dateRange)
+          )
+        ),
     });
   }
   return Promise.resolve();

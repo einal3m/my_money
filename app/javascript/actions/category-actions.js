@@ -1,8 +1,8 @@
-import store from '../stores/store';
-import apiUtil from '../util/api-util';
-import categoryTransformer from '../transformers/category-transformer';
-import subcategoryTransformer from '../transformers/subcategory-transformer';
-import { categoryDataLoaded } from '../selectors/category-selector';
+import store from "../stores/store";
+import apiUtil from "../util/api-util";
+import categoryTransformer from "../transformers/category-transformer";
+import subcategoryTransformer from "../transformers/subcategory-transformer";
+import { categoryDataLoaded } from "../selectors/category-selector";
 import {
   SET_CURRENT_CATEGORY,
   SET_CURRENT_SUBCATEGORY,
@@ -18,7 +18,7 @@ import {
   SET_CATEGORY,
   SET_SUBCATEGORY,
   REMOVE_SUBCATEGORY,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 class CategoryActions {
   saveCategory(category) {
@@ -32,9 +32,12 @@ class CategoryActions {
 
   createCategory(category) {
     return apiUtil.post({
-      url: 'categories',
+      url: "categories",
       body: { category: categoryTransformer.transformToApi(category) },
-      onSuccess: response => this.storeCategory(categoryTransformer.transformFromApi(response.category)),
+      onSuccess: (response) =>
+        this.storeCategory(
+          categoryTransformer.transformFromApi(response.category)
+        ),
     });
   }
 
@@ -42,7 +45,10 @@ class CategoryActions {
     return apiUtil.put({
       url: `categories/${category.id}`,
       body: { category: categoryTransformer.transformToApi(category) },
-      onSuccess: response => this.storeCategory(categoryTransformer.transformFromApi(response.category)),
+      onSuccess: (response) =>
+        this.storeCategory(
+          categoryTransformer.transformFromApi(response.category)
+        ),
     });
   }
 
@@ -65,9 +71,12 @@ class CategoryActions {
 
   createSubcategory(subcategory) {
     return apiUtil.post({
-      url: 'subcategories',
+      url: "subcategories",
       body: { subcategory: subcategoryTransformer.transformToApi(subcategory) },
-      onSuccess: response => this.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory)),
+      onSuccess: (response) =>
+        this.storeSubcategory(
+          subcategoryTransformer.transformFromApi(response.subcategory)
+        ),
     });
   }
 
@@ -75,7 +84,10 @@ class CategoryActions {
     return apiUtil.put({
       url: `subcategories/${subcategory.id}`,
       body: { subcategory: subcategoryTransformer.transformToApi(subcategory) },
-      onSuccess: response => this.storeSubcategory(subcategoryTransformer.transformFromApi(response.subcategory)),
+      onSuccess: (response) =>
+        this.storeSubcategory(
+          subcategoryTransformer.transformFromApi(response.subcategory)
+        ),
     });
   }
 
@@ -134,8 +146,8 @@ export function getCategories(options) {
 
 export function fetchCategoryTypes() {
   return apiUtil.get({
-    url: 'category_type2',
-    onSuccess: response => storeCategoryTypes(response.category_type2),
+    url: "category_type2",
+    onSuccess: (response) => storeCategoryTypes(response.category_type2),
   });
 }
 
@@ -148,10 +160,13 @@ export function storeCategoryTypes(categoryTypes) {
 
 export function fetchCategories() {
   return apiUtil.get({
-    url: 'categories',
-    onSuccess: response => storeCategories(
-      response.categories.map(category => categoryTransformer.transformFromApi(category))
-    ),
+    url: "categories",
+    onSuccess: (response) =>
+      storeCategories(
+        response.categories.map((category) =>
+          categoryTransformer.transformFromApi(category)
+        )
+      ),
   });
 }
 
@@ -164,10 +179,13 @@ export function storeCategories(categories) {
 
 export function fetchSubcategories() {
   return apiUtil.get({
-    url: 'subcategories',
-    onSuccess: response => storeSubcategories(
-      response.subcategories.map(subcategory => subcategoryTransformer.transformFromApi(subcategory))
-    ),
+    url: "subcategories",
+    onSuccess: (response) =>
+      storeSubcategories(
+        response.subcategories.map((subcategory) =>
+          subcategoryTransformer.transformFromApi(subcategory)
+        )
+      ),
   });
 }
 

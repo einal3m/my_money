@@ -26,11 +26,10 @@ class Transaction < ApplicationRecord
   belongs_to :reconciliation, optional: true
   belongs_to :bank_statement, optional: true
 
-  belongs_to :matching_transaction, class_name: 'Transaction', foreign_key: 'matching_transaction_id', optional: true
+  belongs_to :matching_transaction, class_name: 'Transaction', optional: true
 
   # validations
   validates :date, presence: true
-  validates :account_id, presence: true
   validates :amount, presence: true, numericality: true
   validates :transaction_type, presence: true
   validate :matching_transaction_must_match
@@ -39,14 +38,14 @@ class Transaction < ApplicationRecord
 
   # common lookups
   scope :unreconciled, lambda { |account|
-    where(account: account, reconciliation: nil)
+    where(account:, reconciliation: nil)
   }
   scope :date_order, -> { order(date: :asc, id: :asc) }
   scope :reverse_date_order, -> { order(date: :desc, id: :desc) }
-  scope :find_by_date, lambda { |date_range|
+  scope :search_by_date, lambda { |date_range|
     where('date >= ? and date <= ?', date_range.from_date, date_range.to_date)
   }
-  scope :find_by_dates, lambda { |from_date, to_date|
+  scope :search_by_dates, lambda { |from_date, to_date|
     where('date >= ? and date <= ?', from_date, to_date)
   }
   scope :for_account_type, lambda { |account_type|
@@ -55,15 +54,15 @@ class Transaction < ApplicationRecord
   scope :for_banking_accounts, lambda {
     joins(:account).where(accounts: { account_type: [AccountType::Savings.new.to_s, AccountType::Loan.new.to_s] })
   }
-  scope :find_by_description, lambda { |description|
-    where('memo like ? or notes like ?', '%' + description + '%', '%' + description + '%')
+  scope :search_by_description, lambda { |description|
+    where('memo like ? or notes like ?', "%#{description}%", "%#{description}%")
   }
   scope :find_matching, lambda { |date, amount, account|
     where(
       amount: -amount,
-      date: date,
+      date:,
       matching_transaction_id: nil
-    ).where.not(account: account)
+    ).where.not(account:)
   }
 
   # non-persistant attributes
@@ -73,9 +72,9 @@ class Transaction < ApplicationRecord
   after_initialize :defaults
 
   before_create :calculate_balance_on_create
+  after_create :match_transaction
   before_update :unmatch_transactions
 
-  after_create :match_transaction
   after_update :calculate_balance_on_update, :match_transaction
   after_destroy :calculate_balance_on_destroy
 

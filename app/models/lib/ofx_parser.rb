@@ -13,6 +13,7 @@ module Lib
     }.freeze
 
     def initialize(file)
+      super
       @file = file
     end
 

@@ -2,22 +2,25 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-capybara
+  - rubocop-factory_bot
 
 AllCops:
   NewCops: enable
   Exclude:
-    - 'config.ru'
-    - 'api/**/*'
-    - 'node_modules/**/*'
-    - 'spec/spec_helper.rb'
-    - 'spec/rails_helper.rb'
-    - 'spec/lib/**/*'
-    - 'spec/javascripts/**/*'
-    - 'spec/features/**/*'
-    - 'config/**/*'
-    - 'db/**/*'
-    - 'bin/**/*'
-    - 'web/**/*'
+    - vendor/**/*
+    - "config.ru"
+    - "api/**/*"
+    - "node_modules/**/*"
+    - "spec/spec_helper.rb"
+    - "spec/rails_helper.rb"
+    - "spec/lib/**/*"
+    - "spec/javascripts/**/*"
+    - "spec/features/**/*"
+    - "config/**/*"
+    - "db/**/*"
+    - "bin/**/*"
+    - "web/**/*"
 
 Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
@@ -29,8 +32,8 @@ LineLength:
   Max: 120
 
 Metrics/BlockLength:
-  Exclude:  
-    - 'spec/**/*'
+  Exclude:
+    - "spec/**/*"
 
 Style/Documentation:
   Enabled: false
@@ -39,4 +42,7 @@ ClassLength:
   Max: 120
 
 RSpec/MultipleExpectations:
+  Enabled: false
+
+Rails/SkipsModelValidations:
   Enabled: false

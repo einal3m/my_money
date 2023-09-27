@@ -8,9 +8,12 @@ module Lib
   # opening balance date.
   class BalanceSearch < Search
     attr_reader :account, :date_range
+
     LINE_CHART_DF = '%d %b, %Y'
 
     def initialize(attrs)
+      super
+
       @account = attrs.fetch(:account, nil)
       @date_range = attrs.fetch(:date_range, Lib::CurrentMonthDateRange.new)
     end
@@ -27,7 +30,7 @@ module Lib
     private
 
     def transaction_query
-      Transaction.where(account: @account).find_by_date(@date_range).date_order
+      Transaction.where(account: @account).search_by_date(@date_range).date_order
     end
 
     # Only need date and eod balance
@@ -47,7 +50,7 @@ module Lib
 
     # if first day of date range not in data, then add it
     def add_first_day(sql_data, data)
-      first_day = @date_range.from_date > @account.starting_date ? @date_range.from_date : @account.starting_date
+      first_day = [@date_range.from_date, @account.starting_date].max
       return if sql_data.first && (sql_data.first.date == first_day)
 
       eod_balance = @account.eod_balance(first_day)

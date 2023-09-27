@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'active_model/validations'
 require 'lib/date_range'
 require 'exceptions/my_money_error'
 

@@ -8,7 +8,7 @@
 #
 class CategoryType < ApplicationRecord
   validates :name, presence: true
-  has_many :categories
+  has_many :categories, dependent: :restrict_with_exception
 
   scope :income, -> { find_by(name: 'Income') }
   scope :expense, -> { find_by(name: 'Expense') }

@@ -1,10 +1,10 @@
-import { Map, List, fromJS } from 'immutable';
+import { Map, List, fromJS } from "immutable";
 import {
   GET_TRANSACTIONS,
   SET_TRANSACTIONS,
   SET_SEARCH_DESCRIPTION,
   TOGGLE_MORE_OR_LESS,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 const INITIAL_STATE = Map({
   loading: false,
@@ -12,7 +12,10 @@ const INITIAL_STATE = Map({
   moreOptions: false,
 });
 
-export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
+export default function reducer(
+  state = INITIAL_STATE,
+  action = { type: "NO_ACTION" }
+) {
   switch (action.type) {
     case SET_TRANSACTIONS:
       return setTransactions(state, action.transactions);
@@ -28,19 +31,17 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setTransactions(state, transactions) {
-  return state.set('transactions', fromJS(transactions))
-              .set('loading', false);
+  return state.set("transactions", fromJS(transactions)).set("loading", false);
 }
 
 function setLoadingState(state) {
-  return state.set('transactions', List())
-              .set('loading', true);
+  return state.set("transactions", List()).set("loading", true);
 }
 
 function setSearchDescription(state, description) {
-  return state.set('searchDescription', description);
+  return state.set("searchDescription", description);
 }
 
 function toggleMoreOrLess(state) {
-  return state.set('moreOptions', !state.get('moreOptions'));
+  return state.set("moreOptions", !state.get("moreOptions"));
 }

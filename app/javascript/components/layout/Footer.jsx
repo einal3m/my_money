@@ -14,8 +14,7 @@ const Footer = () => (
     </div>
     <div>
       <h3>cool stuff</h3>
-      <a href="#accounts/first/import">import OFX file</a><br />
-      <a href="#reports">reports</a><br />
+      <Link to="/importHistory">Import history</Link>
     </div>
     <div>
       <h3>find me</h3>

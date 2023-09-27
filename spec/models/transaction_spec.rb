@@ -191,7 +191,7 @@ RSpec.describe Transaction, type: :model do
       t5 = FactoryBot.create(:transaction, date: '2014-01-04')
       dr = Lib::CustomDateRange.new(from_date: '2014-01-02', to_date: '2014-01-04')
 
-      expect(Transaction.find_by_date(dr)).to eq([t2, t4, t5])
+      expect(Transaction.search_by_date(dr)).to eq([t2, t4, t5])
     end
 
     it 'finds transactions given two dates' do
@@ -201,7 +201,7 @@ RSpec.describe Transaction, type: :model do
       t4 = FactoryBot.create(:transaction, date: '2014-01-02')
       t5 = FactoryBot.create(:transaction, date: '2014-01-04')
 
-      expect(Transaction.find_by_dates('2014-01-02', '2014-01-04')).to eq([t2, t4, t5])
+      expect(Transaction.search_by_dates('2014-01-02', '2014-01-04')).to eq([t2, t4, t5])
     end
 
     it 'finds transactions given an account type' do
@@ -230,7 +230,7 @@ RSpec.describe Transaction, type: :model do
       t4 = FactoryBot.create(:transaction, notes: 'blah', memo: 'Mel')
       t5 = FactoryBot.create(:transaction, notes: 'melanie', memo: 'anything')
 
-      expect(Transaction.find_by_description('mel')).to eq([t2, t4, t5])
+      expect(Transaction.search_by_description('mel')).to eq([t2, t4, t5])
     end
 
     it 'finds transactions from other accounts which match given params, and are unmatched' do

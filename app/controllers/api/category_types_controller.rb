@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class Api::CategoryTypesController < ApplicationController
-  def index
-    render json: CategoryType.all
+module Api
+  class CategoryTypesController < ApplicationController
+    def index
+      render json: CategoryType.all
+    end
   end
 end
