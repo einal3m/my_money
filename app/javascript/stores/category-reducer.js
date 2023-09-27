@@ -1,4 +1,4 @@
-import { Map, List, fromJS } from 'immutable';
+import { Map, List, fromJS } from "immutable";
 import {
   SET_CURRENT_CATEGORY,
   SET_CURRENT_SUBCATEGORY,
@@ -9,7 +9,7 @@ import {
   SET_SUBCATEGORY,
   REMOVE_CATEGORY,
   REMOVE_SUBCATEGORY,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 const INITIAL_STATE = Map({
   categoryTypesLoaded: false,
@@ -22,7 +22,10 @@ const INITIAL_STATE = Map({
   currentSubcategoryId: null,
 });
 
-export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
+export default function reducer(
+  state = INITIAL_STATE,
+  action = { type: "NO_ACTION" }
+) {
   switch (action.type) {
     case SET_CATEGORY_TYPES:
       return setCategoryTypes(state, action.categoryTypes);
@@ -48,58 +51,83 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setCategoryTypes(state, categoryTypes) {
-  return state.set('categoryTypes', fromJS(categoryTypes))
-              .set('categoryTypesLoaded', true);
+  return state
+    .set("categoryTypes", fromJS(categoryTypes))
+    .set("categoryTypesLoaded", true);
 }
 
 function setCategories(state, categories) {
-  return state.set('categories', fromJS(categories))
-              .set('categoriesLoaded', true);
+  return state
+    .set("categories", fromJS(categories))
+    .set("categoriesLoaded", true);
 }
 
 function setSubcategories(state, subcategories) {
-  return state.set('subcategories', fromJS(subcategories))
-              .set('subcategoriesLoaded', true);
+  return state
+    .set("subcategories", fromJS(subcategories))
+    .set("subcategoriesLoaded", true);
 }
 
 function addCategory(state, category) {
-  return state.set('categories', state.get('categories').push(fromJS(category)));
+  return state.set(
+    "categories",
+    state.get("categories").push(fromJS(category))
+  );
 }
 
 function setCategory(state, newCategory) {
-  const index = state.get('categories').findIndex(category => category.get('id') === newCategory.id);
+  const index = state
+    .get("categories")
+    .findIndex((category) => category.get("id") === newCategory.id);
   if (index < 0) {
     return addCategory(state, newCategory);
   }
-  return state.set('categories', state.get('categories').update(index, () => fromJS(newCategory)));
+  return state.set(
+    "categories",
+    state.get("categories").update(index, () => fromJS(newCategory))
+  );
 }
 
 function addSubcategory(state, subcategory) {
-  return state.set('subcategories', state.get('subcategories').push(fromJS(subcategory)));
+  return state.set(
+    "subcategories",
+    state.get("subcategories").push(fromJS(subcategory))
+  );
 }
 
 function setSubcategory(state, newSubcategory) {
-  const index = state.get('subcategories').findIndex(subcategory => subcategory.get('id') === newSubcategory.id);
+  const index = state
+    .get("subcategories")
+    .findIndex((subcategory) => subcategory.get("id") === newSubcategory.id);
   if (index < 0) {
     return addSubcategory(state, newSubcategory);
   }
-  return state.set('subcategories', state.get('subcategories').update(index, () => fromJS(newSubcategory)));
+  return state.set(
+    "subcategories",
+    state.get("subcategories").update(index, () => fromJS(newSubcategory))
+  );
 }
 
 function removeCategory(state, categoryId) {
-  const index = state.get('categories').findIndex(category => category.get('id') === categoryId);
-  return state.set('categories', state.get('categories').delete(index));
+  const index = state
+    .get("categories")
+    .findIndex((category) => category.get("id") === categoryId);
+  return state.set("categories", state.get("categories").delete(index));
 }
 
 function removeSubcategory(state, subcategoryId) {
-  const index = state.get('subcategories').findIndex(subcategory => subcategory.get('id') === subcategoryId);
-  return state.set('subcategories', state.get('subcategories').delete(index));
+  const index = state
+    .get("subcategories")
+    .findIndex((subcategory) => subcategory.get("id") === subcategoryId);
+  return state.set("subcategories", state.get("subcategories").delete(index));
 }
 
 function setCurrentCategory(state, categoryId) {
-  return state.set('currentCategoryId', categoryId).set('currentSubcategoryId', null);
+  return state
+    .set("currentCategoryId", categoryId)
+    .set("currentSubcategoryId", null);
 }
 
 function setCurrentSubcategory(state, subcategoryId) {
-  return state.set('currentSubcategoryId', subcategoryId);
+  return state.set("currentSubcategoryId", subcategoryId);
 }

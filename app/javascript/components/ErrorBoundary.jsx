@@ -8,16 +8,16 @@ export default class ErrorBoundary extends React.Component {
 
   static getDerivedStateFromError(error) {
     // Update state so the next render will show the fallback UI.
-    console.log('ErrorBoundary.getDerivedStateFromError');
-    console.log(error);
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
-    console.log('ErrorBoundary.componentDidCatch');
-    console.log(error);
-    // logErrorToMyService(error, errorInfo);
+  componentDidCatch(error, info) {
+    // Example "componentStack":
+    //   in ComponentThatThrows (created by App)
+    //   in ErrorBoundary (created by App)
+    //   in div (created by App)
+    //   in App
+    console.error(error)
   }
 
   render() {
@@ -26,6 +26,6 @@ export default class ErrorBoundary extends React.Component {
       return <h1>Something went wrong.</h1>;
     }
 
-    return this.props.children; 
+    return this.props.children;
   }
 }

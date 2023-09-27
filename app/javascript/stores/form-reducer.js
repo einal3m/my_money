@@ -1,8 +1,5 @@
-import { Map, fromJS } from 'immutable';
-import {
-  SHOW_FORM_MODAL,
-  HIDE_FORM_MODAL,
-} from 'actions/action-types';
+import { Map, fromJS } from "immutable";
+import { SHOW_FORM_MODAL, HIDE_FORM_MODAL } from "../actions/action-types";
 
 const INITIAL_STATE = Map({
   show: false,
@@ -12,10 +9,19 @@ const INITIAL_STATE = Map({
   source: null,
 });
 
-export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
+export default function reducer(
+  state = INITIAL_STATE,
+  action = { type: "NO_ACTION" }
+) {
   switch (action.type) {
     case SHOW_FORM_MODAL:
-      return showModal(state, action.modelType, action.model, action.allowDelete, action.source);
+      return showModal(
+        state,
+        action.modelType,
+        action.model,
+        action.allowDelete,
+        action.source
+      );
     case HIDE_FORM_MODAL:
       return hideModal(state);
     default:
@@ -24,15 +30,14 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function showModal(state, modelType, model, allowDelete, source) {
-  return state.set('show', true)
-    .set('modelType', modelType)
-    .set('model', fromJS(model))
-    .set('allowDelete', allowDelete)
-    .set('source', source);
+  return state
+    .set("show", true)
+    .set("modelType", modelType)
+    .set("model", fromJS(model))
+    .set("allowDelete", allowDelete)
+    .set("source", source);
 }
 
 function hideModal(state) {
-  return state.set('show', false)
-    .set('modelType', null)
-    .set('model', Map({}));
+  return state.set("show", false).set("modelType", null).set("model", Map({}));
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, NavbarBrand, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, NavDropdown } from 'react-bootstrap';
 
 import '../../stylesheets/nav.scss';
 

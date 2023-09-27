@@ -2,17 +2,18 @@
 <html>
   <head>
     <title>MyMoney</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
     <script src="https://kit.fontawesome.com/c87c821e90.js" crossorigin="anonymous"></script>
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
+
   <body>
-    <div class="container">
-      <%= yield %>
-    </div>
+    <%= yield %>
   </body>
 </html>

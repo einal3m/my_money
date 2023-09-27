@@ -4,7 +4,7 @@ import ReportViewButtons from '../common/controls/ReportViewButtons';
 import SearchCriteria, { DATE_RANGE_FILTER, CATEGORY_FILTER } from '../common/criteria/SearchCriteria';
 import ReportContent from './ReportContent';
 import { getCategoryReport } from '../../actions/report-actions';
-import { SOURCE_CATEGORY_REPORT } from 'actions/action-types';
+import { SOURCE_CATEGORY_REPORT } from '../../actions/action-types';
 
 export default class CategoryReport extends React.Component {
 

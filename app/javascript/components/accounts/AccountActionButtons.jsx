@@ -57,7 +57,7 @@ const AccountActionButtons = (props) => {
   return (
     <DropdownButton
       title="..."
-      alignRight
+      align="right"
       id={`action-button-${props.account.id}`}
       onSelect={accountActions}
     >

@@ -1,4 +1,4 @@
-import { Map, List, fromJS } from 'immutable';
+import { Map, List, fromJS } from "immutable";
 import {
   UPLOAD_OFX,
   SET_OFX_TRANSACTIONS,
@@ -6,14 +6,17 @@ import {
   SET_CATEGORY_ID,
   SET_SUBCATEGORY_ID,
   SET_IMPORT,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 const INITIAL_STATE = Map({
   transactions: List(),
   fileName: null,
 });
 
-export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
+export default function reducer(
+  state = INITIAL_STATE,
+  action = { type: "NO_ACTION" }
+) {
   switch (action.type) {
     case SET_OFX_TRANSACTIONS:
       return setOfxTransactions(state, action.transactions);
@@ -33,26 +36,27 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setOfxTransactions(state, transactions) {
-  return state.set('transactions', fromJS(transactions));
+  return state.set("transactions", fromJS(transactions));
 }
 
 function setFileName(state, fileName) {
-  return state.set('fileName', fileName);
+  return state.set("fileName", fileName);
 }
 
 function setNotes(state, index, notes) {
-  return state.setIn(['transactions', index, 'notes'], notes);
+  return state.setIn(["transactions", index, "notes"], notes);
 }
 
 function setCategoryId(state, index, categoryId) {
-  return state.setIn(['transactions', index, 'categoryId'], categoryId)
-              .setIn(['transactions', index, 'subcategoryId'], null);
+  return state
+    .setIn(["transactions", index, "categoryId"], categoryId)
+    .setIn(["transactions", index, "subcategoryId"], null);
 }
 
 function setSubcategoryId(state, index, subcategoryId) {
-  return state.setIn(['transactions', index, 'subcategoryId'], subcategoryId);
+  return state.setIn(["transactions", index, "subcategoryId"], subcategoryId);
 }
 
 function setImport(state, index, importFlag) {
-  return state.setIn(['transactions', index, 'import'], importFlag);
+  return state.setIn(["transactions", index, "import"], importFlag);
 }

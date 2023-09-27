@@ -115,7 +115,7 @@ export default class DatePicker extends React.Component {
   render() {
     const popover = (
       <Popover id="date-picker">
-        <Popover.Content>
+        <Popover.Body>
           <DatePickerPopover
             viewMode={this.state.viewMode}
             viewDate={this.state.viewDate}
@@ -125,7 +125,7 @@ export default class DatePicker extends React.Component {
             setDate={this.setDate}
             closePicker={this.closePicker}
           />
-        </Popover.Content>
+        </Popover.Body>
       </Popover>
     );
 

@@ -1,9 +1,9 @@
-import apiUtil from 'util/api-util';
-import store from 'stores/store';
-import transactionTransformer from 'transformers/transaction-transformer';
-import { getCategories } from 'actions/category-actions';
-import { getDateRanges } from 'actions/date-range-actions';
-import { getAccounts } from 'actions/account-actions';
+import apiUtil from "../util/api-util";
+import store from "../stores/store";
+import transactionTransformer from "../transformers/transaction-transformer";
+import { getCategories } from "../actions/category-actions";
+import { getDateRanges } from "../actions/date-range-actions";
+import { getAccounts } from "../actions/account-actions";
 import {
   GET_REPORT,
   SET_ACCOUNT_BALANCE_REPORT,
@@ -11,24 +11,30 @@ import {
   TOGGLE_REPORT_VIEW,
   SET_TOTALS_REPORT,
   SET_INCOME_VS_EXPENSE,
-} from './action-types';
+} from "./action-types";
 
 export function getAccountBalanceReport() {
-  Promise.all([
-    getAccounts({ useStore: true }),
-    getDateRanges(),
-  ]).then(() => fetchAccountBalanceReport());
+  Promise.all([getAccounts({ useStore: true }), getDateRanges()]).then(() =>
+    fetchAccountBalanceReport()
+  );
 }
 
 export function fetchAccountBalanceReport() {
-  const selectedAccounts = store.getState().accountStore.get('selectedAccounts').toJS();
-  const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
+  const selectedAccounts = store
+    .getState()
+    .accountStore.get("selectedAccounts")
+    .toJS();
+  const dateRange = store
+    .getState()
+    .dateRangeStore.get("currentDateRange")
+    .toJS();
 
   selectedAccounts.forEach((accountId) => {
     store.dispatch({ type: GET_REPORT });
     return apiUtil.get({
       url: `report/eod_balance?account_id=${accountId}&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`,
-      onSuccess: response => storeAccountBalanceReport(accountId, response.report),
+      onSuccess: (response) =>
+        storeAccountBalanceReport(accountId, response.report),
     });
   });
 }
@@ -52,20 +58,32 @@ export function getSubcategoryReport() {
 }
 
 export function fetchSubcategoryReport() {
-  const currentCategoryId = store.getState().categoryStore.get('currentCategoryId');
-  const currentSubcategoryId = store.getState().categoryStore.get('currentSubcategoryId');
-  const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
+  const currentCategoryId = store
+    .getState()
+    .categoryStore.get("currentCategoryId");
+  const currentSubcategoryId = store
+    .getState()
+    .categoryStore.get("currentSubcategoryId");
+  const dateRange = store
+    .getState()
+    .dateRangeStore.get("currentDateRange")
+    .toJS();
 
-  let url = `report/subcategory?category_id=${currentCategoryId || ''}&subcategory_id=${currentSubcategoryId || ''}`;
+  let url = `report/subcategory?category_id=${
+    currentCategoryId || ""
+  }&subcategory_id=${currentSubcategoryId || ""}`;
   url += `&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`;
 
   store.dispatch({ type: GET_REPORT });
   return apiUtil.get({
     url,
-    onSuccess: response => storeTransactionReport(
-      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction)),
-      response.month_totals
-    ),
+    onSuccess: (response) =>
+      storeTransactionReport(
+        response.transactions.map((transaction) =>
+          transactionTransformer.transformFromApi(transaction)
+        ),
+        response.month_totals
+      ),
   });
 }
 
@@ -80,19 +98,27 @@ export function getCategoryReport() {
 }
 
 export function fetchCategoryReport() {
-  const currentCategoryId = store.getState().categoryStore.get('currentCategoryId');
-  const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
+  const currentCategoryId = store
+    .getState()
+    .categoryStore.get("currentCategoryId");
+  const dateRange = store
+    .getState()
+    .dateRangeStore.get("currentDateRange")
+    .toJS();
 
-  let url = `report/category?category_id=${currentCategoryId || ''}`;
+  let url = `report/category?category_id=${currentCategoryId || ""}`;
   url += `&from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`;
 
   store.dispatch({ type: GET_REPORT });
   return apiUtil.get({
     url,
-    onSuccess: response => storeTransactionReport(
-      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction)),
-      response.month_totals
-    ),
+    onSuccess: (response) =>
+      storeTransactionReport(
+        response.transactions.map((transaction) =>
+          transactionTransformer.transformFromApi(transaction)
+        ),
+        response.month_totals
+      ),
   });
 }
 
@@ -103,8 +129,8 @@ function storeTransactionReport(transactions, totals) {
 export function getIncomeExpenseBarReport() {
   store.dispatch({ type: GET_REPORT });
   return apiUtil.get({
-    url: 'report/income_expense_bar',
-    onSuccess: response => storeTotalsReport(response.report),
+    url: "report/income_expense_bar",
+    onSuccess: (response) => storeTotalsReport(response.report),
   });
 }
 
@@ -113,16 +139,16 @@ function storeTotalsReport(totals) {
 }
 
 export function getIncomeVsExpensesReport() {
-  Promise.all([
-    getDateRanges(),
-    getCategories({ useStore: true }),
-  ]).then(() => {
+  Promise.all([getDateRanges(), getCategories({ useStore: true })]).then(() => {
     fetchIncomeVsExpensesReport();
   });
 }
 
 export function fetchIncomeVsExpensesReport() {
-  const dateRange = store.getState().dateRangeStore.get('currentDateRange').toJS();
+  const dateRange = store
+    .getState()
+    .dateRangeStore.get("currentDateRange")
+    .toJS();
   const url = `report/income_vs_expense?from_date=${dateRange.fromDate}&to_date=${dateRange.toDate}`;
 
   store.dispatch({ type: GET_REPORT });

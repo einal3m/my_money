@@ -1,11 +1,7 @@
-import store from '../stores/store';
-import {
-  SET_API_ERROR,
-  CLEAR_API_ERROR,
-} from 'actions/action-types';
+import store from "../stores/store";
+import { SET_API_ERROR, CLEAR_API_ERROR } from "../actions/action-types";
 
 export class ApiStatusActions {
-
   storeApiError = (message) => {
     store.dispatch({ type: SET_API_ERROR, message });
   };

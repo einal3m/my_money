@@ -1,10 +1,10 @@
-import { Map, List, fromJS } from 'immutable';
+import { Map, List, fromJS } from "immutable";
 import {
   SET_ACCOUNTS,
   SET_CURRENT_ACCOUNT,
   SET_ACCOUNT_TYPES,
   SET_SELECTED_ACCOUNTS,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 const INITIAL_STATE = Map({
   loaded: false,
@@ -15,7 +15,10 @@ const INITIAL_STATE = Map({
   selectedAccounts: List([]),
 });
 
-export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
+export default function reducer(
+  state = INITIAL_STATE,
+  action = { type: "NO_ACTION" }
+) {
   switch (action.type) {
     case SET_ACCOUNTS:
       return setAccounts(state, action.accounts);
@@ -31,20 +34,25 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setAccounts(state, accounts) {
-  return state.set('loaded', true)
-              .set('accounts', fromJS(accounts))
-              .set('currentAccount', currentAccount(state, accounts))
-              .set('selectedAccounts', defaultSelectedAccount(accounts));
+  return state
+    .set("loaded", true)
+    .set("accounts", fromJS(accounts))
+    .set("currentAccount", currentAccount(state, accounts))
+    .set("selectedAccounts", defaultSelectedAccount(accounts));
 }
 
 function setAccountTypes(state, accountTypes) {
-  return state.set('accountTypesLoaded', true)
-              .set('accountTypes', fromJS(accountTypes));
+  return state
+    .set("accountTypesLoaded", true)
+    .set("accountTypes", fromJS(accountTypes));
 }
 
 function currentAccount(state, accounts) {
-  if (state.get('currentAccount').get('id') && currentAccountExists(state, accounts)) {
-    return state.get('currentAccount');
+  if (
+    state.get("currentAccount").get("id") &&
+    currentAccountExists(state, accounts)
+  ) {
+    return state.get("currentAccount");
   }
   return Map(firstAccount(accounts));
 }
@@ -60,13 +68,20 @@ function firstAccount(accounts) {
 }
 
 function currentAccountExists(state, accounts) {
-  return accounts.filter(account => account.id === state.get('currentAccount').get('id')).length > 0;
+  return (
+    accounts.filter(
+      (account) => account.id === state.get("currentAccount").get("id")
+    ).length > 0
+  );
 }
 
 function setCurrentAccount(state, id) {
-  return state.set('currentAccount', state.get('accounts').find(account => account.get('id') === id));
+  return state.set(
+    "currentAccount",
+    state.get("accounts").find((account) => account.get("id") === id)
+  );
 }
 
 function setSelectedAccounts(state, accountIds) {
-  return state.set('selectedAccounts', fromJS(accountIds));
+  return state.set("selectedAccounts", fromJS(accountIds));
 }

@@ -1,6 +1,6 @@
-import apiUtil from '../util/api-util';
-import transactionTransformer from '../transformers/transaction-transformer';
-import store from '../stores/store';
+import apiUtil from "../util/api-util";
+import transactionTransformer from "../transformers/transaction-transformer";
+import store from "../stores/store";
 import {
   UPLOAD_OFX,
   SET_OFX_TRANSACTIONS,
@@ -9,16 +9,19 @@ import {
   SET_CATEGORY_ID,
   SET_SUBCATEGORY_ID,
   SET_IMPORT,
-} from 'actions/action-types';
+} from "../actions/action-types";
 
 export function uploadOFX(accountId, file) {
   store.dispatch({ type: UPLOAD_OFX, fileName: file.name });
   return apiUtil.upload({
     url: `accounts/${accountId}/transactions/import`,
     file,
-    onSuccess: response => storeOfxTransactions(
-      response.imported_transactions.map(transaction => transactionTransformer.transformFromOfxApi(transaction))
-    ),
+    onSuccess: (response) =>
+      storeOfxTransactions(
+        response.imported_transactions.map((transaction) =>
+          transactionTransformer.transformFromOfxApi(transaction)
+        )
+      ),
   });
 }
 
@@ -29,14 +32,26 @@ export function storeOfxTransactions(transactions) {
 export function importTransactions() {
   store.dispatch({ type: SAVE_TRANSACTIONS });
   const importStore = store.getState().importStore;
-  const transactions = importStore.get('transactions').toJS().filter(transaction => transaction.import);
-  const fileName = importStore.get('fileName');
-  const accountId = store.getState().accountStore.get('currentAccount').get('id');
-  const transformedTxns = transactions.map(transaction => transactionTransformer.transformToApi(transaction));
+  const transactions = importStore
+    .get("transactions")
+    .toJS()
+    .filter((transaction) => transaction.import);
+  const fileName = importStore.get("fileName");
+  const accountId = store
+    .getState()
+    .accountStore.get("currentAccount")
+    .get("id");
+  const transformedTxns = transactions.map((transaction) =>
+    transactionTransformer.transformToApi(transaction)
+  );
 
   return apiUtil.post({
     url: `accounts/${accountId}/bank_statements`,
-    body: { account_id: accountId, file_name: fileName, transactions: transformedTxns },
+    body: {
+      account_id: accountId,
+      file_name: fileName,
+      transactions: transformedTxns,
+    },
     onSuccess: () => importComplete(),
   });
 }
