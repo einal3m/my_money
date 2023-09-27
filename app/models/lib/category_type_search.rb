@@ -3,6 +3,8 @@
 module Lib
   class CategoryTypeSearch < Search
     def initialize(attrs)
+      super
+
       @category_type = attrs.fetch(:category_type, nil)
       @category = nil
       @date_range = attrs.fetch(:date_range, Lib::CurrentMonthDateRange.new)
@@ -26,7 +28,7 @@ module Lib
       Transaction
         .joins(:category)
         .where(categories: { category_type_id: @category_type.id })
-        .find_by_date(@date_range)
+        .search_by_date(@date_range)
         .reverse_date_order
     end
 

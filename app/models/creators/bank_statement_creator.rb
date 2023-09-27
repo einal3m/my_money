@@ -21,7 +21,7 @@ class BankStatementCreator
 
   def build_bank_statement
     bank_statement_attrs = @bank_statement_params.symbolize_keys.assert_valid_keys(CREATE_BANK_STATEMENT_VALID_PARAMS)
-    BankStatement.new bank_statement_attrs.merge(date: Date.today)
+    BankStatement.new bank_statement_attrs.merge(date: Time.zone.today)
   end
 
   def build_transactions

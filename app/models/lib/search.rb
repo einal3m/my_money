@@ -52,7 +52,7 @@ module Lib
       from_year = @date_range.from_date.year
       from_month = @date_range.from_date.month
 
-      (to_year * 12 + to_month) - (from_year * 12 + from_month) + 1
+      ((to_year * 12) + to_month) - ((from_year * 12) + from_month) + 1
     end
   end
 end

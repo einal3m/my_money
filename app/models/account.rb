@@ -16,11 +16,11 @@ class Account < ApplicationRecord
 
   # model relationships
   # belongs_to :account_type
-  has_many :transactions
-  has_many :patterns
-  has_many :reconciliations
-  has_many :bank_statements
-  has_many :budgets
+  has_many :transactions, dependent: :restrict_with_exception
+  has_many :patterns, dependent: :restrict_with_exception
+  has_many :reconciliations, dependent: :restrict_with_exception
+  has_many :bank_statements, dependent: :restrict_with_exception
+  has_many :budgets, dependent: :restrict_with_exception
 
   # validations
   validates :account_type, presence: true
