@@ -138,6 +138,30 @@ RSpec.describe Api::AccountsController, type: :controller do
     end
   end
 
+  describe 'POST deactivate' do
+    it 'soft deletes the requested account' do
+      account = FactoryBot.create(:account)
+
+      post :deactivate, params: { id: account.id }
+
+      expect(response.status).to eq(204)
+      account.reload
+      expect(account.deleted_at).not_to eq(nil)
+    end
+  end
+
+  describe 'POST reactivate' do
+    it 'un-soft-deletes the requested account' do
+      account = FactoryBot.create(:account, deleted_at: '2014-02-02')
+
+      post :reactivate, params: { id: account.id }
+
+      expect(response.status).to eq(204)
+      account.reload
+      expect(account.deleted_at).to eq(nil)
+    end
+  end
+
   describe 'DELETE destroy' do
     it 'destroys the requested account' do
       account = FactoryBot.create(:account)

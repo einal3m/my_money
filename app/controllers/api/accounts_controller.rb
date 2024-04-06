@@ -27,6 +27,22 @@ class Api::AccountsController < ApplicationController
     end
   end
 
+  def deactivate
+    if account.update(deleted_at: Date.current)
+      head :no_content
+    else
+      render json: account.errors, status: :unprocessable_entity
+    end
+  end
+
+  def reactivate
+    if account.update(deleted_at: nil)
+      head :no_content
+    else
+      render json: account.errors, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     destroyer = AccountDestroyer.new account
     destroyer.execute

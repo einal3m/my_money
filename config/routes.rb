@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     resources :categories
 
     resources :accounts, only: [:create, :index, :destroy, :update] do
+      member do
+        post 'deactivate'
+        post 'reactivate'
+      end
       resources :reconciliations
       resources :bank_statements, only: [:create, :index, :destroy]
       resources :budgets, only: [:create, :index, :destroy, :update]
