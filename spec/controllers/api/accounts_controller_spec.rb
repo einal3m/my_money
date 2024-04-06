@@ -4,15 +4,39 @@ require 'rails_helper'
 
 RSpec.describe Api::AccountsController, type: :controller do
   describe 'GET index' do
-    it 'returns a list of all accounts' do
-      account = FactoryBot.create(:account, starting_balance: 1000)
-      get :index
+    context "when no params are provided" do
+      let(:params) {{}}
 
-      expect(response.status).to eq(200)
+      it 'returns a list of all active accounts' do
+        account = FactoryBot.create(:account, starting_balance: 1000)
+        a = FactoryBot.create(:account, deleted_at: '2014-02-02')
 
-      json = JSON.parse(response.body)
-      expect(json['accounts'].length).to eq(1)
-      expect(json['accounts'][0]).to eq(serialized_account(account))
+        get :index, params
+
+        expect(response.status).to eq(200)
+
+        json = JSON.parse(response.body)
+        expect(json['accounts'].length).to eq(1)
+        expect(json['accounts'][0]).to eq(serialized_account(account))
+      end
+    end
+
+    context "when deactivated param is provided" do
+      let(:params) {{include_deactivated: true}}
+      
+      it 'returns a list of all active accounts' do
+        account = FactoryBot.create(:account, starting_balance: 1000)
+        deactivated_account = FactoryBot.create(:account, deleted_at: '2014-02-02')
+
+        get :index, params: params
+
+        expect(response.status).to eq(200)
+
+        json = JSON.parse(response.body)
+        expect(json['accounts'].length).to eq(2)
+        expect(json['accounts'][0]).to eq(serialized_account(account))
+        expect(json['accounts'][1]).to eq(serialized_account(deactivated_account))
+      end
     end
   end
 
@@ -198,7 +222,8 @@ RSpec.describe Api::AccountsController, type: :controller do
       'current_balance' => account.current_balance,
       'limit' => account.limit,
       'term' => account.term,
-      'interest_rate' => rate_string(account.interest_rate)
+      'interest_rate' => rate_string(account.interest_rate),
+      'deleted_at' => date_string(account.deleted_at)
     }
   end
 

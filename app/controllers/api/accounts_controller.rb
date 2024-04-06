@@ -6,8 +6,12 @@ class Api::AccountsController < ApplicationController
   def my_money; end
 
   def index
-    accounts = Account.all
-    render json: accounts
+    if params[:include_deactivated]
+      render json: Account.all
+    else
+      puts Account.all.pluck(:deleted_at)
+      render json: Account.where(deleted_at: nil)
+    end
   end
 
   def create
