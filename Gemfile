@@ -3,10 +3,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.0'
+ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
+gem 'rails', '6.0.6.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -14,8 +14,8 @@ gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
 gem 'react-rails'
+gem 'webpacker', '~> 4.0'
 
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
@@ -39,8 +39,8 @@ group :development, :test do
 end
 
 group :development do
-  gem 'rubocop-rails', require: false
   gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
 
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
