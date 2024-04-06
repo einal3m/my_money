@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_02_28_082523) do
+ActiveRecord::Schema.define(version: 2024_04_06_091307) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2017_02_28_082523) do
     t.integer "limit"
     t.integer "term"
     t.decimal "interest_rate"
+    t.date "deleted_at"
   end
 
   create_table "bank_statements", force: :cascade do |t|

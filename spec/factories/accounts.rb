@@ -11,6 +11,7 @@ FactoryBot.define do
     interest_rate { 5.67 }
     starting_balance { 999 }
     starting_date { '2014-01-01' }
+    deleted_at { nil }
   end
 
   factory :account_invalid, parent: :account do
