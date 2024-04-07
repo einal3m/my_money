@@ -159,6 +159,11 @@ RSpec.describe Account, type: :model do
       a = FactoryBot.create(:account, starting_date: '2014-02-02')
       expect(a.starting_date).to eq(Date.parse('2014-02-02'))
     end
+
+    it 'sets a deleted_at date' do
+      a = FactoryBot.create(:account, deleted_at: '2014-02-02')
+      expect(a.deleted_at).to eq(Date.parse('2014-02-02'))
+    end
   end
 
   describe 'methods' do

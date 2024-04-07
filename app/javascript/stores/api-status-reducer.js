@@ -1,14 +1,15 @@
-import { Map } from 'immutable';
-import ApiStatus from '../util/api-status';
+import { Map } from "immutable";
+import ApiStatus from "../util/api-status";
 import {
   GET_ACCOUNTS,
   SET_ACCOUNTS,
   SAVE_ACCOUNT,
   DELETE_ACCOUNT,
+  DEACTIVATE_ACCOUNT,
   GET_TRANSACTIONS,
   SET_TRANSACTIONS,
   SAVE_TRANSACTION,
-  DELETE_TRANSACTION ,
+  DELETE_TRANSACTION,
   GET_DATE_RANGES,
   SET_DATE_RANGES,
   UPLOAD_OFX,
@@ -41,14 +42,17 @@ import {
   SAVE_RECONCILIATION,
   SET_API_ERROR,
   CLEAR_API_ERROR,
-} from 'actions/action-types';
+} from "actions/action-types";
 
 const INITIAL_STATE = Map({
   status: ApiStatus.DONE,
   message: null,
 });
 
-export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTION' }) {
+export default function reducer(
+  state = INITIAL_STATE,
+  action = { type: "NO_ACTION" }
+) {
   switch (action.type) {
     case GET_ACCOUNTS:
     case GET_DATE_RANGES:
@@ -91,6 +95,7 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
       return setSaving(state);
 
     case DELETE_ACCOUNT:
+    case DEACTIVATE_ACCOUNT:
     case DELETE_TRANSACTION:
     case DELETE_CATEGORY:
     case DELETE_SUBCATEGORY:
@@ -106,21 +111,21 @@ export default function reducer(state = INITIAL_STATE, action = { type: 'NO_ACTI
 }
 
 function setDone(state) {
-  return state.set('status', ApiStatus.DONE).set('message', null);
+  return state.set("status", ApiStatus.DONE).set("message", null);
 }
 
 function setLoading(state) {
-  return state.set('status', ApiStatus.LOADING).set('message', null);
+  return state.set("status", ApiStatus.LOADING).set("message", null);
 }
 
 function setSaving(state) {
-  return state.set('status', ApiStatus.SAVING).set('message', null);
+  return state.set("status", ApiStatus.SAVING).set("message", null);
 }
 
 function setDeleting(state) {
-  return state.set('status', ApiStatus.DELETING).set('message', null);
+  return state.set("status", ApiStatus.DELETING).set("message", null);
 }
 
 function setError(state, message) {
-  return state.set('status', ApiStatus.ERROR).set('message', message);
+  return state.set("status", ApiStatus.ERROR).set("message", message);
 }

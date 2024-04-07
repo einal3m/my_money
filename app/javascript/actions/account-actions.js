@@ -1,6 +1,6 @@
-import store from '../stores/store';
-import apiUtil from '../util/api-util';
-import accountTransformer from '../transformers/account-transformer';
+import store from "../stores/store";
+import apiUtil from "../util/api-util";
+import accountTransformer from "../transformers/account-transformer";
 import {
   GET_ACCOUNTS,
   SET_ACCOUNTS,
@@ -10,14 +10,15 @@ import {
   SET_SELECTED_ACCOUNTS,
   SAVE_ACCOUNT,
   DELETE_ACCOUNT,
-} from 'actions/action-types';
+  DEACTIVATE_ACCOUNT,
+} from "actions/action-types";
 
 export function getAccounts(options) {
   return getAccountTypes().then(() => fetchAccounts(options));
 }
 
 export function fetchAccounts(options) {
-  const accountsLoaded = store.getState().accountStore.get('loaded');
+  const accountsLoaded = store.getState().accountStore.get("loaded");
 
   if (accountsLoaded && options && options.useStore) {
     return Promise.resolve();
@@ -25,10 +26,13 @@ export function fetchAccounts(options) {
 
   store.dispatch({ type: GET_ACCOUNTS });
   return apiUtil.get({
-    url: 'accounts',
-    onSuccess: response => storeAccounts(
-      response.accounts.map(account => accountTransformer.transformFromApi(account))
-    ),
+    url: "accounts",
+    onSuccess: (response) =>
+      storeAccounts(
+        response.accounts.map((account) =>
+          accountTransformer.transformFromApi(account)
+        )
+      ),
   });
 }
 
@@ -37,15 +41,17 @@ export function storeAccounts(accounts) {
 }
 
 export function getAccountTypes() {
-  const accountTypesLoaded = store.getState().accountStore.get('accountTypesLoaded');
+  const accountTypesLoaded = store
+    .getState()
+    .accountStore.get("accountTypesLoaded");
   if (accountTypesLoaded) {
     return Promise.resolve();
   }
 
   store.dispatch({ type: GET_ACCOUNT_TYPES });
   return apiUtil.get({
-    url: 'account_types',
-    onSuccess: response => storeAccountTypes(response.account_types),
+    url: "account_types",
+    onSuccess: (response) => storeAccountTypes(response.account_types),
   });
 }
 
@@ -72,7 +78,7 @@ export function saveAccount(account) {
 
 function createAccount(account) {
   return apiUtil.post({
-    url: 'accounts',
+    url: "accounts",
     body: { account: accountTransformer.transformToApi(account) },
     onSuccess: getAccounts,
   });
@@ -90,6 +96,14 @@ export function deleteAccount(id) {
   store.dispatch({ type: DELETE_ACCOUNT });
   return apiUtil.delete({
     url: `accounts/${id}`,
+    onSuccess: getAccounts,
+  });
+}
+
+export function softDeleteAccount(id) {
+  store.dispatch({ type: DEACTIVATE_ACCOUNT });
+  return apiUtil.post({
+    url: `accounts/${id}/deactivate`,
     onSuccess: getAccounts,
   });
 }
