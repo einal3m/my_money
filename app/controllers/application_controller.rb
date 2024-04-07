@@ -4,6 +4,9 @@ require 'lib/date_range'
 require 'exceptions/my_money_error'
 
 class ApplicationController < ActionController::Base
+
+  skip_before_action :verify_authenticity_token
+  
   def account
     @account ||= params.key?(:account_id) ? Account.find(params[:account_id].to_i) : nil
   end
