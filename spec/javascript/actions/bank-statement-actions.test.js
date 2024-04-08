@@ -1,56 +1,60 @@
-import { fromJS } from 'immutable';
-import * as bankStatementActions from 'actions/bank-statement-actions';
+import { fromJS } from "immutable";
+import * as bankStatementActions from "actions/bank-statement-actions";
 import {
   GET_BANK_STATEMENTS,
   SET_BANK_STATEMENTS,
   CONFIRM_DELETE_BANK_STATEMENT,
   CANCEL_DELETE_BANK_STATEMENT,
   DELETE_BANK_STATEMENT,
-} from 'actions/action-types';
-import bankStatementTransformer from 'transformers/bank-statement-transformer';
-import apiUtil from 'util/api-util';
-import store from 'stores/store';
+} from "actions/action-types";
+import bankStatementTransformer from "transformers/bank-statement-transformer";
+import apiUtil from "util/api-util";
+import store from "stores/store";
 
-describe('BankStatementActions', () => {
+describe("BankStatementActions", () => {
   let dispatcherSpy;
   beforeEach(() => {
-    dispatcherSpy = spyOn(store, 'dispatch');
+    dispatcherSpy = jest.spyOn(store, "dispatch").mockImplementation(() => {});
   });
 
-  describe('fetchBankStatements', () => {
-    beforeEach(() => {
-      spyOn(apiUtil, 'get');
-      spyOn(store, 'getState').and.returnValue({
-        accountStore: fromJS({ currentAccount: { id: 22 } }),
-      });
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    it('calls the bank_statements api', () => {
+  describe("fetchBankStatements", () => {
+    beforeEach(() => {});
+
+    it("calls the bank_statements api", () => {
+      let getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+      });
+      jest.spyOn(store, "getState").mockImplementation(() => ({
+        accountStore: fromJS({ currentAccount: { id: 22 } }),
+      }));
       bankStatementActions.fetchBankStatements();
 
       expect(dispatcherSpy).toHaveBeenCalledWith({ type: GET_BANK_STATEMENTS });
+      expect(getArgs.url).toEqual("accounts/22/bank_statements");
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('accounts/22/bank_statements');
-    });
+      jest
+        .spyOn(bankStatementTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedBankStatement");
 
-    it('saves the import history to the store on success', () => {
-      bankStatementActions.fetchBankStatements();
+      getArgs.onSuccess({ bank_statements: ["bankStatement"] });
 
-      spyOn(bankStatementTransformer, 'transformFromApi').and.returnValue('transformedBankStatement');
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-
-      getArgs.onSuccess({ bank_statements: ['bankStatement'] });
-
-      expect(bankStatementTransformer.transformFromApi).toHaveBeenCalledWith('bankStatement');
-      expect(dispatcherSpy).toHaveBeenCalledWith(
-        { type: SET_BANK_STATEMENTS, bankStatements: ['transformedBankStatement'] }
+      expect(bankStatementTransformer.transformFromApi).toHaveBeenCalledWith(
+        "bankStatement"
       );
+      expect(dispatcherSpy).toHaveBeenCalledWith({
+        type: SET_BANK_STATEMENTS,
+        bankStatements: ["transformedBankStatement"],
+      });
     });
   });
 
-  describe('delete modal', () => {
-    it('confirmDeleteBankStatement dispatches id to the store', () => {
+  describe("delete modal", () => {
+    it("confirmDeleteBankStatement dispatches id to the store", () => {
       bankStatementActions.confirmDeleteBankStatement({ id: 123 });
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: CONFIRM_DELETE_BANK_STATEMENT,
@@ -58,7 +62,7 @@ describe('BankStatementActions', () => {
       });
     });
 
-    it('cancelDeleteBankStatement dispatches action to the store', () => {
+    it("cancelDeleteBankStatement dispatches action to the store", () => {
       bankStatementActions.cancelDeleteBankStatement();
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: CANCEL_DELETE_BANK_STATEMENT,
@@ -66,25 +70,20 @@ describe('BankStatementActions', () => {
     });
   });
 
-  describe('deleteBankStatement', () => {
-    const bankStatement = { id: 23, accountId: 4 };
-    beforeEach(() => {
-      spyOn(apiUtil, 'delete');
+  describe("deleteBankStatement", () => {
+    it("makes delete request", () => {
+      const bankStatement = { id: 23, accountId: 4 };
+      jest.spyOn(apiUtil, "delete").mockImplementation(() => {});
+
       bankStatementActions.deleteBankStatement(bankStatement);
-    });
 
-    it('makes delete request', () => {
-      expect(apiUtil.delete).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: DELETE_BANK_STATEMENT });
-
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('accounts/4/bank_statements/23');
-    });
-
-    it('onSuccess, calls fetchBankStatements', () => {
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-
-      expect(deleteArgs.onSuccess).toEqual(bankStatementActions.fetchBankStatements);
+      expect(apiUtil.delete).toHaveBeenCalledWith({
+        url: "accounts/4/bank_statements/23",
+        onSuccess: bankStatementActions.fetchBankStatements,
+      });
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: DELETE_BANK_STATEMENT,
+      });
     });
   });
 });

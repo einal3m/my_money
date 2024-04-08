@@ -1,7 +1,7 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link
 } from "react-router-dom";
@@ -43,22 +43,22 @@ export default class MyMoney extends React.Component {
         <Router>
           <Header />
           <Provider store={store}>
-            <Switch>
-              <Route exact path="/"><AccountList /></Route>
-              <Route path="/accounts"><AccountList /></Route>
-              <Route path="/transactions"><TransactionList /></Route>
-              <Route path="/categories"><CategoryList /></Route>
-              <Route path="/patterns"><PatternList /></Route>
-              <Route path="/reconciliations"><ReconciliationList /></Route>
-              <Route path="/import"><ImportPage /></Route>
-              <Route path="/importHistory"><ImportHistoryPage /></Route>
-              <Route path="/reports/accountBalance"><AccountBalanceChart /></Route>
-              <Route path="/reports/incomeVsExpenseBar"><IncomeExpenseBarChart /></Route>
-              <Route path="/reports/incomeVsExpenses"><IncomeVsExpensesReport /></Route>
-              <Route path="/reports/categoryReport"><CategoryReport /></Route>
-              <Route path="/reports/subcategoryReport"><SubcategoryReport /></Route>
-              <Route path="/reports/loanReport"><LoanReport /></Route>
-            </Switch>
+            <Routes>
+              <Route path="/" element={<AccountList />} />
+              <Route path="/accounts" element={<AccountList />} />
+              <Route path="/transactions" element={<TransactionList />} />
+              <Route path="/categories" element={<CategoryList />} />
+              <Route path="/patterns" element={<PatternList />} />
+              <Route path="/reconciliations" element={<ReconciliationList />} />
+              <Route path="/import" element={<ImportPage />} />
+              <Route path="/importHistory" element={<ImportHistoryPage />} />
+              <Route path="/reports/accountBalance" element={<AccountBalanceChart />} />
+              <Route path="/reports/incomeVsExpenseBar" element={<IncomeExpenseBarChart />} />
+              <Route path="/reports/incomeVsExpenses" element={<IncomeVsExpensesReport />} />
+              <Route path="/reports/categoryReport" element={<CategoryReport />} />
+              <Route path="/reports/subcategoryReport" element={<SubcategoryReport />} />
+              <Route path="/reports/loanReport" element={<LoanReport />} />
+            </Routes>
           </Provider>
           <Footer />
         </Router>

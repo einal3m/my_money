@@ -1,39 +1,54 @@
-import { fromJS } from 'immutable';
-import * as matchingTransactionsActions from 'actions/matching-transactions-actions';
-import apiUtil from 'util/api-util';
-import store from 'stores/store';
-import transactionTransformer from 'transformers/transaction-transformer';
+import { fromJS } from "immutable";
+import * as matchingTransactionsActions from "actions/matching-transactions-actions";
+import apiUtil from "util/api-util";
+import store from "stores/store";
+import transactionTransformer from "transformers/transaction-transformer";
 import {
   GET_MATCHING_TRANSACTIONS,
   SET_MATCHING_TRANSACTIONS,
-} from 'actions/action-types';
+} from "actions/action-types";
 
-describe('MatchingTransactionsActions', () => {
+describe("MatchingTransactionsActions", () => {
+  let dispatcherSpy;
+  let getArgs;
   beforeEach(() => {
-    spyOn(store, 'dispatch');
-    spyOn(apiUtil, 'get');
-    spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ currentAccount: { id: 12 } }) });
+    dispatcherSpy = jest.spyOn(store, "dispatch").mockImplementation(() => {});
+    jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+      getArgs = args;
+    });
+    jest.spyOn(store, "getState").mockImplementation(() => ({
+      accountStore: fromJS({ currentAccount: { id: 12 } }),
+    }));
+
     matchingTransactionsActions.getMatchingTransactions(34);
   });
 
-  describe('getMatchingTransactions', () => {
-    it('calls the matching api', () => {
-      expect(apiUtil.get).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_MATCHING_TRANSACTIONS });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('accounts/12/transactions/34/matching');
+  describe("getMatchingTransactions", () => {
+    it("calls the matching api", () => {
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: GET_MATCHING_TRANSACTIONS,
+      });
+      expect(getArgs.url).toEqual("accounts/12/transactions/34/matching");
     });
 
-    it('stores the transactions on success', () => {
-      spyOn(transactionTransformer, 'transformFromApi').and.returnValue('transformedTransaction');
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      getArgs.onSuccess({ transactions: ['transaction'] });
+    it("stores the transactions on success", () => {
+      jest
+        .spyOn(transactionTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedTransaction");
 
-      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
+      getArgs.onSuccess({ transactions: ["transaction"] });
+
+      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith(
+        "transaction"
+      );
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_MATCHING_TRANSACTIONS,
-        transactions: ['transformedTransaction'],
+        transactions: ["transformedTransaction"],
       });
     });
   });

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { Button } from 'react-bootstrap';
 import PageHeader from '../common/PageHeader';
 import ImportTable from './ImportTable';
@@ -27,7 +27,7 @@ export class ImportPageComponent extends React.Component {
 
   render() {
     if (this.state.toTransactions === true) {
-      return <Redirect to='/transactions' />
+      return <Navigate to='/transactions' />
     }
 
     return (

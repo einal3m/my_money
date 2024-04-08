@@ -1,28 +1,39 @@
-import { fromJS } from 'immutable';
-import * as patternActions from 'actions/pattern-actions';
-import patternTransformer from 'transformers/pattern-transformer';
-import store from 'stores/store';
-import apiUtil from 'util/api-util';
+import { fromJS } from "immutable";
+import * as patternActions from "actions/pattern-actions";
+import patternTransformer from "transformers/pattern-transformer";
+import store from "stores/store";
+import apiUtil from "util/api-util";
 import {
   SET_PATTERNS,
   GET_PATTERNS,
   SAVE_PATTERN,
   DELETE_PATTERN,
-} from 'actions/action-types';
+} from "actions/action-types";
 
-describe('PatternActions', () => {
+describe("PatternActions", () => {
+  let dispatcherSpy;
   beforeEach(() => {
-    spyOn(store, 'dispatch');
+    dispatcherSpy = jest.spyOn(store, "dispatch").mockImplementation(() => {});
   });
 
-  describe('getPatterns', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("getPatterns", () => {
     // figure out how to test promises :)
   });
 
-  describe('fetchPatterns', () => {
-    it('makes an ajax request to GET patterns and calls callback on success', () => {
-      spyOn(apiUtil, 'get').and.returnValue(Promise.resolve());
-      spyOn(store, 'getState').and.returnValue({ accountStore: fromJS({ currentAccount: { id: 12 } }) });
+  describe("fetchPatterns", () => {
+    it("makes an ajax request to GET patterns and calls callback on success", () => {
+      var getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+        return Promise.resolve();
+      });
+      jest.spyOn(store, "getState").mockImplementation(() => ({
+        accountStore: fromJS({ currentAccount: { id: 12 } }),
+      }));
 
       const promise = patternActions.fetchPatterns();
 
@@ -30,27 +41,35 @@ describe('PatternActions', () => {
       expect(promise.then).toBeDefined();
       expect(store.dispatch).toHaveBeenCalledWith({ type: GET_PATTERNS });
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('accounts/12/patterns');
+      expect(getArgs.url).toEqual("accounts/12/patterns");
 
-      spyOn(patternTransformer, 'transformFromApi').and.returnValue('transformedPattern');
+      jest
+        .spyOn(patternTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedPattern");
 
       const successCallback = getArgs.onSuccess;
-      successCallback({ patterns: ['pattern'] });
+      successCallback({ patterns: ["pattern"] });
 
-      expect(patternTransformer.transformFromApi).toHaveBeenCalledWith('pattern');
+      expect(patternTransformer.transformFromApi).toHaveBeenCalledWith(
+        "pattern"
+      );
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_PATTERNS,
-        patterns: ['transformedPattern'],
+        patterns: ["transformedPattern"],
       });
     });
   });
 
-  describe('savePattern', () => {
-    it('calls the api to create the pattern if id not present', () => {
-      const pattern = { accountId: 3, matchText: 'my pattern' };
-      spyOn(apiUtil, 'post');
-      spyOn(patternTransformer, 'transformToApi').and.returnValue('transformedPattern');
+  describe("savePattern", () => {
+    it("calls the api to create the pattern if id not present", () => {
+      const pattern = { accountId: 3, matchText: "my pattern" };
+      var postArgs;
+      jest.spyOn(apiUtil, "post").mockImplementation((args) => {
+        postArgs = args;
+      });
+      jest
+        .spyOn(patternTransformer, "transformToApi")
+        .mockImplementation(() => "transformedPattern");
 
       patternActions.savePattern(pattern);
 
@@ -58,16 +77,21 @@ describe('PatternActions', () => {
       expect(patternTransformer.transformToApi).toHaveBeenCalledWith(pattern);
       expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_PATTERN });
 
-      const postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual('accounts/3/patterns');
-      expect(postArgs.body).toEqual({ pattern: 'transformedPattern' });
+      expect(postArgs.url).toEqual("accounts/3/patterns");
+      expect(postArgs.body).toEqual({ pattern: "transformedPattern" });
       expect(postArgs.onSuccess).toEqual(patternActions.getPatterns);
     });
 
-    it('calls the api to update the pattern if id is present', () => {
-      const pattern = { id: 2, accountId: 3, matchText: 'my pattern' };
-      spyOn(apiUtil, 'put');
-      spyOn(patternTransformer, 'transformToApi').and.returnValue('transformedPattern');
+    it("calls the api to update the pattern if id is present", () => {
+      const pattern = { id: 2, accountId: 3, matchText: "my pattern" };
+      var putArgs;
+      jest.spyOn(apiUtil, "put").mockImplementation((args) => {
+        putArgs = args;
+      });
+
+      jest
+        .spyOn(patternTransformer, "transformToApi")
+        .mockImplementation(() => "transformedPattern");
 
       patternActions.savePattern(pattern);
 
@@ -75,25 +99,26 @@ describe('PatternActions', () => {
       expect(patternTransformer.transformToApi).toHaveBeenCalledWith(pattern);
       expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_PATTERN });
 
-      const putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual('accounts/3/patterns/2');
-      expect(putArgs.body).toEqual({ pattern: 'transformedPattern' });
+      expect(putArgs.url).toEqual("accounts/3/patterns/2");
+      expect(putArgs.body).toEqual({ pattern: "transformedPattern" });
       expect(putArgs.onSuccess).toEqual(patternActions.getPatterns);
     });
   });
 
-  describe('deletePattern', () => {
-    it('calls the pattern api to delete the pattern', () => {
-      const pattern = { id: 2, accountId: 3, matchText: 'my pattern' };
-      spyOn(apiUtil, 'delete');
+  describe("deletePattern", () => {
+    it("calls the pattern api to delete the pattern", () => {
+      const pattern = { id: 2, accountId: 3, matchText: "my pattern" };
+      var deleteArgs;
+      jest.spyOn(apiUtil, "delete").mockImplementation((params) => {
+        deleteArgs = params;
+      });
 
       patternActions.deletePattern(pattern);
 
       expect(apiUtil.delete).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: DELETE_PATTERN });
 
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('accounts/3/patterns/2');
+      expect(deleteArgs.url).toEqual("accounts/3/patterns/2");
       expect(deleteArgs.onSuccess).toEqual(patternActions.getPatterns);
     });
   });
