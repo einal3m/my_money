@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'destroyers/account_destroyer'
+require_relative '../../models/destroyers/account_destroyer'
 
 class Api::AccountsController < ApplicationController
   def my_money; end

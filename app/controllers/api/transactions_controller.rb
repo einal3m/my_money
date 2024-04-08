@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::TransactionsController < ApplicationController
-  before_action :set_transaction, only: %i[edit update destroy matching]
+  before_action :set_transaction, only: [:update, :destroy, :matching]
 
   def index
     render json: description ? transactions_by_date_and_description : transactions_by_date

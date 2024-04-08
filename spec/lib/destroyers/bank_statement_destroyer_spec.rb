@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'destroyers/bank_statement_destroyer'
+require_relative '../../../app/models/destroyers/bank_statement_destroyer'
 
 describe 'BankStatementDestroyer' do
   let(:transaction) { double :transaction, reconciliation: nil }

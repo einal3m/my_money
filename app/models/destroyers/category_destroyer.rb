@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'exceptions/my_money_error'
+require_relative '../exceptions/my_money_error'
 
 class CategoryDestroyer
   def initialize(category)

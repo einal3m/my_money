@@ -9,7 +9,7 @@ FactoryBot.define do
     fitid { 'This is a fitid' }
     transaction_type { 'bank_transaction' }
     bank_statement
-    account
+    account { FactoryBot.create(:account) }
   end
 
   factory :transaction_invalid, parent: :transaction do

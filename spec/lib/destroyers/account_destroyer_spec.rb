@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'destroyers/account_destroyer'
+require_relative '../../../app/models/destroyers/account_destroyer'
 
 describe 'AccountDestroyer' do
   let(:account) { FactoryBot.create(:account) }
