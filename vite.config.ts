@@ -2,9 +2,6 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import RubyPlugin from "vite-plugin-ruby";
 
-console.log("i am here");
-console.log(resolve(__dirname, "app/javascript/actions"));
-
 export default defineConfig({
   plugins: [RubyPlugin()],
   resolve: {
