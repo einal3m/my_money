@@ -5,38 +5,3 @@ require:
 
 AllCops:
   NewCops: enable
-  Exclude:
-    - 'config.ru'
-    - 'api/**/*'
-    - 'node_modules/**/*'
-    - 'spec/spec_helper.rb'
-    - 'spec/rails_helper.rb'
-    - 'spec/lib/**/*'
-    - 'spec/javascripts/**/*'
-    - 'spec/features/**/*'
-    - 'config/**/*'
-    - 'db/**/*'
-    - 'bin/**/*'
-    - 'web/**/*'
-
-Layout/FirstArgumentIndentation:
-  EnforcedStyle: consistent
-
-MethodLength:
-  Max: 15
-
-LineLength:
-  Max: 120
-
-Metrics/BlockLength:
-  Exclude:  
-    - 'spec/**/*'
-
-Style/Documentation:
-  Enabled: false
-
-ClassLength:
-  Max: 120
-
-RSpec/MultipleExpectations:
-  Enabled: false
