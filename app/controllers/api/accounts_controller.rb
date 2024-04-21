@@ -9,7 +9,6 @@ class Api::AccountsController < ApplicationController
     if params[:include_deactivated]
       render json: Account.all
     else
-      puts Account.all.pluck(:deleted_at)
       render json: Account.where(deleted_at: nil)
     end
   end
