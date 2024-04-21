@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'destroyers/subcategory_destroyer'
+require_relative '../../../app/models/destroyers/subcategory_destroyer'
 
 describe 'SubcategoryDestroyer' do
   let(:subcategory) { FactoryBot.create(:subcategory) }

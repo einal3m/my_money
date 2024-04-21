@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import PageHeader from '../common/PageHeader';
 import SearchCriteria from './SearchCriteria';
 import TransactionTable from './TransactionTable';
@@ -63,7 +63,7 @@ export class TransactionListComponent extends React.Component {
 
   render() {
     if (this.state.toImport === true) {
-      return <Redirect to='/import' />
+      return <Navigate to='/import' />
     }
 
     return (

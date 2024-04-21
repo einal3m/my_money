@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'lib/date_range'
-require 'exceptions/my_money_error'
+require_relative '../models/lib/date_range'
+require_relative '../models/exceptions/my_money_error'
 
 class ApplicationController < ActionController::Base
 

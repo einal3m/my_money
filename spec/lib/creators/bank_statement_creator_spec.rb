@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'creators/bank_statement_creator'
+require_relative '../../../app/models/creators/bank_statement_creator'
 
 describe 'BankStatementCreator' do
   let (:file_name) { 'file.ofx' }

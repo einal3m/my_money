@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'lib/date_range'
+require_relative '../../models/lib/date_range'
 
 class Api::ReportController < ApplicationController
   before_action :set_data_range, only: %i[income_vs_expense eod_balance category subcategory]

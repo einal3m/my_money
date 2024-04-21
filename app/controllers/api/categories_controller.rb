@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'destroyers/category_destroyer'
+require_relative '../../models/destroyers/category_destroyer'
 
 class Api::CategoriesController < ApplicationController
   def index

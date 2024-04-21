@@ -1,14 +1,20 @@
-import React from 'react';
-import { render, screen, act, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
-import DatePicker from 'components/common/date-picker/DatePicker';
+import React from "react";
+import {
+  render,
+  screen,
+  act,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import DatePicker from "components/common/date-picker/DatePicker";
 
-describe('DatePicker', () => {
+describe("DatePicker", () => {
   let onChangeSpy;
   beforeEach(() => {
-    onChangeSpy = jasmine.createSpy('onChangeSpy');
+    onChangeSpy = jest.fn();
   });
 
-  test('a disabled date picker shows the date and cant be clicked', () => {
+  test("a disabled date picker shows the date and cant be clicked", () => {
     render(
       <DatePicker
         name="my-date-picker"
@@ -19,15 +25,15 @@ describe('DatePicker', () => {
     );
 
     // the date is formatted
-    expect(screen.getByDisplayValue('31-May-2021')).toBeInTheDocument();
-    expect(screen.getByTestId('date-picker-icon')).toBeInTheDocument();
+    expect(screen.getByDisplayValue("31-May-2021")).toBeInTheDocument();
+    expect(screen.getByTestId("date-picker-icon")).toBeInTheDocument();
 
     // disabled datepickers don't pop up the datepicker popover
-    fireEvent.click(screen.getByTestId('date-picker-icon'));
-    expect(screen.queryByText('May 2021')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("date-picker-icon"));
+    expect(screen.queryByText("May 2021")).not.toBeInTheDocument();
   });
 
-  test('selecting a date from the next month', async () => {
+  test("selecting a date from the next month", async () => {
     render(
       <DatePicker
         name="my-date-picker"
@@ -37,58 +43,58 @@ describe('DatePicker', () => {
       />
     );
 
-    const CURRENT_MONTH_CLASS = 'btn btn-link';
-    const OTHER_MONTH_CLASS = 'btn btn-link text-muted';
+    const CURRENT_MONTH_CLASS = "btn btn-link";
+    const OTHER_MONTH_CLASS = "btn btn-link text-muted";
 
     // the date is formatted
-    expect(screen.getByDisplayValue('31-May-2021')).toBeInTheDocument();
-    expect(screen.getByTestId('date-picker-icon')).toBeInTheDocument();
+    expect(screen.getByDisplayValue("31-May-2021")).toBeInTheDocument();
+    expect(screen.getByTestId("date-picker-icon")).toBeInTheDocument();
 
     // clicking the date picker opens the popover
     act(() => {
-      fireEvent.click(screen.getByTestId('date-picker-icon'));
+      fireEvent.click(screen.getByTestId("date-picker-icon"));
     });
 
     // the left and right arrows are displayed
-    expect(screen.getByTestId('date-picker-left')).toBeInTheDocument();
-    expect(screen.getByTestId('date-picker-right')).toBeInTheDocument();
+    expect(screen.getByTestId("date-picker-left")).toBeInTheDocument();
+    expect(screen.getByTestId("date-picker-right")).toBeInTheDocument();
 
     // month and days of week are displayed
-    expect(screen.getByText('May 2021')).toBeInTheDocument();
-    expect(screen.getByText('Mo')).toBeInTheDocument();
-    expect(screen.getByText('Tu')).toBeInTheDocument();
-    expect(screen.getByText('We')).toBeInTheDocument();
-    expect(screen.getByText('Th')).toBeInTheDocument();
-    expect(screen.getByText('Fr')).toBeInTheDocument();
-    expect(screen.getByText('Sa')).toBeInTheDocument();
-    expect(screen.getByText('Su')).toBeInTheDocument();
+    expect(screen.getByText("May 2021")).toBeInTheDocument();
+    expect(screen.getByText("Mo")).toBeInTheDocument();
+    expect(screen.getByText("Tu")).toBeInTheDocument();
+    expect(screen.getByText("We")).toBeInTheDocument();
+    expect(screen.getByText("Th")).toBeInTheDocument();
+    expect(screen.getByText("Fr")).toBeInTheDocument();
+    expect(screen.getByText("Sa")).toBeInTheDocument();
+    expect(screen.getByText("Su")).toBeInTheDocument();
 
     // there are two 1s, one for this month, one for the next month
-    const ones = screen.getAllByText('1');
-    expect(ones[0].className).toEqual(CURRENT_MONTH_CLASS)
-    expect(ones[1].className).toEqual(OTHER_MONTH_CLASS)
-    expect(screen.getByText('31')).toBeInTheDocument();
+    const ones = screen.getAllByText("1");
+    expect(ones[0].className).toEqual(CURRENT_MONTH_CLASS);
+    expect(ones[1].className).toEqual(OTHER_MONTH_CLASS);
+    expect(screen.getByText("31")).toBeInTheDocument();
 
     // go to the next month
     act(() => {
-      fireEvent.click(screen.getByTestId('date-picker-right'));
+      fireEvent.click(screen.getByTestId("date-picker-right"));
     });
-    expect(screen.getByText('June 2021')).toBeInTheDocument();
-    expect(screen.getAllByText('1').length).toEqual(2);
-    expect(screen.getAllByText('30').length).toEqual(2);
-    expect(screen.getByText('31').className).toEqual(OTHER_MONTH_CLASS);
+    expect(screen.getByText("June 2021")).toBeInTheDocument();
+    expect(screen.getAllByText("1").length).toEqual(2);
+    expect(screen.getAllByText("30").length).toEqual(2);
+    expect(screen.getByText("31").className).toEqual(OTHER_MONTH_CLASS);
 
     act(() => {
-      fireEvent.click(screen.getByText('13'));
-    })
+      fireEvent.click(screen.getByText("13"));
+    });
 
-    expect(onChangeSpy).toHaveBeenCalledWith('2021-06-13');
+    expect(onChangeSpy).toHaveBeenCalledWith("2021-06-13");
 
     // the popover should then disappear
-    await waitForElementToBeRemoved(() => screen.getByText('June 2021'));
+    await waitForElementToBeRemoved(() => screen.getByText("June 2021"));
   });
 
-  test('selecting a date from the previous year', async () => {
+  test("selecting a date from the previous year", async () => {
     render(
       <DatePicker
         name="my-date-picker"
@@ -100,52 +106,52 @@ describe('DatePicker', () => {
 
     // open the popover
     act(() => {
-      fireEvent.click(screen.getByTestId('date-picker-icon'));
+      fireEvent.click(screen.getByTestId("date-picker-icon"));
     });
 
     // click the month
     act(() => {
-      fireEvent.click(screen.getByText('May 2021'));
+      fireEvent.click(screen.getByText("May 2021"));
     });
 
     // All the months are displayed
-    expect(screen.getByText('Jan')).toBeInTheDocument();
-    expect(screen.getByText('Feb')).toBeInTheDocument();
-    expect(screen.getByText('Mar')).toBeInTheDocument();
-    expect(screen.getByText('Apr')).toBeInTheDocument();
-    expect(screen.getByText('May')).toBeInTheDocument();
-    expect(screen.getByText('Jun')).toBeInTheDocument();
-    expect(screen.getByText('Jul')).toBeInTheDocument();
-    expect(screen.getByText('Aug')).toBeInTheDocument();
-    expect(screen.getByText('Sep')).toBeInTheDocument();
-    expect(screen.getByText('Oct')).toBeInTheDocument();
-    expect(screen.getByText('Nov')).toBeInTheDocument();
-    expect(screen.getByText('Dec')).toBeInTheDocument();
+    expect(screen.getByText("Jan")).toBeInTheDocument();
+    expect(screen.getByText("Feb")).toBeInTheDocument();
+    expect(screen.getByText("Mar")).toBeInTheDocument();
+    expect(screen.getByText("Apr")).toBeInTheDocument();
+    expect(screen.getByText("May")).toBeInTheDocument();
+    expect(screen.getByText("Jun")).toBeInTheDocument();
+    expect(screen.getByText("Jul")).toBeInTheDocument();
+    expect(screen.getByText("Aug")).toBeInTheDocument();
+    expect(screen.getByText("Sep")).toBeInTheDocument();
+    expect(screen.getByText("Oct")).toBeInTheDocument();
+    expect(screen.getByText("Nov")).toBeInTheDocument();
+    expect(screen.getByText("Dec")).toBeInTheDocument();
 
     // go to the previous year
-    expect(screen.getByText('2021')).toBeInTheDocument();
+    expect(screen.getByText("2021")).toBeInTheDocument();
     act(() => {
-      fireEvent.click(screen.getByTestId('date-picker-left'));
+      fireEvent.click(screen.getByTestId("date-picker-left"));
     });
-    expect(screen.getByText('2020')).toBeInTheDocument();
+    expect(screen.getByText("2020")).toBeInTheDocument();
 
     // click on december
     act(() => {
-      fireEvent.click(screen.getByText('Dec'));
+      fireEvent.click(screen.getByText("Dec"));
     });
-    expect(screen.getByText('December 2020')).toBeInTheDocument();
+    expect(screen.getByText("December 2020")).toBeInTheDocument();
 
     // click on 19
     act(() => {
-      fireEvent.click(screen.getByText('19'));
+      fireEvent.click(screen.getByText("19"));
     });
-    expect(onChangeSpy).toHaveBeenCalledWith('2020-12-19');
+    expect(onChangeSpy).toHaveBeenCalledWith("2020-12-19");
 
     // the popover should then disappear
-    await waitForElementToBeRemoved(() => screen.getByText('December 2020'));
+    await waitForElementToBeRemoved(() => screen.getByText("December 2020"));
   });
 
-  test('selecting a date from the next decade', async () => {
+  test("selecting a date from the next decade", async () => {
     render(
       <DatePicker
         name="my-date-picker"
@@ -157,59 +163,59 @@ describe('DatePicker', () => {
 
     // open the popover
     act(() => {
-      fireEvent.click(screen.getByTestId('date-picker-icon'));
+      fireEvent.click(screen.getByTestId("date-picker-icon"));
     });
 
     // click the month
     act(() => {
-      fireEvent.click(screen.getByText('May 2021'));
+      fireEvent.click(screen.getByText("May 2021"));
     });
 
     // click the year
     act(() => {
-      fireEvent.click(screen.getByText('2021'));
+      fireEvent.click(screen.getByText("2021"));
     });
 
-    expect(screen.getByText('2020 - 2029')).toBeInTheDocument();
-    expect(screen.getByText('2019')).toBeInTheDocument();
-    expect(screen.getByText('2020')).toBeInTheDocument();
-    expect(screen.getByText('2021')).toBeInTheDocument();
-    expect(screen.getByText('2022')).toBeInTheDocument();
-    expect(screen.getByText('2023')).toBeInTheDocument();
-    expect(screen.getByText('2024')).toBeInTheDocument();
-    expect(screen.getByText('2025')).toBeInTheDocument();
-    expect(screen.getByText('2026')).toBeInTheDocument();
-    expect(screen.getByText('2027')).toBeInTheDocument();
-    expect(screen.getByText('2028')).toBeInTheDocument();
-    expect(screen.getByText('2029')).toBeInTheDocument();
-    expect(screen.getByText('2030')).toBeInTheDocument();
+    expect(screen.getByText("2020 - 2029")).toBeInTheDocument();
+    expect(screen.getByText("2019")).toBeInTheDocument();
+    expect(screen.getByText("2020")).toBeInTheDocument();
+    expect(screen.getByText("2021")).toBeInTheDocument();
+    expect(screen.getByText("2022")).toBeInTheDocument();
+    expect(screen.getByText("2023")).toBeInTheDocument();
+    expect(screen.getByText("2024")).toBeInTheDocument();
+    expect(screen.getByText("2025")).toBeInTheDocument();
+    expect(screen.getByText("2026")).toBeInTheDocument();
+    expect(screen.getByText("2027")).toBeInTheDocument();
+    expect(screen.getByText("2028")).toBeInTheDocument();
+    expect(screen.getByText("2029")).toBeInTheDocument();
+    expect(screen.getByText("2030")).toBeInTheDocument();
 
     // click the next decade
     act(() => {
-      fireEvent.click(screen.getByTestId('date-picker-right'));
+      fireEvent.click(screen.getByTestId("date-picker-right"));
     });
 
-    expect(screen.getByText('2030 - 2039')).toBeInTheDocument();
-    expect(screen.getByText('2029')).toBeInTheDocument();
-    expect(screen.getByText('2040')).toBeInTheDocument();
+    expect(screen.getByText("2030 - 2039")).toBeInTheDocument();
+    expect(screen.getByText("2029")).toBeInTheDocument();
+    expect(screen.getByText("2040")).toBeInTheDocument();
 
     // select the year
     act(() => {
-      fireEvent.click(screen.getByText('2035'));
+      fireEvent.click(screen.getByText("2035"));
     });
 
     // select the month
     act(() => {
-      fireEvent.click(screen.getByText('Aug'));
+      fireEvent.click(screen.getByText("Aug"));
     });
 
     // click on 5
     act(() => {
-      fireEvent.click(screen.getByText('5'));
+      fireEvent.click(screen.getByText("5"));
     });
-    expect(onChangeSpy).toHaveBeenCalledWith('2035-08-05');
+    expect(onChangeSpy).toHaveBeenCalledWith("2035-08-05");
 
     // the popover should then disappear
-    await waitForElementToBeRemoved(() => screen.getByText('August 2035'));
+    await waitForElementToBeRemoved(() => screen.getByText("August 2035"));
   });
 });

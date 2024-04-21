@@ -16,7 +16,11 @@ import apiUtil from "util/api-util";
 describe("AccountActions", () => {
   let dispatcherSpy;
   beforeEach(() => {
-    dispatcherSpy = spyOn(store, "dispatch");
+    dispatcherSpy = jest.spyOn(store, "dispatch").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe("getAccounts", () => {
@@ -25,10 +29,14 @@ describe("AccountActions", () => {
 
   describe("fetchAccounts", () => {
     it("makes an ajax request to GET/accounts and calls callback on success", () => {
-      spyOn(apiUtil, "get").and.returnValue(Promise.resolve());
-      spyOn(store, "getState").and.returnValue({
-        accountStore: fromJS({ loaded: false }),
+      let getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+        return Promise.resolve();
       });
+      jest.spyOn(store, "getState").mockImplementation(() => ({
+        accountStore: fromJS({ loaded: false }),
+      }));
 
       const promise = accountActions.fetchAccounts();
 
@@ -36,12 +44,11 @@ describe("AccountActions", () => {
       expect(promise.then).toBeDefined();
       expect(store.dispatch).toHaveBeenCalledWith({ type: GET_ACCOUNTS });
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual("accounts");
 
-      spyOn(accountTransformer, "transformFromApi").and.returnValue(
-        "transformedFromApi"
-      );
+      jest
+        .spyOn(accountTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedFromApi");
       const successCallback = getArgs.onSuccess;
       successCallback({ accounts: ["account"] });
 
@@ -55,10 +62,10 @@ describe("AccountActions", () => {
     });
 
     it("doesnt call the api if accounts already loaded and useStoredAccounts is true", () => {
-      spyOn(apiUtil, "get");
-      spyOn(store, "getState").and.returnValue({
+      jest.spyOn(apiUtil, "get");
+      jest.spyOn(store, "getState").mockImplementation(() => ({
         accountStore: fromJS({ loaded: true }),
-      });
+      }));
 
       const promise = accountActions.fetchAccounts({ useStore: true });
       expect(apiUtil.get).not.toHaveBeenCalled();
@@ -67,10 +74,10 @@ describe("AccountActions", () => {
     });
 
     it("does call the api if already loaded and useStoredAccounts is false", () => {
-      spyOn(apiUtil, "get");
-      spyOn(store, "getState").and.returnValue({
+      jest.spyOn(apiUtil, "get");
+      jest.spyOn(store, "getState").mockImplementation(() => ({
         accountStore: fromJS({ loaded: true }),
-      });
+      }));
 
       accountActions.fetchAccounts();
 
@@ -80,10 +87,14 @@ describe("AccountActions", () => {
 
   describe("getAccountTypes", () => {
     it("makes an ajax request to GET/account_types and calls callback on success", () => {
-      spyOn(apiUtil, "get").and.returnValue(Promise.resolve());
-      spyOn(store, "getState").and.returnValue({
-        accountStore: fromJS({ accountTypesLoaded: false }),
+      let getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+        return Promise.resolve();
       });
+      jest.spyOn(store, "getState").mockImplementation(() => ({
+        accountStore: fromJS({ accountTypesLoaded: false }),
+      }));
 
       const promise = accountActions.getAccountTypes();
 
@@ -91,7 +102,6 @@ describe("AccountActions", () => {
       expect(promise.then).toBeDefined();
       expect(store.dispatch).toHaveBeenCalledWith({ type: GET_ACCOUNT_TYPES });
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
       expect(getArgs.url).toEqual("account_types");
 
       const successCallback = getArgs.onSuccess;
@@ -104,10 +114,10 @@ describe("AccountActions", () => {
     });
 
     it("doesnt call the api if account types already loaded", () => {
-      spyOn(apiUtil, "get");
-      spyOn(store, "getState").and.returnValue({
+      jest.spyOn(apiUtil, "get");
+      jest.spyOn(store, "getState").mockImplementation(() => ({
         accountStore: fromJS({ accountTypesLoaded: true }),
-      });
+      }));
 
       const promise = accountActions.getAccountTypes();
       expect(apiUtil.get).not.toHaveBeenCalled();
@@ -118,76 +128,72 @@ describe("AccountActions", () => {
 
   describe("saveAccount", () => {
     it("calls the api to create the account if id not present", () => {
-      spyOn(apiUtil, "post");
-      spyOn(accountTransformer, "transformToApi").and.returnValue(
-        "transformedAccount"
-      );
+      jest.spyOn(apiUtil, "post").mockImplementation(() => {});
+      jest
+        .spyOn(accountTransformer, "transformToApi")
+        .mockImplementation(() => "transformedAccount");
 
       accountActions.saveAccount({ name: "my account" });
 
-      expect(apiUtil.post).toHaveBeenCalled();
       expect(accountTransformer.transformToApi).toHaveBeenCalledWith({
         name: "my account",
       });
       expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_ACCOUNT });
-
-      const postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual("accounts");
-      expect(postArgs.body).toEqual({ account: "transformedAccount" });
-      expect(postArgs.onSuccess).toEqual(accountActions.getAccounts);
+      expect(apiUtil.post).toHaveBeenCalledWith({
+        url: "accounts",
+        body: { account: "transformedAccount" },
+        onSuccess: accountActions.getAccounts,
+      });
     });
 
     it("calls the api to update the account if id is present", () => {
-      spyOn(apiUtil, "put");
-      spyOn(accountTransformer, "transformToApi").and.returnValue(
-        "transformedAccount"
-      );
+      jest.spyOn(apiUtil, "put").mockImplementation(() => {});
+      jest
+        .spyOn(accountTransformer, "transformToApi")
+        .mockImplementation(() => "transformedAccount");
 
       accountActions.saveAccount({ id: 2, name: "my account" });
 
-      expect(apiUtil.put).toHaveBeenCalled();
       expect(accountTransformer.transformToApi).toHaveBeenCalledWith({
         id: 2,
         name: "my account",
       });
       expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_ACCOUNT });
-
-      const putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual("accounts/2");
-      expect(putArgs.body).toEqual({ account: "transformedAccount" });
-      expect(putArgs.onSuccess).toEqual(accountActions.getAccounts);
+      expect(apiUtil.put).toHaveBeenCalledWith({
+        url: "accounts/2",
+        body: { account: "transformedAccount" },
+        onSuccess: accountActions.getAccounts,
+      });
     });
   });
 
   describe("deleteAccount", () => {
     it("calls the account api to delete the account", () => {
-      spyOn(apiUtil, "delete");
+      jest.spyOn(apiUtil, "delete").mockImplementation(() => {});
 
       accountActions.deleteAccount(34);
 
-      expect(apiUtil.delete).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({ type: "DELETE_ACCOUNT" });
-
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual("accounts/34");
-      expect(deleteArgs.onSuccess).toEqual(accountActions.getAccounts);
+      expect(apiUtil.delete).toHaveBeenCalledWith({
+        url: "accounts/34",
+        onSuccess: accountActions.getAccounts,
+      });
     });
   });
 
   describe("softDeleteAccount", () => {
     it("calls the account api to deactivate the account", () => {
-      spyOn(apiUtil, "post");
+      jest.spyOn(apiUtil, "post").mockImplementation(() => {});
 
       accountActions.softDeleteAccount(34);
 
-      expect(apiUtil.post).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith({
         type: "DEACTIVATE_ACCOUNT",
       });
-
-      const postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual("accounts/34/deactivate");
-      expect(postArgs.onSuccess).toEqual(accountActions.getAccounts);
+      expect(apiUtil.post).toHaveBeenCalledWith({
+        url: "accounts/34/deactivate",
+        onSuccess: accountActions.getAccounts,
+      });
     });
   });
 

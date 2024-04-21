@@ -1,12 +1,5 @@
 Rails.application.routes.draw do
-  # See how all your routes lay out with "rake routes".
-
   root 'my_money#my_money'
-
-  # backbone frontend
-  get 'backbone' => 'my_money#backbone'
-
-  # static data
 
   namespace :api do
     resources :category_types, only: [:index]
@@ -48,7 +41,4 @@ Rails.application.routes.draw do
     get 'report/home_loan'
     get 'report/index'
   end
-
-  get '*page' => 'my_money#my_money'
-
 end

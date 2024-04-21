@@ -1,122 +1,173 @@
-import { Map } from 'immutable';
-import * as transactionActions from 'actions/transaction-actions';
-import transactionTransformer from 'transformers/transaction-transformer';
-import store from 'stores/store';
-import apiUtil from 'util/api-util';
-import * as reportActions from 'actions/report-actions';
+import { Map } from "immutable";
+import * as transactionActions from "actions/transaction-actions";
+import transactionTransformer from "transformers/transaction-transformer";
+import store from "stores/store";
+import apiUtil from "util/api-util";
+import * as reportActions from "actions/report-actions";
 import {
   SET_TRANSACTIONS,
   SET_SEARCH_DESCRIPTION,
   TOGGLE_MORE_OR_LESS,
   SOURCE_CATEGORY_REPORT,
-  SOURCE_SUBCATEGORY_REPORT
-} from 'actions/action-types';
+  SOURCE_SUBCATEGORY_REPORT,
+} from "actions/action-types";
 
-describe('TransactionActions', () => {
+describe("TransactionActions", () => {
   let dispatcherSpy;
   beforeEach(() => {
-    dispatcherSpy = spyOn(store, 'dispatch');
+    dispatcherSpy = jest.spyOn(store, "dispatch").mockImplementation(() => {});
   });
 
-  describe('fetchTransactions', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("fetchTransactions", () => {
+    let getArgs;
     beforeEach(() => {
-      spyOn(apiUtil, 'get');
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+      });
     });
 
-    it('makes a get request with data params', () => {
-      spyOn(store, 'getState').and.returnValue({
+    it("makes a get request with data params", () => {
+      jest.spyOn(store, "getState").mockImplementation(() => ({
         accountStore: Map({ currentAccount: Map({ id: 4 }) }),
-        dateRangeStore: Map({ currentDateRange: Map({ fromDate: '2016-08-19', toDate: '2016-12-19' }) }),
+        dateRangeStore: Map({
+          currentDateRange: Map({
+            fromDate: "2016-08-19",
+            toDate: "2016-12-19",
+          }),
+        }),
         transactionStore: Map({ moreOptions: false }),
-      });
+      }));
+
       transactionActions.fetchTransactions();
 
       expect(apiUtil.get).toHaveBeenCalled();
-
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('accounts/4/transactions?from_date=2016-08-19&to_date=2016-12-19');
+      expect(getArgs.url).toEqual(
+        "accounts/4/transactions?from_date=2016-08-19&to_date=2016-12-19"
+      );
     });
 
-    it('makes a get request with description, if it is set', () => {
-      spyOn(store, 'getState').and.returnValue({
+    it("makes a get request with description, if it is set", () => {
+      jest.spyOn(store, "getState").mockImplementation(() => ({
         accountStore: Map({ currentAccount: Map({ id: 4 }) }),
-        dateRangeStore: Map({ currentDateRange: Map({ fromDate: '2016-08-19', toDate: '2016-12-19' }) }),
-        transactionStore: Map({ moreOptions: true, searchDescription: 'hello' }),
-      });
+        dateRangeStore: Map({
+          currentDateRange: Map({
+            fromDate: "2016-08-19",
+            toDate: "2016-12-19",
+          }),
+        }),
+        transactionStore: Map({
+          moreOptions: true,
+          searchDescription: "hello",
+        }),
+      }));
+
       transactionActions.fetchTransactions();
 
       expect(apiUtil.get).toHaveBeenCalled();
-
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('accounts/4/transactions?from_date=2016-08-19&to_date=2016-12-19&description=hello');
+      expect(getArgs.url).toEqual(
+        "accounts/4/transactions?from_date=2016-08-19&to_date=2016-12-19&description=hello"
+      );
     });
 
-    it('stores the transaction in the store, on success', () => {
-      spyOn(store, 'getState').and.returnValue({
+    it("stores the transaction in the store, on success", () => {
+      jest.spyOn(store, "getState").mockImplementation(() => ({
         accountStore: Map({ currentAccount: Map({ id: 4 }) }),
-        dateRangeStore: Map({ currentDateRange: Map({ fromDate: '2016-08-19', toDate: '2016-12-19' }) }),
+        dateRangeStore: Map({
+          currentDateRange: Map({
+            fromDate: "2016-08-19",
+            toDate: "2016-12-19",
+          }),
+        }),
         transactionStore: Map({ moreOptions: false }),
-      });
+      }));
+      jest
+        .spyOn(transactionTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedTransaction");
 
-      spyOn(transactionTransformer, 'transformFromApi').and.returnValue('transformedTransaction');
       transactionActions.fetchTransactions();
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      getArgs.onSuccess({ transactions: ['transaction'] });
+      getArgs.onSuccess({ transactions: ["transaction"] });
 
-      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith('transaction');
+      expect(transactionTransformer.transformFromApi).toHaveBeenCalledWith(
+        "transaction"
+      );
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_TRANSACTIONS,
-        transactions: ['transformedTransaction'],
+        transactions: ["transformedTransaction"],
       });
     });
   });
 
-  describe('saveTransaction', () => {
-    it('makes post request with callback when id is not present', () => {
-      const transaction = { notes: 'Cat', accountId: 4 };
-      spyOn(apiUtil, 'post');
-      spyOn(transactionTransformer, 'transformToApi').and.returnValue('transformedTransaction');
-
-      transactionActions.saveTransaction(transaction);
-
-      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith(transaction);
-      expect(apiUtil.post).toHaveBeenCalled();
-
-      const postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual('accounts/4/transactions');
-      expect(postArgs.body).toEqual({ transaction: 'transformedTransaction' });
+  describe("saveTransaction", () => {
+    let postArgs;
+    let putArgs;
+    beforeEach(() => {
+      jest.spyOn(apiUtil, "post").mockImplementation((args) => {
+        postArgs = args;
+      });
+      jest.spyOn(apiUtil, "put").mockImplementation((args) => {
+        putArgs = args;
+      });
     });
 
-    it('makes put request with callback when id is present', () => {
-      const transaction = { id: 23, notes: 'Cat', accountId: 4 };
-      spyOn(apiUtil, 'put');
-      spyOn(transactionTransformer, 'transformToApi').and.returnValue('transformedTransaction');
+    it("makes post request with callback when id is not present", () => {
+      const transaction = { notes: "Cat", accountId: 4 };
+      jest
+        .spyOn(transactionTransformer, "transformToApi")
+        .mockImplementation(() => "transformedTransaction");
 
       transactionActions.saveTransaction(transaction);
 
-      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith(transaction);
-      expect(apiUtil.put).toHaveBeenCalled();
+      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith(
+        transaction
+      );
+      expect(apiUtil.post).toHaveBeenCalled();
+      expect(postArgs.url).toEqual("accounts/4/transactions");
+      expect(postArgs.body).toEqual({ transaction: "transformedTransaction" });
+    });
 
-      const putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual('accounts/4/transactions/23');
-      expect(putArgs.body).toEqual({ transaction: 'transformedTransaction' });
+    it("makes put request with callback when id is present", () => {
+      const transaction = { id: 23, notes: "Cat", accountId: 4 };
+      jest
+        .spyOn(transactionTransformer, "transformToApi")
+        .mockImplementation(() => "transformedTransaction");
+
+      transactionActions.saveTransaction(transaction);
+
+      expect(transactionTransformer.transformToApi).toHaveBeenCalledWith(
+        transaction
+      );
+      expect(apiUtil.put).toHaveBeenCalled();
+      expect(putArgs.url).toEqual("accounts/4/transactions/23");
+      expect(putArgs.body).toEqual({ transaction: "transformedTransaction" });
     });
   });
 
-  describe('onSuccessCallback', () => {
-    it('calls the getCategoryReport action if source is category report', () => {
-      spyOn(store, 'getState').and.returnValue({ formStore: Map({ source: SOURCE_CATEGORY_REPORT }) });
-      spyOn(reportActions, 'getCategoryReport');
+  describe("onSuccessCallback", () => {
+    it("calls the getCategoryReport action if source is category report", () => {
+      jest.spyOn(store, "getState").mockImplementation(() => ({
+        formStore: Map({ source: SOURCE_CATEGORY_REPORT }),
+      }));
+      jest
+        .spyOn(reportActions, "getCategoryReport")
+        .mockImplementation(() => {});
 
       transactionActions.onSuccess();
 
       expect(reportActions.getCategoryReport).toHaveBeenCalled();
     });
 
-    it('calls the getSubcategoryReport action if source is subcategory report', () => {
-      spyOn(store, 'getState').and.returnValue({ formStore: Map({ source: SOURCE_SUBCATEGORY_REPORT }) });
-      spyOn(reportActions, 'getSubcategoryReport');
+    it("calls the getSubcategoryReport action if source is subcategory report", () => {
+      jest.spyOn(store, "getState").mockImplementation(() => ({
+        formStore: Map({ source: SOURCE_SUBCATEGORY_REPORT }),
+      }));
+      jest
+        .spyOn(reportActions, "getSubcategoryReport")
+        .mockImplementation(() => {});
 
       transactionActions.onSuccess();
 
@@ -124,32 +175,33 @@ describe('TransactionActions', () => {
     });
   });
 
-  describe('deleteTransaction', () => {
-    it('makes delete request', () => {
+  describe("deleteTransaction", () => {
+    it("makes delete request", () => {
       const transaction = { id: 23, accountId: 4 };
-      spyOn(apiUtil, 'delete');
+      let deleteArgs;
+      jest.spyOn(apiUtil, "delete").mockImplementation((args) => {
+        deleteArgs = args;
+      });
 
       transactionActions.deleteTransaction(transaction);
 
       expect(apiUtil.delete).toHaveBeenCalled();
-
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('accounts/4/transactions/23');
+      expect(deleteArgs.url).toEqual("accounts/4/transactions/23");
     });
   });
 
-  describe('setSearchDescription', () => {
-    it('dispatches the description to the store', () => {
-      transactionActions.setSearchDescription('my String');
+  describe("setSearchDescription", () => {
+    it("dispatches the description to the store", () => {
+      transactionActions.setSearchDescription("my String");
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SET_SEARCH_DESCRIPTION,
-        description: 'my String',
+        description: "my String",
       });
     });
   });
 
-  describe('toggleMoreOrLess', () => {
-    it('dispatches the toggle actions', () => {
+  describe("toggleMoreOrLess", () => {
+    it("dispatches the toggle actions", () => {
       transactionActions.toggleMoreOrLess();
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: TOGGLE_MORE_OR_LESS,

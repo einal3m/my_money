@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::ReconciliationsController < ApplicationController
-  before_action :set_reconciliation, only: %i[show update transactions reconcile]
+  before_action :set_reconciliation, only: [:show, :update]
   before_action :set_account, only: [:index]
 
   def index

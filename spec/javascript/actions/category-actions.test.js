@@ -4,7 +4,7 @@ import categoryActions, {
   fetchCategoryTypes,
   fetchCategories,
   fetchSubcategories,
-} from 'actions/category-actions';
+} from "actions/category-actions";
 import {
   SET_CURRENT_CATEGORY,
   SET_CURRENT_SUBCATEGORY,
@@ -19,180 +19,225 @@ import {
   SET_SUBCATEGORY,
   REMOVE_CATEGORY,
   REMOVE_SUBCATEGORY,
-} from 'actions/action-types';
-import categoryTransformer from 'transformers/category-transformer';
-import subcategoryTransformer from 'transformers/subcategory-transformer';
-import apiUtil from 'util/api-util';
-import store from 'stores/store';
+} from "actions/action-types";
+import categoryTransformer from "transformers/category-transformer";
+import subcategoryTransformer from "transformers/subcategory-transformer";
+import apiUtil from "util/api-util";
+import store from "stores/store";
 
-describe('CategoryActions', () => {
+describe("CategoryActions", () => {
   let dispatcherSpy;
   beforeEach(() => {
-    dispatcherSpy = spyOn(store, 'dispatch');
+    dispatcherSpy = jest.spyOn(store, "dispatch").mockImplementation(() => {});
   });
 
-  describe('fetchCategoryTypes', () => {
-    it('fetches category types', () => {
-      spyOn(apiUtil, 'get');
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  describe("fetchCategoryTypes", () => {
+    it("fetches category types and calls callback on success", () => {
+      let getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+      });
 
       fetchCategoryTypes();
 
       expect(apiUtil.get).toHaveBeenCalled();
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('category_type2');
-    });
+      expect(getArgs.url).toEqual("category_type2");
 
-    it('saves the category types to the store on success', () => {
-      spyOn(apiUtil, 'get');
+      getArgs.onSuccess({ category_type2: ["types"] });
 
-      fetchCategoryTypes();
-
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      getArgs.onSuccess({ category_type2: ['types'] });
-
-      expect(store.dispatch).toHaveBeenCalledWith({ type: SET_CATEGORY_TYPES, categoryTypes: ['types'] });
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_CATEGORY_TYPES,
+        categoryTypes: ["types"],
+      });
     });
   });
 
-  describe('fetchCategories', () => {
-    it('fetches categories', () => {
-      spyOn(apiUtil, 'get');
+  describe("fetchCategories", () => {
+    it("fetches categories and calls callback on success", () => {
+      let getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+      });
 
       fetchCategories();
 
       expect(apiUtil.get).toHaveBeenCalled();
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('categories');
-    });
+      expect(getArgs.url).toEqual("categories");
 
-    it('saves the categories to the store on success', () => {
-      spyOn(apiUtil, 'get');
+      jest
+        .spyOn(categoryTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedCategory");
 
-      fetchCategories();
+      getArgs.onSuccess({ categories: ["category"] });
 
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      spyOn(categoryTransformer, 'transformFromApi').and.returnValue('transformedCategory');
-
-      getArgs.onSuccess({ categories: ['category'] });
-
-      expect(store.dispatch).toHaveBeenCalledWith({ type: SET_CATEGORIES, categories: ['transformedCategory'] });
-      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('category');
-    });
-  });
-
-  describe('fetchSubcategories', () => {
-    it('fetches subcategories', () => {
-      spyOn(apiUtil, 'get');
-
-      fetchSubcategories();
-
-      expect(apiUtil.get).toHaveBeenCalled();
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      expect(getArgs.url).toEqual('subcategories');
-    });
-
-    it('saves the subcategories to the store on success', () => {
-      spyOn(apiUtil, 'get');
-
-      fetchSubcategories();
-
-      const getArgs = apiUtil.get.calls.argsFor(0)[0];
-      spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('transformedSubcategory');
-
-      getArgs.onSuccess({ subcategories: ['subcategory'] });
-
-      expect(store.dispatch).toHaveBeenCalledWith(
-        { type: SET_SUBCATEGORIES, subcategories: ['transformedSubcategory'] }
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_CATEGORIES,
+        categories: ["transformedCategory"],
+      });
+      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith(
+        "category"
       );
-      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith('subcategory');
     });
   });
 
-  describe('category actions', () => {
-    describe('saveCategory', () => {
-      it('calls createCategory when no id is present', () => {
-        spyOn(categoryActions, 'createCategory');
-        categoryActions.saveCategory({ name: 'Melanie' });
-        expect(categoryActions.createCategory).toHaveBeenCalledWith({ name: 'Melanie' });
+  describe("fetchSubcategories", () => {
+    it("fetches subcategories and calls callback on success", () => {
+      let getArgs;
+      jest.spyOn(apiUtil, "get").mockImplementation((args) => {
+        getArgs = args;
+      });
+
+      fetchSubcategories();
+
+      expect(apiUtil.get).toHaveBeenCalled();
+      expect(getArgs.url).toEqual("subcategories");
+
+      jest
+        .spyOn(subcategoryTransformer, "transformFromApi")
+        .mockImplementation(() => "transformedSubcategory");
+
+      getArgs.onSuccess({ subcategories: ["subcategory"] });
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_SUBCATEGORIES,
+        subcategories: ["transformedSubcategory"],
+      });
+      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith(
+        "subcategory"
+      );
+    });
+  });
+
+  describe("category actions", () => {
+    describe("saveCategory", () => {
+      it("calls createCategory when no id is present", () => {
+        jest
+          .spyOn(categoryActions, "createCategory")
+          .mockImplementation(() => {});
+
+        categoryActions.saveCategory({ name: "Melanie" });
+
+        expect(categoryActions.createCategory).toHaveBeenCalledWith({
+          name: "Melanie",
+        });
         expect(dispatcherSpy).toHaveBeenCalledWith({ type: SAVE_CATEGORY });
       });
 
-      it('calls updateCategory when id is present', () => {
-        spyOn(categoryActions, 'updateCategory');
-        categoryActions.saveCategory({ id: 1, name: 'Melanie' });
-        expect(categoryActions.updateCategory).toHaveBeenCalledWith({ id: 1, name: 'Melanie' });
+      it("calls updateCategory when id is present", () => {
+        jest
+          .spyOn(categoryActions, "updateCategory")
+          .mockImplementation(() => {});
+
+        categoryActions.saveCategory({ id: 1, name: "Melanie" });
+
+        expect(categoryActions.updateCategory).toHaveBeenCalledWith({
+          id: 1,
+          name: "Melanie",
+        });
         expect(dispatcherSpy).toHaveBeenCalledWith({ type: SAVE_CATEGORY });
       });
     });
 
-    it('createCategory calls apiUtil.post with callback', () => {
-      spyOn(apiUtil, 'post');
-      spyOn(categoryTransformer, 'transformToApi').and.returnValue('transformedCategory');
+    it("createCategory calls apiUtil.post with callback", () => {
+      let postArgs;
+      jest.spyOn(apiUtil, "post").mockImplementation((args) => {
+        postArgs = args;
+      });
+      jest
+        .spyOn(categoryTransformer, "transformToApi")
+        .mockImplementation(() => "transformedCategory");
 
-      categoryActions.createCategory('category');
+      categoryActions.createCategory("category");
 
-      expect(categoryTransformer.transformToApi).toHaveBeenCalledWith('category');
+      expect(categoryTransformer.transformToApi).toHaveBeenCalledWith(
+        "category"
+      );
       expect(apiUtil.post).toHaveBeenCalled();
+      expect(postArgs.url).toEqual("categories");
 
-      const postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual('categories');
+      jest
+        .spyOn(categoryTransformer, "transformFromApi")
+        .mockImplementation(() => "newCategory");
+      jest.spyOn(categoryActions, "storeCategory").mockImplementation(() => {});
 
-      spyOn(categoryTransformer, 'transformFromApi').and.returnValue('newCategory');
-      spyOn(categoryActions, 'storeCategory');
       const successCallback = postArgs.onSuccess;
-      successCallback({ category: 'categoryFromApi' });
+      successCallback({ category: "categoryFromApi" });
 
-      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('categoryFromApi');
-      expect(categoryActions.storeCategory).toHaveBeenCalledWith('newCategory');
+      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith(
+        "categoryFromApi"
+      );
+      expect(categoryActions.storeCategory).toHaveBeenCalledWith("newCategory");
     });
 
-    it('updateCategory calls apiUtil.put with callback', () => {
-      const category = { id: 23, name: 'Cat' };
-      spyOn(apiUtil, 'put');
-      spyOn(categoryTransformer, 'transformToApi').and.returnValue('transformedCategory');
+    it("updateCategory calls apiUtil.put with callback", () => {
+      const category = { id: 23, name: "Cat" };
+      let putArgs;
+      jest.spyOn(apiUtil, "put").mockImplementation((args) => {
+        putArgs = args;
+      });
+      jest
+        .spyOn(categoryTransformer, "transformToApi")
+        .mockImplementation(() => "transformedCategory");
 
       categoryActions.updateCategory(category);
 
       expect(categoryTransformer.transformToApi).toHaveBeenCalledWith(category);
       expect(apiUtil.put).toHaveBeenCalled();
+      expect(putArgs.url).toEqual("categories/23");
+      expect(putArgs.body).toEqual({ category: "transformedCategory" });
 
-      const putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual('categories/23');
-      expect(putArgs.body).toEqual({ category: 'transformedCategory' });
+      jest
+        .spyOn(categoryTransformer, "transformFromApi")
+        .mockImplementation(() => "updatedCategory");
+      jest.spyOn(categoryActions, "storeCategory").mockImplementation(() => {});
 
-      spyOn(categoryTransformer, 'transformFromApi').and.returnValue('updatedCategory');
-      spyOn(categoryActions, 'storeCategory');
       const successCallback = putArgs.onSuccess;
-      successCallback({ category: 'categoryFromApi' });
+      successCallback({ category: "categoryFromApi" });
 
-      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith('categoryFromApi');
-      expect(categoryActions.storeCategory).toHaveBeenCalledWith('updatedCategory');
+      expect(categoryTransformer.transformFromApi).toHaveBeenCalledWith(
+        "categoryFromApi"
+      );
+      expect(categoryActions.storeCategory).toHaveBeenCalledWith(
+        "updatedCategory"
+      );
     });
 
-    it('deleteCategory calls apiUtil.destroy with callback', () => {
-      spyOn(apiUtil, 'delete');
+    it("deleteCategory calls apiUtil.destroy with callback", () => {
+      let deleteArgs;
+      jest.spyOn(apiUtil, "delete").mockImplementation((args) => {
+        deleteArgs = args;
+      });
+
       categoryActions.deleteCategory(23);
+
       expect(apiUtil.delete).toHaveBeenCalled();
       expect(dispatcherSpy).toHaveBeenCalledWith({ type: DELETE_CATEGORY });
+      expect(deleteArgs.url).toEqual("categories/23");
 
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('categories/23');
+      jest
+        .spyOn(categoryActions, "removeCategory")
+        .mockImplementation(() => {});
 
-      spyOn(categoryActions, 'removeCategory');
       const successCallback = deleteArgs.onSuccess;
       successCallback();
+
       expect(categoryActions.removeCategory).toHaveBeenCalledWith(23);
     });
 
-    it('storeCategory dispatches the category to the store', () => {
-      categoryActions.storeCategory('category');
+    it("storeCategory dispatches the category to the store", () => {
+      categoryActions.storeCategory("category");
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SET_CATEGORY,
-        category: 'category',
+        category: "category",
       });
     });
 
-    it('removeCategory dispatches the category id to the store', () => {
+    it("removeCategory dispatches the category id to the store", () => {
       categoryActions.removeCategory(13);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: REMOVE_CATEGORY,
@@ -201,90 +246,138 @@ describe('CategoryActions', () => {
     });
   });
 
-  describe('subcategory actions', () => {
-    describe('saveSubcategory', () => {
-      it('calls createSubcategory when no id is present', () => {
-        spyOn(categoryActions, 'createSubcategory');
-        categoryActions.saveSubcategory({ name: 'Melanie' });
-        expect(categoryActions.createSubcategory).toHaveBeenCalledWith({ name: 'Melanie' });
+  describe("subcategory actions", () => {
+    describe("saveSubcategory", () => {
+      it("calls createSubcategory when no id is present", () => {
+        jest
+          .spyOn(categoryActions, "createSubcategory")
+          .mockImplementation(() => {});
+
+        categoryActions.saveSubcategory({ name: "Melanie" });
+
+        expect(categoryActions.createSubcategory).toHaveBeenCalledWith({
+          name: "Melanie",
+        });
         expect(dispatcherSpy).toHaveBeenCalledWith({ type: SAVE_SUBCATEGORY });
       });
 
-      it('calls updateSubcategory when id is present', () => {
-        spyOn(categoryActions, 'updateSubcategory');
-        categoryActions.saveSubcategory({ id: 1, name: 'Melanie' });
-        expect(categoryActions.updateSubcategory).toHaveBeenCalledWith({ id: 1, name: 'Melanie' });
+      it("calls updateSubcategory when id is present", () => {
+        jest
+          .spyOn(categoryActions, "updateSubcategory")
+          .mockImplementation(() => {});
+
+        categoryActions.saveSubcategory({ id: 1, name: "Melanie" });
+
+        expect(categoryActions.updateSubcategory).toHaveBeenCalledWith({
+          id: 1,
+          name: "Melanie",
+        });
         expect(dispatcherSpy).toHaveBeenCalledWith({ type: SAVE_SUBCATEGORY });
       });
     });
 
-    it('createSubcategory calls apiUtil.post with callback', () => {
-      spyOn(apiUtil, 'post');
-      spyOn(subcategoryTransformer, 'transformToApi').and.returnValue('transformedSubcategory');
+    it("createSubcategory calls apiUtil.post with callback", () => {
+      let postArgs;
+      jest.spyOn(apiUtil, "post").mockImplementation((args) => {
+        postArgs = args;
+      });
+      jest
+        .spyOn(subcategoryTransformer, "transformToApi")
+        .mockImplementation(() => "transformedSubcategory");
 
-      categoryActions.createSubcategory('subcategory');
+      categoryActions.createSubcategory("subcategory");
 
-      expect(subcategoryTransformer.transformToApi).toHaveBeenCalledWith('subcategory');
+      expect(subcategoryTransformer.transformToApi).toHaveBeenCalledWith(
+        "subcategory"
+      );
       expect(apiUtil.post).toHaveBeenCalled();
+      expect(postArgs.url).toEqual("subcategories");
 
-      const postArgs = apiUtil.post.calls.argsFor(0)[0];
-      expect(postArgs.url).toEqual('subcategories');
+      jest
+        .spyOn(subcategoryTransformer, "transformFromApi")
+        .mockImplementation(() => "newSubcategory");
+      jest
+        .spyOn(categoryActions, "storeSubcategory")
+        .mockImplementation(() => {});
 
-      spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('newSubcategory');
-      spyOn(categoryActions, 'storeSubcategory');
       const successCallback = postArgs.onSuccess;
-      successCallback({ subcategory: 'subcategoryFromApi' });
+      successCallback({ subcategory: "subcategoryFromApi" });
 
-      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith('subcategoryFromApi');
-      expect(categoryActions.storeSubcategory).toHaveBeenCalledWith('newSubcategory');
+      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith(
+        "subcategoryFromApi"
+      );
+      expect(categoryActions.storeSubcategory).toHaveBeenCalledWith(
+        "newSubcategory"
+      );
     });
 
-    it('updateSubcategory calls apiUtil.put with callback', () => {
-      const subcategory = { id: 11, name: 'Sub' };
-      spyOn(apiUtil, 'put');
-      spyOn(subcategoryTransformer, 'transformToApi').and.returnValue('transformedSubcategory');
+    it("updateSubcategory calls apiUtil.put with callback", () => {
+      const subcategory = { id: 11, name: "Sub" };
+      let putArgs;
+      jest.spyOn(apiUtil, "put").mockImplementation((args) => {
+        putArgs = args;
+      });
+      jest
+        .spyOn(subcategoryTransformer, "transformToApi")
+        .mockImplementation(() => "transformedSubcategory");
 
       categoryActions.updateSubcategory(subcategory);
 
-      expect(subcategoryTransformer.transformToApi).toHaveBeenCalledWith(subcategory);
+      expect(subcategoryTransformer.transformToApi).toHaveBeenCalledWith(
+        subcategory
+      );
       expect(apiUtil.put).toHaveBeenCalled();
+      expect(putArgs.url).toEqual("subcategories/11");
 
-      const putArgs = apiUtil.put.calls.argsFor(0)[0];
-      expect(putArgs.url).toEqual('subcategories/11');
+      jest
+        .spyOn(subcategoryTransformer, "transformFromApi")
+        .mockImplementation(() => "updatedSubcategory");
+      jest
+        .spyOn(categoryActions, "storeSubcategory")
+        .mockImplementation(() => {});
 
-      spyOn(subcategoryTransformer, 'transformFromApi').and.returnValue('updatedSubcategory');
-      spyOn(categoryActions, 'storeSubcategory');
       const successCallback = putArgs.onSuccess;
-      successCallback({ subcategory: 'subcategoryFromApi' });
+      successCallback({ subcategory: "subcategoryFromApi" });
 
-      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith('subcategoryFromApi');
-      expect(categoryActions.storeSubcategory).toHaveBeenCalledWith('updatedSubcategory');
+      expect(subcategoryTransformer.transformFromApi).toHaveBeenCalledWith(
+        "subcategoryFromApi"
+      );
+      expect(categoryActions.storeSubcategory).toHaveBeenCalledWith(
+        "updatedSubcategory"
+      );
     });
 
-    it('deleteSubcategory calls apiUtil.delete with callback', () => {
-      spyOn(apiUtil, 'delete');
+    it("deleteSubcategory calls apiUtil.delete with callback", () => {
+      let deleteArgs;
+      jest.spyOn(apiUtil, "delete").mockImplementation((args) => {
+        deleteArgs = args;
+      });
+
       categoryActions.deleteSubcategory(43);
+
       expect(apiUtil.delete).toHaveBeenCalled();
       expect(dispatcherSpy).toHaveBeenCalledWith({ type: DELETE_SUBCATEGORY });
+      expect(deleteArgs.url).toEqual("subcategories/43");
 
-      const deleteArgs = apiUtil.delete.calls.argsFor(0)[0];
-      expect(deleteArgs.url).toEqual('subcategories/43');
+      jest
+        .spyOn(categoryActions, "removeSubcategory")
+        .mockImplementation(() => {});
 
-      spyOn(categoryActions, 'removeSubcategory');
       const successCallback = deleteArgs.onSuccess;
       successCallback();
+
       expect(categoryActions.removeSubcategory).toHaveBeenCalledWith(43);
     });
 
-    it('storeSubcategory dispatches the subcategory to the store', () => {
-      categoryActions.storeSubcategory('subcategory');
+    it("storeSubcategory dispatches the subcategory to the store", () => {
+      categoryActions.storeSubcategory("subcategory");
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SET_SUBCATEGORY,
-        subcategory: 'subcategory',
+        subcategory: "subcategory",
       });
     });
 
-    it('removeSubcategory dispatches the subcategory id to the store', () => {
+    it("removeSubcategory dispatches the subcategory id to the store", () => {
       categoryActions.removeSubcategory(14);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: REMOVE_SUBCATEGORY,
@@ -293,8 +386,8 @@ describe('CategoryActions', () => {
     });
   });
 
-  describe('setCurrentCategory', () => {
-    it('dispatches the id to the store', () => {
+  describe("setCurrentCategory", () => {
+    it("dispatches the id to the store", () => {
       setCurrentCategory(11);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SET_CURRENT_CATEGORY,
@@ -303,8 +396,8 @@ describe('CategoryActions', () => {
     });
   });
 
-  describe('setCurrentSubcategory', () => {
-    it('dispatches the id to the store', () => {
+  describe("setCurrentSubcategory", () => {
+    it("dispatches the id to the store", () => {
       setCurrentSubcategory(13);
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SET_CURRENT_SUBCATEGORY,

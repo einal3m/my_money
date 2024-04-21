@@ -11,7 +11,7 @@ RSpec.describe Api::AccountsController, type: :controller do
         account = FactoryBot.create(:account, starting_balance: 1000)
         a = FactoryBot.create(:account, deleted_at: '2014-02-02')
 
-        get :index, params
+        get :index, params: params
 
         expect(response.status).to eq(200)
 

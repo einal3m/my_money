@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'creators/bank_statement_creator'
-require 'destroyers/bank_statement_destroyer'
+require_relative '../../models/creators/bank_statement_creator'
+require_relative '../../models/destroyers/bank_statement_destroyer'
 
 class Api::BankStatementsController < ApplicationController
   def index

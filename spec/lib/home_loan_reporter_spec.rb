@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'lib/date_range'
+require_relative '../../app/models/lib/date_range'
 
 RSpec.describe Lib::HomeLoanReporter, type: :class do
   before :each do

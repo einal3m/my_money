@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :pattern do
-    account
+    account { FactoryBot.create(:account) }
     match_text { 'New Pattern' }
     notes { 'Pattern Note' }
-    category
+    category { FactoryBot.create(:category) }
     subcategory
   end
 

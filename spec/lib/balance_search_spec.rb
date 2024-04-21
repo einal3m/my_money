@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'lib/date_range'
+require_relative '../../app/models/lib/date_range'
 
 RSpec.describe Lib::BalanceSearch, type: :class do
   before :each do

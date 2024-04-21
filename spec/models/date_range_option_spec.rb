@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'lib/date_range'
+require_relative '../../app/models/lib/date_range'
 
 RSpec.describe DateRangeOption, type: :model do
   before :each do
