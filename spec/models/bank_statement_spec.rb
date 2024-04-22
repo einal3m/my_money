@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe BankStatement, type: :model do
+RSpec.describe BankStatement do
   it 'has a valid factory' do
     s = FactoryBot.create(:bank_statement)
 
     expect(s).to be_valid
-    expect(s).to be_a(BankStatement)
+    expect(s).to be_a(described_class)
   end
 
   describe 'validations' do

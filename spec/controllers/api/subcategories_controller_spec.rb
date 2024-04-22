@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::SubcategoriesController, type: :controller do
+RSpec.describe Api::SubcategoriesController do
   let(:valid_session) { {} }
 
   describe 'GET index' do
     it 'returns all subcategories' do
       category = FactoryBot.create(:category)
-      subcategory = FactoryBot.create(:subcategory, category: category)
+      subcategory = FactoryBot.create(:subcategory, category:)
 
       get :index
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['subcategories'].length).to eq(1)
       expect(json['subcategories'][0]).to eq(serialized_subcategory(subcategory))
     end
@@ -29,11 +29,11 @@ RSpec.describe Api::SubcategoriesController, type: :controller do
           post :create, params: { subcategory: FactoryBot.attributes_for(:subcategory, category_id: category.id) }
         end.to change(Subcategory, :count).by(1)
 
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
 
         subcategory = Subcategory.first
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['subcategory']).to eq(serialized_subcategory(subcategory))
       end
     end
@@ -44,7 +44,7 @@ RSpec.describe Api::SubcategoriesController, type: :controller do
           post :create, params: { subcategory: FactoryBot.attributes_for(:subcategory, category_id: nil) }
         end.not_to change(Subcategory, :count)
 
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -53,13 +53,13 @@ RSpec.describe Api::SubcategoriesController, type: :controller do
     describe 'with valid params' do
       it 'updates the requested subcategory' do
         category = FactoryBot.create(:category)
-        subcategory = FactoryBot.create(:subcategory, category: category)
+        subcategory = FactoryBot.create(:subcategory, category:)
 
         put :update, params: { id: subcategory.id, subcategory: { name: 'Update Name' } }
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['subcategory']).to eq(
           'id' => subcategory.id,
           'category_id' => subcategory.category_id,
@@ -71,13 +71,13 @@ RSpec.describe Api::SubcategoriesController, type: :controller do
         category1 = FactoryBot.create(:category)
         category2 = FactoryBot.create(:category)
         subcategory = FactoryBot.create(:subcategory, category: category1)
-        transaction = FactoryBot.create(:transaction, category: category1, subcategory: subcategory)
+        transaction = FactoryBot.create(:transaction, category: category1, subcategory:)
 
         put :update, params: { id: subcategory.id, subcategory: { category_id: category2.id } }
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['subcategory']).to eq(
           'id' => subcategory.id,
           'category_id' => category2.id,
@@ -92,11 +92,11 @@ RSpec.describe Api::SubcategoriesController, type: :controller do
     describe 'with invalid params' do
       it 'does not update the subcategory' do
         category = FactoryBot.create(:category)
-        subcategory = FactoryBot.create(:subcategory, category: category)
+        subcategory = FactoryBot.create(:subcategory, category:)
 
         put :update, params: { id: subcategory.id, subcategory: { name: nil } }
 
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -104,27 +104,27 @@ RSpec.describe Api::SubcategoriesController, type: :controller do
   describe 'DELETE destroy' do
     it 'destroys the requested subcategory' do
       category = FactoryBot.create(:category)
-      subcategory = FactoryBot.create(:subcategory, category: category)
+      subcategory = FactoryBot.create(:subcategory, category:)
 
       expect do
         delete :destroy, params: { id: subcategory.id }
       end.to change(Subcategory, :count).by(-1)
 
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
     end
 
     it 'doesnt destroy the subcategory if it has errors' do
       category = FactoryBot.create(:category)
-      subcategory = FactoryBot.create(:subcategory, category: category)
-      FactoryBot.create(:transaction, category: category, subcategory: subcategory)
+      subcategory = FactoryBot.create(:subcategory, category:)
+      FactoryBot.create(:transaction, category:, subcategory:)
 
       expect do
         delete :destroy, params: { id: subcategory.id }
       end.not_to change(Subcategory, :count)
 
-      expect(response.status).to eq(422)
+      expect(response).to have_http_status(:unprocessable_entity)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['message']).to eq('Cannot delete a subcategory that has been allocated to transactions')
     end
   end

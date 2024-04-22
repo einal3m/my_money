@@ -9,20 +9,20 @@ require 'rails_helper'
 #  category_type: string ('I', 'E' or 'T')
 #
 
-RSpec.describe Category, type: :model do
+RSpec.describe Category do
   it 'has a valid factory' do
     c = FactoryBot.create(:category)
 
     expect(c).to be_valid
-    expect(c).to be_a(Category)
+    expect(c).to be_a(described_class)
   end
 
   describe 'validations' do
-    it 'it is invalid without a name' do
+    it 'is invalid without a name' do
       expect(FactoryBot.build(:category, name: nil)).not_to be_valid
     end
 
-    it 'it is invalid without a category_type' do
+    it 'is invalid without a category_type' do
       expect(FactoryBot.build(:category, category_type: nil)).not_to be_valid
     end
   end

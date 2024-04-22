@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TransactionType, type: :model do
+RSpec.describe TransactionType do
   it 'Share Purchase' do
     transaction_type = TransactionType::SharePurchase.new
     expect(transaction_type.id).to eq(1)

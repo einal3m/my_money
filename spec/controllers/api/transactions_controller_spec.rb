@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::TransactionsController, type: :controller do
+RSpec.describe Api::TransactionsController do
   describe 'GET index' do
     it 'returns all transactions for specified account for specified date' do
       t1 = FactoryBot.create(:transaction, date: '2014-07-03')
@@ -12,7 +12,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
 
       get :index, params: { account_id: t1.account.id, from_date: '2014-07-01', to_date: '2014-07-10' }
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
       t1.reload
       t2.reload
 
@@ -36,11 +36,11 @@ RSpec.describe Api::TransactionsController, type: :controller do
         description: 'mel'
       }
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
       t1.reload
       t2.reload
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['transactions'].length).to eq(3)
       expect(json['transactions'][0]['id']).to eq(t5.id)
       expect(json['transactions'][1]['id']).to eq(t4.id)
@@ -75,7 +75,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
           amount: 1000,
           matching_transaction_id: matched_txn.id
         } }
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
 
         transaction = Transaction.second
         expect(transaction.transaction_type).to be_a(TransactionType::BankTransaction)
@@ -118,7 +118,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
           } }
         end.not_to change(Transaction, :count)
 
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -157,8 +157,8 @@ RSpec.describe Api::TransactionsController, type: :controller do
 
         put :update, params: { id: transaction.id, account_id: transaction.account_id, transaction: new_attrs }
 
-        expect(response.status).to eq(200)
-        json = JSON.parse(response.body)
+        expect(response).to have_http_status(:ok)
+        json = response.parsed_body
         expect(json['transaction'].symbolize_keys).to include(new_attrs)
       end
     end
@@ -171,7 +171,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
           account_id: transaction.account_id,
           transaction: FactoryBot.attributes_for(:transaction_invalid, account_id: transaction.account_id)
         }
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -183,20 +183,20 @@ RSpec.describe Api::TransactionsController, type: :controller do
         delete :destroy, params: { id: transaction.id, account_id: transaction.account_id }
       end.to change(Transaction, :count).by(-1)
 
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
     end
 
     it 'doesnt destroy the transaction if it has been reconciled' do
       account = FactoryBot.create(:account)
-      reconciliation = FactoryBot.create(:reconciliation, account: account)
-      transaction = FactoryBot.create(:transaction, account: account, reconciliation: reconciliation)
+      reconciliation = FactoryBot.create(:reconciliation, account:)
+      transaction = FactoryBot.create(:transaction, account:, reconciliation:)
 
       expect do
         delete :destroy, params: { id: transaction.id, account_id: transaction.account_id }
       end.not_to change(Transaction, :count)
 
-      expect(response.status).to eq(422)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = response.parsed_body
       expect(json['message']).to eq('Cannot delete a transaction which has been reconciled')
     end
   end
@@ -204,16 +204,16 @@ RSpec.describe Api::TransactionsController, type: :controller do
   describe 'unreconciled' do
     it 'returns all unreconciled transactions' do
       account = FactoryBot.create(:account)
-      reconciliation = FactoryBot.create(:reconciliation, account: account)
+      reconciliation = FactoryBot.create(:reconciliation, account:)
 
       FactoryBot.create(:transaction, account: reconciliation.account, reconciliation: nil)
       FactoryBot.create(:transaction, account: reconciliation.account, reconciliation: nil)
-      FactoryBot.create(:transaction, account: reconciliation.account, reconciliation: reconciliation)
+      FactoryBot.create(:transaction, account: reconciliation.account, reconciliation:)
 
       get :unreconciled, params: { account_id: account.id }
 
-      expect(response.status).to eq(200)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
       expect(json['transactions'].length).to eq(2)
     end
   end
@@ -224,14 +224,14 @@ RSpec.describe Api::TransactionsController, type: :controller do
       file = 'data_file'
       importer = instance_double(Lib::TransactionImporter)
 
-      expect(Lib::TransactionImporter).to receive(:new).with(account, file).and_return(importer)
-      expect(importer).to receive(:execute).and_return(transactions: ['transaction'])
+      allow(Lib::TransactionImporter).to receive(:new).with(account, file).and_return(importer)
+      allow(importer).to receive(:execute).and_return(transactions: ['transaction'])
 
       get :import, params: { account_id: account.id, data_file: file }
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['transactions'].length).to eq(1)
       expect(json['transactions'][0]).to eq('transaction')
     end
@@ -245,22 +245,22 @@ RSpec.describe Api::TransactionsController, type: :controller do
       date = '2014-07-01'
       amount = 333
 
-      t0 = FactoryBot.create(:transaction, account: account1, date: date, amount: amount)
-      t1 = FactoryBot.create(:transaction, account: account2, date: date, amount: -amount)
-      t2 = FactoryBot.create(:transaction, account: account2, date: date, amount: -amount)
-      FactoryBot.create(:transaction, account: account1, date: date, amount: amount, matching_transaction_id: t2.id)
-      FactoryBot.create(:transaction, account: account2, date: date, amount: amount)
-      FactoryBot.create(:transaction, account: account1, date: date, amount: -amount)
+      t0 = FactoryBot.create(:transaction, account: account1, date:, amount:)
+      t1 = FactoryBot.create(:transaction, account: account2, date:, amount: -amount)
+      t2 = FactoryBot.create(:transaction, account: account2, date:, amount: -amount)
+      FactoryBot.create(:transaction, account: account1, date:, amount:, matching_transaction_id: t2.id)
+      FactoryBot.create(:transaction, account: account2, date:, amount:)
+      FactoryBot.create(:transaction, account: account1, date:, amount: -amount)
       FactoryBot.create(:transaction, account: account2, date: '2015-07-01', amount: -amount)
-      FactoryBot.create(:transaction, account: account2, date: date, amount: 444)
-      t6 = FactoryBot.create(:transaction, account: account2, date: date, amount: -amount)
-      t7 = FactoryBot.create(:transaction, account: account2, date: date, amount: -amount, matching_transaction: t0)
+      FactoryBot.create(:transaction, account: account2, date:, amount: 444)
+      t6 = FactoryBot.create(:transaction, account: account2, date:, amount: -amount)
+      t7 = FactoryBot.create(:transaction, account: account2, date:, amount: -amount, matching_transaction: t0)
 
       get :matching, params: { account_id: account1.id, id: t0.id }
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['transactions'].length).to eq(3)
       expect(json['transactions'][0]['id']).to eq(t1.id)
       expect(json['transactions'][1]['id']).to eq(t6.id)

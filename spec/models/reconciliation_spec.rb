@@ -12,12 +12,12 @@ require 'rails_helper'
 # reconciled, boolean
 #
 
-RSpec.describe Reconciliation, type: :model do
+RSpec.describe Reconciliation do
   it 'has a valid factory' do
     r = FactoryBot.create(:reconciliation)
 
     expect(r).to be_valid
-    expect(r).to be_a(Reconciliation)
+    expect(r).to be_a(described_class)
   end
 
   describe 'validations' do
@@ -51,7 +51,7 @@ RSpec.describe Reconciliation, type: :model do
 
   describe 'initialize' do
     it 'sets reconciled to false by default' do
-      expect(FactoryBot.create(:reconciliation).reconciled).to eq(false)
+      expect(FactoryBot.create(:reconciliation).reconciled).to be(false)
     end
   end
 end

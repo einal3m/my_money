@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'CsvParser' do
@@ -28,9 +30,9 @@ describe 'CsvParser' do
 
     expect(transactions[0].memo).to eq('Purchase')
     expect(transactions[0].date).to eq(Date.parse('2016-10-29'))
-    expect(transactions[0].amount).to eq(-111111)
+    expect(transactions[0].amount).to eq(-111_111)
     expect(transactions[1].memo).to eq('Money In')
     expect(transactions[1].date).to eq(Date.parse('2016-10-28'))
-    expect(transactions[1].amount).to eq(302099)
+    expect(transactions[1].amount).to eq(302_099)
   end
 end

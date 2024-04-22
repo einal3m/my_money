@@ -2,37 +2,37 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::AccountsController, type: :controller do
+RSpec.describe Api::AccountsController do
   describe 'GET index' do
-    context "when no params are provided" do
-      let(:params) {{}}
+    context 'when no params are provided' do
+      let(:params) { {} }
 
       it 'returns a list of all active accounts' do
         account = FactoryBot.create(:account, starting_balance: 1000)
-        a = FactoryBot.create(:account, deleted_at: '2014-02-02')
+        FactoryBot.create(:account, deleted_at: '2014-02-02')
 
-        get :index, params: params
+        get(:index, params:)
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['accounts'].length).to eq(1)
         expect(json['accounts'][0]).to eq(serialized_account(account))
       end
     end
 
-    context "when deactivated param is provided" do
-      let(:params) {{include_deactivated: true}}
-      
+    context 'when deactivated param is provided' do
+      let(:params) { { include_deactivated: true } }
+
       it 'returns a list of all active accounts' do
         account = FactoryBot.create(:account, starting_balance: 1000)
         deactivated_account = FactoryBot.create(:account, deleted_at: '2014-02-02')
 
-        get :index, params: params
+        get(:index, params:)
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['accounts'].length).to eq(2)
         expect(json['accounts'][0]).to eq(serialized_account(account))
         expect(json['accounts'][1]).to eq(serialized_account(deactivated_account))
@@ -42,7 +42,7 @@ RSpec.describe Api::AccountsController, type: :controller do
 
   describe 'POST create' do
     context 'with valid params' do
-      context 'Savings account' do
+      context 'with Savings account' do
         it 'creates a new Savings Account' do
           expect do
             post :create, params: { account: FactoryBot.attributes_for(:account) }
@@ -53,12 +53,12 @@ RSpec.describe Api::AccountsController, type: :controller do
           post :create, params: { account: FactoryBot.attributes_for(:account) }
           account = Account.first
 
-          json = JSON.parse(response.body)
+          json = response.parsed_body
           expect(json['account']).to eq(serialized_account(account))
         end
       end
 
-      context 'Share account' do
+      context 'with Share account' do
         it 'creates a new Share Account' do
           expect do
             post :create, params: { account: { account_type: 'share', name: 'Name', ticker: 'TCK' } }
@@ -73,12 +73,12 @@ RSpec.describe Api::AccountsController, type: :controller do
           expect(account.ticker).to eq('TCK')
           expect(account.starting_balance).to eq(0)
 
-          json = JSON.parse(response.body)
+          json = response.parsed_body
           expect(json['account']).to eq(serialized_account(account))
         end
       end
 
-      context 'Loan account' do
+      context 'with Loan account' do
         it 'creates a new Loan Account' do
           expect do
             post :create, params: { account: {
@@ -103,7 +103,7 @@ RSpec.describe Api::AccountsController, type: :controller do
           } }
 
           account = Account.first
-          json = JSON.parse(response.body)
+          json = response.parsed_body
           expect(json['account']).to eq(serialized_account(account))
         end
       end
@@ -114,15 +114,12 @@ RSpec.describe Api::AccountsController, type: :controller do
         expect do
           post :create, params: { account: FactoryBot.attributes_for(:account_invalid) }
         end.not_to change(Account, :count)
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
 
   describe 'PUT update' do
-    before :each do
-    end
-
     context 'with valid params' do
       it 'updates the requested account' do
         account = FactoryBot.create(:account)
@@ -138,9 +135,9 @@ RSpec.describe Api::AccountsController, type: :controller do
           )
         }
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         account.reload
         expect(json['account']).to eq(serialized_account(account))
         expect(account.name).to eq('New Account2')
@@ -157,7 +154,7 @@ RSpec.describe Api::AccountsController, type: :controller do
         expect do
           put :update, params: { id: account.id, account: FactoryBot.attributes_for(:account_invalid) }
         end.not_to(change { account.updated_at })
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -168,9 +165,9 @@ RSpec.describe Api::AccountsController, type: :controller do
 
       post :deactivate, params: { id: account.id }
 
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
       account.reload
-      expect(account.deleted_at).not_to eq(nil)
+      expect(account.deleted_at).not_to be_nil
     end
   end
 
@@ -180,9 +177,9 @@ RSpec.describe Api::AccountsController, type: :controller do
 
       post :reactivate, params: { id: account.id }
 
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
       account.reload
-      expect(account.deleted_at).to eq(nil)
+      expect(account.deleted_at).to be_nil
     end
   end
 
@@ -193,19 +190,19 @@ RSpec.describe Api::AccountsController, type: :controller do
       expect do
         delete :destroy, params: { id: account.id }
       end.to change(Account, :count).by(-1)
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
     end
 
     it 'does not destroy the requested account if there are transactions' do
       account = FactoryBot.create(:account)
-      FactoryBot.create(:transaction, account: account)
+      FactoryBot.create(:transaction, account:)
 
       expect do
         delete :destroy, params: { id: account.id }
       end.not_to change(Account, :count)
 
-      expect(response.status).to eq(422)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = response.parsed_body
       expect(json['message']).to eq('Cannot delete an account that has transactions')
     end
   end
@@ -232,6 +229,6 @@ RSpec.describe Api::AccountsController, type: :controller do
   end
 
   def rate_string(rate)
-    rate.nil? ? nil : rate.to_s
+    rate&.to_s
   end
 end

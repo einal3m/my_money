@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Budget, type: :model do
+RSpec.describe Budget do
   it 'has a valid factory' do
     a = FactoryBot.create(:budget)
 
     expect(a).to be_valid
-    expect(a).to be_a(Budget)
+    expect(a).to be_a(described_class)
   end
 
   describe 'validations' do
