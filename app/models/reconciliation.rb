@@ -11,13 +11,12 @@
 #
 class Reconciliation < ApplicationRecord
   # validations
-  validates :account_id, presence: true
   validates :statement_date, presence: true
   validates :statement_balance, presence: true
 
   # relationships
   belongs_to :account
-  has_many :transactions
+  has_many :transactions, dependent: nil
 
   # set reconciled to false by default when created
   after_initialize :defaults, unless: :persisted?

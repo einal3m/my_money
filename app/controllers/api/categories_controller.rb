@@ -2,41 +2,43 @@
 
 require_relative '../../models/destroyers/category_destroyer'
 
-class Api::CategoriesController < ApplicationController
-  def index
-    render json: Category.all
-  end
-
-  def create
-    new_category = Category.new(category_params)
-    if new_category.save
-      render json: new_category, status: :created
-    else
-      render json: new_category.errors, status: :unprocessable_entity
+module Api
+  class CategoriesController < ApplicationController
+    def index
+      render json: Category.all
     end
-  end
 
-  def update
-    if category.update(category_params)
-      render json: category, status: :ok
-    else
-      render json: category.errors, status: :unprocessable_entity
+    def create
+      new_category = Category.new(category_params)
+      if new_category.save
+        render json: new_category, status: :created
+      else
+        render json: new_category.errors, status: :unprocessable_entity
+      end
     end
-  end
 
-  def destroy
-    destroyer = CategoryDestroyer.new category
-    destroyer.execute
-    head :no_content
-  end
+    def update
+      if category.update(category_params)
+        render json: category, status: :ok
+      else
+        render json: category.errors, status: :unprocessable_entity
+      end
+    end
 
-  private
+    def destroy
+      destroyer = CategoryDestroyer.new category
+      destroyer.execute
+      head :no_content
+    end
 
-  def category
-    @category ||= Category.find(params[:id])
-  end
+    private
 
-  def category_params
-    params.require(:category).permit(:name, :category_type_id)
+    def category
+      @category ||= Category.find(params[:id])
+    end
+
+    def category_params
+      params.require(:category).permit(:name, :category_type_id)
+    end
   end
 end

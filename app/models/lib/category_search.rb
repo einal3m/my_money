@@ -5,6 +5,7 @@ module Lib
     attr_reader :category, :date_range
 
     def initialize(attrs)
+      super()
       @category = attrs.fetch(:category, nil)
       @date_range = attrs.fetch(:date_range, Lib::CurrentMonthDateRange.new)
       @category_type = attrs.fetch(:category_type, nil)
@@ -23,7 +24,7 @@ module Lib
       Transaction
         .for_banking_accounts
         .where(category: @category)
-        .find_by_date(@date_range)
+        .search_by_date(@date_range)
         .reverse_date_order
         .where(matching_transaction: nil)
     end

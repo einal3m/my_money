@@ -13,6 +13,7 @@ module Lib
     }.freeze
 
     def initialize(file)
+      super()
       @file = file
     end
 
@@ -54,7 +55,7 @@ module Lib
       when 'DTPOSTED'
         transaction.date = parse_iso_date value
       else
-        transaction.send("#{MAPPINGS[code]}=", value) if MAPPINGS.key?(code)
+        transaction.send(:"#{MAPPINGS[code]}=", value) if MAPPINGS.key?(code)
       end
     end
   end
