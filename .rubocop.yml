@@ -8,11 +8,20 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
+    - "vendor/*/**"
+    - "vendor/"
     - "db/schema.rb"
     - "db/migrate/*.rb"
     - "spec/features/**/*"
     - "spec/spec_helper.rb"
     - "spec/rails_helper.rb"
+    - "bin/*"
+    - "lib/*/**"
+    - "config/*/**"
+    - "config/*"
+    - "db/*"
+    - "Gemfile"
+    - "config.ru"
 
 Metrics/MethodLength:
   Max: 20
