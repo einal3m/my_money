@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::PatternsController, type: :controller do
+RSpec.describe Api::PatternsController do
   describe 'GET index' do
     it 'returns all patterns for given account' do
       pattern = FactoryBot.create(:pattern)
 
       get :index, params: { account_id: pattern.account.id }
 
-      json = JSON.parse(response.body)
-      expect(response.status).to eq(200)
+      json = response.parsed_body
+      expect(response).to have_http_status(:ok)
       expect(json['patterns'].length).to eq(1)
       expect(json['patterns'][0]).to eq(serialized_pattern(pattern))
     end
@@ -33,9 +33,9 @@ RSpec.describe Api::PatternsController, type: :controller do
           post :create, params: { account_id: account.id, pattern: pattern_attrs }
         end.to change(Pattern, :count).by(1)
 
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
 
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         pattern = Pattern.first
         expect(json['pattern']).to eq(serialized_pattern(pattern))
       end
@@ -53,8 +53,8 @@ RSpec.describe Api::PatternsController, type: :controller do
           }
         end.not_to change(Pattern, :count)
 
-        expect(response.status).to eq(422)
-        json = JSON.parse(response.body)
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = response.parsed_body
         expect(json).to eq('subcategory' => ['must exist'])
       end
     end
@@ -80,8 +80,8 @@ RSpec.describe Api::PatternsController, type: :controller do
         expect(pattern.category).to eq(new_category)
         expect(pattern.subcategory).to eq(new_subcategory)
 
-        json = JSON.parse(response.body)
-        expect(response.status).to eq(200)
+        json = response.parsed_body
+        expect(response).to have_http_status(:ok)
         expect(json['pattern']).to eq(serialized_pattern(pattern))
       end
     end
@@ -96,8 +96,8 @@ RSpec.describe Api::PatternsController, type: :controller do
           pattern: FactoryBot.attributes_for(:pattern_invalid)
         }
 
-        json = JSON.parse(response.body)
-        expect(response.status).to eq(422)
+        json = response.parsed_body
+        expect(response).to have_http_status(:unprocessable_entity)
         expect(json).to eq('match_text' => ["can't be blank"])
       end
     end
@@ -111,7 +111,7 @@ RSpec.describe Api::PatternsController, type: :controller do
         delete :destroy, params: { id: pattern.id, account_id: pattern.account.id }
       end.to change(Pattern, :count).by(-1)
 
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
     end
   end
 

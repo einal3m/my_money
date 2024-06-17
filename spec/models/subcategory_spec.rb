@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Subcategory, type: :model do
+RSpec.describe Subcategory do
   it 'has a valid factory' do
     s = FactoryBot.create(:subcategory)
 
     expect(s).to be_valid
-    expect(s).to be_a(Subcategory)
+    expect(s).to be_a(described_class)
   end
 
   describe 'validations' do
@@ -15,7 +15,7 @@ RSpec.describe Subcategory, type: :model do
       expect(FactoryBot.build(:subcategory, name: nil)).not_to be_valid
     end
 
-    it 'it is invalid without a category' do
+    it 'is invalid without a category' do
       expect(FactoryBot.build(:subcategory, category: nil)).not_to be_valid
     end
   end

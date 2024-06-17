@@ -1,22 +1,30 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require_relative '../../../app/models/destroyers/bank_statement_destroyer'
 
-describe 'BankStatementDestroyer' do
-  let(:transaction) { double :transaction, reconciliation: nil }
-  let(:bank_statement) { double :bank_statement, transactions: [transaction] }
-  let(:destroyer) { BankStatementDestroyer.new bank_statement }
+describe BankStatementDestroyer do
+  let(:transaction) { instance_double Transaction, reconciliation: nil }
+  let(:bank_statement) { instance_double BankStatement, transactions: [transaction] }
+  let(:destroyer) { described_class.new bank_statement }
 
   it 'deletes a bank statement' do
-    expect(bank_statement).to receive(:destroy!)
-    expect(transaction).to receive(:destroy!)
+    allow(bank_statement).to receive(:destroy!)
+    allow(transaction).to receive(:destroy!)
+
     destroyer.execute
+
+    expect(bank_statement).to have_received(:destroy!)
+    expect(transaction).to have_received(:destroy!)
   end
 
   describe 'errors' do
-    let(:transaction) { double :transaction, reconciliation: { id: 1 } }
+    let(:transaction) { instance_double Transaction, reconciliation: { id: 1 } }
 
     it 'doesnt delete if transaction has been reconciled' do
-      expect{destroyer.execute}.to raise_error(MyMoneyError, 'Cannot delete a bank statement with reconciled transactions')
+      expect do
+        destroyer.execute
+      end.to raise_error(MyMoneyError, 'Cannot delete a bank statement with reconciled transactions')
     end
   end
 end

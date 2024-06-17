@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe CategoryType, type: :model do
+RSpec.describe CategoryType do
   it 'has a valid factory' do
     ct = FactoryBot.create(:category_type)
 
     expect(ct).to be_valid
-    expect(ct).to be_a(CategoryType)
+    expect(ct).to be_a(described_class)
   end
 
   describe 'validations' do
@@ -25,17 +25,17 @@ RSpec.describe CategoryType, type: :model do
   describe 'scopes' do
     it 'finds income category type' do
       FactoryBot.create(:category_type, name: 'Income')
-      expect(CategoryType.income.name).to eq('Income')
+      expect(described_class.income.name).to eq('Income')
     end
 
     it 'finds expense category type' do
       FactoryBot.create(:category_type, name: 'Expense')
-      expect(CategoryType.expense.name).to eq('Expense')
+      expect(described_class.expense.name).to eq('Expense')
     end
 
     it 'finds transfer category type' do
       FactoryBot.create(:category_type, name: 'Transfer')
-      expect(CategoryType.transfer.name).to eq('Transfer')
+      expect(described_class.transfer.name).to eq('Transfer')
     end
   end
 end

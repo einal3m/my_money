@@ -306,6 +306,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)
   rspec-rails (~> 6.1.0)
+  rubocop
   rubocop-performance
   rubocop-rails
   rubocop-rspec
@@ -314,7 +315,7 @@ DEPENDENCIES
   vite_rails
 
 RUBY VERSION
-   ruby 3.2.3p157
+   ruby 3.3.0p0
 
 BUNDLED WITH
    2.5.7

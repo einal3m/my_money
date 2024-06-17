@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::TransactionTypesController, type: :controller do
+RSpec.describe Api::TransactionTypesController do
   describe 'GET index' do
     it 'returns a list of all transaction types' do
       get :index
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
 
       expect(json['transaction_types'].length).to eq(5)
       expect(json['transaction_types'][0]['name']).to eq('Purchase')

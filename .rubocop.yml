@@ -2,41 +2,61 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-factory_bot
+  - rubocop-rspec_rails
+
+inherit_mode:
+  merge:
+    - Exclude
 
 AllCops:
   NewCops: enable
   Exclude:
-    - 'config.ru'
-    - 'api/**/*'
-    - 'node_modules/**/*'
-    - 'spec/spec_helper.rb'
-    - 'spec/rails_helper.rb'
-    - 'spec/lib/**/*'
-    - 'spec/javascripts/**/*'
-    - 'spec/features/**/*'
-    - 'config/**/*'
-    - 'db/**/*'
-    - 'bin/**/*'
-    - 'web/**/*'
+    - vendor/bundle/**/*
+    - db/schema.rb
+    - db/migrate/*.rb
+    - spec/features/**/*
+    - spec/spec_helper.rb
+    - spec/rails_helper.rb
+    - bin/*
+    - lib/*/**
+    - config/**/*
+    - db/*
+    - Gemfile
+    - config.ru
 
-Layout/FirstArgumentIndentation:
-  EnforcedStyle: consistent
-
-MethodLength:
-  Max: 15
-
-LineLength:
-  Max: 120
+Metrics/MethodLength:
+  Max: 20
 
 Metrics/BlockLength:
-  Exclude:  
-    - 'spec/**/*'
+  Max: 50
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/ClassLength:
+  Max: 120
+
+Metrics/ModuleLength:
+  Max: 150
 
 Style/Documentation:
   Enabled: false
 
-ClassLength:
-  Max: 120
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+RSpec/ExampleLength:
+  Enabled: false
 
 RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+FactoryBot/SyntaxMethods:
   Enabled: false

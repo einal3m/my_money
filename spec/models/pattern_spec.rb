@@ -10,11 +10,11 @@ require 'rails_helper'
 #  category_id: int, foreign key
 #  subcategory_id: int foreign key
 #
-RSpec.describe Pattern, type: :model do
+RSpec.describe Pattern do
   it 'has a valid factory' do
     p = FactoryBot.create(:pattern)
     expect(p).to be_valid
-    expect(p).to be_a(Pattern)
+    expect(p).to be_a(described_class)
   end
 
   describe 'validations' do

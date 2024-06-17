@@ -4,7 +4,7 @@ class DateRangeOption < ClassyEnum::Base
   include ActiveModel::Serialization
 
   def klass
-    'Lib::' + option.to_s.camelize + 'DateRange'
+    "Lib::#{option.to_s.camelize}DateRange"
   end
 
   def default
@@ -15,13 +15,9 @@ class DateRangeOption < ClassyEnum::Base
     @date_range ||= klass.constantize.new
   end
 
-  def from_date
-    date_range.from_date
-  end
+  delegate :from_date, to: :date_range
 
-  def to_date
-    date_range.to_date
-  end
+  delegate :to_date, to: :date_range
 
   def custom?
     false

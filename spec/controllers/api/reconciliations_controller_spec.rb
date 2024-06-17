@@ -2,16 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::ReconciliationsController, type: :controller do
+RSpec.describe Api::ReconciliationsController do
   describe 'GET index' do
     it 'returns all reconciliations for the account' do
       reconciliation = FactoryBot.create(:reconciliation)
 
       get :index, params: { account_id: reconciliation.account_id }
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['reconciliations'].length).to eq(1)
       expect(json['reconciliations'][0]).to eq(serialized_reconciliation(reconciliation))
     end
@@ -23,8 +23,8 @@ RSpec.describe Api::ReconciliationsController, type: :controller do
 
       get :show, params: { account_id: reconciliation.account_id, id: reconciliation.id }
 
-      json = JSON.parse(response.body)
-      expect(response.status).to eq(200)
+      json = response.parsed_body
+      expect(response).to have_http_status(:ok)
       expect(json['reconciliation']).to eq(serialized_reconciliation(reconciliation))
     end
   end
@@ -49,10 +49,10 @@ RSpec.describe Api::ReconciliationsController, type: :controller do
           account_id: account,
           reconciliation: FactoryBot.attributes_for(:reconciliation, account_id: account.id)
         }
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
 
         reconciliation = Reconciliation.first
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['reconciliation']).to eq(serialized_reconciliation(reconciliation))
       end
     end
@@ -68,7 +68,7 @@ RSpec.describe Api::ReconciliationsController, type: :controller do
           }
         end.not_to change(Reconciliation, :count)
 
-        expect(response.status).to be(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -88,8 +88,8 @@ RSpec.describe Api::ReconciliationsController, type: :controller do
         expect(reconciliation.statement_date).to eq(Date.parse('2014-07-02'))
         expect(reconciliation.statement_balance).to eq(977)
 
-        expect(response.status).to eq(200)
-        json = JSON.parse(response.body)
+        expect(response).to have_http_status(:ok)
+        json = response.parsed_body
         expect(json['reconciliation']).to eq(serialized_reconciliation(reconciliation))
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe Api::ReconciliationsController, type: :controller do
 
         }
 
-        expect(response.status).to be(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end

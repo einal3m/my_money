@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::DateRangeOptionsController, type: :controller do
+RSpec.describe Api::DateRangeOptionsController do
   describe 'GET index' do
     it 'returns a list of all account types' do
       get :index
 
-      expect(response.status).to eq(200)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
 
       expect(json['date_range_options'].length).to eq(6)
       expect(json['date_range_options'][0]).to include(

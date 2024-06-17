@@ -5,6 +5,7 @@ require 'csv'
 module Lib
   class CsvParser < Lib::Parser
     def initialize(file)
+      super()
       @file = file
     end
 

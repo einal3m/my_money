@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './date_range'
+require_relative 'date_range'
 
 module Lib
   class HomeLoanReporter

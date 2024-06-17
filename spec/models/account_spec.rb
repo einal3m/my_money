@@ -10,17 +10,17 @@ require 'rails_helper'
 #  bank: string
 #  starting_balance: decimal
 #
-RSpec.describe Account, type: :model do
+RSpec.describe Account do
   it 'has a valid factory' do
     a = FactoryBot.create(:account)
 
     expect(a).to be_valid
-    expect(a).to be_a(Account)
+    expect(a).to be_a(described_class)
   end
 
   describe 'defaults' do
     it 'to zero starting balance' do
-      expect(Account.new.starting_balance).to eq(0)
+      expect(described_class.new.starting_balance).to eq(0)
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe Account, type: :model do
       expect(FactoryBot.build(:account, account_type: nil)).not_to be_valid
     end
 
-    context 'savings' do
+    describe 'savings' do
       it 'is invalid without a starting balance' do
         expect(FactoryBot.build(:account, starting_balance: nil, account_type: 'savings')).not_to be_valid
       end
@@ -51,7 +51,7 @@ RSpec.describe Account, type: :model do
       end
     end
 
-    context 'shares' do
+    describe 'shares' do
       it 'is invalid without a ticker' do
         expect(FactoryBot.build(:account, ticker: nil, account_type: 'share')).not_to be_valid
       end
@@ -62,7 +62,7 @@ RSpec.describe Account, type: :model do
       end
     end
 
-    context 'loan' do
+    describe 'loan' do
       it 'is invalid without a limit' do
         expect(FactoryBot.build(:account, limit: nil, account_type: 'loan')).not_to be_valid
       end
@@ -83,7 +83,7 @@ RSpec.describe Account, type: :model do
         expect(FactoryBot.build(:account, interest_rate: nil, account_type: 'loan')).not_to be_valid
       end
 
-      it 'is invalid if limit is not a number' do
+      it 'is invalid if interest rate is not a number' do
         expect(FactoryBot.build(:account, interest_rate: 'a', account_type: 'loan')).not_to be_valid
       end
 
@@ -167,32 +167,30 @@ RSpec.describe Account, type: :model do
   end
 
   describe 'methods' do
-    before :each do
-      @a = FactoryBot.create(:account, starting_balance: 1000, starting_date: '2014-08-01')
-    end
+    let!(:a) { FactoryBot.create(:account, starting_balance: 1000, starting_date: '2014-08-01') }
 
     it 'calculates current balance when there are no transactions' do
-      expect(@a.current_balance).to eq(1000)
+      expect(a.current_balance).to eq(1000)
     end
 
     it 'calculates current balance when there are transactions' do
-      FactoryBot.create(:transaction, account: @a, date: '2014-08-4', amount: 2000)
-      FactoryBot.create(:transaction, account: @a, date: '2014-08-2', amount: 3000)
+      FactoryBot.create(:transaction, account: a, date: '2014-08-4', amount: 2000)
+      FactoryBot.create(:transaction, account: a, date: '2014-08-2', amount: 3000)
 
-      expect(@a.current_balance).to eq(6000)
+      expect(a.current_balance).to eq(6000)
     end
 
     it 'calculates eod balance for a given date' do
-      FactoryBot.create(:transaction, account: @a, date: '2014-08-2', amount: 2000)
-      FactoryBot.create(:transaction, account: @a, date: '2014-08-2', amount: 3000)
-      FactoryBot.create(:transaction, account: @a, date: '2014-08-5', amount: 3000)
+      FactoryBot.create(:transaction, account: a, date: '2014-08-2', amount: 2000)
+      FactoryBot.create(:transaction, account: a, date: '2014-08-2', amount: 3000)
+      FactoryBot.create(:transaction, account: a, date: '2014-08-5', amount: 3000)
 
-      expect(@a.eod_balance('2014-08-01')).to eq(1000)
-      expect(@a.eod_balance('2014-08-02')).to eq(6000)
-      expect(@a.eod_balance('2014-08-03')).to eq(6000)
-      expect(@a.eod_balance('2014-08-04')).to eq(6000)
-      expect(@a.eod_balance('2014-08-05')).to eq(9000)
-      expect(@a.eod_balance('2014-08-06')).to eq(9000)
+      expect(a.eod_balance('2014-08-01')).to eq(1000)
+      expect(a.eod_balance('2014-08-02')).to eq(6000)
+      expect(a.eod_balance('2014-08-03')).to eq(6000)
+      expect(a.eod_balance('2014-08-04')).to eq(6000)
+      expect(a.eod_balance('2014-08-05')).to eq(9000)
+      expect(a.eod_balance('2014-08-06')).to eq(9000)
     end
   end
 end

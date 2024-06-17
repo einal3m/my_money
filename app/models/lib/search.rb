@@ -30,12 +30,9 @@ module Lib
       months = generate_month_list
 
       # generate summary array
-      summary = []
-      months.each do |month_date|
-        summary << [month_date.strftime('%b-%y'), sql_data[month_date.strftime('%m-%Y')] || 0]
+      months.map do |month_date|
+        [month_date.strftime('%b-%y'), sql_data[month_date.strftime('%m-%Y')] || 0]
       end
-
-      summary
     end
 
     def generate_month_list
@@ -52,7 +49,7 @@ module Lib
       from_year = @date_range.from_date.year
       from_month = @date_range.from_date.month
 
-      (to_year * 12 + to_month) - (from_year * 12 + from_month) + 1
+      ((to_year * 12) + to_month) - ((from_year * 12) + from_month) + 1
     end
   end
 end

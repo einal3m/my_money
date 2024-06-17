@@ -34,11 +34,11 @@ module Lib
     #
     def minimum_amortization
       end_of_month_balance = present_value
-      month = (Date.today << 1).beginning_of_month
+      month = (Time.zone.today << 1).beginning_of_month
 
-      periods_remaining.times.map do
+      Array.new(periods_remaining) do
         end_of_month_balance = next_minimum_repayment_balance(end_of_month_balance)
-        month = month >> 1
+        month >>= 1
         [
           month.end_of_month.strftime('%Y-%m-%d'),
           end_of_month_balance.round
@@ -51,7 +51,7 @@ module Lib
 
       balances = []
       balance = present_value
-      date = Date.today.end_of_month
+      date = Time.zone.today.end_of_month
 
       while balance.positive?
         balance = monthly_balance(balance, date)
@@ -66,7 +66,7 @@ module Lib
     private
 
     def budget_below_minimum_repayment
-      @account.budgets.map(&:amount).sum < minimum_repayment_precise
+      @account.budgets.sum(&:amount) < minimum_repayment_precise
     end
 
     def monthly_balance(balance, date)
@@ -86,7 +86,7 @@ module Lib
     end
 
     def minimum_repayment_precise
-      @minimum_repayment_precise ||= (present_value * periodic_rate) / (1 - (1 + periodic_rate)**-periods_remaining)
+      @minimum_repayment_precise ||= (present_value * periodic_rate) / (1 - ((1 + periodic_rate)**-periods_remaining))
     end
 
     def present_value
@@ -103,11 +103,11 @@ module Lib
 
     def periods_remaining
       @periods_remaining ||=
-        account.term * 12 - ((Date.today.to_time - account.starting_date.to_time) / 1.month.second).floor
+        (account.term * 12) - ((Time.zone.today.to_time - account.starting_date.to_time) / 1.month.second).floor
     end
 
     def next_minimum_repayment_balance(current_balance)
-      (current_balance * (1 + periodic_rate) - minimum_repayment_precise)
+      ((current_balance * (1 + periodic_rate)) - minimum_repayment_precise)
     end
 
     def interest(balance, from_day, to_day)

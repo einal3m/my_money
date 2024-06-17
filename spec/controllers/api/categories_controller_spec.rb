@@ -2,16 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::CategoriesController, type: :controller do
+RSpec.describe Api::CategoriesController do
   describe 'GET index' do
     it 'returns a list of all categories' do
       category = FactoryBot.create(:category)
 
       get :index
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['categories'].length).to eq(1)
       expect(json['categories'][0]).to eq(serialized_category(category))
     end
@@ -26,9 +26,9 @@ RSpec.describe Api::CategoriesController, type: :controller do
           post :create, params: { category: FactoryBot.attributes_for(:category, category_type_id: category_type.id) }
         end.to change(Category, :count).by(1)
 
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
         category = Category.first
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['category']).to eq(serialized_category(category))
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe Api::CategoriesController, type: :controller do
           post :create, params: { category: FactoryBot.attributes_for(:category_invalid) }
         end.not_to change(Category, :count)
 
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -54,9 +54,9 @@ RSpec.describe Api::CategoriesController, type: :controller do
           category: FactoryBot.attributes_for(:category, name: 'New Name')
         }
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         category.reload
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['category']).to eq(
           'id' => category.id,
           'name' => 'New Name',
@@ -71,7 +71,7 @@ RSpec.describe Api::CategoriesController, type: :controller do
 
         put :update, params: { id: category.id, category: FactoryBot.attributes_for(:category_invalid) }
 
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -84,19 +84,19 @@ RSpec.describe Api::CategoriesController, type: :controller do
         delete :destroy, params: { id: category.id }
       end.to change(Category, :count).by(-1)
 
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
     end
 
     it 'doesnt destroy the category if it has errors' do
       category = FactoryBot.create(:category)
-      FactoryBot.create(:subcategory, category: category)
+      FactoryBot.create(:subcategory, category:)
 
       expect do
         delete :destroy, params: { id: category.id }
       end.not_to change(Category, :count)
 
-      expect(response.status).to eq(422)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = response.parsed_body
       expect(json['message']).to eq('Cannot delete a category that has subcategories')
     end
   end

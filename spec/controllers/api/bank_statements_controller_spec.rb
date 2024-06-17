@@ -2,18 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::BankStatementsController, type: :controller do
+RSpec.describe Api::BankStatementsController do
   describe 'GET #index' do
     it 'returns http success' do
       account = FactoryBot.create(:account)
-      bank_statement1 = FactoryBot.create(:bank_statement, account: account)
-      bank_statement2 = FactoryBot.create(:bank_statement, account: account)
+      bank_statement1 = FactoryBot.create(:bank_statement, account:)
+      bank_statement2 = FactoryBot.create(:bank_statement, account:)
 
       get :index, params: { account_id: account.id }
 
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['bank_statements'].length).to eq(2)
       expect(json['bank_statements'][0]).to eq(serialized_bank_statement(bank_statement2))
       expect(json['bank_statements'][1]).to eq(serialized_bank_statement(bank_statement1))
@@ -23,26 +23,26 @@ RSpec.describe Api::BankStatementsController, type: :controller do
   describe 'GET #destroy' do
     it 'successfully deletes bank statement and its transactions' do
       bank_statement = FactoryBot.create(:bank_statement)
-      transaction = FactoryBot.create(:transaction, bank_statement: bank_statement)
+      transaction = FactoryBot.create(:transaction, bank_statement:)
 
       get :destroy, params: { account_id: bank_statement.account_id, id: bank_statement.id }
 
-      expect(response.status).to eq(204)
-      expect(BankStatement.exists?(bank_statement.id)).to be_falsy
-      expect(Transaction.exists?(transaction.id)).to be_falsy
+      expect(response).to have_http_status(:no_content)
+      expect(BankStatement.exists?(bank_statement.id)).to be_falsy # rubocop:disable RSpec/PredicateMatcher
+      expect(Transaction.exists?(transaction.id)).to be_falsy # rubocop:disable RSpec/PredicateMatcher
     end
 
     it 'returns error when bank statement contains reconciled transactions' do
       bank_statement = FactoryBot.create(:bank_statement)
       reconciliation = FactoryBot.create(:reconciliation, account: bank_statement.account)
-      FactoryBot.create(:transaction, bank_statement: bank_statement, reconciliation: reconciliation)
-      expect(bank_statement.transactions).not_to receive(:destroy)
-      expect(bank_statement).not_to receive(:destroy)
+      FactoryBot.create(:transaction, bank_statement:, reconciliation:)
+      expect(bank_statement.transactions).not_to receive(:destroy) # rubocop:disable RSpec/MessageSpies
+      expect(bank_statement).not_to receive(:destroy) # rubocop:disable RSpec/MessageSpies
 
       get :destroy, params: { account_id: bank_statement.account_id, id: bank_statement.id }
 
-      expect(response.status).to eq(422)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = response.parsed_body
       expect(json['message']).to eq('Cannot delete a bank statement with reconciled transactions')
     end
   end
@@ -65,13 +65,13 @@ RSpec.describe Api::BankStatementsController, type: :controller do
       }
 
       bs = account.bank_statements.last
-      expect(bs.date).to eq(Date.today)
+      expect(bs.date).to eq(Time.zone.today)
       expect(bs.file_name).to eq('sample.qif')
       expect(bs.transaction_count).to eq(2)
       expect(bs.transactions.length).to eq(2)
 
-      expect(response.status).to eq(201)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:created)
+      json = response.parsed_body
       expect(json['bank_statement']).to eq(serialized_bank_statement(bs))
     end
 
@@ -91,8 +91,8 @@ RSpec.describe Api::BankStatementsController, type: :controller do
         }
       }
 
-      expect(response.status).to eq(422)
-      json = JSON.parse(response.body)
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = response.parsed_body
       expect(json['message']).to eq('Validation failed: Transactions is invalid')
     end
   end

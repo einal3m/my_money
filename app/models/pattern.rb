@@ -16,7 +16,5 @@ class Pattern < ApplicationRecord
   belongs_to :subcategory
 
   # validations
-  validates :account_id, presence: true
-  validates :category_id, presence: true
   validates :match_text, presence: true
 end
