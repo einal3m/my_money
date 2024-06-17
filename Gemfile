@@ -24,7 +24,7 @@ gem 'psych', '4.0.6'
 gem 'vite_rails'
 
 group :development do
-  gem 'rubocop-discourse', require: false
+  gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
