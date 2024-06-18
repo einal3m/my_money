@@ -1,10 +1,9 @@
 import apiUtil from "util/api-util";
 
 describe("apiUtil", () => {
-  describe("setUrl/getUrl", () => {
-    it("sets the host", () => {
-      apiUtil.setUrl("melanie:2341");
-      expect(apiUtil.getUrl("path")).toEqual("http://melanie:2341/api/path");
+  describe("getUrl", () => {
+    it("gets the right url", () => {
+      expect(apiUtil.getUrl("accounts")).toEqual("/api/accounts");
     });
   });
 });
