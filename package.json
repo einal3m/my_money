@@ -2,7 +2,8 @@
   "name": "my_money",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:without-components": "jest spec/javascript/actions && jest spec/javascript/selectors && jest spec/javascript/stores && jest spec/javascript/transformers && jest spec/javascript/util"
   },
   "jest": {
     "testEnvironment": "jsdom",

@@ -29,11 +29,10 @@ bundle
 yarn
 ```
 
-Start the rails server and webpack (in separate terminals):
+Start the rails server:
 
 ```
 bin/rails s
-bin/webpack-dev-server
 ```
 
 The application is then available at http://localhost:3000
@@ -43,7 +42,7 @@ The application is then available at http://localhost:3000
 Ruby unit tests:
 
 ```
-bundle exec rake rspec:unit
+bin/rails rspec:unit
 ```
 
 Front-end tests:
@@ -55,5 +54,5 @@ yarn test
 Rubocop:
 
 ```
-bundle exec rake rubocop
+bin/rails rubocop
 ```
