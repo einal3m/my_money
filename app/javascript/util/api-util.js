@@ -1,14 +1,6 @@
 import apiStatusActions from "../actions/api-status-actions";
 
 class ApiUtil {
-  constructor() {
-    this.host = null;
-  }
-
-  setUrl(host) {
-    this.host = host;
-  }
-
   getUrl(url) {
     return `/api/${url}`;
   }

@@ -25,18 +25,6 @@ import store from '../stores/store';
 import apiUtil from '../util/api-util';
 
 export default class MyMoney extends React.Component {
-  constructor(props) {
-    super();
-    
-    // const csrfToken = document.querySelector('[name=csrf-token]').content
-    console.log('MyMoney.constructor');
-    console.log(props);
-    // console.log(csrfToken);
-    
-    apiUtil.setUrl(props.host);
-    // apiUtil.setToken(csrfToken);
-  }
-
   render() {
     return (
       <ErrorBoundary>
