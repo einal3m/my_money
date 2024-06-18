@@ -6,6 +6,7 @@ import { groupedCategories } from '../../selectors/category-selector';
 import TransactionModal from '../transactions/TransactionModal';
 
 import '../../stylesheets/transaction.scss';
+import ReportTransactionTotalRow from './ReportTransactionTotalRow';
 
 export class ReportTransactionTableComponent extends React.Component {
 
@@ -21,6 +22,15 @@ export class ReportTransactionTableComponent extends React.Component {
     ));
   }
 
+  renderTotalRow() {
+    let total = 0;
+    this.props.transactions.forEach(transaction => {
+      total += transaction.amount
+    })
+      
+    return <ReportTransactionTotalRow total={total} />
+  }
+  
   renderTitle() {
     if (this.props.loaded) {
       return <h3>Transactions</h3>;
@@ -31,7 +41,7 @@ export class ReportTransactionTableComponent extends React.Component {
   renderTable() {
     if (this.props.loaded) {
       return (
-        <table className="table table-hover" id="transaction-table">
+        <table className="table table-hover table-report" id="transaction-table">
           <thead>
             <tr>
               <th className="date">date</th>
@@ -42,6 +52,7 @@ export class ReportTransactionTableComponent extends React.Component {
           </thead>
           <tbody>
             {this.renderTransactions()}
+            {this.renderTotalRow()}
           </tbody>
         </table>
       );
