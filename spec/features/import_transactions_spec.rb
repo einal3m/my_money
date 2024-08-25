@@ -13,7 +13,7 @@ feature 'Import Transactions', type: :feature do
     create_savings_account
     visit_account_transactions 'Account One'
 
-    select_file_to_import('test.ofx')
+    select_file_to_import('test_v1.ofx')
     set_import_category('MCDONALDS', 'Category One', 'Subcategory One')
     import_transactions
 

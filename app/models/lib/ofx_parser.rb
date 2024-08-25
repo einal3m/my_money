@@ -24,7 +24,14 @@ module Lib
     private
 
     def parse
-      ofx_array = @file.read.split(/\r\n|\n/)
+      ofx_content = @file.read
+
+      ofx_array = if ofx_content[0..4] == '<?xml'
+                    ofx_content.gsub!(/></m, ">\n<").gsub!(%r{</}m, "\n</").split("\n")
+                  else
+                    ofx_content.split(/\r\n|\n/)
+                  end
+
       txn_array = []
 
       ofx_array.each_with_index do |ofx, i|
@@ -45,7 +52,10 @@ module Lib
     end
 
     def parse_line(line)
-      line.match(/^<(.*)>(.*)$/)[1, 2]
+      results = line.match(/^<(.*)>(.*)$/)
+      return ['', nil] if !results || results.length < 2
+
+      results[1, 2]
     end
 
     def build_transaction(transaction, code, value)
