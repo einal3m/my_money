@@ -42,6 +42,7 @@ const accountTransformer = {
           openingBalance: account.starting_balance,
           openingBalanceDate: account.starting_date,
           currentBalance: account.current_balance,
+          deletedAt: account.deleted_at,
         };
       case 'share':
         return {
@@ -50,6 +51,7 @@ const accountTransformer = {
           ticker: account.ticker,
           name: account.name,
           currentBalance: account.current_balance,
+          deletedAt: account.deleted_at,
         };
       case 'loan':
         return {
@@ -62,6 +64,7 @@ const accountTransformer = {
           interestRate: account.interest_rate,
           openingBalanceDate: account.starting_date,
           currentBalance: account.current_balance,
+          deletedAt: account.deleted_at,
         };
       default:
         throw new Error('Unknown account type');

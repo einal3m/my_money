@@ -4,39 +4,18 @@ require 'rails_helper'
 
 RSpec.describe Api::AccountsController do
   describe 'GET index' do
-    context 'when no params are provided' do
-      let(:params) { {} }
+    it 'returns a list of all active accounts' do
+      account = FactoryBot.create(:account, starting_balance: 1000)
+      deleted_account = FactoryBot.create(:account, deleted_at: '2014-02-02')
 
-      it 'returns a list of all active accounts' do
-        account = FactoryBot.create(:account, starting_balance: 1000)
-        FactoryBot.create(:account, deleted_at: '2014-02-02')
+      get(:index)
 
-        get(:index, params:)
+      expect(response).to have_http_status(:ok)
 
-        expect(response).to have_http_status(:ok)
-
-        json = response.parsed_body
-        expect(json['accounts'].length).to eq(1)
-        expect(json['accounts'][0]).to eq(serialized_account(account))
-      end
-    end
-
-    context 'when deactivated param is provided' do
-      let(:params) { { include_deactivated: true } }
-
-      it 'returns a list of all active accounts' do
-        account = FactoryBot.create(:account, starting_balance: 1000)
-        deactivated_account = FactoryBot.create(:account, deleted_at: '2014-02-02')
-
-        get(:index, params:)
-
-        expect(response).to have_http_status(:ok)
-
-        json = response.parsed_body
-        expect(json['accounts'].length).to eq(2)
-        expect(json['accounts'][0]).to eq(serialized_account(account))
-        expect(json['accounts'][1]).to eq(serialized_account(deactivated_account))
-      end
+      json = response.parsed_body
+      expect(json['accounts'].length).to eq(2)
+      expect(json['accounts'][0]).to eq(serialized_account(account))
+      expect(json['accounts'][1]).to eq(serialized_account(deleted_account))
     end
   end
 

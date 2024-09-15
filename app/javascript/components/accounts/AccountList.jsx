@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAccounts } from '../../actions/account-actions';
-import accountSelector from '../../selectors/account-selector';
+import { activeAccountSelector } from '../../selectors/account-selector';
 import PageHeader from '../common/PageHeader';
 import NewModelButtons from '../common/controls/NewModelButtons';
 import AccountGroup from './AccountGroup';
@@ -51,7 +51,7 @@ AccountListComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    accountGroups: accountSelector(state).toJS(),
+    accountGroups: activeAccountSelector(state).toJS(),
     accountTypes: state.accountStore.get('accountTypes').toJS(),
     apiStatus: state.apiStatusStore.toJS(),
   };
