@@ -73,6 +73,7 @@ describe("AccountTransformer", () => {
         starting_balance: 300,
         starting_date: "2015-04-01",
         current_balance: 5000,
+        deleted_at: "2022-01-01",
       };
 
       const transformedAccount = accountTransformer.transformFromApi(account);
@@ -84,6 +85,7 @@ describe("AccountTransformer", () => {
       expect(transformedAccount.openingBalance).toEqual(300);
       expect(transformedAccount.openingBalanceDate).toEqual("2015-04-01");
       expect(transformedAccount.currentBalance).toEqual(5000);
+      expect(transformedAccount.deletedAt).toEqual("2022-01-01");
     });
 
     it("converts loan account from API format", () => {
@@ -97,6 +99,7 @@ describe("AccountTransformer", () => {
         interest_rate: 5.77,
         starting_date: "2015-04-01",
         current_balance: 2000,
+        deleted_at: "2022-01-01",
       };
 
       const transformedAccount = accountTransformer.transformFromApi(account);
@@ -110,6 +113,7 @@ describe("AccountTransformer", () => {
       expect(transformedAccount.interestRate).toEqual(5.77);
       expect(transformedAccount.openingBalanceDate).toEqual("2015-04-01");
       expect(transformedAccount.currentBalance).toEqual(2000);
+      expect(transformedAccount.deletedAt).toEqual("2022-01-01");
     });
 
     it("converts share account from API format", () => {
@@ -119,6 +123,7 @@ describe("AccountTransformer", () => {
         name: "myAccount",
         ticker: "myTicker",
         current_balance: 5000,
+        deleted_at: "2022-01-01",
       };
 
       const transformedAccount = accountTransformer.transformFromApi(account);
@@ -128,6 +133,7 @@ describe("AccountTransformer", () => {
       expect(transformedAccount.name).toEqual("myAccount");
       expect(transformedAccount.ticker).toEqual("myTicker");
       expect(transformedAccount.currentBalance).toEqual(5000);
+      expect(transformedAccount.deletedAt).toEqual("2022-01-01");
     });
 
     it("throws an error for unknown account type", () => {
