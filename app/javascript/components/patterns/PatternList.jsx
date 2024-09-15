@@ -60,8 +60,8 @@ PatternListComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.patternStore.get('loaded'),
-    patterns: state.patternStore.get('patterns').toJS(),
+    loaded: state.patternStore.loaded,
+    patterns: state.patternStore.patterns,
     currentAccount: state.accountStore.get('currentAccount').toJS(),
     apiStatus: state.apiStatusStore.toJS(),
   };

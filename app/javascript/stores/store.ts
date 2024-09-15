@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+
 import accountReducer from './account-reducer';
 import dateRangeReducer from './date-range-reducer';
 import transactionReducer from './transaction-reducer';
@@ -9,13 +10,13 @@ import bankStatementsReducer from './bank-statement-reducer';
 import apiReducer from './api-status-reducer';
 import reportReducer from './report-reducer';
 import formReducer from './form-reducer';
-import patternReducer from './pattern-reducer';
+import patternReducer from './patterns-slice';
 import loanReducer from './loan-reducer';
 import budgetReducer from './budget-reducer';
 import reconciliationReducer from './reconciliation-reducer';
 
-export default createStore(
-  combineReducers({
+export const store = configureStore({
+  reducer: {
     accountStore: accountReducer,
     dateRangeStore: dateRangeReducer,
     transactionStore: transactionReducer,
@@ -30,5 +31,14 @@ export default createStore(
     loanStore: loanReducer,
     budgetStore: budgetReducer,
     reconciliationStore: reconciliationReducer,
-  })
-);
+  },
+});
+
+// Get the type of our store variable
+export type AppStore = typeof store
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<AppStore['getState']>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = AppStore['dispatch']
+
+export default store
