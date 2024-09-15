@@ -7,11 +7,7 @@ module Api
     def my_money; end
 
     def index
-      if params[:include_deactivated]
-        render json: Account.all
-      else
-        render json: Account.where(deleted_at: nil)
-      end
+      render json: Account.all
     end
 
     def create
