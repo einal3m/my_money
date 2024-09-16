@@ -13,7 +13,7 @@ import AccountList from './accounts/AccountList';
 import ImportHistoryPage from './import/ImportHistoryPage';
 import TransactionList from './transactions/TransactionList';
 import ImportPage from './import/ImportPage';
-import CategoryList from './categories/CategoryList';
+import { CategoryList } from './categories/CategoryList';
 import PatternList from './patterns/PatternList';
 import AccountBalanceChart from './reports/AccountBalanceChart';
 import CategoryReport from './reports/CategoryReport';

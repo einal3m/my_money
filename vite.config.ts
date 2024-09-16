@@ -13,6 +13,7 @@ export default defineConfig({
       stores: resolve(__dirname, "app/javascript/stores"),
       stylesheets: resolve(__dirname, "app/javascript/stylesheets"),
       transformers: resolve(__dirname, "app/javascript/transformers"),
+      types: resolve(__dirname, "app/javascript/types"),
       util: resolve(__dirname, "app/javascript/util"),
       // "#root": resolve(__dirname),
     },

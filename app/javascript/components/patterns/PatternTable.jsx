@@ -70,9 +70,9 @@ PatternTableComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    loaded: state.patternStore.get('loaded') && categoryDataLoaded(state),
+    loaded: state.patternStore.loaded && categoryDataLoaded(state),
     account: state.accountStore.get('currentAccount').toJS(),
-    patterns: state.patternStore.get('patterns').toJS(),
+    patterns: state.patternStore.patterns,
     groupedCategories: groupedCategories(state).toJS(),
   };
 }

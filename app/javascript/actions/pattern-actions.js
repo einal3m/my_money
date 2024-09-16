@@ -4,11 +4,11 @@ import { getAccounts } from './account-actions';
 import { getCategories } from './category-actions';
 import patternTransformer from '../transformers/pattern-transformer';
 import {
-  SET_PATTERNS,
-  GET_PATTERNS,
-  SAVE_PATTERN,
-  DELETE_PATTERN,
-} from 'actions/action-types';
+  getPatterns as getAction,
+  setPatterns as setAction,
+  savePattern as saveAction,
+  deletePattern as deleteAction,
+} from '../stores/patterns-slice';
 
 export function getPatterns() {
   return Promise.all([
@@ -18,23 +18,30 @@ export function getPatterns() {
 }
 
 export function fetchPatterns() {
-  store.dispatch({ type: GET_PATTERNS });
-  const accountId = store.getState().accountStore.get('currentAccount').get('id');
+  store.dispatch(getAction());
+  const accountId = store
+    .getState()
+    .accountStore.get('currentAccount')
+    .get('id');
 
   return apiUtil.get({
     url: `accounts/${accountId}/patterns`,
     onSuccess: (response) => {
-      storePatterns(response.patterns.map(pattern => patternTransformer.transformFromApi(pattern)));
+      storePatterns(
+        response.patterns.map((pattern) =>
+          patternTransformer.transformFromApi(pattern),
+        ),
+      );
     },
   });
 }
 
 function storePatterns(patterns) {
-  store.dispatch({ type: SET_PATTERNS, patterns });
+  store.dispatch(setAction(patterns));
 }
 
 export function savePattern(pattern) {
-  store.dispatch({ type: SAVE_PATTERN });
+  store.dispatch(saveAction());
   if (pattern.id) {
     updatePattern(pattern);
   } else {
@@ -59,7 +66,7 @@ function updatePattern(pattern) {
 }
 
 export function deletePattern(pattern) {
-  store.dispatch({ type: DELETE_PATTERN });
+  store.dispatch(deleteAction());
   return apiUtil.delete({
     url: `accounts/${pattern.accountId}/patterns/${pattern.id}`,
     onSuccess: getPatterns,

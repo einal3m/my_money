@@ -3,12 +3,6 @@ import * as patternActions from "actions/pattern-actions";
 import patternTransformer from "transformers/pattern-transformer";
 import store from "stores/store";
 import apiUtil from "util/api-util";
-import {
-  SET_PATTERNS,
-  GET_PATTERNS,
-  SAVE_PATTERN,
-  DELETE_PATTERN,
-} from "actions/action-types";
 
 describe("PatternActions", () => {
   let dispatcherSpy;
@@ -39,7 +33,7 @@ describe("PatternActions", () => {
 
       expect(apiUtil.get).toHaveBeenCalled();
       expect(promise.then).toBeDefined();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: GET_PATTERNS });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'patternStore/getPatterns' });
 
       expect(getArgs.url).toEqual("accounts/12/patterns");
 
@@ -54,8 +48,8 @@ describe("PatternActions", () => {
         "pattern"
       );
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: SET_PATTERNS,
-        patterns: ["transformedPattern"],
+        type: 'patternStore/setPatterns',
+        payload: ["transformedPattern"],
       });
     });
   });
@@ -75,7 +69,7 @@ describe("PatternActions", () => {
 
       expect(apiUtil.post).toHaveBeenCalled();
       expect(patternTransformer.transformToApi).toHaveBeenCalledWith(pattern);
-      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_PATTERN });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'patternStore/savePattern' });
 
       expect(postArgs.url).toEqual("accounts/3/patterns");
       expect(postArgs.body).toEqual({ pattern: "transformedPattern" });
@@ -97,7 +91,7 @@ describe("PatternActions", () => {
 
       expect(apiUtil.put).toHaveBeenCalled();
       expect(patternTransformer.transformToApi).toHaveBeenCalledWith(pattern);
-      expect(store.dispatch).toHaveBeenCalledWith({ type: SAVE_PATTERN });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'patternStore/savePattern' });
 
       expect(putArgs.url).toEqual("accounts/3/patterns/2");
       expect(putArgs.body).toEqual({ pattern: "transformedPattern" });
@@ -116,7 +110,7 @@ describe("PatternActions", () => {
       patternActions.deletePattern(pattern);
 
       expect(apiUtil.delete).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith({ type: DELETE_PATTERN });
+      expect(store.dispatch).toHaveBeenCalledWith({ type: 'patternStore/deletePattern' });
 
       expect(deleteArgs.url).toEqual("accounts/3/patterns/2");
       expect(deleteArgs.onSuccess).toEqual(patternActions.getPatterns);
