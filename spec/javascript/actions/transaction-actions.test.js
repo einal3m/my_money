@@ -150,7 +150,7 @@ describe("TransactionActions", () => {
   describe("onSuccessCallback", () => {
     it("calls the getCategoryReport action if source is category report", () => {
       jest.spyOn(store, "getState").mockImplementation(() => ({
-        formStore: Map({ source: SOURCE_CATEGORY_REPORT }),
+        formStore: { source: SOURCE_CATEGORY_REPORT },
       }));
       jest
         .spyOn(reportActions, "getCategoryReport")
@@ -163,7 +163,7 @@ describe("TransactionActions", () => {
 
     it("calls the getSubcategoryReport action if source is subcategory report", () => {
       jest.spyOn(store, "getState").mockImplementation(() => ({
-        formStore: Map({ source: SOURCE_SUBCATEGORY_REPORT }),
+        formStore: { source: SOURCE_SUBCATEGORY_REPORT },
       }));
       jest
         .spyOn(reportActions, "getSubcategoryReport")

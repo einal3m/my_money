@@ -8,7 +8,6 @@ function groupedAccounts(accountTypes, accounts) {
 }
 
 function groupedActiveAccounts(accounts) {
-  console.log(accounts.filter(a => a.deletedAt != null).toJS())
   return accounts
     .filter(a => a.get('deletedAt') == null)
     .groupBy(account => account.get('accountType'));

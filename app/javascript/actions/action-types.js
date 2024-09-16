@@ -52,8 +52,8 @@ export const SOURCE_CATEGORY_REPORT = "SOURCE_CATEGORY_REPORT";
 export const SOURCE_SUBCATEGORY_REPORT = "SOURCE_SUBCATEGORY_REPORT";
 
 // form action types
-export const SHOW_FORM_MODAL = "SHOW_FORM_MODAL";
-export const HIDE_FORM_MODAL = "HIDE_FORM_MODAL";
+export const SHOW_FORM_MODAL = "formStore/showFormModal";
+export const HIDE_FORM_MODAL = "formStore/hideFormModal";
 
 // import action types
 export const UPLOAD_OFX = "UPLOAD_OFX";

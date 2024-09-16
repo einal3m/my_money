@@ -12,7 +12,9 @@ export class AccountFilterComponent extends React.Component {
     } else {
       setCurrentAccount(value);
     }
-    this.props.fetch();
+    if (this.props.fetch) {
+      this.props.fetch();
+    }
   };
 
   renderAccountPicker() {

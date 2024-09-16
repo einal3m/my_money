@@ -24,10 +24,12 @@ describe("FormActions", () => {
       });
       expect(dispatcherSpy).toHaveBeenCalledWith({
         type: SHOW_FORM_MODAL,
-        modelType: "Transaction",
-        model: "model",
-        allowDelete: true,
-        source: SOURCE_CATEGORY_REPORT,
+        payload: {
+          modelType: "Transaction",
+          model: "model",
+          allowDelete: true,
+          source: SOURCE_CATEGORY_REPORT,
+          }
       });
     });
   });

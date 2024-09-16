@@ -5,7 +5,7 @@ import FormModal from '../common/FormModal'
 import CategoryForm from './CategoryForm'
 import SubcategoryForm from './SubcategoryForm'
 import { GroupedCategories } from 'hooks/useGroupedCategories'
-import { Model } from 'types/models'
+import { ModelType } from 'types/models'
 import { selectFormState } from 'selectors/formSelectors'
 import {
   useUpsertCategoryMutation,
@@ -26,7 +26,7 @@ export const CategoryModal = (props: CategoryModalProps) => {
   const [deleteSubcategory] = useDeleteSubcategoryMutation()
 
   const handleSave = (model: any) => {
-    if (modelType === Model.Category) {
+    if (modelType === ModelType.Category) {
       upsertCategory(model)
     } else {
       upsertSubcategory(model)
@@ -34,7 +34,7 @@ export const CategoryModal = (props: CategoryModalProps) => {
   }
 
   const handleDelete = (modelId: number) => {
-    if (modelType === Model.Category) {
+    if (modelType === ModelType.Category) {
       deleteCategory(modelId)
     } else {
       deleteSubcategory(modelId)
@@ -42,7 +42,7 @@ export const CategoryModal = (props: CategoryModalProps) => {
   }
 
   const renderForm = () => {
-    if (modelType === Model.Category) {
+    if (modelType === ModelType.Category) {
       const categoryTypes = props.groupedCategories.map(
         (categoryType) => categoryType.categoryType,
       )
