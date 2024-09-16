@@ -1,4 +1,4 @@
-export enum Model {
+export enum ModelType {
   Category = 'Category',
   Subcategory = 'Subcategory',
 }
