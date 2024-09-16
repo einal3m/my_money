@@ -4,6 +4,6 @@ const ApiStatus = {
   SAVING: 'saving',
   DELETING: 'deleting',
   ERROR: 'error',
-};
+}
 
-export default ApiStatus;
+export default ApiStatus

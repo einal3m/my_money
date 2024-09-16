@@ -1,7 +1,7 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
-import categoryTransformer from '../transformers/category-transformer';
-import subcategoryTransformer from '../transformers/subcategory-transformer';
+import categoryTransformer from '../transformers/categoryTransformer';
+import subcategoryTransformer from '../transformers/subcategoryTransformer';
 import { categoryDataLoaded } from '../selectors/category-selector';
 import {
   SET_CURRENT_CATEGORY,

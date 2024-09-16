@@ -20,8 +20,8 @@ import {
   REMOVE_CATEGORY,
   REMOVE_SUBCATEGORY,
 } from "actions/action-types";
-import categoryTransformer from "transformers/category-transformer";
-import subcategoryTransformer from "transformers/subcategory-transformer";
+import categoryTransformer from "transformers/categoryTransformer";
+import subcategoryTransformer from "transformers/subcategoryTransformer";
 import apiUtil from "util/api-util";
 import store from "stores/store";
 
