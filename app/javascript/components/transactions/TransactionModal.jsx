@@ -55,10 +55,10 @@ function mapStateToProps(state) {
   return {
     accounts: state.accountStore.get('accounts').toJS(),
     groupedCategories: groupedCategories(state).toJS(),
-    show: state.formStore.get('show'),
-    modelType: state.formStore.get('modelType'),
-    model: state.formStore.get('model').toJS(),
-    allowDelete: state.formStore.get('allowDelete'),
+    show: state.formStore.show,
+    modelType: state.formStore.modelType,
+    model: state.formStore.model,
+    allowDelete: state.formStore.allowDelete,
     matchLoading: state.matchingTransactionStore.get('loading'),
     matchingTransactions: state.matchingTransactionStore.get('matchingTransactions').toJS(),
   };

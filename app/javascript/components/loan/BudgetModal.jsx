@@ -43,10 +43,10 @@ BudgetModalComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    show: state.formStore.get('show'),
-    modelType: state.formStore.get('modelType'),
-    model: state.formStore.get('model').toJS(),
-    allowDelete: state.formStore.get('allowDelete'),
+    show: state.formStore.show,
+    modelType: state.formStore.modelType,
+    model: state.formStore.model,
+    allowDelete: state.formStore.allowDelete,
   };
 }
 

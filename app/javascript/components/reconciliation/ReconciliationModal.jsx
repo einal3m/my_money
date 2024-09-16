@@ -36,8 +36,8 @@ ReconciliationModalComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    show: state.formStore.get('show'),
-    reconciliation: state.formStore.get('model').toJS(),
+    show: state.formStore.show,
+    reconciliation: state.formStore.model,
   };
 }
 

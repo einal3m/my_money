@@ -74,7 +74,7 @@ function updateTransaction(transaction) {
 }
 
 export function onSuccess() {
-  const source = store.getState().formStore.get('source');
+  const source = store.getState().formStore.source;
 
   switch (source) {
     case SOURCE_CATEGORY_REPORT:
