@@ -16,17 +16,24 @@ const initialState: FormModalState = {
   source: ''
 }
 
+type ShowFormModal = {
+  allowDelete?: boolean,
+  model: any,
+  modelType: ModelType,
+  source?: string,
+}
+
 export const formSlice = createSlice({
   name: 'formStore',
   initialState,
   reducers: {
-    showFormModal: (state, action: PayloadAction<FormModalState>) => {
+    showFormModal: (state, action: PayloadAction<ShowFormModal>) => {
       const { modelType, model, allowDelete, source } = action.payload
-      state.allowDelete = allowDelete
+      state.allowDelete = allowDelete || false
       state.model = model
       state.modelType = modelType
       state.show = true
-      state.source = source
+      state.source = source || ''
     },
     hideFormModal: (state) => { 
       state.show = false

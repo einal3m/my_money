@@ -1,6 +1,18 @@
 export enum ModelType {
   Category = 'Category',
+  Pattern = 'Pattern',
   Subcategory = 'Subcategory',
+}
+
+export type Account = {
+  id: number,
+  name: string
+}
+
+export type Category = {
+  id?: number
+  name: string
+  categoryTypeId: number
 }
 
 export type CategoryType = {
@@ -10,10 +22,13 @@ export type CategoryType = {
   editable: boolean
 }
 
-export type Category = {
-  id?: number
-  name: string
-  categoryTypeId: number
+export type Pattern = {
+  id?: number,
+  accountId: number,
+  matchText: string,
+  notes: string,
+  categoryId: number,
+  subcategoryId: number,
 }
 
 export type Subcategory = {
