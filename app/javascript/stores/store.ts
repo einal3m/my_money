@@ -14,9 +14,11 @@ import patternReducer from './patterns-slice';
 import loanReducer from './loan-reducer';
 import budgetReducer from './budget-reducer';
 import reconciliationReducer from './reconciliation-reducer';
+import { categoryApi } from './category-slice'
 
 export const store = configureStore({
   reducer: {
+    [categoryApi.reducerPath]: categoryApi.reducer,
     accountStore: accountReducer,
     dateRangeStore: dateRangeReducer,
     transactionStore: transactionReducer,
@@ -32,6 +34,8 @@ export const store = configureStore({
     budgetStore: budgetReducer,
     reconciliationStore: reconciliationReducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(categoryApi.middleware)
 });
 
 // Get the type of our store variable
