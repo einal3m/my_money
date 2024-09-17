@@ -4,19 +4,19 @@ import { useSelector } from 'react-redux'
 import FormModal from '../common/FormModal'
 import PatternForm from './PatternForm'
 import { GroupedCategories } from 'hooks/useGroupedCategories'
-import { selectFormState } from 'selectors/formSelectors'
 import { Pattern } from 'types/models'
 import {
   useUpsertPatternMutation,
   useDeletePatternMutation,
 } from 'stores/patternApi'
+import { RootState } from 'stores/store'
 
 type PatternModalProps = {
   groupedCategories: GroupedCategories[]
 }
 
 const PatternModal = (props: PatternModalProps) => {
-  const { show, allowDelete, model, modelType } = useSelector(selectFormState)
+  const { show, allowDelete, model, modelType } = useSelector((state: RootState) => state.formStore)
   const [upsertPattern] = useUpsertPatternMutation()
   const [deletePattern] = useDeletePatternMutation()
 

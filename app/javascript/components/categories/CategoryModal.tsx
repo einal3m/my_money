@@ -6,20 +6,20 @@ import CategoryForm from './CategoryForm'
 import SubcategoryForm from './SubcategoryForm'
 import { GroupedCategories } from 'hooks/useGroupedCategories'
 import { ModelType } from 'types/models'
-import { selectFormState } from 'selectors/formSelectors'
 import {
   useUpsertCategoryMutation,
   useUpsertSubcategoryMutation,
   useDeleteCategoryMutation,
   useDeleteSubcategoryMutation,
 } from 'stores/categoryApi'
+import { RootState } from 'stores/store'
 
 type CategoryModalProps = {
   groupedCategories: GroupedCategories[]
 }
 
 export const CategoryModal = (props: CategoryModalProps) => {
-  const { show, allowDelete, model, modelType } = useSelector(selectFormState)
+  const { show, allowDelete, model, modelType } = useSelector((state: RootState) => state.formStore)
   const [upsertCategory] = useUpsertCategoryMutation()
   const [upsertSubcategory] = useUpsertSubcategoryMutation()
   const [deleteCategory] = useDeleteCategoryMutation()
