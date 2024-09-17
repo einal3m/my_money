@@ -1,6 +1,6 @@
 import store from "../stores/store";
 import apiUtil from "../util/api-util";
-import accountTransformer from "../transformers/account-transformer";
+import { transformFromApi, transformToApi } from "../transformers/accountTransformer";
 import {
   GET_ACCOUNTS,
   SET_ACCOUNTS,
@@ -30,7 +30,7 @@ export function fetchAccounts(options) {
     onSuccess: (response) =>
       storeAccounts(
         response.accounts.map((account) =>
-          accountTransformer.transformFromApi(account)
+          transformFromApi(account)
         )
       ),
   });
@@ -79,7 +79,7 @@ export function saveAccount(account) {
 function createAccount(account) {
   return apiUtil.post({
     url: "accounts",
-    body: { account: accountTransformer.transformToApi(account) },
+    body: { account: transformToApi(account) },
     onSuccess: getAccounts,
   });
 }
@@ -87,7 +87,7 @@ function createAccount(account) {
 function updateAccount(account) {
   return apiUtil.put({
     url: `accounts/${account.id}`,
-    body: { account: accountTransformer.transformToApi(account) },
+    body: { account: transformToApi(account) },
     onSuccess: getAccounts,
   });
 }

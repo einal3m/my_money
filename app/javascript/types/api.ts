@@ -1,12 +1,28 @@
+export type AccountRequest = {
+  account_type: string
+  name: string
+  bank?: string
+  starting_balance?: number
+  starting_date?: string
+  ticker?: string
+  limit?: number
+  term?: number
+  interest_rate?: number
+  deleted_at?: string 
+}
+
+export type AccountResponse = AccountRequest & {
+  id: number
+  current_balance: number,
+}
+
 export type CategoryRequest = {
   name: string
   category_type_id: number
 }
 
-export type CategoryResponse = {
+export type CategoryResponse = CategoryRequest & {
   id: number
-  name: string
-  category_type_id: number
 }
 
 export type SubcategoryRequest = {
@@ -14,10 +30,8 @@ export type SubcategoryRequest = {
   category_id: number
 }
 
-export type SubcategoryResponse = {
+export type SubcategoryResponse = SubcategoryRequest & {
   id: number
-  name: string
-  category_id: number
 }
 
 export type PatternRequest = {

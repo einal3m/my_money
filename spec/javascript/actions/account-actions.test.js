@@ -9,7 +9,7 @@ import {
   SET_SELECTED_ACCOUNTS,
   SAVE_ACCOUNT,
 } from "actions/action-types";
-import accountTransformer from "transformers/account-transformer";
+import * as accountTransformer from "transformers/accountTransformer";
 import store from "stores/store";
 import apiUtil from "util/api-util";
 

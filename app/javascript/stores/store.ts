@@ -9,15 +9,18 @@ import importReducer from './import-reducer'
 import bankStatementsReducer from './bank-statement-reducer'
 import apiReducer from './api-status-reducer'
 import reportReducer from './report-reducer'
+import currentReducer from './currentSlice'
 import formReducer from './formSlice'
 import loanReducer from './loan-reducer'
 import budgetReducer from './budget-reducer'
 import reconciliationReducer from './reconciliation-reducer'
+import { accountApi } from './accountApi'
 import { categoryApi } from './categoryApi'
 import { patternApi } from './patternApi'
 
 export const store = configureStore({
   reducer: {
+    [accountApi.reducerPath]: accountApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [patternApi.reducerPath]: patternApi.reducer,
     accountStore: accountReducer,
@@ -29,13 +32,17 @@ export const store = configureStore({
     bankStatementStore: bankStatementsReducer,
     apiStatusStore: apiReducer,
     reportStore: reportReducer,
+    currentStore: currentReducer,
     formStore: formReducer,
     loanStore: loanReducer,
     budgetStore: budgetReducer,
     reconciliationStore: reconciliationReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(categoryApi.middleware).concat(patternApi.middleware),
+    getDefaultMiddleware()
+      .concat(accountApi.middleware)
+      .concat(categoryApi.middleware)
+      .concat(patternApi.middleware),
 })
 
 // Get the type of our store variable
