@@ -1,12 +1,23 @@
 export enum ModelType {
+  Account = 'Account',
   Category = 'Category',
   Pattern = 'Pattern',
   Subcategory = 'Subcategory',
 }
 
 export type Account = {
-  id: number,
+  id?: number,
+  accountType: string
+  currentBalance: number,
   name: string
+  bank?: string
+  openingBalance?: number
+  openingBalanceDate?: string
+  ticker?: string
+  limit?: number
+  term?: number
+  interestRate?: number
+  deletedAt?: string 
 }
 
 export type Category = {
