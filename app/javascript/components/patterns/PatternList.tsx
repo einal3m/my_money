@@ -9,30 +9,33 @@ import SearchCriteria, {
 import { PatternTable } from './PatternTable'
 import PatternModal from './PatternModal'
 import { showFormModal } from 'stores/formSlice'
-import { selectCurrentState } from 'selectors/currentSelectors'
 import { useGetPatternsQuery } from 'stores/patternApi'
 import { useGroupedCategories } from 'hooks/useGroupedCategories'
 import { ModelType } from 'types/models'
 
 import '../../stylesheets/common.scss'
 import '../../stylesheets/patterns.scss'
+import { RootState } from 'stores/store'
 
 export const PatternList = () => {
-  const { currentAccount } = useSelector(selectCurrentState)
+  const currentAccount = useSelector(
+    (state: RootState) => state.currentStore.currentAccount,
+  )
   const {
     data: patterns,
     isLoading,
-    isSuccess,
-  } = useGetPatternsQuery(currentAccount.id, { skip: !currentAccount })
+  } = useGetPatternsQuery(currentAccount?.id || 0, { skip: !currentAccount })
   const { groupedCategories, isSuccess: isSuccessGC } = useGroupedCategories()
-  const dispatch = useDispatch();
-  
+  const dispatch = useDispatch()
+
   const newPattern = () => {
-    dispatch(showFormModal({
-      modelType: ModelType.Pattern,
-      model: { accountId: currentAccount.id },
-      allowDelete: false
-    }))
+    dispatch(
+      showFormModal({
+        modelType: ModelType.Pattern,
+        model: { accountId: currentAccount?.id },
+        allowDelete: false,
+      }),
+    )
   }
 
   return (
@@ -46,7 +49,7 @@ export const PatternList = () => {
         filters={[{ name: ACCOUNT_FILTER, options: { multiple: false } }]}
       />
       <div className="pattern-list">
-        {isSuccess && isSuccessGC && (
+        {currentAccount && patterns && groupedCategories && isSuccessGC && (
           <PatternTable
             account={currentAccount}
             patterns={patterns}
@@ -54,7 +57,9 @@ export const PatternList = () => {
           />
         )}
       </div>
-      <PatternModal groupedCategories={groupedCategories} />
+      {groupedCategories && isSuccessGC &&(
+        <PatternModal groupedCategories={groupedCategories} />
+      )}
     </div>
   )
 }
