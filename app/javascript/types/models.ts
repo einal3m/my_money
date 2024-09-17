@@ -20,6 +20,12 @@ export type Account = {
   deletedAt?: string 
 }
 
+export type AccountType = {
+  id: string
+  code: string,
+  name: string
+}
+
 export type Category = {
   id?: number
   name: string
