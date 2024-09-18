@@ -1,5 +1,5 @@
 import apiUtil from '../util/api-util';
-import transactionTransformer from '../transformers/transaction-transformer';
+import { transformToApi, transformFromOfxApi } from '../transformers/transactionTransformer';
 import store from '../stores/store';
 import {
   UPLOAD_OFX,
@@ -17,7 +17,7 @@ export function uploadOFX(accountId, file) {
     url: `accounts/${accountId}/transactions/import`,
     file,
     onSuccess: response => storeOfxTransactions(
-      response.imported_transactions.map(transaction => transactionTransformer.transformFromOfxApi(transaction))
+      response.imported_transactions.map(transaction => transformFromOfxApi(transaction))
     ),
   });
 }
@@ -32,7 +32,7 @@ export function importTransactions() {
   const transactions = importStore.get('transactions').toJS().filter(transaction => transaction.import);
   const fileName = importStore.get('fileName');
   const accountId = store.getState().accountStore.get('currentAccount').get('id');
-  const transformedTxns = transactions.map(transaction => transactionTransformer.transformToApi(transaction));
+  const transformedTxns = transactions.map(transaction => transformToApi(transaction));
 
   return apiUtil.post({
     url: `accounts/${accountId}/bank_statements`,

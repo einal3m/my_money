@@ -1,6 +1,6 @@
 import apiUtil from '../util/api-util';
 import store from '../stores/store';
-import transactionTransformer from '../transformers/transaction-transformer';
+import { transformFromApi } from '../transformers/transactionTransformer';
 import {
   GET_MATCHING_TRANSACTIONS,
   SET_MATCHING_TRANSACTIONS,
@@ -15,7 +15,7 @@ export function getMatchingTransactions(transactionId) {
   return apiUtil.get({
     url,
     onSuccess: response => storeMatchingTransactions(
-      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction))
+      response.transactions.map(transaction => transformFromApi(transaction))
     ),
   });
 }

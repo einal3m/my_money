@@ -3,7 +3,7 @@ import store from '../stores/store';
 import { getAccounts } from './account-actions';
 import { getDateRanges } from './date-range-actions';
 import { getCategories } from './category-actions';
-import transactionTransformer from '../transformers/transaction-transformer';
+import { transformFromApi, transformToApi } from '../transformers/transactionTransformer';
 import {
   SAVE_TRANSACTION,
   DELETE_TRANSACTION,
@@ -43,7 +43,7 @@ export function fetchTransactions() {
   return apiUtil.get({
     url,
     onSuccess: response => storeTransactions(
-      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction))
+      response.transactions.map(transaction => transformFromApi(transaction))
     ),
   });
 }
@@ -60,7 +60,7 @@ export function saveTransaction(transaction) {
 function createTransaction(transaction) {
   return apiUtil.post({
     url: `accounts/${transaction.accountId}/transactions`,
-    body: { transaction: transactionTransformer.transformToApi(transaction) },
+    body: { transaction: transformToApi(transaction) },
     onSuccess: () => { getTransactions(); },
   });
 }
@@ -68,7 +68,7 @@ function createTransaction(transaction) {
 function updateTransaction(transaction) {
   return apiUtil.put({
     url: `accounts/${transaction.accountId}/transactions/${transaction.id}`,
-    body: { transaction: transactionTransformer.transformToApi(transaction) },
+    body: { transaction: transformToApi(transaction) },
     onSuccess: () => { onSuccess(); },
   });
 }

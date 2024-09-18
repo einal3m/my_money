@@ -1,6 +1,6 @@
 import apiUtil from 'util/api-util';
 import store from 'stores/store';
-import transactionTransformer from 'transformers/transaction-transformer';
+import { transformFromApi } from 'transformers/transactionTransformer';
 import { getCategories } from 'actions/category-actions';
 import { getDateRanges } from 'actions/date-range-actions';
 import { getAccounts } from 'actions/account-actions';
@@ -63,7 +63,7 @@ export function fetchSubcategoryReport() {
   return apiUtil.get({
     url,
     onSuccess: response => storeTransactionReport(
-      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction)),
+      response.transactions.map(transaction => transformFromApi(transaction)),
       response.month_totals
     ),
   });
@@ -90,7 +90,7 @@ export function fetchCategoryReport() {
   return apiUtil.get({
     url,
     onSuccess: response => storeTransactionReport(
-      response.transactions.map(transaction => transactionTransformer.transformFromApi(transaction)),
+      response.transactions.map(transaction => transformFromApi(transaction)),
       response.month_totals
     ),
   });
