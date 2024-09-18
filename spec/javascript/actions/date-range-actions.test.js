@@ -2,7 +2,7 @@ import { fromJS } from "immutable";
 import * as dateRangeActions from "actions/date-range-actions";
 import apiUtil from "util/api-util";
 import store from "stores/store";
-import dateRangeTransformer from "transformers/date-range-transformer";
+import * as dateRangeTransformer from "transformers/dateRangeTransformer";
 import {
   GET_DATE_RANGES,
   SET_DATE_RANGES,
@@ -37,13 +37,13 @@ describe("DateRangeActions", () => {
       expect(getArgs.url).toEqual("date_range_options");
 
       jest
-        .spyOn(dateRangeTransformer, "transformDateRange")
+        .spyOn(dateRangeTransformer, "transformFromApi")
         .mockImplementation(() => "dateRange");
 
       const successCallback = getArgs.onSuccess;
       successCallback({ date_range_options: ["date_range"] });
 
-      expect(dateRangeTransformer.transformDateRange).toHaveBeenCalledWith(
+      expect(dateRangeTransformer.transformFromApi).toHaveBeenCalledWith(
         "date_range"
       );
       expect(dispatcherSpy).toHaveBeenCalledWith({

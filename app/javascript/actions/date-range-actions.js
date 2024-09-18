@@ -1,5 +1,5 @@
 import apiUtil from '../util/api-util';
-import dateRangeTransformer from '../transformers/date-range-transformer';
+import { transformFromApi} from '../transformers/dateRangeTransformer';
 import store from '../stores/store';
 import {
   GET_DATE_RANGES,
@@ -16,7 +16,7 @@ export function getDateRanges() {
     return apiUtil.get({
       url: 'date_range_options',
       onSuccess: response => storeDateRanges(
-        response.date_range_options.map(dateRange => dateRangeTransformer.transformDateRange(dateRange))
+        response.date_range_options.map(dateRange => transformFromApi(dateRange))
       ),
     });
   }
