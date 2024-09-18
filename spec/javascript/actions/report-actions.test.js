@@ -13,7 +13,7 @@ import {
   SET_TOTALS_REPORT,
   SET_INCOME_VS_EXPENSE,
 } from "actions/action-types";
-import transactionTransformer from "transformers/transaction-transformer";
+import * as transactionTransformer from "transformers/transactionTransformer";
 import apiUtil from "util/api-util";
 import store from "stores/store";
 

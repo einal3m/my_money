@@ -1,6 +1,6 @@
 import { Map } from "immutable";
 import * as transactionActions from "actions/transaction-actions";
-import transactionTransformer from "transformers/transaction-transformer";
+import * as transactionTransformer from "transformers/transactionTransformer";
 import store from "stores/store";
 import apiUtil from "util/api-util";
 import * as reportActions from "actions/report-actions";

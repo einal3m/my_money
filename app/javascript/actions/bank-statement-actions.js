@@ -1,7 +1,7 @@
 import apiUtil from '../util/api-util';
 import store from '../stores/store';
 import { getAccounts } from './account-actions';
-import bankStatementTransformer from '../transformers/bank-statement-transformer';
+import { transformFromApi } from '../transformers/bankStatementTransformer';
 import {
   GET_BANK_STATEMENTS,
   SET_BANK_STATEMENTS,
@@ -23,7 +23,7 @@ export function fetchBankStatements() {
   return apiUtil.get({
     url: `accounts/${accountId}/bank_statements`,
     onSuccess: response => storeBankStatements(
-      response.bank_statements.map(bankStatement => bankStatementTransformer.transformFromApi(bankStatement))
+      response.bank_statements.map(bankStatement => transformFromApi(bankStatement))
     ),
   });
 }

@@ -7,7 +7,7 @@ import {
   CANCEL_DELETE_BANK_STATEMENT,
   DELETE_BANK_STATEMENT,
 } from "actions/action-types";
-import bankStatementTransformer from "transformers/bank-statement-transformer";
+import * as bankStatementTransformer from "transformers/bankStatementTransformer";
 import apiUtil from "util/api-util";
 import store from "stores/store";
 

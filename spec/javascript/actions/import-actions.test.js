@@ -1,6 +1,6 @@
 import { fromJS } from "immutable";
 import * as importActions from "actions/import-actions";
-import transactionTransformer from "transformers/transaction-transformer";
+import * as transactionTransformer from "transformers/transactionTransformer";
 import apiUtil from "util/api-util";
 import store from "stores/store";
 import * as routingActions from "actions/routing-actions";

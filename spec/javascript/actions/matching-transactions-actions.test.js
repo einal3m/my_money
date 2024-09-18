@@ -2,7 +2,7 @@ import { fromJS } from "immutable";
 import * as matchingTransactionsActions from "actions/matching-transactions-actions";
 import apiUtil from "util/api-util";
 import store from "stores/store";
-import transactionTransformer from "transformers/transaction-transformer";
+import * as transactionTransformer from "transformers/transactionTransformer";
 import {
   GET_MATCHING_TRANSACTIONS,
   SET_MATCHING_TRANSACTIONS,
