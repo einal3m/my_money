@@ -47,7 +47,7 @@ module Lib
     end
 
     def budget_amortization
-      return [] if budget_below_minimum_repayment
+      return [] if invalid_budget?
 
       balances = []
       balance = present_value
@@ -64,6 +64,10 @@ module Lib
     end
 
     private
+
+    def invalid_budget?
+      budget_below_minimum_repayment || account.budgets.empty?
+    end
 
     def budget_below_minimum_repayment
       @account.budgets.sum(&:amount) < minimum_repayment_precise
