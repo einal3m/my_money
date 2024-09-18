@@ -1,6 +1,6 @@
 import { fromJS } from "immutable";
 import * as reconciliationActions from "actions/reconciliation-actions";
-import * as reconciliationTransformer from "transformers/reconciliation-transformer";
+import * as reconciliationTransformer from "transformers/reconciliationTransformer";
 import store from "stores/store";
 import apiUtil from "util/api-util";
 import {

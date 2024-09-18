@@ -1,7 +1,7 @@
 import store from '../stores/store';
 import apiUtil from '../util/api-util';
 import { getAccounts } from './account-actions';
-import { transformFromApi, transformToApi } from '../transformers/reconciliation-transformer';
+import { transformFromApi, transformToApi } from '../transformers/reconciliationTransformer';
 import {
   GET_RECONCILIATIONS,
   SET_RECONCILIATIONS,
