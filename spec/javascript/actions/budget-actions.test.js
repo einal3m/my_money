@@ -6,7 +6,7 @@ import {
   SAVE_BUDGET,
   DELETE_BUDGET,
 } from "actions/action-types";
-import * as budgetTransformer from "transformers/budget-transformer";
+import * as budgetTransformer from "transformers/budgetTransformer";
 import store from "stores/store";
 import apiUtil from "util/api-util";
 

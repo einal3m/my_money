@@ -25,7 +25,7 @@ export class BudgetModalComponent extends React.Component {
           onSave={this.handleSave}
           onDelete={this.handleDelete}
         >
-          <BudgetForm budget={this.props.model} />
+          <BudgetForm budget={{ ...this.props.model }} />
         </FormModal>
       );
     }
