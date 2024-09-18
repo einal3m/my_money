@@ -8,12 +8,32 @@ export type AccountRequest = {
   limit?: number
   term?: number
   interest_rate?: number
-  deleted_at?: string 
+  deleted_at?: string
 }
 
 export type AccountResponse = AccountRequest & {
   id: number
-  current_balance: number,
+  current_balance: number
+}
+
+export type BankStatementResponse = {
+  id: number
+  account_id: number
+  file_name: string
+  date: string
+  transaction_count: number
+}
+
+export type BudgetRequest = {
+  account_id: number
+  description: string
+  day_of_month: number
+  amount: number
+  credit: boolean
+}
+
+export type BudgetResponse = BudgetRequest & {
+  id: number
 }
 
 export type CategoryRequest = {
@@ -23,6 +43,15 @@ export type CategoryRequest = {
 
 export type CategoryResponse = CategoryRequest & {
   id: number
+}
+
+export type DateRangeResponse = {
+  id: number
+  name: string
+  custom: boolean
+  default: boolean
+  from_date: string
+  to_date: string
 }
 
 export type SubcategoryRequest = {
@@ -35,13 +64,60 @@ export type SubcategoryResponse = SubcategoryRequest & {
 }
 
 export type PatternRequest = {
-  account_id: number,
-  match_text: string,
-  notes: string,
-  category_id: number,
-  subcategory_id: number,
+  account_id: number
+  match_text: string
+  notes: string
+  category_id: number
+  subcategory_id: number
 }
 
 export type PatternResponse = PatternRequest & {
   id: number
+}
+
+export type ReconciliationRequest = {
+  id: number
+  account_id: number
+  statement_balance: number
+  statement_date: string
+  reconciled: boolean
+}
+
+export type ReconciliationResponse = ReconciliationRequest
+
+export type TransactionRequest = {
+  id: number
+  account_id: number
+  date: string
+  amount: number
+  category_id: number
+  subcategory_id: number
+  notes: string
+  memo: string
+  transaction_type: string
+  matching_transaction_id?: number
+}
+
+export type OfxTransactionResponse = {
+  account_id: number
+  date: string
+  memo: string
+  amount: number
+  category_id: number
+  subcategory_id: number
+  notes?: string
+  import: boolean
+  duplicate: boolean
+}
+
+export type MatchingTransactionResponse = {
+  id: number
+  account_id: number
+  memo: string
+  notes: string
+}
+
+export type TransactionResponse = TransactionRequest & {
+  balance: number
+  matching_transaction: MatchingTransactionResponse
 }
