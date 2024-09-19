@@ -2,6 +2,7 @@ export enum ModelType {
   AccountLoan = 'Loan Account',
   AccountSavings = 'Savings Account',
   AccountShare = 'Share Account',
+  Budget = 'Budget',
   Category = 'Category',
   Pattern = 'Pattern',
   Subcategory = 'Subcategory',
@@ -122,4 +123,21 @@ export type Transaction = {
   memo: string
   balance?: number
   transactionType: string
+}
+
+// Reports
+
+export type PointResponse = [string, number]
+export type Point = [Date, number]
+
+export type LoanReportResponse = {
+  minimum_repayment?: number
+  minimum_amortization: PointResponse[]
+  budget_amortization: PointResponse[]
+}
+
+export type SeriesData = {
+  name: string
+  data: Point[]
+  backgroundColour: string
 }

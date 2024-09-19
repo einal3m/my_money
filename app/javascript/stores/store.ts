@@ -11,16 +11,16 @@ import apiReducer from './api-status-reducer'
 import reportReducer from './report-reducer'
 import currentReducer from './currentSlice'
 import formReducer from './formSlice'
-import loanReducer from './loan-reducer'
-import budgetReducer from './budget-reducer'
 import reconciliationReducer from './reconciliation-reducer'
 import { accountApi } from './accountApi'
+import { budgetApi } from './budgetApi'
 import { categoryApi } from './categoryApi'
 import { patternApi } from './patternApi'
 
 export const store = configureStore({
   reducer: {
     [accountApi.reducerPath]: accountApi.reducer,
+    [budgetApi.reducerPath]: budgetApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [patternApi.reducerPath]: patternApi.reducer,
     accountStore: accountReducer,
@@ -34,13 +34,12 @@ export const store = configureStore({
     reportStore: reportReducer,
     currentStore: currentReducer,
     formStore: formReducer,
-    loanStore: loanReducer,
-    budgetStore: budgetReducer,
     reconciliationStore: reconciliationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(accountApi.middleware)
+      .concat(budgetApi.middleware)
       .concat(categoryApi.middleware)
       .concat(patternApi.middleware),
 })

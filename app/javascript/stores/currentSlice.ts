@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { accountApi } from './accountApi';
+import { accountApi } from './accountApi'
 
-import { Account } from 'types/models';
+import { Account } from 'types/models'
 
 type CurrentState = {
-  currentAccount?: Account,
+  currentAccount?: Account
+  currentLoanView: string
 }
 
 const initialState: CurrentState = {
+  currentLoanView: 'chart',
 }
 
 export const currentSlice = createSlice({
@@ -17,6 +19,9 @@ export const currentSlice = createSlice({
     setCurrentAccount: (state, action: PayloadAction<Account>) => {
       state.currentAccount = action.payload
     },
+    setCurrentLoanView: (state, action: PayloadAction<string>) => {
+      state.currentLoanView = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -25,10 +30,10 @@ export const currentSlice = createSlice({
         if (!state.currentAccount) {
           state.currentAccount = payload[0]
         }
-      }
+      },
     )
   },
 })
 
-export const { setCurrentAccount } = currentSlice.actions
+export const { setCurrentAccount, setCurrentLoanView } = currentSlice.actions
 export default currentSlice.reducer

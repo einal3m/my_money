@@ -33,7 +33,7 @@ export const accountApi = createApi({
     }),
     upsertAccount: builder.mutation<void, Account>({
       query: (account) => ({
-        url: `account${account.id ? '/' + account.id : ''}`,
+        url: `accounts${account.id ? '/' + account.id : ''}`,
         method: account.id ? 'PUT' : 'POST',
         body: { account: transformToApi(account) },
       }),
