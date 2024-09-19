@@ -126,6 +126,8 @@ RSpec.describe Api::BudgetsController do
 
   def serialized_budget(budget)
     {
+      'id' => budget.id,
+      'account_id' => budget.account_id,
       'description' => budget.description,
       'day_of_month' => budget.day_of_month,
       'amount' => budget.amount

@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+
 import { showFormModal } from '../../actions/form-actions';
-import { setCurrentAccount, softDeleteAccount } from '../../actions/account-actions';
-import { routeToLoanReport } from '../../actions/routing-actions';
+import { setCurrentAccount as oldSetCurrentAccount, softDeleteAccount } from '../../actions/account-actions';
+import { setCurrentAccount } from 'stores/currentSlice'
 
 const AccountActionButtons = (props) => {
+  const dispatch = useDispatch()
+
   const editAccount = () => {
     const accountType = props.account.accountType;
     const modelType = `${accountType[0].toUpperCase()}${accountType.slice(1)} Account`;
@@ -18,15 +22,15 @@ const AccountActionButtons = (props) => {
   };
 
   const viewTransactions = () => {
-    setCurrentAccount(props.account.id);
+    oldSetCurrentAccount(props.account.id);
   };
 
   const viewImportHistory = () => {
-    setCurrentAccount(props.account.id);
+    oldSetCurrentAccount(props.account.id);
   };
 
   const viewLoanReport = () => {
-    setCurrentAccount(props.account.id);
+    dispatch(setCurrentAccount(props.account))
   };
 
   const accountActions = (eventKey) => {
