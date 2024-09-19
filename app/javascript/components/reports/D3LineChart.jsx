@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import lineChart from './d3/LineChart';
-import moneyUtil from '../../util/money-util';
+import { numberFormatWithSign } from 'util/moneyUtil';
 import dateUtil from '../../util/date-util';
 import ChartTooltip from './ChartTooltip';
 import ChartLegend from './ChartLegend';
@@ -14,7 +14,7 @@ const D3LineChart = (props) => {
   const chartCallbacks = {
     showTooltip: (newTooltipData) => {setTooltipData(newTooltipData); setShowTooltip(true)},
     hideTooltip: () => {setShowTooltip(false); setTooltipData(null)},
-    formatYLabels: (amount) => moneyUtil.numberFormatWithSign(amount),
+    formatYLabels: (amount) => numberFormatWithSign(amount),
     formatXLabels: (date) => dateUtil.chartFormat(date),
   };
 

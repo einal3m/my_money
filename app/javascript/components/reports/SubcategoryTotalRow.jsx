@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moneyUtil from '../../util/money-util';
+
+import { centsToDollars, moneyFormat } from 'util/moneyUtil';
 import { routeToSubcategoryReport } from '../../actions/routing-actions';
 
 export default class SubcategoryTotalRow extends React.Component {
@@ -13,7 +14,7 @@ export default class SubcategoryTotalRow extends React.Component {
     return (
       <tr className="subcategory clickable" onClick={this.handleClick}>
         <td className="name">{this.props.name}</td>
-        <td className="money">{moneyUtil.moneyFormat(moneyUtil.centsToDollars(this.props.amount))}</td>
+        <td className="money">{moneyFormat(centsToDollars(this.props.amount))}</td>
         <td className="money" />
       </tr>
     );

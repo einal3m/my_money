@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import barLineComboChart from './d3/BarLineComboChart';
-import moneyUtil from '../../util/money-util';
+import { centsToDollars, numberFormatWithSign } from 'util/moneyUtil';
 import ChartTooltip from './ChartTooltip';
 
 export default class D3BarLineComboChart extends React.Component {
@@ -43,7 +44,7 @@ export default class D3BarLineComboChart extends React.Component {
     this.setState({ showTooltip: false });
   };
 
-  formatMoney = amount => moneyUtil.numberFormatWithSign(moneyUtil.centsToDollars(amount));
+  formatMoney = amount => numberFormatWithSign(centsToDollars(amount));
 
   chartCallbacks = {
     showTooltip: this.showTooltip,

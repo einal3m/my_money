@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moneyUtil from '../../../util/money-util';
+
+import { centsToDollars, dollarsToCents } from 'util/moneyUtil'
 
 export default class MoneyInput extends React.Component {
 
@@ -10,14 +11,14 @@ export default class MoneyInput extends React.Component {
     if (isNaN(this.input.value) || this.input.value === '') {
       value = this.input.value;
     } else {
-      value = moneyUtil.dollarsToCents(this.input.value);
+      value = dollarsToCents(this.input.value);
     }
 
     const fakeEvent = { target: { name: this.props.name, value } };
     this.props.onChange(fakeEvent);
   };
 
-  inputValue = () => moneyUtil.centsToDollars(this.props.value);
+  inputValue = () => centsToDollars(this.props.value);
 
   render() {
     return (

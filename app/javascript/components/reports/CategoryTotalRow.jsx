@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moneyUtil from '../../util/money-util';
+
+import { centsToDollars, moneyFormat} from 'util/moneyUtil';
 import { routeToCategoryReport } from '../../actions/routing-actions';
 
 export default class CategoryTotalRow extends React.Component {
@@ -14,7 +15,7 @@ export default class CategoryTotalRow extends React.Component {
       <tr className="category clickable" onClick={this.handleClick}>
         <td>{this.props.name}</td>
         <td className="money" />
-        <td className="money">{moneyUtil.moneyFormat(moneyUtil.centsToDollars(this.props.amount))}</td>
+        <td className="money">{moneyFormat(centsToDollars(this.props.amount))}</td>
       </tr>
     );
   }

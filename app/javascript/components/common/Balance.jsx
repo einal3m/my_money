@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moneyUtil from '../../util/money-util';
+
+import { centsToDollars, numberFormat } from 'util/moneyUtil';
 
 const Balance = (props) => {
-  const formattedAmount = moneyUtil.numberFormat(moneyUtil.centsToDollars(props.balance));
+  const formattedAmount = numberFormat(centsToDollars(props.balance));
 
   const cents = formattedAmount.substr(formattedAmount.length - 2, 2);
   let dollars = formattedAmount.substr(0, formattedAmount.length - 3);

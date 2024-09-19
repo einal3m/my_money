@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moneyUtil from '../../util/money-util';
+
+import { centsToDollars, moneyFormat } from 'util/moneyUtil';
 
 const ReportTotalRow = props => (
   <tr className="total">
     <td>Total</td>
     <td className="money" />
-    <td className="money">{moneyUtil.moneyFormat(moneyUtil.centsToDollars(props.amount))}</td>
+    <td className="money">{moneyFormat(centsToDollars(props.amount))}</td>
   </tr>
 );
 

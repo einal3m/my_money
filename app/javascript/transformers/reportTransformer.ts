@@ -1,4 +1,4 @@
-import moneyUtil from 'util/money-util'
+import { centsToDollars } from 'util/moneyUtil'
 import {
   LoanReportResponse,
   Point,
@@ -32,7 +32,7 @@ function convertAmortization(
 ) {
   const data: Point[] = balances.map((balance) => [
     new Date(balance[0]),
-    moneyUtil.centsToDollars(balance[1]),
+    centsToDollars(balance[1]),
   ])
 
   return {

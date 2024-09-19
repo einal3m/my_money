@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moneyUtil from '../../util/money-util';
+
+import { centsToDollars, numberFormat } from 'util/moneyUtil';
 
 export default class Amount extends React.Component {
 
   renderAmount() {
     let sign;
-    const formattedAmount = moneyUtil.numberFormat(moneyUtil.centsToDollars(this.props.amount));
+    const formattedAmount = numberFormat(centsToDollars(this.props.amount));
 
     const cents = formattedAmount.substr(formattedAmount.length - 2, 2);
     const dollars = formattedAmount.substr(0, formattedAmount.length - 3);
