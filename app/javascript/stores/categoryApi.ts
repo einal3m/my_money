@@ -1,14 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
 import categoryTransformer from 'transformers/categoryTransformer'
 import subcategoryTransformer from 'transformers/subcategoryTransformer'
 import { Category, Subcategory, CategoryType } from 'types/models'
 import { CategoryResponse, SubcategoryResponse } from 'types/api'
+import { applicationApi } from './applicationApi'
 
-export const categoryApi = createApi({
-  reducerPath: 'categoryApiStore',
-  tagTypes: ['categories', 'subcategories'],
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+export const categoryApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategoryTypes: builder.query<CategoryType[], void>({
       query() {

@@ -1,16 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
 import { Account, AccountType } from 'types/models'
 import { AccountResponse } from 'types/api'
 import {
   transformFromApi,
   transformToApi,
 } from 'transformers/accountTransformer'
+import { applicationApi } from './applicationApi'
 
-export const accountApi = createApi({
-  reducerPath: 'accountApiStore',
-  tagTypes: ['accounts'],
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+export const accountApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
     getAccountTypes: builder.query<AccountType[], void>({
       query() {

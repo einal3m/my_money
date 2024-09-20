@@ -1,17 +1,13 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-import { Budget, LoanReport, SeriesData } from 'types/models'
+import { Budget, LoanReportResponse, SeriesData } from 'types/models'
 import { BudgetResponse } from 'types/api'
 import {
   transformFromApi,
   transformToApi,
 } from 'transformers/budgetTransformer'
 import { transformLoanReport } from 'transformers/reportTransformer'
+import { applicationApi } from './applicationApi'
 
-export const budgetApi = createApi({
-  reducerPath: 'budgetApiStore',
-  tagTypes: ['budgets', 'report'],
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+export const budgetApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
     getBudgets: builder.query<Budget[], number>({
       query(accountId) {
@@ -29,14 +25,14 @@ export const budgetApi = createApi({
         method: budget.id ? 'PUT' : 'POST',
         body: { budget: transformToApi(budget) },
       }),
-      invalidatesTags: ['budgets', 'report'],
+      invalidatesTags: ['budgets', 'reports'],
     }),
     deleteBudget: builder.mutation<void, Budget>({
       query: (budget) => ({
         url: `/accounts/${budget.accountId}/budgets/${budget.id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['budgets', 'report'],
+      invalidatesTags: ['budgets', 'reports'],
     }),
     getLoanReport: builder.query<SeriesData[], number>({
       query(accountId) {
@@ -44,9 +40,9 @@ export const budgetApi = createApi({
           url: `report/home_loan?account_id=${accountId}`,
         }
       },
-      transformResponse: (loanReport: LoanReport) =>
+      transformResponse: (loanReport: LoanReportResponse) =>
         transformLoanReport(loanReport),
-      providesTags: () => ['report'],
+      providesTags: () => ['reports'],
     }),
   }),
 })

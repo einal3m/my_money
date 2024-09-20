@@ -1,16 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
 import { Pattern } from 'types/models'
 import { PatternResponse } from 'types/api'
 import {
   transformFromApi,
   transformToApi,
 } from 'transformers/patternTransformer'
+import { applicationApi } from './applicationApi'
 
-export const patternApi = createApi({
-  reducerPath: 'patternApiStore',
-  tagTypes: ['patterns'],
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+export const patternApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
     getPatterns: builder.query<Pattern[], number>({
       query(accountId) {
