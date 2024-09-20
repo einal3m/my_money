@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 import D3LineChart from '../reports/D3LineChart'
 import { RootState } from 'stores/store'
-import { useGetLoanReportQuery } from 'stores/budgetApi'
+import { useGetLoanReportQuery } from 'stores/reportApi'
 
 const LoanChartView = () => {
   const currentAccount = useSelector(
