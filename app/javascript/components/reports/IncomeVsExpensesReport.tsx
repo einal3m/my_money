@@ -13,7 +13,6 @@ const IncomeVsExpensesReport = () => {
   const { incomeExpenseReport, isLoading } =
     useIncomeExpenseReport(currentDateRange)
 
-  console.log("incomeExpenseReport", incomeExpenseReport)
   return (
     <div>
       <PageHeader title="income vs expenses" />
