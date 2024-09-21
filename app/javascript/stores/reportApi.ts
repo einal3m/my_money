@@ -1,9 +1,9 @@
-import { Budget, LoanReportResponse, SeriesData } from 'types/models'
-import { BudgetResponse } from 'types/api'
 import {
-  transformFromApi,
-  transformToApi,
-} from 'transformers/budgetTransformer'
+  DateRange,
+  LoanReportResponse,
+  SeriesData,
+} from 'types/models'
+import { IncomeExpenseReportResponse } from 'types/api'
 import { transformLoanReport } from 'transformers/reportTransformer'
 import { applicationApi } from './applicationApi'
 
@@ -19,9 +19,16 @@ export const budgetApi = applicationApi.injectEndpoints({
         transformLoanReport(loanReport),
       providesTags: () => ['loan-report'],
     }),
+    getIncomeVsExpensesReport: builder.query<IncomeExpenseReportResponse, DateRange | undefined>({
+      query(dateRange) {
+        return {
+          url: `report/income_vs_expense?from_date=${dateRange?.fromDate}&to_date=${dateRange?.toDate}`,
+        }
+      },
+      providesTags: () => ['income-expense-report'],
+    }),
   }),
 })
 
-export const {
-  useGetLoanReportQuery,
-} = budgetApi
+export const { useGetLoanReportQuery, useGetIncomeVsExpensesReportQuery } =
+  budgetApi

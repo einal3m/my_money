@@ -121,3 +121,25 @@ export type TransactionResponse = TransactionRequest & {
   balance: number
   matching_transaction: MatchingTransactionResponse
 }
+
+export type IncomeExpenseReportResponse = {
+  income: ReportTotalsResponse
+  expense: ReportTotalsResponse
+}
+
+export type ReportTotalsResponse = {
+  category_totals: CategoryTotalsResponse[]
+  subcategory_totals: SubcategoryTotalsResponse[]
+  total: number
+}
+
+export type CategoryTotalsResponse = {
+  sum: number
+  category_id: number | null
+}
+
+export type SubcategoryTotalsResponse = {
+  sum: number
+  category_id: number
+  subcategory_id: number | null
+}

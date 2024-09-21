@@ -11,8 +11,8 @@ export const dateRangeApi = applicationApi.injectEndpoints({
           url: `/date_range_options`,
         }
       },
-      transformResponse: (results: { date_ranges: DateRangeResponse[] }) =>
-        results.date_ranges.map((dateRange) => transformFromApi(dateRange)),
+      transformResponse: (results: { date_range_options: DateRangeResponse[] }) =>
+        results.date_range_options.map((dateRange) => transformFromApi(dateRange)),
     }),
   }),
 })

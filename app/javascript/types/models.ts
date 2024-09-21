@@ -141,3 +141,37 @@ export type SeriesData = {
   data: Point[]
   backgroundColour: string
 }
+
+export type PieChartData = {
+  total: number
+  data: number[]
+  labels: string[]
+}
+
+export type IncomeExpencePieChart = {
+  income: PieChartData,
+  expense: PieChartData
+}
+
+export type IncomeExpenseReport = {
+  pieChartData: IncomeExpencePieChart
+  tableData: IncomeExpenseTableData
+}  
+
+export type IncomeExpenseTableData = {
+  income: TableData
+  expense: TableData
+}
+
+export type TableData = {
+  total: number,
+  rows: TableRow[]
+}
+
+export type TableRow = {
+  type: 'category' | 'subcategory'
+  categoryId?: number,
+  subcategoryId?: number,
+  name: string
+  amount: number
+}

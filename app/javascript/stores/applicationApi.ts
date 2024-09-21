@@ -6,6 +6,7 @@ export const applicationApi = createApi({
     'budgets',
     'categories',
     'dateRanges',
+    'income-expense-report',
     'patterns',
     'loan-report',
     'subcategories',
