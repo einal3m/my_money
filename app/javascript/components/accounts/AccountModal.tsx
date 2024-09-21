@@ -6,7 +6,7 @@ import SavingsAccountForm from './SavingsAccountForm'
 import ShareAccountForm from './ShareAccountForm'
 import HomeLoanAccountForm from './HomeLoanAccountForm'
 import { RootState } from 'stores/store'
-import { Account, ModelType } from 'types/models'
+import { AccountFormInput, ModelType } from 'types/models'
 import { useDeleteAccountMutation, useUpsertAccountMutation } from 'stores/accountApi'
 
 export const AccountModal = () => {
@@ -16,7 +16,7 @@ export const AccountModal = () => {
   const [upsertAccount] = useUpsertAccountMutation()
   const [deleteAccount] = useDeleteAccountMutation()
 
-  const handleSave = (model: Account) => {
+  const handleSave = (model: AccountFormInput) => {
     upsertAccount(model)
   }
 

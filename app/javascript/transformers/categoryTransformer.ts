@@ -1,8 +1,8 @@
-import { Category } from '../types/models'
+import { Category, CategoryFormInput } from '../types/models'
 import { CategoryRequest, CategoryResponse } from '../types/api'
 
 const categoryTransformer = {
-  transformToApi(category: Category): CategoryRequest {
+  transformToApi(category: CategoryFormInput): CategoryRequest {
     return {
       name: category.name,
       category_type_id: category.categoryTypeId,

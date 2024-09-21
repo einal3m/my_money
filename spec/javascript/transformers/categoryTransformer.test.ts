@@ -1,9 +1,10 @@
 import categoryTransformer from 'transformers/categoryTransformer'
+import { CategoryFormInput } from 'types/models'
 
 describe('CategoryTransformer', () => {
   describe('transformToApi', () => {
     it('converts new category to API format', () => {
-      const category = {
+      const category: CategoryFormInput = {
         name: 'myCategory',
         categoryTypeId: 2,
       }

@@ -1,6 +1,6 @@
 import categoryTransformer from 'transformers/categoryTransformer'
 import subcategoryTransformer from 'transformers/subcategoryTransformer'
-import { Category, Subcategory, CategoryType } from 'types/models'
+import { Category, Subcategory, CategoryType, CategoryFormInput, SubcategoryFormInput } from 'types/models'
 import { CategoryResponse, SubcategoryResponse } from 'types/api'
 import { applicationApi } from './applicationApi'
 
@@ -27,7 +27,7 @@ export const categoryApi = applicationApi.injectEndpoints({
         ),
       providesTags: () => ['categories'],
     }),
-    upsertCategory: builder.mutation<void, Category>({
+    upsertCategory: builder.mutation<void, CategoryFormInput>({
       query: (category) => ({
         url: `/categories${category.id ? '/' + category.id : ''}`,
         method: category.id ? 'PUT' : 'POST',
@@ -54,7 +54,7 @@ export const categoryApi = applicationApi.injectEndpoints({
         ),
       providesTags: () => ['subcategories'],
     }),
-    upsertSubcategory: builder.mutation<void, Subcategory>({
+    upsertSubcategory: builder.mutation<void, SubcategoryFormInput>({
       query: (subcategory) => ({
         url: `/subcategories${subcategory.id ? '/' + subcategory.id : ''}`,
         method: subcategory.id ? 'PUT' : 'POST',

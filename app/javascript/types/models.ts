@@ -8,8 +8,7 @@ export enum ModelType {
   Subcategory = 'Subcategory',
 }
 
-export type Account = {
-  id?: number
+type AccountBase = {
   accountType: string
   currentBalance: number
   name: string
@@ -21,6 +20,14 @@ export type Account = {
   term?: number
   interestRate?: number
   deletedAt?: string
+}
+
+export type Account = AccountBase & {
+  id: number
+}
+
+export type AccountFormInput = AccountBase & {
+  id?: number
 }
 
 export type AccountType = {
@@ -46,10 +53,17 @@ export type Budget = {
   credit: boolean
 }
 
-export type Category = {
-  id?: number
+type CategoryBase = {
   name: string
   categoryTypeId: number
+}
+
+export type Category = CategoryBase & {
+  id: number
+}
+
+export type CategoryFormInput = CategoryBase & {
+  id?: number
 }
 
 export type CategoryType = {
@@ -85,10 +99,17 @@ export type Reconciliation = {
   reconciled: boolean
 }
 
-export type Subcategory = {
-  id?: number
+type SubcategoryBase = {
   name: string
   categoryId: number
+}
+
+export type Subcategory = SubcategoryBase & {
+  id: number
+}
+
+export type SubcategoryFormInput = SubcategoryBase & {
+  id?: number
 }
 
 export type OfxTransaction = {
@@ -149,14 +170,14 @@ export type PieChartData = {
 }
 
 export type IncomeExpencePieChart = {
-  income: PieChartData,
+  income: PieChartData
   expense: PieChartData
 }
 
 export type IncomeExpenseReport = {
   pieChartData: IncomeExpencePieChart
   tableData: IncomeExpenseTableData
-}  
+}
 
 export type IncomeExpenseTableData = {
   income: TableData
@@ -164,14 +185,14 @@ export type IncomeExpenseTableData = {
 }
 
 export type TableData = {
-  total: number,
+  total: number
   rows: TableRow[]
 }
 
 export type TableRow = {
   type: 'category' | 'subcategory'
-  categoryId?: number,
-  subcategoryId?: number,
+  categoryId?: number
+  subcategoryId?: number
   name: string
   amount: number
 }

@@ -1,4 +1,6 @@
+import { useSelector } from 'react-redux'
 import { useGetAccountsQuery, useGetAccountTypesQuery } from 'stores/accountApi'
+import { RootState } from 'stores/store'
 
 import { Account, AccountType } from 'types/models'
 
@@ -11,6 +13,7 @@ type UseGroupedAccounts = {
   isLoading: boolean
   isSuccess: boolean
   groupedAccounts?: AccountGroup[]
+  currentAccount?: Account
 }
 
 export const useGroupedAccounts = (): UseGroupedAccounts => {
@@ -26,8 +29,12 @@ export const useGroupedAccounts = (): UseGroupedAccounts => {
     isSuccess: isSuccessA,
   } = useGetAccountsQuery()
 
-  const isLoading = isLoadingT || isLoadingA
-  const isSuccess = isSuccessT && isSuccessA
+  const currentAccount = useSelector(
+    (state: RootState) => state.currentStore.currentAccount,
+  )
+
+  const isLoading = isLoadingT || isLoadingA || !currentAccount
+  const isSuccess = isSuccessT && isSuccessA && !!currentAccount
 
   const groupedAccounts = (
     accountTypes
@@ -40,5 +47,5 @@ export const useGroupedAccounts = (): UseGroupedAccounts => {
       : []
   ).filter((accountGroup: AccountGroup) => accountGroup.accounts.length > 0)
 
-  return { isLoading, isSuccess, groupedAccounts }
+  return { isLoading, isSuccess, groupedAccounts, currentAccount }
 }

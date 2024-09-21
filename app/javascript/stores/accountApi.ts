@@ -1,4 +1,4 @@
-import { Account, AccountType } from 'types/models'
+import { Account, AccountFormInput, AccountType } from 'types/models'
 import { AccountResponse } from 'types/api'
 import {
   transformFromApi,
@@ -27,7 +27,7 @@ export const accountApi = applicationApi.injectEndpoints({
         results.accounts.map((account) => transformFromApi(account)),
       providesTags: () => ['accounts'],
     }),
-    upsertAccount: builder.mutation<void, Account>({
+    upsertAccount: builder.mutation<void, AccountFormInput>({
       query: (account) => ({
         url: `accounts${account.id ? '/' + account.id : ''}`,
         method: account.id ? 'PUT' : 'POST',

@@ -2,22 +2,25 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 
 import DatePicker from '../date-picker/DatePicker'
-import Select from '../controls/Select'
+import Select, {
+  MultiOption,
+  SingleOption,
+} from 'components/common/controls/MultiSelect'
 import { UseCurrentDateRange } from 'hooks/useCurrentDateRange'
 import {
   setCurrentDateRange,
   setCurrentFromDate,
   setCurrentToDate,
 } from 'stores/currentSlice'
+import { DateRange } from 'types/models'
 
 const DateRangeFilter = () => {
   const { isSuccess, dateRanges, currentDateRange } = UseCurrentDateRange()
   const dispatch = useDispatch()
 
-  const onSelectDateRange = (id: number) => {
-    const dateRange = dateRanges?.find((dr) => dr.id == id)
+  const onSelectDateRange = (dateRange: MultiOption | SingleOption | null) => {
     if (dateRange) {
-      dispatch(setCurrentDateRange(dateRange))
+      dispatch(setCurrentDateRange(dateRange as DateRange))
     }
   }
 
@@ -38,7 +41,7 @@ const DateRangeFilter = () => {
           </label>
           <Select
             name="dateRangeId"
-            value={currentDateRange.id}
+            value={currentDateRange}
             options={dateRanges}
             onChange={onSelectDateRange}
           />

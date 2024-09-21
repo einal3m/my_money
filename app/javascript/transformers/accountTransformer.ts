@@ -1,7 +1,7 @@
 import { AccountRequest, AccountResponse } from 'types/api'
-import { Account } from 'types/models'
+import { Account, AccountFormInput } from 'types/models'
 
-export const transformToApi = (account: Account): AccountRequest => {
+export const transformToApi = (account: AccountFormInput): AccountRequest => {
   switch (account.accountType) {
     case 'savings':
       return {

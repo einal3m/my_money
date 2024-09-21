@@ -36,7 +36,7 @@ const SearchCriteria = ({ filters }: SearchCriteriaProps) => {
         return (
           <AccountFilter
             key={ACCOUNT_FILTER}
-            multiple={allowMultipleAccounts}
+            isMulti={allowMultipleAccounts}
           />
         )
       case CATEGORY_FILTER:

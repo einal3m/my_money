@@ -1,4 +1,4 @@
-import { Subcategory } from '../types/models'
+import { Subcategory, SubcategoryFormInput } from '../types/models'
 import { SubcategoryRequest, SubcategoryResponse } from '../types/api'
 
 const subcategoryTransformer = {
@@ -10,7 +10,7 @@ const subcategoryTransformer = {
     }
   },
 
-  transformToApi(subcategory: Subcategory): SubcategoryRequest {
+  transformToApi(subcategory: SubcategoryFormInput): SubcategoryRequest {
     return {
       name: subcategory.name,
       category_id: subcategory.categoryId,
