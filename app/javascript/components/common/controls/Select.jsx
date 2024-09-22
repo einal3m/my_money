@@ -33,7 +33,7 @@ const Select = (props) => {
   };
 
   const dropDownValue = () => {
-    if (!props.value) return undefined;
+    if (!props.value) return null;
 
     let option;
 

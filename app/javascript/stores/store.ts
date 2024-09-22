@@ -11,6 +11,7 @@ import apiReducer from './api-status-reducer'
 import reportReducer from './report-reducer'
 import currentReducer from './currentSlice'
 import formReducer from './formSlice'
+import transactionReducer from './transactionSlice'
 import reconciliationReducer from './reconciliation-reducer'
 import { applicationApi } from './applicationApi'
 
@@ -19,7 +20,6 @@ export const store = configureStore({
     [applicationApi.reducerPath]: applicationApi.reducer,
     accountStore: accountReducer,
     dateRangeStore: dateRangeReducer,
-    transactionStore: transactionReducer,
     matchingTransactionStore: matchingTransactionReducer,
     categoryStore: categoryReducer,
     importStore: importReducer,
@@ -28,6 +28,7 @@ export const store = configureStore({
     reportStore: reportReducer,
     currentStore: currentReducer,
     formStore: formReducer,
+    transactionStore: transactionReducer,
     reconciliationStore: reconciliationReducer,
   },
   middleware: (getDefaultMiddleware) =>
