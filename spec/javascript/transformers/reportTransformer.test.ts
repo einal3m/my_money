@@ -1,8 +1,9 @@
 import {
   transformIncomeExpenseReport,
   transformLoanReport,
+  transformMonthTotals,
 } from 'transformers/reportTransformer'
-import { IncomeExpenseReportResponse } from 'types/api'
+import { IncomeExpenseReportResponse, MonthTotalsResponse } from 'types/api'
 import { Category, LoanReportResponse, Subcategory } from 'types/models'
 
 describe('ReportTransformer', () => {
@@ -243,6 +244,28 @@ describe('ReportTransformer', () => {
         total: 0,
         rows: [],
       },
+    })
+  })
+
+  describe('transformMonthTotals', () => {
+    it('converts month totals into seriesData', () => {
+      const totals: MonthTotalsResponse[] = [
+        ['Aug-16', 4560],
+        ['Sep-16', 1234],
+      ]
+
+      const seriesData = [
+        {
+          name: 'Total',
+          data: [4560, 1234],
+          backgroundColour: '#61ABDB',
+          borderColor: 'maroon',
+        },
+      ]
+      const xAxisLabels = ['Aug-16', 'Sep-16']
+      const chartData = { seriesData, xAxisLabels }
+
+      expect(transformMonthTotals(totals)).toEqual(chartData)
     })
   })
 })

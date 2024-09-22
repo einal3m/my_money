@@ -205,3 +205,21 @@ export type TableRow = {
   name: string
   amount: number
 }
+
+export type TransactionReport = {
+  transactions: Transaction[]
+  chartData: BarChartData
+}
+
+type BarSeriesData = {
+  name: string,
+  data: number[],
+  backgroundColour: string,
+  borderColor: string,
+
+}
+
+export type BarChartData = {
+  xAxisLabels: string[]
+  seriesData: BarSeriesData[]
+}

@@ -10,8 +10,13 @@ import {
   SeriesData,
   Subcategory,
   TableRow,
+  BarChartData,
 } from 'types/models'
-import { IncomeExpenseReportResponse, ReportTotalsResponse } from 'types/api'
+import {
+  IncomeExpenseReportResponse,
+  MonthTotalsResponse,
+  ReportTotalsResponse,
+} from 'types/api'
 
 export const transformLoanReport = (
   loanReport: LoanReportResponse,
@@ -78,7 +83,7 @@ const pieChartData = (
     return {
       data: [],
       labels: [],
-      total: 0
+      total: 0,
     }
   }
 
@@ -103,30 +108,54 @@ const tableData = (
 ): TableData => {
   const rows: TableRow[] = []
 
-  reportData.category_totals.forEach(ct => {
+  reportData.category_totals.forEach((ct) => {
     let unassigned = ct.sum
 
     rows.push({
       type: 'category',
       categoryId: ct.category_id || undefined,
-      name: categories.find(c => c.id == ct.category_id)?.name || "Un-assigned",
-      amount: ct.sum
+      name:
+        categories.find((c) => c.id == ct.category_id)?.name || 'Un-assigned',
+      amount: ct.sum,
     })
 
-    reportData.subcategory_totals.filter(sc => sc.category_id == ct.category_id).forEach(sc => {
-      rows.push({
-        type: 'subcategory',
-        categoryId: ct.category_id || undefined,
-        subcategoryId: sc.subcategory_id || undefined,
-        name: subcategories.find(s => s.id == sc.subcategory_id)?.name || "Un-assigned",
-        amount: sc.sum
+    reportData.subcategory_totals
+      .filter((sc) => sc.category_id == ct.category_id)
+      .forEach((sc) => {
+        rows.push({
+          type: 'subcategory',
+          categoryId: ct.category_id || undefined,
+          subcategoryId: sc.subcategory_id || undefined,
+          name:
+            subcategories.find((s) => s.id == sc.subcategory_id)?.name ||
+            'Un-assigned',
+          amount: sc.sum,
+        })
+        unassigned -= sc.sum
       })
-      unassigned -= sc.sum
-    })
   })
 
   return {
     total: reportData.total,
     rows: rows,
+  }
+}
+
+export const transformMonthTotals = (
+  monthTotals: MonthTotalsResponse[],
+): BarChartData => {
+  const xAxisLabels = monthTotals.map((month) => month[0])
+  const data = monthTotals.map((month) => month[1])
+
+  return {
+    seriesData: [
+      {
+        name: 'Total',
+        data,
+        backgroundColour: '#61ABDB',
+        borderColor: 'maroon',
+      },
+    ],
+    xAxisLabels,
   }
 }

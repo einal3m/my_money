@@ -33,14 +33,14 @@ export const categoryApi = applicationApi.injectEndpoints({
         method: category.id ? 'PUT' : 'POST',
         body: { category: categoryTransformer.transformToApi(category) },
       }),
-      invalidatesTags: ['categories'],
+      invalidatesTags: ['categories', 'category-report', 'subcategory-report'],
     }),
     deleteCategory: builder.mutation<void, number>({
       query: (id) => ({
         url: `/categories/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['categories'],
+      invalidatesTags: ['categories', 'category-report', 'subcategory-report'],
     }),
     getSubcategories: builder.query<Subcategory[], void>({
       query() {
@@ -62,14 +62,14 @@ export const categoryApi = applicationApi.injectEndpoints({
           subcategory: subcategoryTransformer.transformToApi(subcategory),
         },
       }),
-      invalidatesTags: ['subcategories'],
+      invalidatesTags: ['subcategories', 'category-report', 'subcategory-report'],
     }),
     deleteSubcategory: builder.mutation<void, number>({
       query: (id) => ({
         url: `/subcategories/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['subcategories'],
+      invalidatesTags: ['subcategories', 'category-report', 'subcategory-report'],
     }),
   }),
 })
