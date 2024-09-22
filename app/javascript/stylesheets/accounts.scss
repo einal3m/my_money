@@ -54,4 +54,9 @@
     padding-right: 20px;
     padding-left: 20px;
   }
+
+  &:hover {
+    background-color: $grey-background-color;
+    cursor: pointer;
+  }
 }

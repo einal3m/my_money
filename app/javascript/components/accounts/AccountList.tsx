@@ -5,10 +5,10 @@ import NewModelButtons from '../common/controls/NewModelButtons'
 import AccountGroup from './AccountGroup'
 import AccountModal from './AccountModal'
 import { useGroupedAccounts } from 'hooks/useGroupedAccounts'
+import { ModelType } from 'types/models'
 
 import '../../stylesheets/common.scss'
 import '../../stylesheets/accounts.scss'
-import { ModelType } from 'types/models'
 
 const AccountList = () => {
   const { groupedAccounts } = useGroupedAccounts()
