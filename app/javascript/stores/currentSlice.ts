@@ -4,9 +4,12 @@ import { accountApi } from './accountApi'
 import { Account, Category, DateRange, Subcategory } from 'types/models'
 import { dateRangeApi } from './dateRangeApi'
 
+export type ReportViewType = 'chart' | 'table'
+
 type CurrentState = {
   currentAccount?: Account
   currentLoanView: string
+  currentReportView: ReportViewType
   currentDateRange?: DateRange
   currentCategory?: Category
   currentSubcategory?: Subcategory
@@ -15,6 +18,7 @@ type CurrentState = {
 
 const initialState: CurrentState = {
   currentLoanView: 'chart',
+  currentReportView: 'table',
   currentSelectedAccounts: []
 }
 
@@ -30,6 +34,13 @@ export const currentSlice = createSlice({
     },
     setCurrentLoanView: (state, action: PayloadAction<string>) => {
       state.currentLoanView = action.payload
+    },
+    toggleCurrentReportView: (state) => {
+      if (state.currentReportView == 'table') {
+        state.currentReportView = 'chart'
+      } else {
+        state.currentReportView = 'table'
+      }
     },
     setCurrentDateRange: (state, action: PayloadAction<DateRange>) => {
       state.currentDateRange = action.payload
@@ -77,6 +88,7 @@ export const {
   setCurrentAccount,
   setCurrentSelectedAccounts,
   setCurrentLoanView,
+  toggleCurrentReportView,
   setCurrentDateRange,
   setCurrentFromDate,
   setCurrentToDate,

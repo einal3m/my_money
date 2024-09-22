@@ -11,26 +11,37 @@ import { setCurrentCategory, setCurrentSubcategory } from 'stores/currentSlice'
 import { Category, Subcategory } from 'types/models'
 
 type CategoryFilterProps = {
-  showSubcategories?: boolean
+  showSubcategories: boolean
+  allowUnassigned: boolean
 }
 
-const CategoryFilter = ({ showSubcategories }: CategoryFilterProps) => {
+const CategoryFilter = ({
+  showSubcategories,
+  allowUnassigned,
+}: CategoryFilterProps) => {
   const { isLoading, groupedCategories } = useGroupedCategories()
   const { currentCategory, currentSubcategory } = useSelector(
     (state: RootState) => state.currentStore,
   )
   const dispatch = useDispatch()
 
-  const groupedOptions = groupedCategories?.map((gc) => ({
+  if (isLoading || !groupedCategories) {
+    return <div />
+  }
+
+  const groupedOptions = groupedCategories.map((gc) => ({
     label: gc.categoryType.name,
     options: gc.categories,
   }))
 
-  const subcategoryOptions = groupedCategories
-    ?.map((categoryType) =>
-      categoryType.categories.filter((c) => c.id === currentCategory?.id),
-    )
-    .filter((array) => array.length === 1)[0][0].subcategories
+  let subcategoryOptions: Subcategory[] = []
+  if (showSubcategories && currentCategory) {
+    subcategoryOptions = groupedCategories
+      .map((categoryType) =>
+        categoryType.categories.filter((c) => c.id === currentCategory.id),
+      )
+      .filter((array) => array.length === 1)[0][0].subcategories
+  }
 
   const onSelectCategory = (category: MultiOption | SingleOption | null) => {
     dispatch(setCurrentCategory(category as Category))
@@ -40,10 +51,6 @@ const CategoryFilter = ({ showSubcategories }: CategoryFilterProps) => {
     subcategory: MultiOption | SingleOption | null,
   ) => {
     dispatch(setCurrentSubcategory(subcategory as Subcategory))
-  }
-
-  if (isLoading || !groupedCategories) {
-    return <div />
   }
 
   return (
@@ -56,7 +63,8 @@ const CategoryFilter = ({ showSubcategories }: CategoryFilterProps) => {
         value={currentCategory}
         groupedOptions={groupedOptions}
         onChange={onSelectCategory}
-        multiple={false}
+        isMulti={false}
+        allowUnassigned={allowUnassigned}
       />
       {showSubcategories && currentCategory && (
         <>
@@ -68,7 +76,8 @@ const CategoryFilter = ({ showSubcategories }: CategoryFilterProps) => {
             value={currentSubcategory}
             options={subcategoryOptions}
             onChange={onSelectSubcategory}
-            multiple={false}
+            isMulti={false}
+            allowUnassigned={allowUnassigned}
           />
         </>
       )}

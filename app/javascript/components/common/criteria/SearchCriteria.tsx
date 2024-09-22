@@ -13,6 +13,7 @@ import '../../../stylesheets/search-criteria.scss'
 type FilterOptions = {
   multiple?: boolean
   showSubcategories?: boolean
+  allowUnassigned?: boolean
 }
 
 type Filter = {
@@ -28,22 +29,21 @@ const SearchCriteria = ({ filters }: SearchCriteriaProps) => {
   const renderFilter = ({ name, options }: Filter) => {
     const allowMultipleAccounts = options?.multiple == true
     const showSubcategories = options?.showSubcategories == true
+    const allowUnassigned = options?.allowUnassigned == true
 
     switch (name) {
       case DATE_RANGE_FILTER:
         return <DateRangeFilter key={DATE_RANGE_FILTER} />
       case ACCOUNT_FILTER:
         return (
-          <AccountFilter
-            key={ACCOUNT_FILTER}
-            isMulti={allowMultipleAccounts}
-          />
+          <AccountFilter key={ACCOUNT_FILTER} isMulti={allowMultipleAccounts} />
         )
       case CATEGORY_FILTER:
         return (
           <CategoryFilter
             key={CATEGORY_FILTER}
             showSubcategories={showSubcategories}
+            allowUnassigned={allowUnassigned}
           />
         )
       default:
