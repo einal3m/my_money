@@ -9,7 +9,6 @@ import GroupedCategorySelect from '../common/controls/GroupedCategorySelect';
 import SubcategoryPicker from '../common/controls/SubcategoryPicker';
 import MatchingTransaction from './MatchingTransaction';
 import MoneyInput from '../common/controls/MoneyInput';
-import { getMatchingTransactions } from '../../actions/matching-transactions-actions';
 
 export default class BankTransactionForm extends React.Component {
 
@@ -23,10 +22,6 @@ export default class BankTransactionForm extends React.Component {
       isTransfer: !!props.transaction.matchingTransaction,
     };
     this.validator = new FormValidator(this.validationSchema);
-  }
-
-  componentDidMount() {
-    getMatchingTransactions(this.state.transaction.id);
   }
 
   validationSchema = {

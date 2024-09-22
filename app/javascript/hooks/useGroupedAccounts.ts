@@ -12,6 +12,7 @@ type AccountGroup = {
 type UseGroupedAccounts = {
   isLoading: boolean
   isSuccess: boolean
+  accounts?: Account[]
   groupedAccounts?: AccountGroup[]
   currentAccount?: Account
 }
@@ -47,5 +48,5 @@ export const useGroupedAccounts = (): UseGroupedAccounts => {
       : []
   ).filter((accountGroup: AccountGroup) => accountGroup.accounts.length > 0)
 
-  return { isLoading, isSuccess, groupedAccounts, currentAccount }
+  return { isLoading, isSuccess, accounts, groupedAccounts, currentAccount }
 }

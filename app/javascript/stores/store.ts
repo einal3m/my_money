@@ -2,8 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import accountReducer from './account-reducer'
 import dateRangeReducer from './date-range-reducer'
-import transactionReducer from './transaction-reducer'
-import matchingTransactionReducer from './matching-transactions-reducer'
 import categoryReducer from './category-reducer'
 import importReducer from './import-reducer'
 import bankStatementsReducer from './bank-statement-reducer'
@@ -20,7 +18,6 @@ export const store = configureStore({
     [applicationApi.reducerPath]: applicationApi.reducer,
     accountStore: accountReducer,
     dateRangeStore: dateRangeReducer,
-    matchingTransactionStore: matchingTransactionReducer,
     categoryStore: categoryReducer,
     importStore: importReducer,
     bankStatementStore: bankStatementsReducer,
@@ -32,8 +29,7 @@ export const store = configureStore({
     reconciliationStore: reconciliationReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .concat(applicationApi.middleware)
+    getDefaultMiddleware().concat(applicationApi.middleware),
 })
 
 // Get the type of our store variable

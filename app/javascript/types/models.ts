@@ -6,6 +6,7 @@ export enum ModelType {
   Category = 'Category',
   Pattern = 'Pattern',
   Subcategory = 'Subcategory',
+  Transaction = 'Transaction'
 }
 
 type AccountBase = {
@@ -131,7 +132,7 @@ export type MatchingTransaction = {
   notes: string
 }
 
-export type Transaction = {
+type BaseTransaction = {
   id: number
   accountId: number
   date: string
@@ -144,6 +145,14 @@ export type Transaction = {
   memo: string
   balance?: number
   transactionType: string
+}
+
+export type Transaction = BaseTransaction & {
+  id: number
+}
+
+export type TransactionFormInput = BaseTransaction & {
+  id?: number
 }
 
 // Reports
