@@ -75,6 +75,8 @@ module Api
       transactions = Transaction.find_matching(@transaction.date, @transaction.amount, account).to_a
       transactions.push(@transaction.matching_transaction) if @transaction.matching_transaction
 
+      return render json: { transactions: [] } if transactions.empty?
+
       render json: transactions
     end
 

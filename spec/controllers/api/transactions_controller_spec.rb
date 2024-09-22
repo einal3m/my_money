@@ -266,5 +266,17 @@ RSpec.describe Api::TransactionsController do
       expect(json['transactions'][1]['id']).to eq(t6.id)
       expect(json['transactions'][2]['id']).to eq(t7.id)
     end
+
+    it 'returns any empty list when no matching transactions are found' do
+      account1 = FactoryBot.create(:account)
+      t0 = FactoryBot.create(:transaction, account: account1, date: '2014-07-01', amount: 333)
+
+      get :matching, params: { account_id: account1.id, id: t0.id }
+
+      expect(response).to have_http_status(:ok)
+
+      json = response.parsed_body
+      expect(json['transactions'].length).to eq(0)
+    end
   end
 end
