@@ -1,8 +1,10 @@
+import { useSelector } from 'react-redux'
 import {
   useGetCategoriesQuery,
   useGetCategoryTypesQuery,
   useGetSubcategoriesQuery,
 } from 'stores/categoryApi'
+import { RootState } from 'stores/store'
 
 import { Category, Subcategory, CategoryType } from 'types/models'
 
@@ -19,6 +21,8 @@ type UseGroupedCategories = {
   isLoading: boolean
   isSuccess: boolean
   groupedCategories?: GroupedCategories[]
+  currentCategory?: Category
+  currentSubcategory?: Subcategory
 }
 
 export const useGroupedCategories = (): UseGroupedCategories => {
@@ -39,6 +43,10 @@ export const useGroupedCategories = (): UseGroupedCategories => {
     isLoading: isLoadingS,
     isSuccess: isSuccessS,
   } = useGetSubcategoriesQuery()
+
+  const { currentCategory, currentSubcategory } = useSelector(
+    (state: RootState) => state.currentStore
+  )
 
   const isLoading = isLoadingC || isLoadingS || isLoadingT
   const isSuccess = isSuccessC && isSuccessS && isSuccessT
@@ -61,5 +69,5 @@ export const useGroupedCategories = (): UseGroupedCategories => {
         }))
     : []
 
-  return { isLoading, isSuccess, groupedCategories }
+  return { isLoading, isSuccess, groupedCategories, currentCategory, currentSubcategory }
 }

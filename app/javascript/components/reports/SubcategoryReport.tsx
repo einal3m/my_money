@@ -12,10 +12,13 @@ import { SOURCE_SUBCATEGORY_REPORT } from 'actions/action-types'
 import { RootState } from 'stores/store'
 import { UseCurrentDateRange } from 'hooks/useCurrentDateRange'
 import { useGetSubcategoryReportQuery } from 'stores/reportApi'
+import { useGroupedCategories } from 'hooks/useGroupedCategories'
 
 const SubcategoryReport = () => {
-  const { currentReportView, currentCategory, currentSubcategory } =
-    useSelector((state: RootState) => state.currentStore)
+  const { currentReportView } = useSelector(
+    (state: RootState) => state.currentStore,
+  )
+  const { currentCategory, currentSubcategory } = useGroupedCategories()
   const { currentDateRange } = UseCurrentDateRange()
   const { data } = useGetSubcategoryReportQuery(
     {

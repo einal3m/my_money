@@ -44,6 +44,7 @@ const CategoryFilter = ({
   }
 
   const onSelectCategory = (category: MultiOption | SingleOption | null) => {
+    dispatch(setCurrentSubcategory(undefined))
     dispatch(setCurrentCategory(category as Category))
   }
 

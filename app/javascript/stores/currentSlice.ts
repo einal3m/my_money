@@ -55,11 +55,11 @@ export const currentSlice = createSlice({
         state.currentDateRange.toDate = action.payload
       }
     },
-    setCurrentCategory: (state, action: PayloadAction<Category>) => {
+    setCurrentCategory: (state, action: PayloadAction<Category | undefined>) => {
       state.currentCategory = action.payload
       state.currentSubcategory = undefined
     },
-    setCurrentSubcategory: (state, action: PayloadAction<Subcategory>) => {
+    setCurrentSubcategory: (state, action: PayloadAction<Subcategory | undefined>) => {
       state.currentSubcategory = action.payload
     },
   },

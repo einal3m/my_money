@@ -25,7 +25,7 @@ type MultiSelectProps = {
 const MultiSelect = (props: MultiSelectProps) => {
   return (
     <Select
-      value={props.value}
+      value={props.value || null}
       getOptionLabel={(option: Option) => option.name}
       getOptionValue={(option: Option) => option.id.toString()}
       options={props.options || props.groupedOptions}
