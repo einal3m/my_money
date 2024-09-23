@@ -6,7 +6,7 @@ export enum ModelType {
   Category = 'Category',
   Pattern = 'Pattern',
   Subcategory = 'Subcategory',
-  Transaction = 'Transaction'
+  Transaction = 'Transaction',
 }
 
 type AccountBase = {
@@ -166,7 +166,7 @@ export type LoanReportResponse = {
   budget_amortization: PointResponse[]
 }
 
-export type SeriesData = {
+export type LineSeriesData = {
   name: string
   data: Point[]
   backgroundColour: string
@@ -212,14 +212,17 @@ export type TransactionReport = {
 }
 
 type BarSeriesData = {
-  name: string,
-  data: number[],
-  backgroundColour: string,
-  borderColor: string,
-
+  name: string
+  data: number[]
+  backgroundColour: string
+  borderColor: string
 }
 
 export type BarChartData = {
   xAxisLabels: string[]
   seriesData: BarSeriesData[]
+}
+
+export type AccountBalanceReport = {
+  [accountId: string]: Point[]
 }

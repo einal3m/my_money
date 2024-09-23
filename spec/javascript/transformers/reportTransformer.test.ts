@@ -1,4 +1,6 @@
 import {
+  AccountBalance,
+  transformAccountBalances,
   transformIncomeExpenseReport,
   transformLoanReport,
   transformMonthTotals,
@@ -266,6 +268,51 @@ describe('ReportTransformer', () => {
       const chartData = { seriesData, xAxisLabels }
 
       expect(transformMonthTotals(totals)).toEqual(chartData)
+    })
+  })
+
+  describe('transformAccountBalances', () => {
+    it('converts account balance into line chart form', () => {
+      const accountBalances1: AccountBalance = {
+        account_id: 1,
+        report: [
+          ['03 Mar, 2016', -3333],
+          ['14 Mar, 2016', -6666],
+        ],
+      }
+      const accountBalances2: AccountBalance = {
+        account_id: 2,
+        report: [
+          ['01 Mar, 2016', 1111],
+          ['15 Mar, 2016', 4444],
+        ],
+      }
+
+      const seriesData = transformAccountBalances([
+        accountBalances1,
+        accountBalances2,
+      ])
+
+      const expectedResult = {
+        '1': [
+          [new Date('3 Mar, 2016'), -33.33],
+          [new Date('14 Mar, 2016'), -66.66],
+        ],
+        '2': [
+          [new Date('01 Mar, 2016'), 11.11],
+          [new Date('15 Mar, 2016'), 44.44],
+        ],
+      }
+
+      expect(seriesData).toEqual(expectedResult)
+    })
+
+    it('returns an empty list when there are no selected accounts', () => {
+      expect(transformAccountBalances([])).toEqual({})
+    })
+
+    it('returns an empty list when there is no accountBalance data', () => {
+      expect(transformAccountBalances(undefined)).toEqual({})
     })
   })
 })

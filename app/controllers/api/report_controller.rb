@@ -41,7 +41,7 @@ module Api
         @line_chart_data = search.eod_balance
       end
 
-      render json: { report: @line_chart_data }
+      render json: { report: @line_chart_data, account_id: account&.id }
     end
 
     def category

@@ -144,9 +144,14 @@ export type SubcategoryTotalsResponse = {
   subcategory_id: number | null
 }
 
-export type MonthTotalsResponse = [string, number]
+export type MonthTotals = [string, number]
 
 export type TransactionReportResponse = {
   transactions: TransactionResponse[]
-  month_totals: MonthTotalsResponse[]
+  month_totals: MonthTotals[]
+}
+
+export type AccountBalanceReportResponse = {
+  account_id: number
+  report: MonthTotals[]
 }

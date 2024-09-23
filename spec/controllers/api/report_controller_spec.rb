@@ -10,7 +10,7 @@ RSpec.describe Api::ReportController do
       to_date = '2014-01-2'
       data = [['01 Jan, 2014', 4.0], ['02 Jan, 2014', 14.0]]
 
-      account = instance_double Account
+      account = instance_double Account, id: 1
       search = instance_double Lib::BalanceSearch
       date_range = instance_double Lib::CustomDateRange
 
@@ -25,6 +25,7 @@ RSpec.describe Api::ReportController do
       json = response.parsed_body
       expect(json['report'].length).to eq(2)
       expect(json['report']).to eq(data)
+      expect(json['account_id']).to eq(1)
     end
 
     it 'returns no data when account not specified' do

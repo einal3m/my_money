@@ -7,20 +7,22 @@ import {
   PieChartData,
   Point,
   PointResponse,
-  SeriesData,
   Subcategory,
   TableRow,
   BarChartData,
+  AccountBalanceReport,
+  LineSeriesData,
 } from 'types/models'
 import {
+  AccountBalanceReportResponse,
   IncomeExpenseReportResponse,
-  MonthTotalsResponse,
+  MonthTotals,
   ReportTotalsResponse,
 } from 'types/api'
 
 export const transformLoanReport = (
   loanReport: LoanReportResponse,
-): SeriesData[] => {
+): LineSeriesData[] => {
   if (!loanReport.minimum_repayment) return []
 
   return [
@@ -142,7 +144,7 @@ const tableData = (
 }
 
 export const transformMonthTotals = (
-  monthTotals: MonthTotalsResponse[],
+  monthTotals: MonthTotals[],
 ): BarChartData => {
   const xAxisLabels = monthTotals.map((month) => month[0])
   const data = monthTotals.map((month) => month[1])
@@ -158,4 +160,22 @@ export const transformMonthTotals = (
     ],
     xAxisLabels,
   }
+}
+
+export const transformAccountBalances = (
+  accountBalances: AccountBalanceReportResponse[] | undefined,
+): AccountBalanceReport | undefined => {
+  const result: AccountBalanceReport = {}
+  if (!accountBalances) {
+    return undefined
+  }
+
+  accountBalances.forEach((ac, index) => {
+    result[ac.account_id.toString()] = ac.report.map((data) => [
+      new Date(data[0]),
+      centsToDollars(data[1]),
+    ])
+  })
+
+  return result
 }

@@ -33,14 +33,14 @@ export const accountApi = applicationApi.injectEndpoints({
         method: account.id ? 'PUT' : 'POST',
         body: { account: transformToApi(account) },
       }),
-      invalidatesTags: ['accounts'],
+      invalidatesTags: ['accounts', 'account-balance-report'],
     }),
     deleteAccount: builder.mutation<void, number>({
       query: (id) => ({
         url: `/accounts/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['accounts'],
+      invalidatesTags: ['accounts', 'account-balance-report'],
     }),
   }),
 })

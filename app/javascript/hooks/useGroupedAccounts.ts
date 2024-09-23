@@ -15,6 +15,7 @@ type UseGroupedAccounts = {
   accounts?: Account[]
   groupedAccounts?: AccountGroup[]
   currentAccount?: Account
+  currentSelectedAccounts?: Account[]
 }
 
 export const useGroupedAccounts = (): UseGroupedAccounts => {
@@ -30,8 +31,8 @@ export const useGroupedAccounts = (): UseGroupedAccounts => {
     isSuccess: isSuccessA,
   } = useGetAccountsQuery()
 
-  const currentAccount = useSelector(
-    (state: RootState) => state.currentStore.currentAccount,
+  const { currentAccount, currentSelectedAccounts } = useSelector(
+    (state: RootState) => state.currentStore,
   )
 
   const isLoading = isLoadingT || isLoadingA || !currentAccount
@@ -48,5 +49,12 @@ export const useGroupedAccounts = (): UseGroupedAccounts => {
       : []
   ).filter((accountGroup: AccountGroup) => accountGroup.accounts.length > 0)
 
-  return { isLoading, isSuccess, accounts, groupedAccounts, currentAccount }
+  return {
+    isLoading,
+    isSuccess,
+    accounts,
+    groupedAccounts,
+    currentAccount,
+    currentSelectedAccounts,
+  }
 }

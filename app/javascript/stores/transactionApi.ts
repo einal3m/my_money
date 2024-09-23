@@ -37,14 +37,26 @@ export const transactionApi = applicationApi.injectEndpoints({
         method: transaction.id ? 'PUT' : 'POST',
         body: { transaction: transformToApi(transaction) },
       }),
-      invalidatesTags: ['transactions', 'matching-transactions', 'category-report', 'subcategory-report'],
+      invalidatesTags: [
+        'transactions',
+        'matching-transactions',
+        'category-report',
+        'subcategory-report',
+        'account-balance-report',
+      ],
     }),
     deleteTransaction: builder.mutation<void, TransactionFormInput>({
       query: (transaction) => ({
         url: `/accounts/${transaction.accountId}/transactions/${transaction.id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['transactions', 'matching-transactions', 'category-report', 'subcategory-report'],
+      invalidatesTags: [
+        'transactions',
+        'matching-transactions',
+        'category-report',
+        'subcategory-report',
+        'account-balance-report',
+      ],
     }),
     getMatchingTransactions: builder.query<
       Transaction[],

@@ -1,11 +1,21 @@
 import {
+  Account,
+  AccountBalanceReport,
   DateRange,
+  LineSeriesData,
   LoanReportResponse,
-  SeriesData,
   TransactionReport,
 } from 'types/models'
-import { TransactionReportResponse, IncomeExpenseReportResponse } from 'types/api'
-import { transformLoanReport, transformMonthTotals } from 'transformers/reportTransformer'
+import {
+  TransactionReportResponse,
+  IncomeExpenseReportResponse,
+  AccountBalanceReportResponse,
+} from 'types/api'
+import {
+  transformAccountBalances,
+  transformLoanReport,
+  transformMonthTotals,
+} from 'transformers/reportTransformer'
 import { applicationApi } from './applicationApi'
 import { transformFromApi } from 'transformers/transactionTransformer'
 
@@ -20,9 +30,14 @@ type SubcategoryReportParams = {
   dateRange?: DateRange
 }
 
+type AccountBalanceReportParams = {
+  accounts: Account[]
+  dateRange?: DateRange
+}
+
 export const reportApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
-    getLoanReport: builder.query<SeriesData[], number>({
+    getLoanReport: builder.query<LineSeriesData[], number>({
       query(accountId) {
         return {
           url: `report/home_loan?account_id=${accountId}`,
@@ -53,11 +68,14 @@ export const reportApi = applicationApi.injectEndpoints({
         transactions: report.transactions.map((transaction) =>
           transformFromApi(transaction),
         ),
-        chartData: transformMonthTotals(report.month_totals)
+        chartData: transformMonthTotals(report.month_totals),
       }),
       providesTags: () => ['category-report'],
     }),
-    getSubcategoryReport: builder.query<TransactionReport, SubcategoryReportParams>({
+    getSubcategoryReport: builder.query<
+      TransactionReport,
+      SubcategoryReportParams
+    >({
       query({ categoryId, subcategoryId, dateRange }) {
         return {
           url: `report/subcategory?category_id=${categoryId || ''}&subcategory_id=${subcategoryId || ''}&from_date=${dateRange?.fromDate}&to_date=${dateRange?.toDate}`,
@@ -67,9 +85,28 @@ export const reportApi = applicationApi.injectEndpoints({
         transactions: report.transactions.map((transaction) =>
           transformFromApi(transaction),
         ),
-        chartData: transformMonthTotals(report.month_totals)
+        chartData: transformMonthTotals(report.month_totals),
       }),
       providesTags: () => ['subcategory-report'],
+    }),
+    getAccountBalanceReport: builder.query<
+      AccountBalanceReport | undefined,
+      AccountBalanceReportParams
+    >({
+      queryFn: async (arg, api, extraOptions, baseQuery) => {
+        const requests = arg.accounts.map((account) =>
+          baseQuery({
+            url: `report/eod_balance?account_id=${account.id}&from_date=${arg.dateRange?.fromDate}&to_date=${arg.dateRange?.toDate}`,
+          }),
+        )
+
+        const results = await Promise.all(requests)
+        const data = transformAccountBalances(
+          results.map((r) => r.data as AccountBalanceReportResponse),
+        )
+
+        return { data }
+      },
     }),
   }),
 })
@@ -78,5 +115,6 @@ export const {
   useGetLoanReportQuery,
   useGetIncomeVsExpensesReportQuery,
   useGetCategoryReportQuery,
-  useGetSubcategoryReportQuery
+  useGetSubcategoryReportQuery,
+  useGetAccountBalanceReportQuery,
 } = reportApi
