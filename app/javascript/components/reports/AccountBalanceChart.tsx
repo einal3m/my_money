@@ -37,7 +37,7 @@ const AccountBalanceReport = () => {
 
   const renderChart = () => {
     if (seriesData.length > 0) {
-      return <D3LineChart chartData={{ seriesData: seriesData }} />
+      return <D3LineChart seriesData={seriesData} />
     }
     return undefined
   }

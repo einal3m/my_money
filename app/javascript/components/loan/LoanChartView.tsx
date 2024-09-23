@@ -17,7 +17,7 @@ const LoanChartView = () => {
 
   return (
     <div>
-      <D3LineChart chartData={{ seriesData: data }} />
+      <D3LineChart seriesData={data} />
     </div>
   )
 }

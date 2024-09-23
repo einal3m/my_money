@@ -8,7 +8,7 @@ export default function lineChart(seriesData, vis, options, callbacks) {
     noOfSeries: seriesData.length,
     topMargin: 20,
     leftMargin: 80,
-    rightMargin: 80,
+    rightMargin: 0,
     xAxisHeight: 30,
   };
 
@@ -133,7 +133,7 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     .attr('opacity', 0)
     .on('mouseover', () => focus.style('display', null))
     .on('mouseout', hideCircles)
-    .on('mousemove', moveCircles);
+    .on('mousemove', (event) => moveCircles(event));
 
   const yFor = (date, series) => {
     const points = series.data.filter(data => date >= data[0]);
@@ -151,8 +151,8 @@ function createHoverCircles(vis, seriesData, xScale, yScale, dim, callbacks) {
     return newDate;
   };
 
-  function moveCircles() {
-    const date = roundedDate(xScale.invert(d3.mouse(this)[0]));
+  function moveCircles(event) {
+    const date = roundedDate(xScale.invert(d3.pointer(event)[0]));
 
     const tooltipData = {
       periodLabel: callbacks.formatXLabels(date),
