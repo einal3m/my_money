@@ -2,6 +2,7 @@ export enum ModelType {
   AccountLoan = 'Loan Account',
   AccountSavings = 'Savings Account',
   AccountShare = 'Share Account',
+  BankStatement = 'Bank Statement',
   Budget = 'Budget',
   Category = 'Category',
   Pattern = 'Pattern',

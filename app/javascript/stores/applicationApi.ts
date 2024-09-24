@@ -4,6 +4,7 @@ export const applicationApi = createApi({
   tagTypes: [
     'accounts',
     'account-balance-report',
+    'bank-statements',
     'budgets',
     'categories',
     'category-report',
