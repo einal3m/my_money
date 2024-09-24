@@ -1,69 +1,81 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { LinkContainer } from 'react-router-bootstrap'
+import { Dropdown, DropdownButton } from 'react-bootstrap'
 
-import { showFormModal } from '../../actions/form-actions';
-import { setCurrentAccount as oldSetCurrentAccount, softDeleteAccount } from '../../actions/account-actions';
 import { setCurrentAccount } from 'stores/currentSlice'
+import { Account, ModelType } from 'types/models'
+import { showFormModal } from 'stores/formSlice'
+import { useDeactivateAccountMutation } from 'stores/accountApi'
 
-const AccountActionButtons = (props) => {
+type AccountActionButtonsProps = {
+  account: Account
+}
+
+const AccountActionButtons = (props: AccountActionButtonsProps) => {
   const dispatch = useDispatch()
+  const [deactivateAccount] = useDeactivateAccountMutation()
 
-  const editAccount = () => {
-    const accountType = props.account.accountType;
-    const modelType = `${accountType[0].toUpperCase()}${accountType.slice(1)} Account`;
-    showFormModal(modelType, props.account, { allowDelete: true });
-  };
+  const editAccountHandler = () => {
+    const accountType = props.account.accountType
+    const modelType = `${accountType[0].toUpperCase()}${accountType.slice(1)} Account`
 
-  const deactivateAccount = () => {
-    softDeleteAccount(props.account.id)
-  };
+    dispatch(
+      showFormModal({
+        modelType: modelType as ModelType,
+        model: props.account,
+        allowDelete: true,
+      }),
+    )
+  }
 
-  const viewTransactions = () => {
-    oldSetCurrentAccount(props.account.id);
-  };
+  const deactivateAccountHandler = () => {
+    deactivateAccount(props.account.id)
+  }
 
-  const viewImportHistory = () => {
-    oldSetCurrentAccount(props.account.id);
-  };
-
-  const viewLoanReport = () => {
+  const viewTransactionsHandler = () => {
     dispatch(setCurrentAccount(props.account))
-  };
+  }
 
-  const accountActions = (eventKey) => {
+  const viewImportHistoryHandler = () => {
+    dispatch(setCurrentAccount(props.account))
+  }
+
+  const viewLoanReportHandler = () => {
+    dispatch(setCurrentAccount(props.account))
+  }
+
+  const accountActions = (eventKey: string | null) => {
     switch (eventKey) {
       case 'edit':
-        editAccount();
-        return;
+        editAccountHandler()
+        return
       case 'deactivate':
-        deactivateAccount();
-        return;
+        deactivateAccountHandler()
+        return
       case 'transactions':
-        viewTransactions();
-        return;
+        viewTransactionsHandler()
+        return
       case 'import-history':
-        viewImportHistory();
-        return;
+        viewImportHistoryHandler()
+        return
       case 'loan-report':
-        viewLoanReport();
-        return;
+        viewLoanReportHandler()
+        return
       default:
-        return;
+        return
     }
-  };
+  }
 
   const renderLoanActions = () => {
-    if (props.account.accountType === 'loan') 
+    if (props.account.accountType === 'loan')
       return (
         <LinkContainer to="/reports/loanReport">
           <Dropdown.Item eventKey="loan-report">Loan Report</Dropdown.Item>
         </LinkContainer>
-      );
-    return <div />;
-  };
+      )
+    return <div />
+  }
 
   return (
     <DropdownButton
@@ -81,14 +93,7 @@ const AccountActionButtons = (props) => {
       </LinkContainer>
       {renderLoanActions()}
     </DropdownButton>
-    );
-};
+  )
+}
 
-AccountActionButtons.propTypes = {
-  account: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    accountType: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
-export default AccountActionButtons;
+export default AccountActionButtons

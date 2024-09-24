@@ -22,11 +22,11 @@ const AccountSlat = (props: AccountSlatProps) => {
   }
 
   return (
-    <div className="account" onClick={() => setRouteTo(true)}>
+    <div className="account">
       <div className="account-icon">
         <AccountIcon accountType={props.account.accountType} />
       </div>
-      <div className="account-detail">
+      <div className="account-detail" onClick={() => setRouteTo(true)}>
         <div>
           <div className="name-link">
             <h6>{props.account.name}</h6>

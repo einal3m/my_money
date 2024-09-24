@@ -11,12 +11,12 @@ import '../../stylesheets/common.scss'
 import '../../stylesheets/accounts.scss'
 
 const AccountList = () => {
-  const { groupedAccounts } = useGroupedAccounts()
+  const { activeGroupedAccounts } = useGroupedAccounts()
 
   const renderAccountGroups = () => {
-    if (groupedAccounts == undefined) return <></>
+    if (activeGroupedAccounts == undefined) return <></>
 
-    return groupedAccounts.map((accountGroup) => {
+    return activeGroupedAccounts.map((accountGroup) => {
       return (
         <AccountGroup
           key={accountGroup.accountType.code}

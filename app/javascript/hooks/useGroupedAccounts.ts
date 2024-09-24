@@ -14,6 +14,7 @@ type UseGroupedAccounts = {
   isSuccess: boolean
   accounts?: Account[]
   groupedAccounts?: AccountGroup[]
+  activeGroupedAccounts?: AccountGroup[]
   currentAccount?: Account
   currentSelectedAccounts?: Account[]
 }
@@ -49,11 +50,26 @@ export const useGroupedAccounts = (): UseGroupedAccounts => {
       : []
   ).filter((accountGroup: AccountGroup) => accountGroup.accounts.length > 0)
 
+  const activeGroupedAccounts = (
+    accountTypes
+      ? accountTypes.map((accountType: AccountType) => ({
+          accountType,
+          accounts: accounts
+            ? accounts.filter(
+                (a: Account) =>
+                  a.accountType == accountType.code && a.deletedAt == undefined,
+              )
+            : [],
+        }))
+      : []
+  ).filter((accountGroup: AccountGroup) => accountGroup.accounts.length > 0)
+
   return {
     isLoading,
     isSuccess,
     accounts,
     groupedAccounts,
+    activeGroupedAccounts,
     currentAccount,
     currentSelectedAccounts,
   }

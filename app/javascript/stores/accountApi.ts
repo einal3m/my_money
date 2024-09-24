@@ -35,6 +35,13 @@ export const accountApi = applicationApi.injectEndpoints({
       }),
       invalidatesTags: ['accounts', 'account-balance-report'],
     }),
+    deactivateAccount: builder.mutation<void, number>({
+      query: (accountId) => ({
+        url: `accounts/${accountId}/deactivate`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['accounts', 'account-balance-report'],
+    }),
     deleteAccount: builder.mutation<void, number>({
       query: (id) => ({
         url: `/accounts/${id}`,
@@ -49,5 +56,6 @@ export const {
   useGetAccountsQuery,
   useGetAccountTypesQuery,
   useUpsertAccountMutation,
+  useDeactivateAccountMutation,
   useDeleteAccountMutation,
 } = accountApi

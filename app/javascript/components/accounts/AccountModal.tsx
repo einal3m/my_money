@@ -7,12 +7,16 @@ import ShareAccountForm from './ShareAccountForm'
 import HomeLoanAccountForm from './HomeLoanAccountForm'
 import { RootState } from 'stores/store'
 import { AccountFormInput, ModelType } from 'types/models'
-import { useDeleteAccountMutation, useUpsertAccountMutation } from 'stores/accountApi'
+import {
+  useDeleteAccountMutation,
+  useUpsertAccountMutation,
+} from 'stores/accountApi'
 
 export const AccountModal = () => {
   const { show, allowDelete, model, modelType } = useSelector(
     (state: RootState) => state.formStore,
   )
+
   const [upsertAccount] = useUpsertAccountMutation()
   const [deleteAccount] = useDeleteAccountMutation()
 
