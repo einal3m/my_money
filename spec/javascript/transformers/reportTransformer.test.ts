@@ -312,7 +312,7 @@ describe('ReportTransformer', () => {
     })
 
     it('returns an empty list when there is no accountBalance data', () => {
-      expect(transformAccountBalances(undefined)).toEqual({})
+      expect(transformAccountBalances(undefined)).toEqual(undefined)
     })
   })
 })

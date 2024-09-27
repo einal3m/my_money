@@ -21,6 +21,7 @@ type UseGroupedCategories = {
   isLoading: boolean
   isSuccess: boolean
   groupedCategories?: GroupedCategories[]
+  subcategories?: Subcategory[]
   currentCategory?: Category
   currentSubcategory?: Subcategory
 }
@@ -45,7 +46,7 @@ export const useGroupedCategories = (): UseGroupedCategories => {
   } = useGetSubcategoriesQuery()
 
   const { currentCategory, currentSubcategory } = useSelector(
-    (state: RootState) => state.currentStore
+    (state: RootState) => state.currentStore,
   )
 
   const isLoading = isLoadingC || isLoadingS || isLoadingT
@@ -69,5 +70,12 @@ export const useGroupedCategories = (): UseGroupedCategories => {
         }))
     : []
 
-  return { isLoading, isSuccess, groupedCategories, currentCategory, currentSubcategory }
+  return {
+    isLoading,
+    isSuccess,
+    groupedCategories,
+    subcategories,
+    currentCategory,
+    currentSubcategory,
+  }
 }

@@ -3,12 +3,12 @@ import { configureStore } from '@reduxjs/toolkit'
 import accountReducer from './account-reducer'
 import dateRangeReducer from './date-range-reducer'
 import categoryReducer from './category-reducer'
-import importReducer from './import-reducer'
 import bankStatementsReducer from './bank-statement-reducer'
 import apiReducer from './api-status-reducer'
 import reportReducer from './report-reducer'
 import currentReducer from './currentSlice'
 import formReducer from './formSlice'
+import importReducer from './importSlice'
 import transactionReducer from './transactionSlice'
 import reconciliationReducer from './reconciliation-reducer'
 import { applicationApi } from './applicationApi'
@@ -19,12 +19,12 @@ export const store = configureStore({
     accountStore: accountReducer,
     dateRangeStore: dateRangeReducer,
     categoryStore: categoryReducer,
-    importStore: importReducer,
     bankStatementStore: bankStatementsReducer,
     apiStatusStore: apiReducer,
     reportStore: reportReducer,
     currentStore: currentReducer,
     formStore: formReducer,
+    importStore: importReducer,
     transactionStore: transactionReducer,
     reconciliationStore: reconciliationReducer,
   },

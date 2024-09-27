@@ -24,6 +24,22 @@ export type BankStatementResponse = {
   transaction_count: number
 }
 
+type BankStatementTransaction = {
+  account_id: number
+  date: string
+  amount: number
+  category_id: number
+  subcategory_id: number
+  notes?: string
+  memo: string
+}
+
+export type BankStatementRequest = {
+  account_id: number
+  file_name: string
+  transactions: BankStatementTransaction[]
+}
+
 export type BudgetRequest = {
   account_id: number
   description: string
@@ -86,13 +102,12 @@ export type ReconciliationRequest = {
 export type ReconciliationResponse = ReconciliationRequest
 
 export type TransactionRequest = {
-  id: number
   account_id: number
   date: string
   amount: number
   category_id: number
   subcategory_id: number
-  notes: string
+  notes?: string
   memo: string
   transaction_type: string
   matching_transaction_id?: number
@@ -118,6 +133,7 @@ export type MatchingTransactionResponse = {
 }
 
 export type TransactionResponse = TransactionRequest & {
+  id: number
   balance: number
   matching_transaction: MatchingTransactionResponse
 }

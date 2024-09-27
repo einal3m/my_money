@@ -121,7 +121,7 @@ export type OfxTransaction = {
   amount: number
   categoryId: number
   subcategoryId: number
-  notes: string
+  notes?: string
   import: boolean
   duplicate: boolean
 }
@@ -140,7 +140,7 @@ type BaseTransaction = {
   amount: number
   categoryId: number
   subcategoryId: number
-  notes: string
+  notes?: string
   matchingTransactionId?: number
   matchingTransaction?: MatchingTransaction
   memo: string
