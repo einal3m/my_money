@@ -10,7 +10,6 @@ import currentReducer from './currentSlice'
 import formReducer from './formSlice'
 import importReducer from './importSlice'
 import transactionReducer from './transactionSlice'
-import reconciliationReducer from './reconciliation-reducer'
 import { applicationApi } from './applicationApi'
 
 export const store = configureStore({
@@ -26,7 +25,6 @@ export const store = configureStore({
     formStore: formReducer,
     importStore: importReducer,
     transactionStore: transactionReducer,
-    reconciliationStore: reconciliationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(applicationApi.middleware),
