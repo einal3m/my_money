@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import TransactionRow from './TransactionRow'
-import { accountNameAndBank } from '../../util/text-util'
+import { accountNameAndBank } from 'util/textUtil'
 import { UseCurrentDateRange } from 'hooks/useCurrentDateRange'
 import { useGetTransactionsQuery } from 'stores/transactionApi'
 import { useGroupedAccounts } from 'hooks/useGroupedAccounts'

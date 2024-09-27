@@ -5,7 +5,7 @@ import PageHeader from '../common/PageHeader'
 import LoanViewButtons from './LoanViewButtons'
 import LoanChartView from './LoanChartView'
 import BudgetTable from './BudgetTable'
-import { accountNameAndBank } from '../../util/text-util'
+import { accountNameAndBank } from 'util/textUtil'
 import { RootState } from 'stores/store'
 
 const LoanReport = () => {
@@ -24,6 +24,10 @@ const LoanReport = () => {
     }
   }
 
+  if (!currentAccount) {
+    return <div />
+  }
+  
   return (
     <div>
       <PageHeader title="loan report" apiStatus={{}}>

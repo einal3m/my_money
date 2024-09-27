@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Amount from '../common/Amount';
 import Date from '../common/Date';
 import { showFormModal } from '../../actions/form-actions';
-import { memoAndNotes, categoryAndSubcategory } from '../../util/text-util';
+import { memoAndNotes, categoryAndSubcategory } from 'util/textUtil';
 
 export default class ReportTransactionRow extends React.Component {
 

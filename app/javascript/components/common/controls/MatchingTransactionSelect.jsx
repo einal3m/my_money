@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from './Select';
-import { memoAndNotes } from '../../../util/text-util';
+import { memoAndNotes } from 'util/textUtil';
 
 export default class MatchingTransactionSelect extends React.Component {
 

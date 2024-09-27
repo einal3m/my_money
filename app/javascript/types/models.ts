@@ -129,8 +129,8 @@ export type OfxTransaction = {
 export type MatchingTransaction = {
   id: number
   accountId: number
-  memo: string
-  notes: string
+  memo?: string
+  notes?: string
 }
 
 type BaseTransaction = {
@@ -138,14 +138,14 @@ type BaseTransaction = {
   accountId: number
   date: string
   amount: number
-  categoryId: number
-  subcategoryId: number
+  categoryId?: number
+  subcategoryId?: number
   notes?: string
   matchingTransactionId?: number
   matchingTransaction?: MatchingTransaction
-  memo: string
+  memo?: string
   balance?: number
-  transactionType: string
+  transactionType?: string
 }
 
 export type Transaction = BaseTransaction & {

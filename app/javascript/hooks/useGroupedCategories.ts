@@ -8,7 +8,7 @@ import { RootState } from 'stores/store'
 
 import { Category, Subcategory, CategoryType } from 'types/models'
 
-type CategoryWithSubcatories = Category & {
+export type CategoryWithSubcatories = Category & {
   subcategories: Subcategory[]
 }
 

@@ -4,11 +4,7 @@ import { useDispatch } from 'react-redux'
 import Amount from '../common/Amount'
 import Date from '../common/Date'
 import Balance from '../common/Balance'
-import {
-  memoAndNotes,
-  categoryAndSubcategory,
-  transferTo,
-} from '../../util/text-util'
+import { memoAndNotes, categoryAndSubcategory, transferTo } from 'util/textUtil'
 import { GroupedCategories } from 'hooks/useGroupedCategories'
 import { Account, ModelType, Transaction } from 'types/models'
 import { showFormModal } from 'stores/formSlice'

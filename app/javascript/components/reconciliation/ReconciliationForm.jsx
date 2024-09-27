@@ -4,7 +4,7 @@ import FormValidator from '../../util/form-validator';
 import FormControl from '../common/controls/FormControl';
 import DatePicker from '../common/date-picker/DatePicker';
 import MoneyInput from '../common/controls/MoneyInput';
-import { accountNameAndBank } from '../../util/text-util';
+import { accountNameAndBank } from 'util/textUtil';
 
 export default class ReconciliationForm extends React.Component {
 
