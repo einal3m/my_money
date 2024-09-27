@@ -1,7 +1,9 @@
 import {
   Account,
   AccountBalanceReport,
+  BarChartData,
   DateRange,
+  DoublePointResponse,
   LineSeriesData,
   LoanReportResponse,
   TransactionReport,
@@ -12,6 +14,7 @@ import {
   AccountBalanceReportResponse,
 } from 'types/api'
 import {
+  chartDataForCombo,
   transformAccountBalances,
   transformLoanReport,
   transformMonthTotals,
@@ -57,6 +60,16 @@ export const reportApi = applicationApi.injectEndpoints({
         }
       },
       providesTags: () => ['income-expense-report'],
+    }),
+    getIncomeExpensesBarReport: builder.query<BarChartData | null, void>({
+      query() {
+        return {
+          url: 'report/income_expense_bar',
+        }
+      },
+      transformResponse: (response: { report: DoublePointResponse[] }) =>
+        chartDataForCombo(response.report),
+      providesTags: () => ['income-expense-bar-report'],
     }),
     getCategoryReport: builder.query<TransactionReport, CategoryReportParams>({
       query({ categoryId, dateRange }) {
@@ -114,6 +127,7 @@ export const reportApi = applicationApi.injectEndpoints({
 export const {
   useGetLoanReportQuery,
   useGetIncomeVsExpensesReportQuery,
+  useGetIncomeExpensesBarReportQuery,
   useGetCategoryReportQuery,
   useGetSubcategoryReportQuery,
   useGetAccountBalanceReportQuery,

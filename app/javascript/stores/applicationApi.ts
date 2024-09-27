@@ -9,6 +9,7 @@ export const applicationApi = createApi({
     'categories',
     'category-report',
     'dateRanges',
+    'income-expense-bar-report',
     'income-expense-report',
     'patterns',
     'loan-report',

@@ -12,6 +12,7 @@ import {
   BarChartData,
   AccountBalanceReport,
   LineSeriesData,
+  DoublePointResponse,
 } from 'types/models'
 import {
   AccountBalanceReportResponse,
@@ -178,4 +179,23 @@ export const transformAccountBalances = (
   })
 
   return result
+}
+
+export const chartDataForCombo = (
+  monthTotals: DoublePointResponse[],
+): BarChartData | null => {
+  if (monthTotals.length === 0) return null
+  if (monthTotals[0].length !== 3) return null
+
+  const xAxisLabels = monthTotals.map((month) => month[0])
+  const incomeData = monthTotals.map((month) => month[1])
+  const expenseData = monthTotals.map((month) => month[2])
+
+  return {
+    xAxisLabels,
+    seriesData: [
+      { name: 'Income', data: incomeData, backgroundColour: '#66CC66' },
+      { name: 'Expense', data: expenseData, backgroundColour: '#FF6666' },
+    ],
+  }
 }

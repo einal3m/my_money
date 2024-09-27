@@ -159,6 +159,7 @@ export type TransactionFormInput = BaseTransaction & {
 // Reports
 
 export type PointResponse = [string, number]
+export type DoublePointResponse = [string, number, number]
 export type Point = [Date, number]
 
 export type LoanReportResponse = {
@@ -216,7 +217,7 @@ type BarSeriesData = {
   name: string
   data: number[]
   backgroundColour: string
-  borderColor: string
+  borderColor?: string
 }
 
 export type BarChartData = {

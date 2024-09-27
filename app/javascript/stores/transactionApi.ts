@@ -43,6 +43,8 @@ export const transactionApi = applicationApi.injectEndpoints({
         'category-report',
         'subcategory-report',
         'account-balance-report',
+        'income-expense-bar-report',
+        'income-expense-report',
       ],
     }),
     deleteTransaction: builder.mutation<void, TransactionFormInput>({
@@ -56,6 +58,8 @@ export const transactionApi = applicationApi.injectEndpoints({
         'category-report',
         'subcategory-report',
         'account-balance-report',
+        'income-expense-bar-report',
+        'income-expense-report',
       ],
     }),
     getMatchingTransactions: builder.query<

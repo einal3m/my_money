@@ -1,12 +1,18 @@
 import {
   AccountBalance,
+  chartDataForCombo,
   transformAccountBalances,
   transformIncomeExpenseReport,
   transformLoanReport,
   transformMonthTotals,
 } from 'transformers/reportTransformer'
 import { IncomeExpenseReportResponse, MonthTotalsResponse } from 'types/api'
-import { Category, LoanReportResponse, Subcategory } from 'types/models'
+import {
+  Category,
+  DoublePointResponse,
+  LoanReportResponse,
+  Subcategory,
+} from 'types/models'
 
 describe('ReportTransformer', () => {
   describe('transformLoanReport', () => {
@@ -313,6 +319,38 @@ describe('ReportTransformer', () => {
 
     it('returns an empty list when there is no accountBalance data', () => {
       expect(transformAccountBalances(undefined)).toEqual(undefined)
+    })
+  })
+
+  describe('chartDataForCombo', () => {
+    it('converts month totals into a combo chart format', () => {
+      const response: DoublePointResponse[] = [
+        ['Aug-16', 1000, 2000],
+        ['Sep-16', 3000, 4000],
+        ['Oct-16', 5000, 6000],
+      ]
+
+      const chartData = chartDataForCombo(response)
+
+      expect(chartData?.xAxisLabels).toEqual(['Aug-16', 'Sep-16', 'Oct-16'])
+      expect(chartData?.seriesData).toEqual([
+        {
+          name: 'Income',
+          data: [1000, 3000, 5000],
+          backgroundColour: '#66CC66',
+        },
+        {
+          name: 'Expense',
+          data: [2000, 4000, 6000],
+          backgroundColour: '#FF6666',
+        },
+      ])
+    })
+
+    it('doesnt convert if there is no data', () => {
+      const response: DoublePointResponse[] = []
+
+      expect(chartDataForCombo(response)).toEqual(null)
     })
   })
 })
