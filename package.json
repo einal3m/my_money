@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:without-components": "jest spec/javascript/actions && jest spec/javascript/stores && jest spec/javascript/transformers && jest spec/javascript/util"
+    "test:components": "vitest run spec/javascript/components/categories/CategoryList.test.tsx && jest spec/javascript/components/common/date-picker",
+    "test:utils": "jest spec/javascript/actions && jest spec/javascript/stores && jest spec/javascript/transformers && jest spec/javascript/util"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -53,13 +54,17 @@
     "@types/jest": "^29.5.13",
     "@types/react-bootstrap": "^0.32.37",
     "@types/react-router-bootstrap": "^0.26.6",
+    "@vitejs/plugin-react": "^4.3.1",
     "cross-fetch": "^4.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "23.2.0",
+    "msw": "^2.4.9",
     "prettier": "^3.3.3",
     "sass": "^1.74.1",
     "ts-jest": "^29.2.5",
     "vite": "^5.2.10",
-    "vite-plugin-ruby": "^5.0.0"
+    "vite-plugin-ruby": "^5.0.0",
+    "vitest": "^2.1.1"
   }
 }

@@ -18,6 +18,6 @@ export const applicationApi = createApi({
     'subcategory-report',
     'transactions',
   ],
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api' }),
   endpoints: () => ({}),
 })

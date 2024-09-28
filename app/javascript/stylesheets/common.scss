@@ -12,16 +12,14 @@ body {
   cursor: pointer;
 }
 
-.sticky {
-  z-index: 1000;
-}
-
-.page-title .button-group, .account .button-group, .file-chooser {
+.page-title .button-group,
+.account .button-group,
+.file-chooser {
   button {
     background-color: $main-color;
     border: solid 1px transparent;
     border-radius: 2px;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     margin-left: 10px;
   }
 
@@ -39,7 +37,7 @@ body {
   button:not(:disabled):focus {
     background-color: $main-color;
     border: solid 1px transparent;
-    box-shadow: 0 0 0 1pt $main-color-dark
+    box-shadow: 0 0 0 1pt $main-color-dark;
   }
 }
 
@@ -51,7 +49,7 @@ body {
     background-color: $main-color;
     border: solid 1px transparent;
     border-radius: 2px;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
   }
 
   label:hover {
@@ -68,7 +66,7 @@ body {
   label:not(:disabled):focus {
     background-color: $main-color;
     border: solid 1px transparent;
-    box-shadow: 0 0 0 1pt $main-color-dark
+    box-shadow: 0 0 0 1pt $main-color-dark;
   }
 }
 
@@ -77,7 +75,7 @@ body {
     background-color: $main-color;
     border: solid 1px transparent;
     border-radius: 2px;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
   }
 
   button.btn-success:hover {
@@ -94,7 +92,7 @@ body {
   button.btn-success:not(:disabled):focus {
     background-color: $main-color;
     border: solid 1px transparent;
-    box-shadow: 0 0 0 1pt $main-color-dark
+    box-shadow: 0 0 0 1pt $main-color-dark;
   }
 }
 
@@ -103,7 +101,7 @@ body {
     background-color: $light-grey-background-color;
     border: solid 1px transparent;
     border-radius: 2px;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
   }
 
   button.btn-default:hover {
@@ -124,12 +122,11 @@ body {
   }
 }
 
-.button-group.button-group-small button{
-  padding: .2rem;
-
+.button-group.button-group-small button {
+  padding: 0.2rem;
 }
 
-.button-group.button-group-small  .dropdown-toggle::after {
+.button-group.button-group-small .dropdown-toggle::after {
   display: none;
 }
 
@@ -166,7 +163,7 @@ body {
 }
 
 .flex-group-row > div {
-  width: calc(1/2*100% - (1 - 1/2)*10px);
+  width: calc(1 / 2 * 100% - (1 - 1 / 2) * 10px);
 }
 
 .page-title {
@@ -175,17 +172,17 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
 
   .title-group {
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
   }
 
   .status {
     padding-left: 10px;
-    font-size: smaller;
+    color: gray;
 
     .error {
       color: darkred;
