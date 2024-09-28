@@ -5,7 +5,6 @@ import NewModelButtons from '../common/controls/NewModelButtons'
 import CategoryTypeTable from './CategoryTypeTable'
 import { CategoryModal } from './CategoryModal'
 import { useGroupedCategories } from 'hooks/useGroupedCategories'
-import ApiStatus from 'util/api-status'
 
 import '../../stylesheets/common.scss'
 import '../../stylesheets/categories.scss'
@@ -28,10 +27,7 @@ export const CategoryList = () => {
 
   return (
     <div>
-      <PageHeader
-        title="my categories"
-        apiStatus={isLoading ? ApiStatus.LOADING : ''}
-      >
+      <PageHeader title="my categories" isLoading={isLoading}>
         <NewModelButtons modelTypes={['Category', 'Subcategory']} />
       </PageHeader>
       <div className="category-list">{renderCategoryTypes()}</div>

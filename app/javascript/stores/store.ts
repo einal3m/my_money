@@ -1,23 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import apiReducer from './api-status-reducer'
 import currentReducer from './currentSlice'
 import formReducer from './formSlice'
 import importReducer from './importSlice'
 import transactionReducer from './transactionSlice'
 import { applicationApi } from './applicationApi'
+import { rtkQueryErrorLogger } from './errorMiddleware'
 
 export const store = configureStore({
   reducer: {
     [applicationApi.reducerPath]: applicationApi.reducer,
-    apiStatusStore: apiReducer,
     currentStore: currentReducer,
     formStore: formReducer,
     importStore: importReducer,
     transactionStore: transactionReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(applicationApi.middleware),
+    getDefaultMiddleware()
+      .concat(rtkQueryErrorLogger)
+      .concat(applicationApi.middleware),
 })
 
 // Get the type of our store variable

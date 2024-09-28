@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test-all:
+  test-components:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,9 +17,9 @@ jobs:
         with:
           node-version: 20.12.2
       - run: yarn
-      - run: yarn test
+      - run: yarn test:components
 
-  test-without-components:
+  test-utils:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,4 +29,4 @@ jobs:
         with:
           node-version: 20.12.2
       - run: yarn
-      - run: yarn test:without-components
+      - run: yarn test:utils
