@@ -28,8 +28,8 @@ type BankStatementTransaction = {
   account_id: number
   date: string
   amount: number
-  category_id: number
-  subcategory_id: number
+  category_id?: number
+  subcategory_id?: number
   notes?: string
   memo: string
 }
@@ -105,10 +105,10 @@ export type TransactionRequest = {
   account_id: number
   date: string
   amount: number
-  category_id: number
-  subcategory_id: number
+  category_id?: number
+  subcategory_id?: number
   notes?: string
-  memo: string
+  memo?: string
   transaction_type: string
   matching_transaction_id?: number
 }
@@ -116,10 +116,10 @@ export type TransactionRequest = {
 export type OfxTransactionResponse = {
   account_id: number
   date: string
-  memo: string
+  memo?: string
   amount: number
-  category_id: number
-  subcategory_id: number
+  category_id?: number
+  subcategory_id?: number
   notes?: string
   import: boolean
   duplicate: boolean
@@ -135,7 +135,7 @@ export type MatchingTransactionResponse = {
 export type TransactionResponse = TransactionRequest & {
   id: number
   balance: number
-  matching_transaction: MatchingTransactionResponse
+  matching_transaction?: MatchingTransactionResponse
 }
 
 export type IncomeExpenseReportResponse = {

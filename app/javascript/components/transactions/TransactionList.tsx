@@ -66,7 +66,7 @@ const TransactionList = () => {
 
   return (
     <div>
-      <PageHeader title="my transactions" apiStatus={{}}>
+      <PageHeader title="my transactions" isLoading={false}>
         <Button onClick={() => setShowImportModal(true)}>
           <i className="fa fa-file-text-o" /> Import
         </Button>
