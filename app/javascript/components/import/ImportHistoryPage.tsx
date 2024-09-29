@@ -18,9 +18,11 @@ const ImportHistoryPage = () => {
     { skip: !currentAccount },
   )
 
+  const isLoading = !currentAccount || !bankStatements
+
   return (
     <div className="import-history">
-      <PageHeader title="import history" apiStatus={{}} />
+      <PageHeader title="import history" isLoading={isLoading} />
       <SearchCriteria filters={[{ name: ACCOUNT_FILTER }]} />
       {bankStatements && (
         <div className="container">
