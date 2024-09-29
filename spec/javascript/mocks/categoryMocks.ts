@@ -35,6 +35,7 @@ export const categoriesMock = {
 
 const subcategories: SubcategoryResponse[] = [
   { id: 45, name: 'IncomeTwoSub', category_id: 2 },
+  { id: 46, name: 'ExpenseThreeSub', category_id: 3 },
 ]
 
 export const subcategoriesMock = {
