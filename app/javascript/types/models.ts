@@ -33,7 +33,7 @@ export type AccountFormInput = AccountBase & {
 }
 
 export type AccountType = {
-  id: string
+  id: number
   code: string
   name: string
 }
