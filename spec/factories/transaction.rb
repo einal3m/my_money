@@ -8,7 +8,6 @@ FactoryBot.define do
     amount { 555 }
     fitid { 'This is a fitid' }
     transaction_type { 'bank_transaction' }
-    bank_statement
     account { FactoryBot.create(:account) }
   end
 

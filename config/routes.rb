@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     get 'report/subcategory'
     get 'report/category'
     get 'report/eod_balance'
+    get 'report/net_balance'
     get 'report/home_loan'
     get 'report/index'
   end
