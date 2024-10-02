@@ -9,7 +9,7 @@ import {
   categoryTypesMock,
   categoriesMock,
   subcategoriesMock,
-} from './categoryMocks'
+} from 'mocks/categoryMocks'
 
 import { CategoryList } from 'components/categories/CategoryList.tsx'
 

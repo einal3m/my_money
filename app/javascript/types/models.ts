@@ -33,7 +33,7 @@ export type AccountFormInput = AccountBase & {
 }
 
 export type AccountType = {
-  id: string
+  id: number
   code: string
   name: string
 }
@@ -117,10 +117,10 @@ export type SubcategoryFormInput = SubcategoryBase & {
 export type OfxTransaction = {
   accountId: number
   date: string
-  memo: string
+  memo?: string
   amount: number
-  categoryId: number
-  subcategoryId: number
+  categoryId?: number
+  subcategoryId?: number
   notes?: string
   import: boolean
   duplicate: boolean

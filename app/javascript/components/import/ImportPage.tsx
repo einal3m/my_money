@@ -23,6 +23,9 @@ const ImportPage = () => {
   const [toTransactions, setToTransaction] = useState(false)
   const [createBankStatement] = useCreateBankStatementMutation()
 
+  const isLoading =
+    !currentAccount || !transactions || !groupedCategories || !subcategories
+
   const importTransactions = () => {
     const ofXTransactions = transactions.filter((t) => t.import)
     createBankStatement({
@@ -38,23 +41,13 @@ const ImportPage = () => {
     return <Navigate to="/transactions" />
   }
 
-  if (
-    !currentAccount ||
-    !transactions ||
-    !groupedCategories ||
-    !subcategories
-  ) {
-    return <div />
-  }
+  const renderImportTable = () => {
+    if (isLoading) {
+      return <div />
+    }
 
-  return (
-    <div>
-      <PageHeader title="import transactions" apiStatus={{}}>
-        <Button onClick={importTransactions}>
-          <i className="fa fa-file-text-o" /> Import
-        </Button>
-      </PageHeader>
-      <div className="container import">
+    return (
+      <>
         <h5 data-testid="import-title">
           into <strong>{currentAccount.name}</strong> account
         </h5>
@@ -63,7 +56,20 @@ const ImportPage = () => {
           groupedCategories={groupedCategories}
           subcategories={subcategories}
         />
-      </div>
+      </>
+    )
+  }
+
+  return (
+    <div>
+      <PageHeader title="import transactions" isLoading={isLoading}>
+        {!isLoading && (
+          <Button onClick={importTransactions}>
+            <i className="fa fa-file-text-o" /> Import
+          </Button>
+        )}
+      </PageHeader>
+      <div className="container import">{renderImportTable()}</div>
     </div>
   )
 }

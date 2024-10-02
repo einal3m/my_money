@@ -11,7 +11,7 @@ import '../../stylesheets/common.scss'
 import '../../stylesheets/accounts.scss'
 
 const AccountList = () => {
-  const { activeGroupedAccounts } = useGroupedAccounts()
+  const { isLoading, activeGroupedAccounts } = useGroupedAccounts()
 
   const renderAccountGroups = () => {
     if (activeGroupedAccounts == undefined) return <></>
@@ -29,7 +29,7 @@ const AccountList = () => {
 
   return (
     <div>
-      <PageHeader title="my accounts">
+      <PageHeader title="my accounts" isLoading={isLoading}>
         <NewModelButtons
           modelTypes={[
             ModelType.AccountSavings,

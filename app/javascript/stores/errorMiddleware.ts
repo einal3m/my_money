@@ -18,7 +18,7 @@ export const rtkQueryErrorLogger: Middleware =
       if (action?.payload) {
         const errorPayload: ErrorPayload = action.payload as ErrorPayload
         console.log(
-          `Api Error: (${errorPayload.data.status}) ${errorPayload.data.error}`,
+          `Api Error: (${errorPayload.data?.status}) ${errorPayload.data?.error}`,
         )
         // api.dispatch()
       } else {

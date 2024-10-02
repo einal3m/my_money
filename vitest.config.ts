@@ -11,6 +11,7 @@ export default defineConfig({
       actions: resolve(__dirname, 'app/javascript/actions'),
       components: resolve(__dirname, 'app/javascript/components'),
       hooks: resolve(__dirname, 'app/javascript/hooks'),
+      mocks: resolve(__dirname, 'spec/javascript/mocks'),
       selectors: resolve(__dirname, 'app/javascript/selectors'),
       stores: resolve(__dirname, 'app/javascript/stores'),
       stylesheets: resolve(__dirname, 'app/javascript/stylesheets'),

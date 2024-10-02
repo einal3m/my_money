@@ -12,19 +12,19 @@ import { showFormModal } from 'stores/formSlice'
 import { useGetPatternsQuery } from 'stores/patternApi'
 import { useGroupedCategories } from 'hooks/useGroupedCategories'
 import { ModelType } from 'types/models'
+import { RootState } from 'stores/store'
 
 import '../../stylesheets/common.scss'
 import '../../stylesheets/patterns.scss'
-import { RootState } from 'stores/store'
 
 export const PatternList = () => {
   const currentAccount = useSelector(
     (state: RootState) => state.currentStore.currentAccount,
   )
-  const {
-    data: patterns,
-    isLoading,
-  } = useGetPatternsQuery(currentAccount?.id || 0, { skip: !currentAccount })
+  const { data: patterns, isLoading } = useGetPatternsQuery(
+    currentAccount?.id || 0,
+    { skip: !currentAccount },
+  )
   const { groupedCategories, isSuccess: isSuccessGC } = useGroupedCategories()
   const dispatch = useDispatch()
 
@@ -40,7 +40,7 @@ export const PatternList = () => {
 
   return (
     <div>
-      <PageHeader title="my patterns" apiStatus={isLoading ? 'loading' : ''}>
+      <PageHeader title="my patterns" isLoading={isLoading}>
         <Button onClick={newPattern}>
           <i className="fas fa-plus" /> New
         </Button>
@@ -57,7 +57,7 @@ export const PatternList = () => {
           />
         )}
       </div>
-      {groupedCategories && isSuccessGC &&(
+      {groupedCategories && isSuccessGC && (
         <PatternModal groupedCategories={groupedCategories} />
       )}
     </div>

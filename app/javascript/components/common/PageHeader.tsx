@@ -5,7 +5,7 @@ import '../../stylesheets/common.scss'
 
 type PageHeaderProps = {
   isLoading: boolean
-  errorString: string | undefined
+  errorString?: string
   title: string
   children?: ReactNode
 }

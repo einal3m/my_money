@@ -33,6 +33,7 @@
     "paths": {
       "components/*": ["./app/javascript/components/*"],
       "hooks/*": ["./app/javascript/hooks/*"],
+      "mocks/*": ["./spec/javascript/mocks/*"],
       "stores/*": ["./app/javascript/stores/*"],
       "transformers/*": ["./app/javascript/transformers/*"],
       "types/*": ["./app/javascript/types/*"],
