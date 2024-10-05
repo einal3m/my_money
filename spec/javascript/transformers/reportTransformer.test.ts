@@ -339,7 +339,7 @@ describe('ReportTransformer', () => {
           [new Date('2016-01-31'), 23.45],
           [new Date('2016-02-29'), 45.67],
         ],
-        backgroundColour: '#66CC66',
+        backgroundColour: '#9467bd',
       })
     })
   })

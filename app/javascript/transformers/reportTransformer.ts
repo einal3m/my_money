@@ -208,6 +208,6 @@ export const transformNetBalanceReport = (report: PointResponse[]): LineSeriesDa
   return {
     name: 'Net balance',
     data,
-    backgroundColour: '#66CC66'
+    backgroundColour: '#9467bd'
   }
 }
