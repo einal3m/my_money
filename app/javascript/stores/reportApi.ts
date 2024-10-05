@@ -6,6 +6,7 @@ import {
   DoublePointResponse,
   LineSeriesData,
   LoanReportResponse,
+  PointResponse,
   TransactionReport,
 } from 'types/models'
 import {
@@ -121,6 +122,16 @@ export const reportApi = applicationApi.injectEndpoints({
         return { data }
       },
     }),
+    getNetBalanceReport: builder.query<PointResponse[], DateRange | undefined>({
+      query(dateRange) {
+        return {
+          url: `report/net_balance?from_date=${dateRange?.fromDate}&to_date=${dateRange?.toDate}`,
+        }
+      },
+      transformResponse: (response: { report: PointResponse[] }) =>
+        response.report,
+      providesTags: () => ['net-balance-report'],
+    }),
   }),
 })
 
@@ -131,4 +142,5 @@ export const {
   useGetCategoryReportQuery,
   useGetSubcategoryReportQuery,
   useGetAccountBalanceReportQuery,
+  useGetNetBalanceReportQuery,
 } = reportApi

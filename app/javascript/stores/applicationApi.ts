@@ -14,6 +14,7 @@ export const applicationApi = createApi({
     'patterns',
     'loan-report',
     'matching-transactions',
+    'net-balance-report',
     'subcategories',
     'subcategory-report',
     'transactions',

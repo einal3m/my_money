@@ -6,7 +6,7 @@ export type Option = {
   name: string
 
   // allow any extra attributes we don't care about here
-  [key: string]: unknown;
+  [key: string]: unknown
 }
 
 export type SingleOption = SingleValue<Option>
@@ -19,12 +19,13 @@ type MultiSelectProps = {
   value: Option | Option[] | undefined
   options?: Option[]
   groupedOptions?: GroupBase<Option>[]
-  onChange: (newValue: MultiOption | SingleOption | null ) => void
+  onChange: (newValue: MultiOption | SingleOption | null) => void
 }
 
 const MultiSelect = (props: MultiSelectProps) => {
   return (
     <Select
+      inputId={props.name}
       value={props.value || null}
       getOptionLabel={(option: Option) => option.name}
       getOptionValue={(option: Option) => option.id.toString()}

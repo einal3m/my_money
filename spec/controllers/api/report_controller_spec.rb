@@ -37,6 +37,28 @@ RSpec.describe Api::ReportController do
     end
   end
 
+  describe 'Net Balance Report' do
+    it 'returns an array of eod balances across all accounts' do
+      from_date = '2014-01-01'
+      to_date = '2014-01-2'
+      data = [['01 Jan, 2014', 4.0], ['02 Jan, 2014', 14.0]]
+
+      search = instance_double Lib::NetBalanceSearch
+      date_range = instance_double Lib::CustomDateRange
+
+      allow(Lib::CustomDateRange).to receive(:new).with(from_date:, to_date:).and_return(date_range)
+      allow(Lib::NetBalanceSearch).to receive(:new).with(date_range:).and_return(search)
+      allow(search).to receive(:eod_balance).and_return(data)
+
+      get :net_balance, params: { from_date:, to_date: }
+
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
+      expect(json['report'].length).to eq(2)
+      expect(json['report']).to eq(data)
+    end
+  end
+
   describe 'Income vs Expense Bar Chart' do
     it 'returns an array of monthly income and expenses' do
       income_data = [['date1', 40], ['date2', 140]]

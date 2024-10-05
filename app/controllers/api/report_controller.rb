@@ -4,7 +4,7 @@ require_relative '../../models/lib/date_range'
 
 module Api
   class ReportController < ApplicationController
-    before_action :set_data_range, only: [:income_vs_expense, :eod_balance, :category, :subcategory]
+    before_action :set_data_range, only: [:income_vs_expense, :eod_balance, :net_balance, :category, :subcategory]
 
     def index; end
 
@@ -31,7 +31,7 @@ module Api
       render json: { report: report_data }
     end
 
-    # balance
+    # eod_balance
     # retrieves the end of day balance for the specified account for the date range
     def eod_balance
       if account.nil?
@@ -42,6 +42,13 @@ module Api
       end
 
       render json: { report: @line_chart_data, account_id: account&.id }
+    end
+
+    # net_balance
+    # retrieves the end of day balance for ALL accounts for the date range
+    def net_balance
+      search = Lib::NetBalanceSearch.new(date_range: @date_range)
+      render json: { report: search.eod_balance }
     end
 
     def category

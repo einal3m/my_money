@@ -199,3 +199,15 @@ export const chartDataForCombo = (
     ],
   }
 }
+
+export const transformNetBalanceReport = (report: PointResponse[]): LineSeriesData => {
+  const data: Point[] = report.map((data) => [
+    new Date(data[0]),
+    centsToDollars(data[1]),
+  ])
+  return {
+    name: 'Net balance',
+    data,
+    backgroundColour: '#66CC66'
+  }
+}
