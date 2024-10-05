@@ -5,12 +5,14 @@ import {
   transformIncomeExpenseReport,
   transformLoanReport,
   transformMonthTotals,
+  transformNetBalanceReport,
 } from 'transformers/reportTransformer'
 import { IncomeExpenseReportResponse, MonthTotalsResponse } from 'types/api'
 import {
   Category,
   DoublePointResponse,
   LoanReportResponse,
+  PointResponse,
   Subcategory,
 } from 'types/models'
 
@@ -319,6 +321,26 @@ describe('ReportTransformer', () => {
 
     it('returns an empty list when there is no accountBalance data', () => {
       expect(transformAccountBalances(undefined)).toEqual(undefined)
+    })
+  })
+
+  describe('transformNetBalanceReport', () => {
+    it('converts net balance report into line chart form', () => {
+      const report: PointResponse[] = [
+        ['2016-01-31', 2345],
+        ['2016-02-29', 4567],
+      ]
+
+      const data = transformNetBalanceReport(report)
+
+      expect(data).toEqual({
+        name: 'Net balance',
+        data: [
+          [new Date('2016-01-31'), 23.45],
+          [new Date('2016-02-29'), 45.67],
+        ],
+        backgroundColour: '#66CC66',
+      })
     })
   })
 

@@ -36,7 +36,7 @@ const DateRangeFilter = () => {
     return (
       <div className="date-range-filter">
         <div className="form-group">
-          <label htmlFor="dateRangeSelect" className="control-label">
+          <label htmlFor="dateRangeId" className="control-label">
             Dates
           </label>
           <Select

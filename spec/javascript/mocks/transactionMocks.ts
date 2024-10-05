@@ -1,11 +1,10 @@
 import { TransactionResponse } from 'types/api'
-import { todaysDate } from './dateHelpers'
 
 const transactions1: TransactionResponse[] = [
   {
     id: 1,
     account_id: 1,
-    date: todaysDate,
+    date: '2023-03-01',
     amount: 1000,
     memo: 'Memo1',
     transaction_type: 'bank_transaction',
@@ -14,7 +13,7 @@ const transactions1: TransactionResponse[] = [
   {
     id: 2,
     account_id: 1,
-    date: todaysDate,
+    date: '2023-03-08',
     amount: 3000,
     notes: 'Note2',
     category_id: 2,

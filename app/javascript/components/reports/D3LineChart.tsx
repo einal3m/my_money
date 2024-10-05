@@ -46,7 +46,12 @@ const D3LineChart = (props: D3LineChartProps) => {
     <div className="chart-container">
       <ChartTooltip show={showTooltip} tooltipData={tooltipData} />
       <ChartLegend seriesData={props.seriesData} />
-      <svg width="100%" height={`${chartOptions.height}px`} ref={ref} />
+      <svg
+        data-testid="d3-line-chart"
+        width="100%"
+        height={`${chartOptions.height}px`}
+        ref={ref}
+      />
     </div>
   )
 }

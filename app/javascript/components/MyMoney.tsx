@@ -16,6 +16,7 @@ import SubcategoryReport from './reports/SubcategoryReport'
 import IncomeExpenseBarChart from './reports/IncomeExpenseBarChart'
 import IncomeVsExpensesReport from './reports/IncomeVsExpensesReport'
 import LoanReport from './loan/LoanReport'
+import NetBalanceChart from './reports/NetBalanceChart'
 import store from '../stores/store'
 
 const MyMoney = () => {
@@ -37,6 +38,7 @@ const MyMoney = () => {
               path="/reports/accountBalance"
               element={<AccountBalanceChart />}
             />
+            <Route path="/reports/netBalance" element={<NetBalanceChart />} />
             <Route
               path="/reports/incomeVsExpenseBar"
               element={<IncomeExpenseBarChart />}
