@@ -14,11 +14,11 @@ import '../../stylesheets/transaction.scss'
 const TransactionTable = () => {
   const { currentAccount, accounts } = useGroupedAccounts()
   const { currentDateRange } = UseCurrentDateRange()
-  const { groupedCategories } = useGroupedCategories()
+  const { groupedCategories, isLoading: isLoadingCategories } = useGroupedCategories()
   const { searchDescription } = useSelector(
     (state: RootState) => state.transactionStore,
   )
-  const isDataLoaded = !!currentAccount && !!groupedCategories
+  const isDataLoaded = !!currentAccount && !isLoadingCategories && !!currentDateRange
   const { data: transactions } = useGetTransactionsQuery(
     {
       accountId: currentAccount?.id || 0,
