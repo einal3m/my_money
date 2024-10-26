@@ -42,4 +42,6 @@ Rails.application.routes.draw do
     get 'report/home_loan'
     get 'report/index'
   end
+
+  get '*path', to: 'my_money#my_money', via: :all
 end
