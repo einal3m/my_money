@@ -15,7 +15,7 @@ export const CategoryList = () => {
   const renderCategoryTypes = () => {
     if (isLoading || !isSuccess) return <></>
 
-    return groupedCategories?.map((ct) => (
+    return groupedCategories?.filter((gc) => gc.categoryType.editable).map((ct) => (
       <div key={ct.categoryType.code} className="category-type">
         <CategoryTypeTable
           categoryType={ct.categoryType}

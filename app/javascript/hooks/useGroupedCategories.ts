@@ -54,7 +54,6 @@ export const useGroupedCategories = (): UseGroupedCategories => {
 
   const groupedCategories = categoryTypes
     ? categoryTypes
-        .filter((ct) => ct.editable)
         .map((ct) => ({
           categoryType: ct,
           categories: categories
