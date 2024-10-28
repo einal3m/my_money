@@ -45,17 +45,18 @@ RSpec.describe Api::PatternsController do
       it 'returns an error and does not create the pattern' do
         account = FactoryBot.create(:account)
         category = FactoryBot.create(:category)
+        pattern = FactoryBot.attributes_for(:pattern, account_id: account.id, category_id: category.id, match_text: nil)
 
         expect do
           post :create, params: {
             account_id: account.id,
-            pattern: FactoryBot.attributes_for(:pattern, account_id: account.id, category_id: category.id)
+            pattern:
           }
         end.not_to change(Pattern, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
         json = response.parsed_body
-        expect(json).to eq('subcategory' => ['must exist'])
+        expect(json).to eq('match_text' => ["can't be blank"])
       end
     end
   end

@@ -13,7 +13,7 @@ class Pattern < ApplicationRecord
   # model relationships
   belongs_to :account
   belongs_to :category
-  belongs_to :subcategory
+  belongs_to :subcategory, optional: true
 
   # validations
   validates :match_text, presence: true

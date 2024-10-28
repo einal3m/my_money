@@ -26,6 +26,10 @@ RSpec.describe Pattern do
       expect(FactoryBot.build(:pattern, category: nil)).not_to be_valid
     end
 
+    it 'is valid without a subcategory' do
+      expect(FactoryBot.build(:pattern, subcategory: nil)).to be_valid
+    end
+
     it 'is invalid without match text' do
       expect(FactoryBot.build(:pattern, match_text: nil)).not_to be_valid
     end
