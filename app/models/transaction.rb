@@ -59,8 +59,11 @@ class Transaction < ApplicationRecord
   }
   scope :find_matching, lambda { |date, amount, account|
     where(
+      'date <= ? and date >= ?',
+      date + 2.days,
+      date - 2.days
+    ).where(
       amount: -amount,
-      date:,
       matching_transaction_id: nil
     ).where.not(account:)
   }
@@ -105,7 +108,14 @@ class Transaction < ApplicationRecord
   end
 
   def matching_transaction_must_have_same_date
-    errors.add(:matching_transaction_id, 'must have the same date') if date != matching_transaction.date
+    if date > matching_transaction.date + 2.days
+      errors.add(:matching_transaction_id,
+                 'must not be more than 2 days later')
+    end
+    return unless date < matching_transaction.date - 2.days
+
+    errors.add(:matching_transaction_id,
+               'must not be less than 2 days earlier')
   end
 
   def matching_transaction_must_be_from_different_account

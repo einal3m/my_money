@@ -67,24 +67,30 @@ RSpec.describe Transaction do
       ).not_to be_valid
     end
 
-    it 'is invalid if the matching transaction has a different date' do
-      matching_txn = FactoryBot.create(:transaction, date: '2016-12-19', amount: 111)
-      expect(
-        FactoryBot.build(
+    [
+      { days: -3, valid: false },
+      { days: -2, valid: true },
+      { days: -1, valid: true },
+      { days: 0, valid: true },
+      { days: 1, valid: true },
+      { days: 2, valid: true },
+      { days: 3, valid: false }
+    ].each do |test|
+      it "is #{test[:valid] ? '' : 'in'}valid if the matching transaction is #{test[:days]} from txn date" do
+        matching_txn = FactoryBot.create(:transaction, date: '2016-12-19', amount: 111)
+        txn = FactoryBot.build(
           :transaction,
-          date: '2016-12-19',
+          date: matching_txn.date + (test[:days]).days,
           amount: -111,
           matching_transaction_id: matching_txn.id
         )
-      ).to be_valid
-      expect(
-        FactoryBot.build(
-          :transaction,
-          date: '2016-12-20',
-          amount: -111,
-          matching_transaction_id: matching_txn.id
-        )
-      ).not_to be_valid
+
+        if test[:valid]
+          expect(txn).to be_valid
+        else
+          expect(txn).not_to be_valid
+        end
+      end
     end
 
     it 'is invalid if the matching transaction has a different amount' do
@@ -253,7 +259,7 @@ RSpec.describe Transaction do
       a1 = FactoryBot.create(:account)
       a2 = FactoryBot.create(:account)
 
-      date = '2014-07-01'
+      date = Date.parse('2014-07-01')
       amount = 333
 
       FactoryBot.create(:transaction, account: a1, date:, amount:)
@@ -265,8 +271,12 @@ RSpec.describe Transaction do
       FactoryBot.create(:transaction, account: a2, date: '2015-07-01', amount: -amount)
       FactoryBot.create(:transaction, account: a2, date:, amount: 444)
       t6 = FactoryBot.create(:transaction, account: a2, date:, amount: -amount)
+      t7 = FactoryBot.create(:transaction, account: a2, date: date + 2.days, amount: -amount)
+      t8 = FactoryBot.create(:transaction, account: a2, date: date - 2.days, amount: -amount)
+      FactoryBot.create(:transaction, account: a2, date: date + 3.days, amount: -amount)
+      FactoryBot.create(:transaction, account: a2, date: date - 3.days, amount: -amount)
 
-      expect(described_class.find_matching(date, amount, a1)).to eq([t1, t6])
+      expect(described_class.find_matching(date, amount, a1)).to eq([t1, t6, t7, t8])
     end
   end
 
