@@ -26,6 +26,22 @@ type UseGroupedCategories = {
   currentSubcategory?: Subcategory
 }
 
+const sortFn = (
+  a: Category | Subcategory,
+  b: Category | Subcategory,
+): number => {
+  const nameA = a.name.toUpperCase()
+  const nameB = b.name.toUpperCase()
+  if (nameA < nameB) {
+    return -1
+  }
+  if (nameA > nameB) {
+    return 1
+  }
+
+  return 0
+}
+
 export const useGroupedCategories = (): UseGroupedCategories => {
   const {
     data: categories,
@@ -53,20 +69,22 @@ export const useGroupedCategories = (): UseGroupedCategories => {
   const isSuccess = isSuccessC && isSuccessS && isSuccessT
 
   const groupedCategories = categoryTypes
-    ? categoryTypes
-        .map((ct) => ({
-          categoryType: ct,
-          categories: categories
-            ? categories
-                .filter((c) => c.categoryTypeId == ct.id)
-                .map((c) => ({
-                  ...c,
-                  subcategories: subcategories
-                    ? subcategories?.filter((s) => s.categoryId == c.id)
-                    : [],
-                }))
-            : [],
-        }))
+    ? categoryTypes.map((ct) => ({
+        categoryType: ct,
+        categories: categories
+          ? categories
+              .filter((c) => c.categoryTypeId == ct.id)
+              .sort(sortFn)
+              .map((c) => ({
+                ...c,
+                subcategories: subcategories
+                  ? subcategories
+                      ?.filter((s) => s.categoryId == c.id)
+                      .sort(sortFn)
+                  : [],
+              }))
+          : [],
+      }))
     : []
 
   return {
