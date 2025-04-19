@@ -2,9 +2,9 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import Sticky from 'react-sticky-el'
 
 import '../../stylesheets/common.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'stores/store'
-import { ApiStatus } from 'stores/apiStatusSlice'
+import { ApiStatus, setStatus } from 'stores/apiStatusSlice'
 
 type PageHeaderProps = {
   isLoading: boolean
@@ -18,10 +18,16 @@ const PageHeader = (props: PageHeaderProps) => {
   const { status, message } = useSelector(
     (state: RootState) => state.apiStatusStore,
   )
+  const dispatch = useDispatch()
 
-  useEffect(() => { 
+  const resetApiMessage = () => {
+    setShowMessage(false)
+    dispatch(setStatus({ status: ApiStatus.NONE }))
+  }
+
+  useEffect(() => {
     setShowMessage(true)
-  },[status])
+  }, [status])
 
   const renderStatus = () => {
     if (props.isLoading || status === ApiStatus.LOADING) {
@@ -35,7 +41,7 @@ const PageHeader = (props: PageHeaderProps) => {
           {message}
           <i
             className="fa fa-times-circle click-me pl-1"
-            onClick={() => setShowMessage(false)}
+            onClick={resetApiMessage}
           />
         </div>
       )
@@ -48,10 +54,11 @@ const PageHeader = (props: PageHeaderProps) => {
           {message}
           <i
             className="fa fa-times-circle click-me pl-1"
-            onClick={() => setShowMessage(false)}
+            onClick={resetApiMessage}
           />
         </div>
-      )    }
+      )
+    }
 
     if (props.errorString && showMessage) {
       return (
@@ -59,7 +66,7 @@ const PageHeader = (props: PageHeaderProps) => {
           Error: {props.errorString}
           <i
             className="fa fa-times-circle click-me"
-            onClick={() => setShowMessage(false)}
+            onClick={resetApiMessage}
           />
         </span>
       )
