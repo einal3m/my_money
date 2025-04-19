@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import apiStatusReducer from './apiStatusSlice'
 import currentReducer from './currentSlice'
 import formReducer from './formSlice'
 import importReducer from './importSlice'
@@ -10,6 +11,7 @@ import { rtkQueryErrorLogger } from './errorMiddleware'
 export const store = configureStore({
   reducer: {
     [applicationApi.reducerPath]: applicationApi.reducer,
+    apiStatusStore: apiStatusReducer,
     currentStore: currentReducer,
     formStore: formReducer,
     importStore: importReducer,

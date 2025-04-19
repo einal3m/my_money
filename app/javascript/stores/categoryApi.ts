@@ -1,8 +1,24 @@
 import categoryTransformer from 'transformers/categoryTransformer'
 import subcategoryTransformer from 'transformers/subcategoryTransformer'
-import { Category, Subcategory, CategoryType, CategoryFormInput, SubcategoryFormInput } from 'types/models'
+import {
+  Category,
+  Subcategory,
+  CategoryType,
+  CategoryFormInput,
+  SubcategoryFormInput,
+} from 'types/models'
 import { CategoryResponse, SubcategoryResponse } from 'types/api'
 import { applicationApi } from './applicationApi'
+import { setStatus, ApiStatus, setStatusAndMessage } from './apiStatusSlice'
+
+type ErrorResponse = {
+  status: number
+  data: { message: string }
+}
+
+type Error = {
+  error: ErrorResponse
+}
 
 export const categoryApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,6 +50,26 @@ export const categoryApi = applicationApi.injectEndpoints({
         body: { category: categoryTransformer.transformToApi(category) },
       }),
       invalidatesTags: ['categories', 'category-report', 'subcategory-report'],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(setStatus({ status: ApiStatus.LOADING }))
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.DONE,
+              message: 'Category saved',
+            }),
+          )
+        } catch (err) {
+          const error = err as Error
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.ERROR,
+              message: `Error: ${error?.error?.data?.message}`,
+            }),
+          )
+        }
+      },
     }),
     deleteCategory: builder.mutation<void, number>({
       query: (id) => ({
@@ -41,6 +77,26 @@ export const categoryApi = applicationApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['categories', 'category-report', 'subcategory-report'],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(setStatus({ status: ApiStatus.LOADING }))
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.DONE,
+              message: 'Category deleted',
+            }),
+          )
+        } catch (err) {
+          const error = err as Error
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.ERROR,
+              message: `Error: ${error?.error?.data?.message}`,
+            }),
+          )
+        }
+      },
     }),
     getSubcategories: builder.query<Subcategory[], void>({
       query() {
@@ -62,14 +118,62 @@ export const categoryApi = applicationApi.injectEndpoints({
           subcategory: subcategoryTransformer.transformToApi(subcategory),
         },
       }),
-      invalidatesTags: ['subcategories', 'category-report', 'subcategory-report'],
+      invalidatesTags: [
+        'subcategories',
+        'category-report',
+        'subcategory-report',
+      ],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(setStatus({ status: ApiStatus.LOADING }))
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.DONE,
+              message: 'Subcategory saved',
+            }),
+          )
+        } catch (err) {
+          const error = err as Error
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.ERROR,
+              message: `Error: ${error?.error?.data?.message}`,
+            }),
+          )
+        }
+      },
     }),
     deleteSubcategory: builder.mutation<void, number>({
       query: (id) => ({
         url: `/subcategories/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['subcategories', 'category-report', 'subcategory-report'],
+      invalidatesTags: [
+        'subcategories',
+        'category-report',
+        'subcategory-report',
+      ],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(setStatus({ status: ApiStatus.LOADING }))
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.DONE,
+              message: 'Subcategory deleted',
+            }),
+          )
+        } catch (err) {
+          const error = err as Error
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.ERROR,
+              message: `Error: ${error?.error?.data?.message}`,
+            }),
+          )
+        }
+      },
     }),
   }),
 })
