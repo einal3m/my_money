@@ -5,12 +5,13 @@ const buttonTypeMapper = {
   primary: 'success',
   link: 'link',
   delete: 'danger',
+  submit: 'success'
 }
 
 type ButtonProps = PropsWithChildren & {
-  type?: 'secondary' | 'primary' | 'link' | 'delete'
+  type?: 'secondary' | 'primary' | 'link' | 'delete' | 'submit'
   pullLeft?: boolean
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
 const Button = (props: ButtonProps) => {
@@ -19,6 +20,8 @@ const Button = (props: ButtonProps) => {
     <button
       onClick={props.onClick}
       className={`btn btn-${buttonTypeMapper[buttonType]} ${props.pullLeft ? 'pull-left' : ''}`}
+      type={props.type == 'submit' ? 'submit' : undefined}
+      form={props.type == 'submit' ? 'modal-form': undefined}
     >
       {props.children}
     </button>

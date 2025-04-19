@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
-import { showFormModal } from '../../../actions/form-actions';
+import { showFormModal } from 'actions/form-actions';
 
-const NewModelButtons = props => (
-  <Dropdown id="new-model-dropdown" align="right" onSelect={newModel}>
+type NewModelButtonsProps = {
+  modelTypes: string[]
+}
+
+const NewModelButtons = (props: NewModelButtonsProps) => (
+  <Dropdown id="new-model-dropdown" align="end" onSelect={newModel}>
     <Dropdown.Toggle>
       <i className="fas fa-plus" /> New
     </Dropdown.Toggle>
@@ -14,11 +18,11 @@ const NewModelButtons = props => (
   </Dropdown>
 );
 
-function newModel(eventKey) {
+function newModel(eventKey: string | null) {
   showFormModal(eventKey, {}, { allowDelete: false });
 }
 
-function renderModelTypes(modelTypes) {
+function renderModelTypes(modelTypes: string[]) {
   return modelTypes.map((modelType, i) => <Dropdown.Item key={i} eventKey={modelType}>{`New ${modelType}`}</Dropdown.Item>);
 }
 
