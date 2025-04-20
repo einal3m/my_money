@@ -53,6 +53,16 @@ module Lib
     end
   end
 
+  # PreviousMonthDateRange
+  # sets from and to dates to represent the previous month
+  class PreviousMonthDateRange < DateRange
+    def initialize(_args = {})
+      super()
+      @to_date = start_of_month - 1.day
+      @from_date = to_date - 1.month + 1.day
+    end
+  end
+
   # CustomDateRange
   # sets from and to dates from the values passed in
   class CustomDateRange < DateRange

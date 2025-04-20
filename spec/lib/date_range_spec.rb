@@ -25,6 +25,34 @@ RSpec.describe Lib::DateRange, type: :class do
     end
   end
 
+  describe 'PreviousMonthDateRange' do
+    context 'when within calendar year' do
+      before do
+        fake_today = Date.parse('06-Sep-2015')
+        allow(Time.zone).to receive(:today).and_return(fake_today)
+      end
+
+      it 'sets the date range to last month' do
+        dr = Lib::PreviousMonthDateRange.new
+        expect(dr.from_date).to eq(Date.parse('1-Aug-2015'))
+        expect(dr.to_date).to eq(Date.parse('31-Aug-2015'))
+      end
+    end
+
+    context 'when it overlaps with calendar year' do
+      before do
+        fake_today = Date.parse('06-Jan-2015')
+        allow(Time.zone).to receive(:today).and_return(fake_today)
+      end
+
+      it 'sets the date range to last month' do
+        dr = Lib::PreviousMonthDateRange.new
+        expect(dr.from_date).to eq(Date.parse('1-Dec-2014'))
+        expect(dr.to_date).to eq(Date.parse('31-Dec-2014'))
+      end
+    end
+  end
+
   describe 'CustomDateRange' do
     it 'sets from date and to date to those passed in as parameters' do
       dr = Lib::CustomDateRange.new(from_date: '2014-12-19', to_date: '2014-12-31')

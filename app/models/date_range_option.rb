@@ -41,13 +41,27 @@ class DateRangeOption < ClassyEnum::Base
     end
   end
 
-  class Custom < DateRangeOption
+  class PreviousMonth < DateRangeOption
     def id
       2
     end
 
     def order
       2
+    end
+
+    def name
+      'Previous Month'
+    end
+  end
+
+  class Custom < DateRangeOption
+    def id
+      3
+    end
+
+    def order
+      3
     end
 
     def name
@@ -61,11 +75,11 @@ class DateRangeOption < ClassyEnum::Base
 
   class CurrentFinancialYear < DateRangeOption
     def id
-      3
+      4
     end
 
     def order
-      3
+      4
     end
 
     def name
@@ -75,11 +89,11 @@ class DateRangeOption < ClassyEnum::Base
 
   class PreviousFinancialYear < DateRangeOption
     def id
-      4
+      5
     end
 
     def order
-      4
+      5
     end
 
     def name
@@ -89,11 +103,11 @@ class DateRangeOption < ClassyEnum::Base
 
   class Last90Days < DateRangeOption
     def id
-      5
+      6
     end
 
     def order
-      5
+      6
     end
 
     def name
@@ -103,11 +117,11 @@ class DateRangeOption < ClassyEnum::Base
 
   class Last12Months < DateRangeOption
     def id
-      6
+      7
     end
 
     def order
-      6
+      7
     end
 
     def name
