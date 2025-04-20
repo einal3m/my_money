@@ -4,7 +4,7 @@ import { FormControl } from 'components/common/controls/NewFormControl'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { Subcategory, SubcategoryFormInput } from 'types/models'
 import { GroupedCategories } from 'hooks/useGroupedCategories'
-import GroupedCategorySelect from 'components/common/controls/GroupedCategorySelect'
+import { CategorySelect } from 'components/common/controls/CategorySelect'
 
 type SubcategoryFormProps = {
   subcategory: Subcategory
@@ -36,7 +36,7 @@ export const SubcategoryForm = (props: SubcategoryFormProps) => {
           control={control}
           rules={{ required: 'Category is required' }}
           render={({ field }) => (
-            <GroupedCategorySelect
+            <CategorySelect
               name="categoryId"
               value={field.value}
               groupedCategories={props.groupedCategories}

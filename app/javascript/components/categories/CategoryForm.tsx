@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { FormControl } from 'components/common/controls/NewFormControl'
-import Select from 'components/common/controls/Select'
+import { SingleSelect } from 'components/common/controls/SingleSelect'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { Category, CategoryFormInput, CategoryType } from 'types/models'
 
@@ -35,7 +35,7 @@ export const CategoryForm = (props: CategoryFormProps) => {
           control={control}
           rules={{ required: 'Category type is required' }}
           render={({ field }) => (
-            <Select
+            <SingleSelect
               name="categoryTypeId"
               value={field.value}
               options={props.categoryTypes}
