@@ -90,7 +90,7 @@ export type Pattern = {
   matchText: string
   notes: string
   categoryId: number
-  subcategoryId: number
+  subcategoryId?: number
 }
 
 export type Reconciliation = {

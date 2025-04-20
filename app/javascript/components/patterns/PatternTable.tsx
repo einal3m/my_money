@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PatternRow from './PatternRow'
+import { PatternRow } from './PatternRow'
 import { Account, Pattern } from 'types/models'
 import { GroupedCategories } from 'hooks/useGroupedCategories'
 

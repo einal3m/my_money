@@ -28,7 +28,7 @@ export const SubcategoryForm = (props: SubcategoryFormProps) => {
     <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
       <FormControl
         name="categoryId"
-        label="Category Type"
+        label="Category"
         errorMessage={errors.categoryId?.message}
       >
         <Controller

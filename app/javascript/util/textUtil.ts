@@ -6,6 +6,7 @@ import {
   Account,
   Category,
   MatchingTransaction,
+  Pattern,
   Subcategory,
   Transaction,
 } from 'types/models'
@@ -18,7 +19,7 @@ export const memoAndNotes = (transaction: Transaction): string => {
 }
 
 export const categoryAndSubcategory = (
-  transaction: Transaction,
+  transaction: Transaction | Pattern,
   groupedCategories: GroupedCategories[],
 ): string => {
   if (!transaction.categoryId) return ''

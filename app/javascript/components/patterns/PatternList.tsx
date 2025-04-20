@@ -7,7 +7,7 @@ import SearchCriteria, {
   ACCOUNT_FILTER,
 } from '../common/criteria/SearchCriteria'
 import { PatternTable } from './PatternTable'
-import PatternModal from './PatternModal'
+import { PatternModal } from './PatternModal'
 import { showFormModal } from 'stores/formSlice'
 import { useGetPatternsQuery } from 'stores/patternApi'
 import { useGroupedCategories } from 'hooks/useGroupedCategories'
