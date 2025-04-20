@@ -5,6 +5,16 @@ import {
   transformToApi,
 } from 'transformers/patternTransformer'
 import { applicationApi } from './applicationApi'
+import { ApiStatus, setStatus, setStatusAndMessage } from './apiStatusSlice'
+
+type ErrorResponse = {
+  status: number
+  data: { message: string }
+}
+
+type Error = {
+  error: ErrorResponse
+}
 
 export const patternApi = applicationApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,6 +35,26 @@ export const patternApi = applicationApi.injectEndpoints({
         body: { pattern: transformToApi(pattern) },
       }),
       invalidatesTags: ['patterns'],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(setStatus({ status: ApiStatus.LOADING }))
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.DONE,
+              message: 'Pattern saved',
+            }),
+          )
+        } catch (err) {
+          const error = err as Error
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.ERROR,
+              message: `Error: ${error?.error?.data?.message}`,
+            }),
+          )
+        }
+      },
     }),
     deletePattern: builder.mutation<void, Pattern>({
       query: (pattern) => ({
@@ -32,6 +62,26 @@ export const patternApi = applicationApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['patterns'],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(setStatus({ status: ApiStatus.LOADING }))
+        try {
+          const { data } = await queryFulfilled
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.DONE,
+              message: 'Pattern deleted',
+            }),
+          )
+        } catch (err) {
+          const error = err as Error
+          dispatch(
+            setStatusAndMessage({
+              status: ApiStatus.ERROR,
+              message: `Error: ${error?.error?.data?.message}`,
+            }),
+          )
+        }
+      },
     }),
   }),
 })
