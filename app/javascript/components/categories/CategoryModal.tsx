@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { FormModal } from '../common/NewFormModal'
+import { FormModal } from 'components/common/NewFormModal'
 import { CategoryForm } from './CategoryForm'
 import { SubcategoryForm } from './SubcategoryForm'
 import { GroupedCategories } from 'hooks/useGroupedCategories'

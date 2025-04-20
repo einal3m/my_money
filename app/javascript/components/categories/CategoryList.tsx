@@ -1,10 +1,11 @@
 import React from 'react'
 
 import PageHeader from 'components/common/PageHeader'
-import NewModelButtons from 'components/common/controls/NewModelButtons'
+import { NewModelButtons } from 'components/common/controls/NewModelButtons'
 import { CategoryTypeTable } from './CategoryTypeTable'
 import { useGroupedCategories } from 'hooks/useGroupedCategories'
 import { CategoryModal } from './CategoryModal'
+import { ModelType } from 'types/models'
 
 import '../../stylesheets/common.scss'
 import '../../stylesheets/categories.scss'
@@ -30,7 +31,9 @@ export const CategoryList = () => {
   return (
     <div>
       <PageHeader title="my categories" isLoading={isLoading}>
-        <NewModelButtons modelTypes={['Category', 'Subcategory']} />
+        <NewModelButtons
+          modelTypes={[ModelType.Category, ModelType.Subcategory]}
+        />
       </PageHeader>
       <div className="category-list">{renderCategoryTypes()}</div>
       <CategoryModal groupedCategories={groupedCategories || []} />

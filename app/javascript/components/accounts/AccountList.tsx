@@ -1,7 +1,7 @@
 import React from 'react'
 
 import PageHeader from '../common/PageHeader'
-import NewModelButtons from '../common/controls/NewModelButtons'
+import { NewModelButtons } from 'components/common/controls/NewModelButtons'
 import AccountGroup from './AccountGroup'
 import AccountModal from './AccountModal'
 import { useGroupedAccounts } from 'hooks/useGroupedAccounts'
