@@ -39,6 +39,19 @@ RSpec.describe Lib::DateRange, type: :class do
       end
     end
 
+    context 'when after 30 day month' do
+      before do
+        fake_today = Date.parse('09-May-2015')
+        allow(Time.zone).to receive(:today).and_return(fake_today)
+      end
+
+      it 'sets the date range to last month' do
+        dr = Lib::PreviousMonthDateRange.new
+        expect(dr.from_date).to eq(Date.parse('1-Apr-2015'))
+        expect(dr.to_date).to eq(Date.parse('30-Apr-2015'))
+      end
+    end
+
     context 'when it overlaps with calendar year' do
       before do
         fake_today = Date.parse('06-Jan-2015')

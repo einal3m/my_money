@@ -59,7 +59,7 @@ module Lib
     def initialize(_args = {})
       super()
       @to_date = start_of_month - 1.day
-      @from_date = to_date - 1.month + 1.day
+      @from_date = Date.new(Time.zone.today.year, Time.zone.today.month - 1, 1)
     end
   end
 
