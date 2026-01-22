@@ -18,6 +18,10 @@ export function createBarScales(xAxisLabels, seriesData, dim) {
   } else if (min === max) {
     min = 0;
     max = 10000;
+  } else if (min > 0) {
+    min = 0;
+  } else if (max < 0) {
+    max = 0;
   }
 
   const yScale = d3.scaleLinear()
